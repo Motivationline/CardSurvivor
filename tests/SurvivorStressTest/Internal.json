@@ -1,0 +1,407 @@
+{
+  "MeshSprite|2024-04-22T09:29:01.548Z|37271": {
+    "ƒ.MeshSprite": {
+      "idResource": "MeshSprite|2024-04-22T09:29:01.548Z|37271",
+      "name": "defaultSprite",
+      "type": "MeshSprite"
+    }
+  },
+  "Material|2024-04-22T11:31:07.007Z|11683": {
+    "ƒ.Material": {
+      "name": "enemyTexture64",
+      "idResource": "Material|2024-04-22T11:31:07.007Z|11683",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-04-23T11:33:09.536Z|30740"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-04-23T11:33:09.536Z|30740": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Sprites\\Test\\test_robo_walk_64.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-04-23T11:33:09.536Z|30740",
+        "name": "Assets\\Sprites\\Test\\test_robo_walk_64.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "TextureImage|2024-04-22T09:28:00.008Z|57748": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\enemy.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-04-22T09:28:00.008Z|57748",
+        "name": "Assets\\enemy.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "AnimationSprite|2024-04-23T07:15:46.655Z|87342": {
+    "ƒ.AnimationSprite": {
+      "idResource": "AnimationSprite|2024-04-23T07:15:46.655Z|87342",
+      "idTexture": "TextureImage|2024-04-23T11:33:09.536Z|30740",
+      "frames": 24,
+      "wrapAfter": 50,
+      "start": "[0, 0]",
+      "size": "[64, 64]",
+      "next": "[64, 0]",
+      "wrap": "[0, 0]",
+      "Animation": {
+        "idResource": "AnimationSprite|2024-04-23T07:15:46.655Z|87342",
+        "name": "enemyAnimationSprite",
+        "labels": {},
+        "events": {},
+        "framesPerSecond": 24,
+        "animationStructure": {}
+      }
+    }
+  },
+  "TextureImage|2024-04-22T09:28:03.358Z|21122": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\enemy_spritesheet.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-04-22T09:28:03.358Z|21122",
+        "name": "Assets\\enemy_spritesheet.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-04-23T07:31:30.412Z|07426": {
+    "ƒ.Material": {
+      "name": "enemyAnimatedTexture",
+      "idResource": "Material|2024-04-23T07:31:30.412Z|07426",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-04-23T11:33:09.536Z|30740"
+        }
+      }
+    }
+  },
+  "Material|2024-04-23T12:53:07.473Z|81732": {
+    "ƒ.Material": {
+      "name": "enemyTexture256",
+      "idResource": "Material|2024-04-23T12:53:07.473Z|81732",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-04-23T11:33:09.536Z|95609"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-04-23T11:33:09.536Z|95609": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Sprites\\Test\\test_robo_walk_256.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-04-23T11:33:09.536Z|95609",
+        "name": "Assets\\Sprites\\Test\\test_robo_walk_256.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Graph|2024-04-22T09:17:11.836Z|04522": {
+    "ƒ.Graph": {
+      "name": "enemy",
+      "active": true,
+      "components": {
+        "ComponentTransform": [
+          {
+            "ƒ.ComponentTransform": {
+              "local": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "Enemy": [
+          {
+            "Script.Enemy": {
+              "active": true
+            }
+          }
+        ],
+        "ComponentMaterial": [
+          {
+            "ƒ.ComponentMaterial": {
+              "sortForAlpha": false,
+              "clrPrimary": "[1, 1, 1, 1]",
+              "clrSecondary": "[1, 1, 1, 1]",
+              "pivot": {
+                "translation": "[0, 0]",
+                "rotation": 0,
+                "scaling": "[0.04199995845556259, 1]"
+              },
+              "Component": {
+                "active": true
+              },
+              "idMaterial": "Material|2024-04-23T12:53:07.473Z|81732"
+            }
+          }
+        ],
+        "ComponentMesh": [
+          {
+            "ƒ.ComponentMesh": {
+              "idMesh": "MeshSprite|2024-04-22T09:29:01.548Z|37271",
+              "pivot": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "ComponentAnimator": [
+          {
+            "ƒ.ComponentAnimator": {
+              "Component": {
+                "active": true
+              },
+              "idAnimation": "AnimationSprite|2024-04-23T07:15:46.655Z|87342",
+              "playmode": "loop",
+              "quantization": "discrete",
+              "scale": 1,
+              "scaleWithGameTime": true,
+              "animateInEditor": false
+            }
+          }
+        ]
+      },
+      "children": [],
+      "idResource": "Graph|2024-04-22T09:17:11.836Z|04522",
+      "type": "Graph"
+    }
+  },
+  "Graph|2024-04-22T09:17:29.260Z|42329": {
+    "ƒ.Graph": {
+      "name": "main",
+      "active": true,
+      "components": {
+        "EnemyManager": [
+          {
+            "Script.EnemyManager": {
+              "active": true
+            }
+          }
+        ]
+      },
+      "children": [
+        {
+          "ƒ.GraphInstance": {
+            "deserializeFromSource": true,
+            "idSource": "Graph|2024-04-22T09:17:35.798Z|69128"
+          }
+        }
+      ],
+      "idResource": "Graph|2024-04-22T09:17:29.260Z|42329",
+      "type": "Graph"
+    }
+  },
+  "Material|2024-04-22T09:32:14.076Z|75826": {
+    "ƒ.Material": {
+      "name": "kingTexture",
+      "idResource": "Material|2024-04-22T09:32:14.076Z|75826",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-04-22T09:28:00.008Z|03635"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-04-22T09:28:00.008Z|03635": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\king.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-04-22T09:28:00.008Z|03635",
+        "name": "Assets\\king.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Graph|2024-04-22T09:17:35.798Z|69128": {
+    "ƒ.Graph": {
+      "name": "character",
+      "active": true,
+      "components": {
+        "ComponentMesh": [
+          {
+            "ƒ.ComponentMesh": {
+              "idMesh": "MeshSprite|2024-04-22T09:29:01.548Z|37271",
+              "pivot": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "ComponentMaterial": [
+          {
+            "ƒ.ComponentMaterial": {
+              "sortForAlpha": false,
+              "clrPrimary": "[1, 1, 1, 1]",
+              "clrSecondary": "[1, 1, 1, 1]",
+              "pivot": {
+                "translation": "[0, 0]",
+                "rotation": 0,
+                "scaling": "[1, 1]"
+              },
+              "Component": {
+                "active": true
+              },
+              "idMaterial": "Material|2024-04-22T09:32:14.076Z|75826"
+            }
+          }
+        ],
+        "ComponentTransform": [
+          {
+            "ƒ.ComponentTransform": {
+              "local": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "CharacterScript": [
+          {
+            "Script.CharacterScript": {
+              "active": true,
+              "speed": 0,
+              "maxDistance": 5
+            }
+          }
+        ]
+      },
+      "children": [
+        {
+          "ƒ.Node": {
+            "name": "camera",
+            "active": true,
+            "components": {
+              "ComponentCamera": [
+                {
+                  "ƒ.ComponentCamera": {
+                    "backgroundColor": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 1
+                    },
+                    "backgroundEnabled": true,
+                    "projection": "central",
+                    "fieldOfView": 45,
+                    "direction": "diagonal",
+                    "near": 1,
+                    "far": 2000,
+                    "aspect": 1.6125541125541125,
+                    "pivot": {
+                      "translation": "[0, 0, 20]",
+                      "rotation": "[0, 180, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        }
+      ],
+      "idResource": "Graph|2024-04-22T09:17:35.798Z|69128",
+      "type": "Graph"
+    }
+  },
+  "TextureImage|2024-04-22T09:28:03.358Z|70065": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\king_spritesheet.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-04-22T09:28:03.358Z|70065",
+        "name": "Assets\\king_spritesheet.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "AnimationSprite|2024-04-22T09:30:05.411Z|99533": {
+    "ƒ.AnimationSprite": {
+      "idResource": "AnimationSprite|2024-04-22T09:30:05.411Z|99533",
+      "idTexture": "TextureImage|2024-04-22T09:28:03.358Z|70065",
+      "frames": 4,
+      "wrapAfter": 4,
+      "start": "[0, 0]",
+      "size": "[32, 32]",
+      "next": "[32, 0]",
+      "wrap": "[0, 0]",
+      "Animation": {
+        "idResource": "AnimationSprite|2024-04-22T09:30:05.411Z|99533",
+        "name": "kingAnimationSprite",
+        "labels": {},
+        "events": {},
+        "framesPerSecond": 25,
+        "animationStructure": {}
+      }
+    }
+  },
+  "TextureImage|2024-04-23T11:33:09.536Z|52013": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Sprites\\Test\\test_robo_walk_1024.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-04-23T11:33:09.536Z|52013",
+        "name": "Assets\\Sprites\\Test\\test_robo_walk_1024.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-04-23T12:53:12.180Z|59669": {
+    "ƒ.Material": {
+      "name": "enemyTexture1024",
+      "idResource": "Material|2024-04-23T12:53:12.180Z|59669",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-04-23T11:33:09.536Z|52013"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>SurvivorStressTest</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="styles.css" />
+
+    <!--Editor settings of this project-->
+    <meta type="settings" autoview="Graph|2024-04-22T09:17:29.260Z|42329" project="{'name':'SurvivorStressTest','graphAutoView':'Graph|2024-04-22T09:17:29.260Z|42329'}" />
+
+    <!--Activate the following line to include the FUDGE-version of Oimo-Physics. You may want to download a local copy to work offline and be independent from future changes!-->
+    <!--<script type="text/javascript" src="https://jirkadelloro.github.io/FUDGE/Physics/OimoPhysics.js"></script>-->
+
+    <!--Load FUDGE. You may want to download local copies to work offline and be independent from future changes! Developers working on FUDGE itself may want to create symlinks-->
+    <script type="text/javascript" src="https://jirkadelloro.github.io/FUDGE/Core/Build/FudgeCore.js"></script>
+    <script type="text/javascript" src="https://jirkadelloro.github.io/FUDGE/Aid/Build/FudgeAid.js"></script>
+    <script type="text/javascript" src="https://jirkadelloro.github.io/FUDGE/UserInterface/Build/FudgeUserInterface.js"></script>
+    <script src="UI.js"></script>
+
+    <!--Link internal resources. The editor only loads the first, but at runtime, multiple files can contribute-->
+    <link type="resources" src="Internal.json" />
+
+    <!--Load custom scripts-->
+    <script type="text/javascript" src="Script/Build/Script.js" editor="true"></script>
+
+    <!--Load Autoview script-->
+    <script type="text/javascript" src="Autoview.js"></script>
+
+
+    <style>
+        #ui {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: rgba(255, 255, 255, 0.37);
+        }
+
+        fudge-boolean,
+        fudge-color,
+        fudge-stepper,
+        fudge-select {
+            display: block;
+        }
+
+        .ui-canvas {
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+            color: yellow;
+            text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+            padding: 0.2rem;
+        }
+
+        span[is="ui-fps"] {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        span[is="ui-time"] {
+            position: absolute;
+            bottom: 1rem;
+            left: 0
+        }
+    </style>
+</head>
+
+<body>
+    <!--Dialog shown at startup only-->
+    <dialog>
+        <p>FUDGE Autoview</p>
+        <h1>Title (will be replaced by Autoview)</h1>
+        <p>click to start</p>
+    </dialog>
+    <!--Canvas for FUDGE to render to-->
+    <canvas class="fullscreen">
+    </canvas>
+    <div id="ui">
+</div>
+</body>
+</html>

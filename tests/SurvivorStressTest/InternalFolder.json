@@ -1,0 +1,81 @@
+{
+  "Fudge.ResourceFolder": {
+    "name": "Resources",
+    "entries": [
+      {
+        "name": "graphs",
+        "entries": [
+          {
+            "idResource": "Graph|2024-04-22T09:17:11.836Z|04522"
+          },
+          {
+            "idResource": "Graph|2024-04-22T09:17:29.260Z|42329"
+          },
+          {
+            "idResource": "Graph|2024-04-22T09:17:35.798Z|69128"
+          }
+        ]
+      },
+      {
+        "name": "img",
+        "entries": [
+          {
+            "name": "spritesheets",
+            "entries": [
+              {
+                "idResource": "TextureImage|2024-04-22T09:28:03.358Z|70065"
+              },
+              {
+                "idResource": "TextureImage|2024-04-22T09:28:03.358Z|21122"
+              },
+              {
+                "idResource": "TextureImage|2024-04-23T11:33:09.536Z|52013"
+              },
+              {
+                "idResource": "TextureImage|2024-04-23T11:33:09.536Z|95609"
+              },
+              {
+                "idResource": "TextureImage|2024-04-23T11:33:09.536Z|30740"
+              }
+            ]
+          },
+          {
+            "idResource": "TextureImage|2024-04-22T09:28:00.008Z|57748"
+          },
+          {
+            "idResource": "TextureImage|2024-04-22T09:28:00.008Z|03635"
+          }
+        ]
+      },
+      {
+        "name": "sprites",
+        "entries": [
+          {
+            "idResource": "MeshSprite|2024-04-22T09:29:01.548Z|37271"
+          },
+          {
+            "idResource": "AnimationSprite|2024-04-22T09:30:05.411Z|99533"
+          },
+          {
+            "idResource": "Material|2024-04-22T09:32:14.076Z|75826"
+          },
+          {
+            "idResource": "AnimationSprite|2024-04-23T07:15:46.655Z|87342"
+          },
+          {
+            "idResource": "Material|2024-04-23T07:31:30.412Z|07426"
+          },
+          {
+            "idResource": "Material|2024-04-22T11:31:07.007Z|11683"
+          },
+          {
+            "idResource": "Material|2024-04-23T12:53:07.473Z|81732"
+          },
+          {
+            "idResource": "Material|2024-04-23T12:53:12.180Z|59669"
+          }
+        ]
+      }
+    ]
+  }
+}
