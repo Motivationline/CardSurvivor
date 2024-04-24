@@ -1,11 +1,10 @@
 namespace Script {
     import ƒ = FudgeCore;
     export class Enemy extends ƒ.Component implements ƒ.Recycable {
-        #animator: ƒ.ComponentAnimator;
+        // #animator: ƒ.ComponentAnimator;
         #direction: number = 0;
         #visualDeactivated: boolean = true;
-        #centralAnimator: boolean = false;
-        #centralAnimatorProvider: boolean = false;
+        // #centralAnimatorProvider: boolean = false;
 
         constructor() {
             super();
@@ -27,20 +26,17 @@ namespace Script {
         }
         recycle(): void {
             //
-            if(this.#centralAnimatorProvider) {
-                this.#animator.activate(true);
-            }
+            // if(this.#centralAnimatorProvider) {
+            //     this.#animator.activate(true);
+            // }
         }
 
         init = async () => {
             this.removeEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.init);
-            this.#animator = this.node.getComponent(ƒ.ComponentAnimator);
+            // this.#animator = this.node.getComponent(ƒ.ComponentAnimator);
             // this.#texture = <ƒ.CoatTextured>this.node.getComponent(ƒ.ComponentMaterial).material.coat;
 
-            if (EnemyManager.Instance?.combineAnimator && !this.#centralAnimator) {
-                this.setCentralAnimator();
-            }
-
+            this.setCentralAnimator();
             // this.#textures = {
             //     "s": <ƒ.TextureImage><unknown>await ƒ.Project.getResourcesByName("enemyTexture64"),
             //     "m": <ƒ.TextureImage><unknown>await ƒ.Project.getResourcesByName("enemyTexture256"),
@@ -49,15 +45,9 @@ namespace Script {
         }
 
         loop = () => {
-            if (!this.#centralAnimator && EnemyManager.Instance.animate !== this.#animator.isActive) {
-                this.#animator.activate(EnemyManager.Instance.animate);
-            }
             if (this.#visualDeactivated !== EnemyManager.Instance.disableVisuals) {
                 this.#visualDeactivated = EnemyManager.Instance.disableVisuals;
                 this.node.getComponent(ƒ.ComponentMesh).activate(!this.#visualDeactivated)
-            }
-            if (EnemyManager.Instance.combineAnimator && !this.#centralAnimator) {
-                this.setCentralAnimator();
             }
 
             if (EnemyManager.Instance.noEnemyMovement) return;
@@ -81,16 +71,16 @@ namespace Script {
         }
 
         setCentralAnimator() {
-            this.#animator.activate(false);
+            // this.#animator.activate(false);
             let mat = this.node.getComponent(ƒ.ComponentMaterial);
-            console.log(EnemyManager.Instance.centralAnimationMtx);
-            if (!EnemyManager.Instance.centralAnimationMtx) {
-                EnemyManager.Instance.centralAnimationMtx = mat.mtxPivot;
-                this.#animator.activate(true);
-                this.#centralAnimatorProvider = true;
-            }
-            mat.mtxPivot = EnemyManager.Instance.centralAnimationMtx;
-            this.#centralAnimator = true;
+            // console.log(EnemyManager.Instance.centralAnimationMtx);
+            // if (!EnemyManager.Instance.centralAnimationMtx) {
+            //     EnemyManager.Instance.centralAnimationMtx = mat.mtxPivot;
+            //     this.#animator.activate(true);
+            //     this.#centralAnimatorProvider = true;
+            // }
+            mat.mtxPivot = EnemyManager.Instance.getAnimMtx(24, 24);
+            // this.#centralAnimator = true;
         }
     }
 }

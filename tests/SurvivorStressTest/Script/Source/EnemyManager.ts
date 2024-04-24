@@ -16,16 +16,11 @@ namespace Script {
     public disableVisuals: boolean = false;
     public lockCamera: boolean = false;
     public noEnemyMovement: boolean = false;
-    public centralAnimationMtx: ƒ.Matrix3x3;
+    #centralAnimationAnimators: { [type: string]: SpriteAnimator[] } = {};
     #enemies: EnemyGraphInstance[] = [];
     #enemiesScripts: Enemy[] = [];
     #enemy: ƒ.Graph;
     #cameraWasLocked: boolean = this.lockCamera;
-    #combineAnimator: boolean = false;
-
-    get combineAnimator() {
-      return this.#combineAnimator;
-    }
 
     constructor() {
       super();
@@ -52,14 +47,12 @@ namespace Script {
       let uiCharacterScript: HTMLElement = ƒui.Generator.createDetailsFromMutable(this);
       new ƒui.Controller(this, uiCharacterScript);
       ui.appendChild(uiCharacterScript);
-
-      let syncAnimBtn = document.createElement("button");
-      syncAnimBtn.addEventListener("click", this.syncAnim);
-      syncAnimBtn.innerText = "Sync Animation";
-      ui.appendChild(syncAnimBtn);
     }
 
     private async loop() {
+      if (this.animate)
+        this.updateAnimationMtxs();
+
       if (this.#enemies.length < this.maxEnemies) {
         let newEnemyGraphInstance = ƒ.Recycler.get(EnemyGraphInstance);
         if (!newEnemyGraphInstance.initialized) {
@@ -111,8 +104,29 @@ namespace Script {
       this.#enemiesScripts.splice(index2, 1);
     }
 
-    syncAnim = () => {
-      this.#combineAnimator = true;
+    getAnimMtx(_frames: number, _fps: number): ƒ.Matrix3x3 {
+      let type = `${_frames}_${_fps}`;
+      if (!this.#centralAnimationAnimators[type]) {
+        let gameTime: number = ƒ.Time.game.get();
+        let animTime = Math.floor((_frames / _fps) * 1000);
+        this.#centralAnimationAnimators[type] = [
+          new SpriteAnimator(_frames, _fps, gameTime),
+          new SpriteAnimator(_frames, _fps, gameTime + Math.floor((Math.random() * animTime))),
+          new SpriteAnimator(_frames, _fps, gameTime + Math.floor((Math.random() * animTime))),
+          new SpriteAnimator(_frames, _fps, gameTime + Math.floor((Math.random() * animTime))),
+        ]
+      }
+
+      return this.#centralAnimationAnimators[type][Math.floor(Math.random() * this.#centralAnimationAnimators[type].length)].matrix;
+    }
+
+    private updateAnimationMtxs() {
+      let time = ƒ.Time.game.get();
+      for (let type in this.#centralAnimationAnimators) {
+        for (let sa of this.#centralAnimationAnimators[type]) {
+          sa.setTime(time);
+        }
+      }
     }
   }
 

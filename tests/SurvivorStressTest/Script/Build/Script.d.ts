@@ -44,15 +44,14 @@ declare namespace Script {
         disableVisuals: boolean;
         lockCamera: boolean;
         noEnemyMovement: boolean;
-        centralAnimationMtx: ƒ.Matrix3x3;
-        get combineAnimator(): boolean;
         constructor();
         private loaded;
         private init;
         private loop;
         static setCharacter(_node: ƒ.Node): void;
         removeEnemy(_node: ƒ.Node): void;
-        syncAnim: () => void;
+        getAnimMtx(_frames: number, _fps: number): ƒ.Matrix3x3;
+        private updateAnimationMtxs;
     }
     type TextureSize = "s" | "m" | "l";
 }
@@ -62,4 +61,19 @@ declare namespace Script {
     let freeCam: ƒ.ComponentCamera;
     /** Helper function to set up a (deep) proxy object that calls the onChange function __before__ the element is modified*/
     function onChange(object: any, onChange: Function): any;
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
+    class SpriteAnimator {
+        private mtx;
+        private startTime;
+        private frames;
+        private fps;
+        private totalTime;
+        private frameTime;
+        private frameWidth;
+        constructor(_frames: number, _fps: number, _startTime: number, _mtx?: ƒ.Matrix3x3);
+        get matrix(): ƒ.Matrix3x3;
+        setTime(_time: number): void;
+    }
 }

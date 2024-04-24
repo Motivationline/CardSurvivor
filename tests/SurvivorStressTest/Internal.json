@@ -172,21 +172,7 @@
             }
           }
         ],
-        "ComponentAnimator": [
-          {
-            "ƒ.ComponentAnimator": {
-              "Component": {
-                "active": true
-              },
-              "idAnimation": "AnimationSprite|2024-04-23T07:15:46.655Z|87342",
-              "playmode": "loop",
-              "quantization": "discrete",
-              "scale": 1,
-              "scaleWithGameTime": true,
-              "animateInEditor": false
-            }
-          }
-        ]
+        "ComponentAnimator": []
       },
       "children": [],
       "idResource": "Graph|2024-04-22T09:17:11.836Z|04522",
