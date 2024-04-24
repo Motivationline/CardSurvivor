@@ -50,9 +50,8 @@ var Script;
         #animator;
         #direction = 0;
         #visualDeactivated = true;
-        #size = "s";
-        #texture;
-        #textures;
+        #centralAnimator = false;
+        #centralAnimatorProvider = false;
         constructor() {
             super();
             // Don't start when running in editor
@@ -69,24 +68,33 @@ var Script;
         }
         recycle() {
             //
+            if (this.#centralAnimatorProvider) {
+                this.#animator.activate(true);
+            }
         }
         init = async () => {
             this.removeEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.init);
             this.#animator = this.node.getComponent(ƒ.ComponentAnimator);
-            this.#texture = this.node.getComponent(ƒ.ComponentMaterial).material.coat;
-            this.#textures = {
-                "s": await ƒ.Project.getResourcesByName("enemyTexture64"),
-                "m": await ƒ.Project.getResourcesByName("enemyTexture256"),
-                "l": await ƒ.Project.getResourcesByName("enemyTexture1024"),
-            };
+            // this.#texture = <ƒ.CoatTextured>this.node.getComponent(ƒ.ComponentMaterial).material.coat;
+            if (Script.EnemyManager.Instance?.combineAnimator && !this.#centralAnimator) {
+                this.setCentralAnimator();
+            }
+            // this.#textures = {
+            //     "s": <ƒ.TextureImage><unknown>await ƒ.Project.getResourcesByName("enemyTexture64"),
+            //     "m": <ƒ.TextureImage><unknown>await ƒ.Project.getResourcesByName("enemyTexture256"),
+            //     "l": <ƒ.TextureImage><unknown>await ƒ.Project.getResourcesByName("enemyTexture1024"),
+            // }
         };
         loop = () => {
-            if (Script.EnemyManager.Instance.animate !== this.#animator.isActive) {
+            if (!this.#centralAnimator && Script.EnemyManager.Instance.animate !== this.#animator.isActive) {
                 this.#animator.activate(Script.EnemyManager.Instance.animate);
             }
             if (this.#visualDeactivated !== Script.EnemyManager.Instance.disableVisuals) {
                 this.#visualDeactivated = Script.EnemyManager.Instance.disableVisuals;
                 this.node.getComponent(ƒ.ComponentMesh).activate(!this.#visualDeactivated);
+            }
+            if (Script.EnemyManager.Instance.combineAnimator && !this.#centralAnimator) {
+                this.setCentralAnimator();
             }
             if (Script.EnemyManager.Instance.noEnemyMovement)
                 return;
@@ -109,6 +117,18 @@ var Script;
                 }
             }
         };
+        setCentralAnimator() {
+            this.#animator.activate(false);
+            let mat = this.node.getComponent(ƒ.ComponentMaterial);
+            console.log(Script.EnemyManager.Instance.centralAnimationMtx);
+            if (!Script.EnemyManager.Instance.centralAnimationMtx) {
+                Script.EnemyManager.Instance.centralAnimationMtx = mat.mtxPivot;
+                this.#animator.activate(true);
+                this.#centralAnimatorProvider = true;
+            }
+            mat.mtxPivot = Script.EnemyManager.Instance.centralAnimationMtx;
+            this.#centralAnimator = true;
+        }
     }
     Script.Enemy = Enemy;
 })(Script || (Script = {}));
@@ -124,7 +144,7 @@ var Script;
                 return;
         }
         recycle() {
-            // console.log("recycle me");
+            this.getComponent(Script.Enemy).recycle();
         }
         async set(_graph) {
             await super.set(_graph);
@@ -151,10 +171,15 @@ var Script;
         disableVisuals = false;
         lockCamera = false;
         noEnemyMovement = false;
+        centralAnimationMtx;
         #enemies = [];
         #enemiesScripts = [];
         #enemy;
         #cameraWasLocked = this.lockCamera;
+        #combineAnimator = false;
+        get combineAnimator() {
+            return this.#combineAnimator;
+        }
         constructor() {
             super();
             // Don't start when running in editor
@@ -175,6 +200,10 @@ var Script;
             let uiCharacterScript = ƒui.Generator.createDetailsFromMutable(this);
             new ƒui.Controller(this, uiCharacterScript);
             ui.appendChild(uiCharacterScript);
+            let syncAnimBtn = document.createElement("button");
+            syncAnimBtn.addEventListener("click", this.syncAnim);
+            syncAnimBtn.innerText = "Sync Animation";
+            ui.appendChild(syncAnimBtn);
         }
         async loop() {
             if (this.#enemies.length < this.maxEnemies) {
@@ -223,6 +252,9 @@ var Script;
             let index2 = this.#enemiesScripts.findIndex((n) => n === scr);
             this.#enemiesScripts.splice(index2, 1);
         }
+        syncAnim = () => {
+            this.#combineAnimator = true;
+        };
     }
     Script.EnemyManager = EnemyManager;
 })(Script || (Script = {}));

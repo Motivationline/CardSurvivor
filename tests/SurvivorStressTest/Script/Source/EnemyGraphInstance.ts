@@ -11,7 +11,7 @@ namespace Script {
 
         }
         recycle(): void {
-            // console.log("recycle me");
+            this.getComponent(Enemy).recycle();
         }
 
         async set(_graph: ƒ.Graph){

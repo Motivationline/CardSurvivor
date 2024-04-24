@@ -18,6 +18,7 @@ declare namespace Script {
         recycle(): void;
         init: () => Promise<void>;
         loop: () => void;
+        setCentralAnimator(): void;
     }
 }
 declare namespace Script {
@@ -43,12 +44,15 @@ declare namespace Script {
         disableVisuals: boolean;
         lockCamera: boolean;
         noEnemyMovement: boolean;
+        centralAnimationMtx: ƒ.Matrix3x3;
+        get combineAnimator(): boolean;
         constructor();
         private loaded;
         private init;
         private loop;
         static setCharacter(_node: ƒ.Node): void;
         removeEnemy(_node: ƒ.Node): void;
+        syncAnim: () => void;
     }
     type TextureSize = "s" | "m" | "l";
 }

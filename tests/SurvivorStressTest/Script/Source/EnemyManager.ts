@@ -16,10 +16,16 @@ namespace Script {
     public disableVisuals: boolean = false;
     public lockCamera: boolean = false;
     public noEnemyMovement: boolean = false;
+    public centralAnimationMtx: ƒ.Matrix3x3;
     #enemies: EnemyGraphInstance[] = [];
     #enemiesScripts: Enemy[] = [];
     #enemy: ƒ.Graph;
     #cameraWasLocked: boolean = this.lockCamera;
+    #combineAnimator: boolean = false;
+
+    get combineAnimator() {
+      return this.#combineAnimator;
+    }
 
     constructor() {
       super();
@@ -47,6 +53,10 @@ namespace Script {
       new ƒui.Controller(this, uiCharacterScript);
       ui.appendChild(uiCharacterScript);
 
+      let syncAnimBtn = document.createElement("button");
+      syncAnimBtn.addEventListener("click", this.syncAnim);
+      syncAnimBtn.innerText = "Sync Animation";
+      ui.appendChild(syncAnimBtn);
     }
 
     private async loop() {
@@ -99,6 +109,10 @@ namespace Script {
       let scr = _node.getComponent(Enemy);
       let index2 = this.#enemiesScripts.findIndex((n) => n === scr);
       this.#enemiesScripts.splice(index2, 1);
+    }
+
+    syncAnim = () => {
+      this.#combineAnimator = true;
     }
   }
 
