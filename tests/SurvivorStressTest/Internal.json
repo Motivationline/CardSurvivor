@@ -153,7 +153,7 @@
               "Component": {
                 "active": true
               },
-              "idMaterial": "Material|2024-04-23T12:53:07.473Z|81732"
+              "idMaterial": "Material|2024-04-22T11:31:07.007Z|11683"
             }
           }
         ],
@@ -171,8 +171,7 @@
               }
             }
           }
-        ],
-        "ComponentAnimator": []
+        ]
       },
       "children": [],
       "idResource": "Graph|2024-04-22T09:17:11.836Z|04522",
