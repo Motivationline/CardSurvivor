@@ -1,0 +1,21 @@
+{
+  "Graph|2024-04-25T07:22:40.744Z|12375": {
+    "ƒ.Graph": {
+      "name": "empty",
+      "active": true,
+      "components": {},
+      "children": [
+        {
+          "ƒ.Node": {
+            "name": "New Node",
+            "active": true,
+            "components": {},
+            "children": []
+          }
+        }
+      ],
+      "idResource": "Graph|2024-04-25T07:22:40.744Z|12375",
+      "type": "Graph"
+    }
+  }
+}
