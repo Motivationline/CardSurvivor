@@ -50,8 +50,9 @@ var Script;
         touchCircle;
         touchCircleInner;
         curentlyActiveTouchId = 0;
-        tenVW = screen.width / 10;
-        tenVWScale = 1 / this.tenVW;
+        touchRadiusVW = 15;
+        touchRadiusPx = (screen.width / 100) * this.touchRadiusVW;
+        touchRadiusScale = 1 / this.touchRadiusPx;
         #touchMode;
         #touchStart;
         constructor(provider) {
@@ -122,14 +123,14 @@ var Script;
                     offsetY = _event.detail.position.data[1] - this.#touchStart.y;
                 }
                 let direction = new ƒ.Vector2(offsetX, offsetY);
-                direction.scale(this.tenVWScale);
+                direction.scale(this.touchRadiusScale);
                 if (direction.magnitudeSquared > 1) {
                     direction.normalize(1);
                 }
                 //TODO: call movement function here
                 // console.log("move", direction);
-                this.touchCircleInner.style.top = `${direction.y * 2.5 + 2.5}vw`;
-                this.touchCircleInner.style.left = `${direction.x * 2.5 + 2.5}vw`;
+                this.touchCircleInner.style.top = `${direction.y * this.touchRadiusVW / 2 + 2.5}vw`;
+                this.touchCircleInner.style.left = `${direction.x * this.touchRadiusVW / 2 + 2.5}vw`;
             }
         };
     }

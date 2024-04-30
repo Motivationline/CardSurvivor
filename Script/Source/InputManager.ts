@@ -11,8 +11,9 @@ namespace Script {
         private touchCircle: HTMLElement;
         private touchCircleInner: HTMLElement;
         private curentlyActiveTouchId: number = 0;
-        private readonly tenVW = screen.width / 10;
-        private readonly tenVWScale = 1 / this.tenVW;
+        private readonly touchRadiusVW = 15;
+        private readonly touchRadiusPx = (screen.width / 100) * this.touchRadiusVW;
+        private readonly touchRadiusScale = 1 / this.touchRadiusPx;
 
         #touchMode: TouchMode;
         #touchStart: ƒ.Vector2;
@@ -87,14 +88,14 @@ namespace Script {
                 }
 
                 let direction = new ƒ.Vector2(offsetX, offsetY);
-                direction.scale(this.tenVWScale);
+                direction.scale(this.touchRadiusScale);
                 if (direction.magnitudeSquared > 1) {
                     direction.normalize(1);
                 }
                 //TODO: call movement function here
                 // console.log("move", direction);
-                this.touchCircleInner.style.top = `${direction.y * 2.5 + 2.5}vw`;
-                this.touchCircleInner.style.left = `${direction.x * 2.5 + 2.5}vw`;
+                this.touchCircleInner.style.top = `${direction.y * this.touchRadiusVW / 2 + 2.5}vw`;
+                this.touchCircleInner.style.left = `${direction.x * this.touchRadiusVW / 2 + 2.5}vw`;
             }
         }
     }

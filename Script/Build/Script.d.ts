@@ -19,8 +19,9 @@ declare namespace Script {
         private touchCircle;
         private touchCircleInner;
         private curentlyActiveTouchId;
-        private readonly tenVW;
-        private readonly tenVWScale;
+        private readonly touchRadiusVW;
+        private readonly touchRadiusPx;
+        private readonly touchRadiusScale;
         constructor(provider: Provider);
         get touchMode(): TouchMode;
         set touchMode(_touchMode: TouchMode);
