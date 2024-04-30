@@ -1,0 +1,15 @@
+{
+  "Fudge.ResourceFolder": {
+    "name": "Resources",
+    "entries": [
+      {
+        "name": "menu",
+        "entries": [
+          {
+            "idResource": "Graph|2024-04-25T08:48:45.304Z|62956"
+          }
+        ]
+      }
+    ]
+  }
+}

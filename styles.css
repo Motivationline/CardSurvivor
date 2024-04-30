@@ -1,0 +1,77 @@
+@font-face {
+  font-family: "Luckiest Guy";
+  src: url(../../Assets/Font/LuckiestGuy.ttf);
+}
+
+@font-face {
+  font-family: "Urbanist";
+  src: url(../../Assets/Font/Urbanist-Bold.ttf);
+}
+
+html,
+body {
+  padding: 0px;
+  margin: 0px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+dialog {
+  text-align: center;
+}
+
+canvas.fullscreen {
+  width: 100vw;
+  height: 100vh;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* touch stuff */
+#swipe-game-overlay {
+  display: none;
+}
+
+.touch-circle {
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid black;
+  background-color: rgba(255, 255, 255, 0.25);
+  touch-action: none;
+  pointer-events: none;
+}
+
+#touch-circle {
+  width: 15vw;  
+}
+
+#touch-circle-inner {
+  width: 10vw;
+  left: 2.5vw;
+  top: 2.5vw;
+}
+#touch-circle.locked {
+  bottom: 10vh;
+  left: calc(50vw - 7.5vw);
+  touch-action: all;
+  pointer-events: all;
+}
+
+/* pointer: coarse aka we're on a mobile device with touch input */
+@media (pointer: coarse) {
+  #swipe-game-overlay {
+    display: block;
+  }
+}
