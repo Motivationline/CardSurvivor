@@ -1,36 +1,19 @@
 declare namespace Script {
     import ƒ = FudgeCore;
+    class Character extends ƒ.Component {
+        #private;
+        constructor();
+        move(_direction: ƒ.Vector2): void;
+    }
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
     class CustomComponentScript extends ƒ.ComponentScript {
         static readonly iSubclass: number;
         message: string;
         constructor();
         hndEvent: (_event: Event) => void;
     }
-}
-declare namespace Script {
-    enum TouchMode {
-        FREE = 0,
-        LOCKED = 1
-    }
-    class InputManager {
-        #private;
-        private readonly provider;
-        private touchEventDispatcher;
-        private touchCircle;
-        private touchCircleInner;
-        private curentlyActiveTouchId;
-        private readonly touchRadiusVW;
-        private readonly touchRadiusPx;
-        private readonly touchRadiusScale;
-        constructor(provider: Provider);
-        get touchMode(): TouchMode;
-        set touchMode(_touchMode: TouchMode);
-        setup(_touchMode?: TouchMode): void;
-        private hndTouchEvent;
-        private hndKeyboardInput;
-    }
-}
-declare namespace Script {
 }
 declare namespace Script {
     export class Provider {
@@ -50,4 +33,44 @@ declare namespace Script {
     type ItemConstructor<TItem> = new (provider: Provider, ...otherArgs: undefined[]) => TItem;
     type ItemFactory<TItem> = (provider: Provider) => TItem;
     export {};
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
+    class CharacterManager {
+        #private;
+        private readonly provider;
+        private movementVector;
+        constructor(provider: Provider);
+        get character(): Character;
+        set character(_char: Character);
+        setMovement(_direction: ƒ.Vector2): void;
+        private update;
+    }
+}
+declare namespace Script {
+    enum TouchMode {
+        FREE = 0,
+        LOCKED = 1
+    }
+    class InputManager {
+        #private;
+        private readonly provider;
+        private touchEventDispatcher;
+        private touchCircle;
+        private touchCircleInner;
+        private curentlyActiveTouchId;
+        private readonly touchRadiusVW;
+        private readonly touchRadiusPx;
+        private readonly touchRadiusScale;
+        private readonly characterManager;
+        constructor(provider: Provider);
+        get touchMode(): TouchMode;
+        set touchMode(_touchMode: TouchMode);
+        setup(_touchMode?: TouchMode): void;
+        private hndTouchEvent;
+        private hndKeyboardInput;
+    }
+}
+declare namespace Script {
+    const provider: Provider;
 }

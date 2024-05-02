@@ -8,5 +8,106 @@
       "idResource": "Graph|2024-04-25T08:48:45.304Z|62956",
       "type": "Graph"
     }
+  },
+  "Graph|2024-05-02T11:53:45.258Z|54899": {
+    "ƒ.Graph": {
+      "name": "game",
+      "active": true,
+      "components": {},
+      "children": [
+        {
+          "ƒ.GraphInstance": {
+            "deserializeFromSource": true,
+            "idSource": "Graph|2024-05-02T11:53:50.845Z|82610"
+          }
+        }
+      ],
+      "idResource": "Graph|2024-05-02T11:53:45.258Z|54899",
+      "type": "Graph"
+    }
+  },
+  "MeshSprite|2024-05-02T11:54:51.781Z|22267": {
+    "ƒ.MeshSprite": {
+      "idResource": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
+      "name": "MeshSprite",
+      "type": "MeshSprite"
+    }
+  },
+  "Material|2024-05-02T11:55:19.572Z|76703": {
+    "ƒ.Material": {
+      "name": "CharacterTexture",
+      "idResource": "Material|2024-05-02T11:55:19.572Z|76703",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]"
+        }
+      }
+    }
+  },
+  "Graph|2024-05-02T11:53:50.845Z|82610": {
+    "ƒ.Graph": {
+      "name": "character",
+      "active": true,
+      "components": {
+        "ComponentMesh": [
+          {
+            "ƒ.ComponentMesh": {
+              "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
+              "pivot": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "ComponentMaterial": [
+          {
+            "ƒ.ComponentMaterial": {
+              "sortForAlpha": false,
+              "clrPrimary": "[1, 1, 1, 1]",
+              "clrSecondary": "[1, 1, 1, 1]",
+              "pivot": {
+                "translation": "[0, 0]",
+                "rotation": 0,
+                "scaling": "[1, 1]"
+              },
+              "Component": {
+                "active": true
+              },
+              "idMaterial": "Material|2024-05-02T11:55:19.572Z|76703"
+            }
+          }
+        ],
+        "Character": [
+          {
+            "Script.Character": {
+              "active": true
+            }
+          }
+        ],
+        "ComponentTransform": [
+          {
+            "ƒ.ComponentTransform": {
+              "local": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ]
+      },
+      "children": [],
+      "idResource": "Graph|2024-05-02T11:53:50.845Z|82610",
+      "type": "Graph"
+    }
   }
 }

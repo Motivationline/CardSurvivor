@@ -14,12 +14,13 @@ namespace Script {
         private readonly touchRadiusVW = 15;
         private readonly touchRadiusPx = (screen.width / 100) * this.touchRadiusVW;
         private readonly touchRadiusScale = 1 / this.touchRadiusPx;
+        private readonly characterManager: CharacterManager;
 
         #touchMode: TouchMode;
         #touchStart: ƒ.Vector2;
 
         constructor(private readonly provider: Provider) {
-
+            this.characterManager = provider.get(CharacterManager);
         }
 
         get touchMode() {
@@ -51,7 +52,9 @@ namespace Script {
 
             this.touchMode = _touchMode;
 
-            ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.hndKeyboardInput);
+            document.addEventListener("keydown", this.hndKeyboardInput);
+            document.addEventListener("keyup", this.hndKeyboardInput);
+            document.addEventListener("keypress", this.hndKeyboardInput);
         }
 
         private hndTouchEvent = (_event: CustomEvent | TouchEvent) => {
@@ -79,6 +82,7 @@ namespace Script {
                 if (this.#touchMode === TouchMode.FREE) {
                     this.touchCircle.classList.add("hidden");
                 }
+                this.characterManager.setMovement(ƒ.Vector2.ZERO());
                 return;
             }
             if (_event.type === ƒ.EVENT_TOUCH.MOVE && this.curentlyActiveTouchId === touches[0].identifier) {
@@ -89,18 +93,17 @@ namespace Script {
                     offsetY = _event.detail.position.data[1] - this.#touchStart.y;
                 }
 
-                let direction = new ƒ.Vector2(offsetX, offsetY);
+                let direction = new ƒ.Vector2(offsetX, -offsetY);
                 direction.scale(this.touchRadiusScale);
                 if (direction.magnitudeSquared > 1) {
                     direction.normalize(1);
                 }
-                //TODO: call movement function here
-                // console.log("move", direction);
-                this.touchCircleInner.style.top = `${direction.y * this.touchRadiusVW / 2 + 2.5}vw`;
+                this.characterManager.setMovement(direction);
+                this.touchCircleInner.style.top = `${-direction.y * this.touchRadiusVW / 2 + 2.5}vw`;
                 this.touchCircleInner.style.left = `${direction.x * this.touchRadiusVW / 2 + 2.5}vw`;
             }
         }
-
+        
         private hndKeyboardInput = () => {
             let direction: ƒ.Vector2 = new ƒ.Vector2();
             if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT]))
@@ -111,15 +114,17 @@ namespace Script {
                 direction.add(new ƒ.Vector2(0, -1))
             if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]))
                 direction.add(new ƒ.Vector2(0, 1))
-
+            
             let mgtSqrt = direction.magnitudeSquared;
-            if (mgtSqrt === 0) return;
+            if (mgtSqrt === 0) {
+                this.characterManager.setMovement(direction);
+                return;
+            }
             if (mgtSqrt > 1) {
                 direction.normalize(1);
             }
-
-            //TODO: call movement function here
-            console.log(direction.x, direction.y);
+            
+            this.characterManager.setMovement(direction);
         }
     }
 }

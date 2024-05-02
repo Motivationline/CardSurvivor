@@ -2,6 +2,27 @@
 var Script;
 (function (Script) {
     var ƒ = FudgeCore;
+    class Character extends ƒ.Component {
+        #speed = 1;
+        constructor() {
+            super();
+            if (ƒ.Project.mode === ƒ.MODE.EDITOR)
+                return;
+            this.addEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, () => {
+                this.node.addEventListener("graphInstantiated" /* ƒ.EVENT.GRAPH_INSTANTIATED */, () => {
+                    Script.provider.get(Script.CharacterManager).character = this;
+                }, true);
+            });
+        }
+        move(_direction) {
+            this.node.mtxLocal.translate(ƒ.Vector3.SCALE(new ƒ.Vector3(_direction.x, _direction.y), ƒ.Loop.timeFrameGame / 1000));
+        }
+    }
+    Script.Character = Character;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
     class CustomComponentScript extends ƒ.ComponentScript {
         // Register the script as component for use in the editor via drag&drop
@@ -35,147 +56,6 @@ var Script;
         };
     }
     Script.CustomComponentScript = CustomComponentScript;
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
-    var ƒ = FudgeCore;
-    let TouchMode;
-    (function (TouchMode) {
-        TouchMode[TouchMode["FREE"] = 0] = "FREE";
-        TouchMode[TouchMode["LOCKED"] = 1] = "LOCKED";
-    })(TouchMode = Script.TouchMode || (Script.TouchMode = {}));
-    class InputManager {
-        provider;
-        touchEventDispatcher;
-        touchCircle;
-        touchCircleInner;
-        curentlyActiveTouchId = 0;
-        touchRadiusVW = 15;
-        touchRadiusPx = (screen.width / 100) * this.touchRadiusVW;
-        touchRadiusScale = 1 / this.touchRadiusPx;
-        #touchMode;
-        #touchStart;
-        constructor(provider) {
-            this.provider = provider;
-        }
-        get touchMode() {
-            return this.#touchMode;
-        }
-        set touchMode(_touchMode) {
-            this.#touchMode = _touchMode;
-            if (_touchMode === TouchMode.LOCKED) {
-                this.touchCircle.classList.remove("hidden");
-                this.touchCircle.classList.add("locked");
-                this.touchCircle.style.top = this.touchCircle.style.left = "";
-            }
-            else if (_touchMode === TouchMode.FREE) {
-                this.touchCircle.classList.add("hidden");
-                this.touchCircle.classList.remove("locked");
-            }
-        }
-        setup(_touchMode = TouchMode.FREE) {
-            let touchOverlay = document.getElementById("swipe-game-overlay");
-            this.touchEventDispatcher = new ƒ.TouchEventDispatcher(touchOverlay);
-            // touchOverlay.addEventListener(ƒ.EVENT_TOUCH.TAP, <EventListener>hndTouchEvent);
-            touchOverlay.addEventListener(ƒ.EVENT_TOUCH.MOVE, this.hndTouchEvent);
-            touchOverlay.addEventListener("touchstart", this.hndTouchEvent);
-            // touchOverlay.addEventListener("touchmove", <EventListener>hndTouchEvent);
-            touchOverlay.addEventListener("touchend", this.hndTouchEvent);
-            this.touchCircle = document.getElementById("touch-circle");
-            this.touchCircleInner = document.getElementById("touch-circle-inner");
-            this.touchMode = _touchMode;
-            ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.hndKeyboardInput);
-        }
-        hndTouchEvent = (_event) => {
-            let touches = _event.changedTouches ?? _event.detail.touches;
-            if (!touches)
-                return;
-            if (_event.type === "touchstart" && !this.curentlyActiveTouchId) {
-                if (this.#touchMode === TouchMode.LOCKED) {
-                    if (_event.target !== this.touchCircle)
-                        return;
-                    let bcr = this.touchCircle.getBoundingClientRect();
-                    this.#touchStart = new ƒ.Vector2(bcr.left + bcr.width / 2, bcr.top + bcr.height / 2);
-                }
-                else {
-                    this.touchCircle.style.left = `calc(${touches[0].clientX}px - 7.5vw)`;
-                    this.touchCircleInner.style.left = "";
-                    this.touchCircle.style.top = `calc(${touches[0].clientY}px - 7.5vw)`;
-                    this.touchCircleInner.style.top = "";
-                    this.touchCircle.classList.remove("hidden");
-                }
-                this.curentlyActiveTouchId = touches[0].identifier;
-                return;
-            }
-            if (_event.type === "touchend" && this.curentlyActiveTouchId === touches[0].identifier) {
-                this.curentlyActiveTouchId = 0;
-                this.touchCircleInner.style.top = "";
-                this.touchCircleInner.style.left = "";
-                if (this.#touchMode === TouchMode.FREE) {
-                    this.touchCircle.classList.add("hidden");
-                }
-                return;
-            }
-            if (_event.type === ƒ.EVENT_TOUCH.MOVE && this.curentlyActiveTouchId === touches[0].identifier) {
-                let offsetX = _event.detail.offset.data[0];
-                let offsetY = _event.detail.offset.data[1];
-                if (this.#touchMode === TouchMode.LOCKED) {
-                    offsetX = _event.detail.position.data[0] - this.#touchStart.x;
-                    offsetY = _event.detail.position.data[1] - this.#touchStart.y;
-                }
-                let direction = new ƒ.Vector2(offsetX, offsetY);
-                direction.scale(this.touchRadiusScale);
-                if (direction.magnitudeSquared > 1) {
-                    direction.normalize(1);
-                }
-                //TODO: call movement function here
-                // console.log("move", direction);
-                this.touchCircleInner.style.top = `${direction.y * this.touchRadiusVW / 2 + 2.5}vw`;
-                this.touchCircleInner.style.left = `${direction.x * this.touchRadiusVW / 2 + 2.5}vw`;
-            }
-        };
-        hndKeyboardInput = () => {
-            let direction = new ƒ.Vector2();
-            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT]))
-                direction.add(new ƒ.Vector2(-1, 0));
-            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D, ƒ.KEYBOARD_CODE.ARROW_RIGHT]))
-                direction.add(new ƒ.Vector2(1, 0));
-            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN]))
-                direction.add(new ƒ.Vector2(0, -1));
-            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]))
-                direction.add(new ƒ.Vector2(0, 1));
-            let mgtSqrt = direction.magnitudeSquared;
-            if (mgtSqrt === 0)
-                return;
-            if (mgtSqrt > 1) {
-                direction.normalize(1);
-            }
-            //TODO: call movement function here
-            console.log(direction.x, direction.y);
-        };
-    }
-    Script.InputManager = InputManager;
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
-    var ƒ = FudgeCore;
-    ƒ.Debug.info("Main Program Template running!");
-    let viewport;
-    document.addEventListener("interactiveViewportStarted", start);
-    function start(_event) {
-        viewport = _event.detail;
-        ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
-        ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
-        const provider = new Script.Provider()
-            .add(Script.InputManager);
-        const inputManager = provider.get(Script.InputManager);
-        inputManager.setup(Script.TouchMode.FREE);
-    }
-    function update(_event) {
-        // ƒ.Physics.simulate();  // if physics is included and used
-        viewport.draw();
-        ƒ.AudioManager.default.update();
-    }
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
@@ -294,5 +174,191 @@ var Script;
         }
     }
     Script.Provider = Provider;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    class CharacterManager {
+        provider;
+        movementVector = new ƒ.Vector2();
+        #character;
+        constructor(provider) {
+            this.provider = provider;
+            ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
+        }
+        get character() {
+            return this.#character;
+        }
+        set character(_char) {
+            this.#character = _char;
+        }
+        setMovement(_direction) {
+            this.movementVector = _direction;
+        }
+        update = () => {
+            if (!this.#character)
+                return;
+            this.#character.move(this.movementVector);
+        };
+    }
+    Script.CharacterManager = CharacterManager;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    let TouchMode;
+    (function (TouchMode) {
+        TouchMode[TouchMode["FREE"] = 0] = "FREE";
+        TouchMode[TouchMode["LOCKED"] = 1] = "LOCKED";
+    })(TouchMode = Script.TouchMode || (Script.TouchMode = {}));
+    class InputManager {
+        provider;
+        touchEventDispatcher;
+        touchCircle;
+        touchCircleInner;
+        curentlyActiveTouchId = 0;
+        touchRadiusVW = 15;
+        touchRadiusPx = (screen.width / 100) * this.touchRadiusVW;
+        touchRadiusScale = 1 / this.touchRadiusPx;
+        characterManager;
+        #touchMode;
+        #touchStart;
+        constructor(provider) {
+            this.provider = provider;
+            this.characterManager = provider.get(Script.CharacterManager);
+        }
+        get touchMode() {
+            return this.#touchMode;
+        }
+        set touchMode(_touchMode) {
+            this.#touchMode = _touchMode;
+            if (_touchMode === TouchMode.LOCKED) {
+                this.touchCircle.classList.remove("hidden");
+                this.touchCircle.classList.add("locked");
+                this.touchCircle.style.top = this.touchCircle.style.left = "";
+            }
+            else if (_touchMode === TouchMode.FREE) {
+                this.touchCircle.classList.add("hidden");
+                this.touchCircle.classList.remove("locked");
+            }
+        }
+        setup(_touchMode = TouchMode.FREE) {
+            let touchOverlay = document.getElementById("swipe-game-overlay");
+            this.touchEventDispatcher = new ƒ.TouchEventDispatcher(touchOverlay);
+            // touchOverlay.addEventListener(ƒ.EVENT_TOUCH.TAP, <EventListener>hndTouchEvent);
+            touchOverlay.addEventListener(ƒ.EVENT_TOUCH.MOVE, this.hndTouchEvent);
+            touchOverlay.addEventListener("touchstart", this.hndTouchEvent);
+            // touchOverlay.addEventListener("touchmove", <EventListener>hndTouchEvent);
+            touchOverlay.addEventListener("touchend", this.hndTouchEvent);
+            this.touchCircle = document.getElementById("touch-circle");
+            this.touchCircleInner = document.getElementById("touch-circle-inner");
+            this.touchMode = _touchMode;
+            document.addEventListener("keydown", this.hndKeyboardInput);
+            document.addEventListener("keyup", this.hndKeyboardInput);
+            document.addEventListener("keypress", this.hndKeyboardInput);
+        }
+        hndTouchEvent = (_event) => {
+            let touches = _event.changedTouches ?? _event.detail.touches;
+            if (!touches)
+                return;
+            if (_event.type === "touchstart" && !this.curentlyActiveTouchId) {
+                if (this.#touchMode === TouchMode.LOCKED) {
+                    if (_event.target !== this.touchCircle)
+                        return;
+                    let bcr = this.touchCircle.getBoundingClientRect();
+                    this.#touchStart = new ƒ.Vector2(bcr.left + bcr.width / 2, bcr.top + bcr.height / 2);
+                }
+                else {
+                    this.touchCircle.style.left = `calc(${touches[0].clientX}px - 7.5vw)`;
+                    this.touchCircleInner.style.left = "";
+                    this.touchCircle.style.top = `calc(${touches[0].clientY}px - 7.5vw)`;
+                    this.touchCircleInner.style.top = "";
+                    this.touchCircle.classList.remove("hidden");
+                }
+                this.curentlyActiveTouchId = touches[0].identifier;
+                return;
+            }
+            if (_event.type === "touchend" && this.curentlyActiveTouchId === touches[0].identifier) {
+                this.curentlyActiveTouchId = 0;
+                this.touchCircleInner.style.top = "";
+                this.touchCircleInner.style.left = "";
+                if (this.#touchMode === TouchMode.FREE) {
+                    this.touchCircle.classList.add("hidden");
+                }
+                this.characterManager.setMovement(ƒ.Vector2.ZERO());
+                return;
+            }
+            if (_event.type === ƒ.EVENT_TOUCH.MOVE && this.curentlyActiveTouchId === touches[0].identifier) {
+                let offsetX = _event.detail.offset.data[0];
+                let offsetY = _event.detail.offset.data[1];
+                if (this.#touchMode === TouchMode.LOCKED) {
+                    offsetX = _event.detail.position.data[0] - this.#touchStart.x;
+                    offsetY = _event.detail.position.data[1] - this.#touchStart.y;
+                }
+                let direction = new ƒ.Vector2(offsetX, -offsetY);
+                direction.scale(this.touchRadiusScale);
+                if (direction.magnitudeSquared > 1) {
+                    direction.normalize(1);
+                }
+                this.characterManager.setMovement(direction);
+                this.touchCircleInner.style.top = `${-direction.y * this.touchRadiusVW / 2 + 2.5}vw`;
+                this.touchCircleInner.style.left = `${direction.x * this.touchRadiusVW / 2 + 2.5}vw`;
+            }
+        };
+        hndKeyboardInput = () => {
+            let direction = new ƒ.Vector2();
+            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT]))
+                direction.add(new ƒ.Vector2(-1, 0));
+            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D, ƒ.KEYBOARD_CODE.ARROW_RIGHT]))
+                direction.add(new ƒ.Vector2(1, 0));
+            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN]))
+                direction.add(new ƒ.Vector2(0, -1));
+            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]))
+                direction.add(new ƒ.Vector2(0, 1));
+            let mgtSqrt = direction.magnitudeSquared;
+            if (mgtSqrt === 0) {
+                this.characterManager.setMovement(direction);
+                return;
+            }
+            if (mgtSqrt > 1) {
+                direction.normalize(1);
+            }
+            this.characterManager.setMovement(direction);
+        };
+    }
+    Script.InputManager = InputManager;
+})(Script || (Script = {}));
+/// <reference path="Provider.ts"/>
+/// <reference path="Managers/CharacterManager.ts"/>
+/// <reference path="Managers/InputManager.ts"/>
+var Script;
+/// <reference path="Provider.ts"/>
+/// <reference path="Managers/CharacterManager.ts"/>
+/// <reference path="Managers/InputManager.ts"/>
+(function (Script) {
+    var ƒ = FudgeCore;
+    ƒ.Debug.info("Main Program Template running!");
+    let viewport;
+    document.addEventListener("interactiveViewportStarted", start);
+    Script.provider = new Script.Provider();
+    document.addEventListener("DOMContentLoaded", preStart);
+    function preStart() {
+        if (ƒ.Project.mode === ƒ.MODE.EDITOR)
+            return;
+        Script.provider.add(Script.InputManager)
+            .add(Script.CharacterManager);
+        const inputManager = Script.provider.get(Script.InputManager);
+        inputManager.setup(Script.TouchMode.FREE);
+    }
+    function start(_event) {
+        viewport = _event.detail;
+        ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
+        ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+    }
+    function update(_event) {
+        // ƒ.Physics.simulate();  // if physics is included and used
+        viewport.draw();
+        ƒ.AudioManager.default.update();
+    }
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map
