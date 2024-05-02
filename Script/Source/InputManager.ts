@@ -27,17 +27,17 @@ namespace Script {
         }
         set touchMode(_touchMode: TouchMode) {
             this.#touchMode = _touchMode;
-            if(_touchMode === TouchMode.LOCKED) {
+            if (_touchMode === TouchMode.LOCKED) {
                 this.touchCircle.classList.remove("hidden");
                 this.touchCircle.classList.add("locked");
                 this.touchCircle.style.top = this.touchCircle.style.left = "";
-            } else if(_touchMode === TouchMode.FREE) {
+            } else if (_touchMode === TouchMode.FREE) {
                 this.touchCircle.classList.add("hidden");
                 this.touchCircle.classList.remove("locked");
             }
         }
 
-        public setup(_touchMode: TouchMode = TouchMode.FREE){
+        public setup(_touchMode: TouchMode = TouchMode.FREE) {
             let touchOverlay = document.getElementById("swipe-game-overlay");
             this.touchEventDispatcher = new ƒ.TouchEventDispatcher(touchOverlay);
             // touchOverlay.addEventListener(ƒ.EVENT_TOUCH.TAP, <EventListener>hndTouchEvent);
@@ -50,14 +50,16 @@ namespace Script {
             this.touchCircleInner = document.getElementById("touch-circle-inner");
 
             this.touchMode = _touchMode;
+
+            ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.hndKeyboardInput);
         }
-        
+
         private hndTouchEvent = (_event: CustomEvent | TouchEvent) => {
             let touches: TouchList = (<TouchEvent>_event).changedTouches ?? _event.detail.touches;
             if (!touches) return;
             if (_event.type === "touchstart" && !this.curentlyActiveTouchId) {
-                if(this.#touchMode === TouchMode.LOCKED){
-                    if(_event.target !== this.touchCircle) return;
+                if (this.#touchMode === TouchMode.LOCKED) {
+                    if (_event.target !== this.touchCircle) return;
                     let bcr = this.touchCircle.getBoundingClientRect();
                     this.#touchStart = new ƒ.Vector2(bcr.left + bcr.width / 2, bcr.top + bcr.height / 2);
                 } else {
@@ -74,7 +76,7 @@ namespace Script {
                 this.curentlyActiveTouchId = 0;
                 this.touchCircleInner.style.top = "";
                 this.touchCircleInner.style.left = "";
-                if(this.#touchMode === TouchMode.FREE){
+                if (this.#touchMode === TouchMode.FREE) {
                     this.touchCircle.classList.add("hidden");
                 }
                 return;
@@ -82,7 +84,7 @@ namespace Script {
             if (_event.type === ƒ.EVENT_TOUCH.MOVE && this.curentlyActiveTouchId === touches[0].identifier) {
                 let offsetX = _event.detail.offset.data[0];
                 let offsetY = _event.detail.offset.data[1];
-                if(this.#touchMode === TouchMode.LOCKED){
+                if (this.#touchMode === TouchMode.LOCKED) {
                     offsetX = _event.detail.position.data[0] - this.#touchStart.x;
                     offsetY = _event.detail.position.data[1] - this.#touchStart.y;
                 }
@@ -97,6 +99,27 @@ namespace Script {
                 this.touchCircleInner.style.top = `${direction.y * this.touchRadiusVW / 2 + 2.5}vw`;
                 this.touchCircleInner.style.left = `${direction.x * this.touchRadiusVW / 2 + 2.5}vw`;
             }
+        }
+
+        private hndKeyboardInput = () => {
+            let direction: ƒ.Vector2 = new ƒ.Vector2();
+            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT]))
+                direction.add(new ƒ.Vector2(-1, 0))
+            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D, ƒ.KEYBOARD_CODE.ARROW_RIGHT]))
+                direction.add(new ƒ.Vector2(1, 0))
+            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN]))
+                direction.add(new ƒ.Vector2(0, -1))
+            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]))
+                direction.add(new ƒ.Vector2(0, 1))
+
+            let mgtSqrt = direction.magnitudeSquared;
+            if (mgtSqrt === 0) return;
+            if (mgtSqrt > 1) {
+                direction.normalize(1);
+            }
+
+            //TODO: call movement function here
+            console.log(direction.x, direction.y);
         }
     }
 }

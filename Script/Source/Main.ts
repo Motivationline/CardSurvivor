@@ -10,7 +10,7 @@ namespace Script {
     viewport = _event.detail;
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
-    // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+    ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
 
     const provider = new Provider()
       .add(InputManager);

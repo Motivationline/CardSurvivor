@@ -84,6 +84,7 @@ var Script;
             this.touchCircle = document.getElementById("touch-circle");
             this.touchCircleInner = document.getElementById("touch-circle-inner");
             this.touchMode = _touchMode;
+            ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.hndKeyboardInput);
         }
         hndTouchEvent = (_event) => {
             let touches = _event.changedTouches ?? _event.detail.touches;
@@ -133,6 +134,25 @@ var Script;
                 this.touchCircleInner.style.left = `${direction.x * this.touchRadiusVW / 2 + 2.5}vw`;
             }
         };
+        hndKeyboardInput = () => {
+            let direction = new ƒ.Vector2();
+            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT]))
+                direction.add(new ƒ.Vector2(-1, 0));
+            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D, ƒ.KEYBOARD_CODE.ARROW_RIGHT]))
+                direction.add(new ƒ.Vector2(1, 0));
+            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN]))
+                direction.add(new ƒ.Vector2(0, -1));
+            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]))
+                direction.add(new ƒ.Vector2(0, 1));
+            let mgtSqrt = direction.magnitudeSquared;
+            if (mgtSqrt === 0)
+                return;
+            if (mgtSqrt > 1) {
+                direction.normalize(1);
+            }
+            //TODO: call movement function here
+            console.log(direction.x, direction.y);
+        };
     }
     Script.InputManager = InputManager;
 })(Script || (Script = {}));
@@ -145,7 +165,7 @@ var Script;
     function start(_event) {
         viewport = _event.detail;
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
-        // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+        ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
         const provider = new Script.Provider()
             .add(Script.InputManager);
         const inputManager = provider.get(Script.InputManager);

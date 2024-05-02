@@ -27,6 +27,7 @@ declare namespace Script {
         set touchMode(_touchMode: TouchMode);
         setup(_touchMode?: TouchMode): void;
         private hndTouchEvent;
+        private hndKeyboardInput;
     }
 }
 declare namespace Script {
