@@ -20,13 +20,100 @@
             "idResource": "Graph|2024-05-02T11:53:50.845Z|82610"
           },
           {
-            "idResource": "Material|2024-05-02T11:55:19.572Z|76703"
+            "name": "textures",
+            "entries": [
+              {
+                "name": "walk",
+                "entries": [
+                  {
+                    "idResource": "TextureImage|2024-05-03T11:08:44.440Z|80004"
+                  },
+                  {
+                    "idResource": "TextureImage|2024-05-03T11:08:44.440Z|74472"
+                  },
+                  {
+                    "idResource": "TextureImage|2024-05-03T11:08:44.440Z|38489"
+                  },
+                  {
+                    "idResource": "TextureImage|2024-05-03T11:08:44.440Z|05684"
+                  },
+                  {
+                    "idResource": "TextureImage|2024-05-03T11:08:44.440Z|87336"
+                  },
+                  {
+                    "idResource": "TextureImage|2024-05-03T11:08:44.440Z|89065"
+                  },
+                  {
+                    "idResource": "TextureImage|2024-05-03T11:08:44.440Z|17242"
+                  }
+                ]
+              },
+              {
+                "name": "idle",
+                "entries": [
+                  {
+                    "idResource": "TextureImage|2024-05-03T11:58:41.522Z|76435"
+                  },
+                  {
+                    "idResource": "TextureImage|2024-05-03T11:58:41.522Z|77653"
+                  },
+                  {
+                    "idResource": "TextureImage|2024-05-03T11:58:41.522Z|82599"
+                  },
+                  {
+                    "idResource": "TextureImage|2024-05-03T11:58:41.522Z|08873"
+                  },
+                  {
+                    "idResource": "TextureImage|2024-05-03T11:58:41.522Z|93492"
+                  },
+                  {
+                    "idResource": "TextureImage|2024-05-03T11:58:41.522Z|31908"
+                  },
+                  {
+                    "idResource": "TextureImage|2024-05-03T11:58:41.522Z|58044"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "materials",
+            "entries": [
+              {
+                "idResource": "Material|2024-05-02T11:55:19.572Z|76703"
+              },
+              {
+                "idResource": "Material|2024-05-03T11:09:17.750Z|16928"
+              },
+              {
+                "idResource": "Material|2024-05-03T11:09:21.967Z|86265"
+              },
+              {
+                "idResource": "Material|2024-05-03T11:09:25.071Z|94433"
+              },
+              {
+                "idResource": "Material|2024-05-03T11:09:27.811Z|85485"
+              },
+              {
+                "idResource": "Material|2024-05-03T11:09:32.137Z|48481"
+              },
+              {
+                "idResource": "Material|2024-05-03T11:09:35.781Z|61584"
+              }
+            ]
           }
         ]
       },
       {
         "name": "enemies",
-        "entries": []
+        "entries": [
+          {
+            "idResource": "Graph|2024-05-03T09:17:54.314Z|34670"
+          },
+          {
+            "idResource": "Material|2024-05-03T09:37:44.397Z|89821"
+          }
+        ]
       },
       {
         "name": "surroundings",
@@ -39,6 +126,9 @@
             "idResource": "MeshSprite|2024-05-02T11:54:51.781Z|22267"
           }
         ]
+      },
+      {
+        "idResource": "TextureImage|2024-05-03T08:57:12.550Z|06241"
       }
     ]
   }

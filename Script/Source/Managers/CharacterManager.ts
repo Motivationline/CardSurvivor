@@ -5,6 +5,8 @@ namespace Script {
         #character: Character;
 
         constructor(private readonly provider: Provider) {
+            if (ƒ.Project.mode === ƒ.MODE.EDITOR) return;
+
             ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
         }
 
@@ -21,6 +23,7 @@ namespace Script {
 
         private update = () => {
             if(!this.#character) return;
+            if(gameState !== GAMESTATE.PLAYING) return;
 
             this.#character.move(this.movementVector);
         }
