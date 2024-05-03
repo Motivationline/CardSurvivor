@@ -3,21 +3,32 @@
 /// <reference path="Managers/InputManager.ts"/>
 
 namespace Script {
-  import ƒ = FudgeCore;
-  ƒ.Debug.info("Main Program Template running!");
+  export import ƒ = FudgeCore;
+  export enum GAMESTATE {
+    IDLE,
+    PLAYING,
+    PAUSED,
+  }
 
   let viewport: ƒ.Viewport;
   document.addEventListener("interactiveViewportStarted", <EventListener>start);
-  
+
   export const provider = new Provider();
   document.addEventListener("DOMContentLoaded", preStart);
 
-  function preStart(){
-    if(ƒ.Project.mode === ƒ.MODE.EDITOR) return;
+  export let gameState: GAMESTATE = GAMESTATE.IDLE;
+
+  function preStart() {
+    if (ƒ.Project.mode === ƒ.MODE.EDITOR) return;
     provider.add(InputManager)
-    .add(CharacterManager);
+      .add(CharacterManager)
+      .add(EnemyManager)
+      .add(AnimationManager)
+
     const inputManager = provider.get(InputManager);
     inputManager.setup(TouchMode.FREE);
+    const enemyManager = provider.get(EnemyManager);
+    enemyManager.setup();
   }
 
   function start(_event: CustomEvent): void {
@@ -25,6 +36,7 @@ namespace Script {
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+    gameState = GAMESTATE.PLAYING;
   }
 
   function update(_event: Event): void {

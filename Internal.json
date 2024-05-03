@@ -20,6 +20,14 @@
             "deserializeFromSource": true,
             "idSource": "Graph|2024-05-02T11:53:50.845Z|82610"
           }
+        },
+        {
+          "ƒ.Node": {
+            "name": "enemies",
+            "active": true,
+            "components": {},
+            "children": []
+          }
         }
       ],
       "idResource": "Graph|2024-05-02T11:53:45.258Z|54899",
@@ -35,13 +43,176 @@
   },
   "Material|2024-05-02T11:55:19.572Z|76703": {
     "ƒ.Material": {
-      "name": "CharacterTexture",
+      "name": "CharacterTextureLayer0",
       "idResource": "Material|2024-05-02T11:55:19.572Z|76703",
       "shader": "ShaderLitTextured",
       "coat": {
         "ƒ.CoatTextured": {
-          "color": "[1, 1, 1, 1]"
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-05-03T11:08:44.440Z|80004"
         }
+      }
+    }
+  },
+  "TextureImage|2024-05-03T11:08:44.440Z|80004": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer0.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:08:44.440Z|80004",
+        "name": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer0.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-05-03T11:09:35.781Z|61584": {
+    "ƒ.Material": {
+      "name": "CharacterTextureLayer6",
+      "idResource": "Material|2024-05-03T11:09:35.781Z|61584",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-05-03T11:08:44.440Z|17242"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-05-03T11:08:44.440Z|17242": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer6.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:08:44.440Z|17242",
+        "name": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer6.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-05-03T11:09:32.137Z|48481": {
+    "ƒ.Material": {
+      "name": "CharacterTextureLayer5",
+      "idResource": "Material|2024-05-03T11:09:32.137Z|48481",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-05-03T11:08:44.440Z|89065"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-05-03T11:08:44.440Z|89065": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer5.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:08:44.440Z|89065",
+        "name": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer5.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-05-03T11:09:27.811Z|85485": {
+    "ƒ.Material": {
+      "name": "CharacterTextureLayer4",
+      "idResource": "Material|2024-05-03T11:09:27.811Z|85485",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-05-03T11:08:44.440Z|87336"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-05-03T11:08:44.440Z|87336": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer4.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:08:44.440Z|87336",
+        "name": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer4.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-05-03T11:09:25.071Z|94433": {
+    "ƒ.Material": {
+      "name": "CharacterTextureLayer3",
+      "idResource": "Material|2024-05-03T11:09:25.071Z|94433",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-05-03T11:08:44.440Z|05684"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-05-03T11:08:44.440Z|05684": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer3.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:08:44.440Z|05684",
+        "name": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer3.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-05-03T11:09:21.967Z|86265": {
+    "ƒ.Material": {
+      "name": "CharacterTextureLayer2",
+      "idResource": "Material|2024-05-03T11:09:21.967Z|86265",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-05-03T11:08:44.440Z|38489"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-05-03T11:08:44.440Z|38489": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer2.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:08:44.440Z|38489",
+        "name": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer2.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-05-03T11:09:17.750Z|16928": {
+    "ƒ.Material": {
+      "name": "CharacterTextureLayer1",
+      "idResource": "Material|2024-05-03T11:09:17.750Z|16928",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-05-03T11:08:44.440Z|74472"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-05-03T11:08:44.440Z|74472": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer1.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:08:44.440Z|74472",
+        "name": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer1.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
       }
     }
   },
@@ -50,6 +221,428 @@
       "name": "character",
       "active": true,
       "components": {
+        "Character": [
+          {
+            "Script.Character": {
+              "active": true
+            }
+          }
+        ],
+        "ComponentTransform": [
+          {
+            "ƒ.ComponentTransform": {
+              "local": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ]
+      },
+      "children": [
+        {
+          "ƒ.Node": {
+            "name": "animLayer6",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2024-05-03T11:09:35.781Z|61584"
+                  }
+                }
+              ],
+              "CharacterLayer": [
+                {
+                  "Script.CharacterLayer": {
+                    "active": true
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "animLayer5",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2024-05-03T11:09:32.137Z|48481"
+                  }
+                }
+              ],
+              "CharacterLayer": [
+                {
+                  "Script.CharacterLayer": {
+                    "active": true
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "animLayer4",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2024-05-03T11:09:27.811Z|85485"
+                  }
+                }
+              ],
+              "CharacterLayer": [
+                {
+                  "Script.CharacterLayer": {
+                    "active": true
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "animLayer3",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2024-05-03T11:09:25.071Z|94433"
+                  }
+                }
+              ],
+              "CharacterLayer": [
+                {
+                  "Script.CharacterLayer": {
+                    "active": true
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "animLayer2",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2024-05-03T11:09:21.967Z|86265"
+                  }
+                }
+              ],
+              "CharacterLayer": [
+                {
+                  "Script.CharacterLayer": {
+                    "active": true
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "animLayer1",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2024-05-03T11:09:17.750Z|16928"
+                  }
+                }
+              ],
+              "CharacterLayer": [
+                {
+                  "Script.CharacterLayer": {
+                    "active": true
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "animLayer0",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2024-05-02T11:55:19.572Z|76703"
+                  }
+                }
+              ],
+              "CharacterLayer": [
+                {
+                  "Script.CharacterLayer": {
+                    "active": true
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        }
+      ],
+      "idResource": "Graph|2024-05-02T11:53:50.845Z|82610",
+      "type": "Graph"
+    }
+  },
+  "TextureImage|2024-05-03T08:57:12.550Z|06241": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer2.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T08:57:12.550Z|06241",
+        "name": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer2.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-05-03T09:37:44.397Z|89821": {
+    "ƒ.Material": {
+      "name": "EnemyBaseTexture",
+      "idResource": "Material|2024-05-03T09:37:44.397Z|89821",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-05-03T08:57:12.550Z|06241"
+        }
+      }
+    }
+  },
+  "Graph|2024-05-03T09:17:54.314Z|34670": {
+    "ƒ.Graph": {
+      "name": "enemy",
+      "active": true,
+      "components": {
+        "Enemy": [
+          {
+            "Script.Enemy": {
+              "active": true
+            }
+          }
+        ],
+        "ComponentTransform": [
+          {
+            "ƒ.ComponentTransform": {
+              "local": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
         "ComponentMesh": [
           {
             "ƒ.ComponentMesh": {
@@ -79,35 +672,98 @@
               "Component": {
                 "active": true
               },
-              "idMaterial": "Material|2024-05-02T11:55:19.572Z|76703"
-            }
-          }
-        ],
-        "Character": [
-          {
-            "Script.Character": {
-              "active": true
-            }
-          }
-        ],
-        "ComponentTransform": [
-          {
-            "ƒ.ComponentTransform": {
-              "local": {
-                "translation": "[0, 0, 0]",
-                "rotation": "[0, 0, 0]",
-                "scaling": "[1, 1, 1]"
-              },
-              "Component": {
-                "active": true
-              }
+              "idMaterial": "Material|2024-05-03T09:37:44.397Z|89821"
             }
           }
         ]
       },
       "children": [],
-      "idResource": "Graph|2024-05-02T11:53:50.845Z|82610",
+      "idResource": "Graph|2024-05-03T09:17:54.314Z|34670",
       "type": "Graph"
+    }
+  },
+  "TextureImage|2024-05-03T11:58:41.522Z|76435": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer0.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|76435",
+        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer0.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "TextureImage|2024-05-03T11:58:41.522Z|77653": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer1.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|77653",
+        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer1.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "TextureImage|2024-05-03T11:58:41.522Z|82599": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer2.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|82599",
+        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer2.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "TextureImage|2024-05-03T11:58:41.522Z|08873": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer3.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|08873",
+        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer3.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "TextureImage|2024-05-03T11:58:41.522Z|93492": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer4.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|93492",
+        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer4.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "TextureImage|2024-05-03T11:58:41.522Z|31908": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer5.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|31908",
+        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer5.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "TextureImage|2024-05-03T11:58:41.522Z|58044": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer6.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|58044",
+        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer6.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
     }
   }
 }

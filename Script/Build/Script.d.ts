@@ -1,13 +1,5 @@
 declare namespace Script {
     import ƒ = FudgeCore;
-    class Character extends ƒ.Component {
-        #private;
-        constructor();
-        move(_direction: ƒ.Vector2): void;
-    }
-}
-declare namespace Script {
-    import ƒ = FudgeCore;
     class CustomComponentScript extends ƒ.ComponentScript {
         static readonly iSubclass: number;
         message: string;
@@ -72,5 +64,148 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    export import ƒ = FudgeCore;
+    enum GAMESTATE {
+        IDLE = 0,
+        PLAYING = 1,
+        PAUSED = 2
+    }
     const provider: Provider;
+    let gameState: GAMESTATE;
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
+    class SpriteAnimator {
+        private mtx;
+        private sprite;
+        private startTime;
+        private totalTime;
+        private frameTime;
+        private frameWidth;
+        private frameHeight;
+        private prevFrame;
+        constructor(_as: AnimationSprite, _startTime?: number, _mtx?: ƒ.Matrix3x3);
+        get matrix(): ƒ.Matrix3x3;
+        setTime(_time?: number): void;
+        reset(_as: AnimationSprite, _time?: number): void;
+    }
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
+    class Character extends ƒ.Component {
+        #private;
+        prevAnimation: AnimationState;
+        constructor();
+        move(_direction: ƒ.Vector2): void;
+        private setAnimation;
+        private setupAnimator;
+    }
+    enum AnimationState {
+        IDLE = "idle",
+        WALKING = "walking"
+    }
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
+    class CharacterLayer extends ƒ.Component {
+        #private;
+        constructor();
+        setTexture(_state: AnimationState): void;
+    }
+}
+declare namespace Script {
+    class Enemy extends ƒ.Component implements EnemyOptions {
+        #private;
+        speed: number;
+        damage: number;
+        knockbackMultiplier: number;
+        health: number;
+        attacks: EnemyAttack[];
+        moveSprite: AnimationSprite;
+        desiredDistance: [number, number];
+        private currentlyDesiredDistance;
+        private currentlyDesiredDistanceSquared;
+        dropXP: number;
+        private material;
+        private enemyManager;
+        private prevDirection;
+        private currentlyActiveAttack;
+        constructor();
+        private deserialized;
+        setup(_options: Partial<EnemyOptions>): void;
+        private updateDesiredDistance;
+        private setCentralAnimator;
+        update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
+        private move;
+        private chooseAttack;
+        private executeAttack;
+        getDamaged(_dmg: number): void;
+    }
+    interface EnemyOptions {
+        speed: number;
+        damage: number;
+        knockbackMultiplier: number;
+        health: number;
+        attacks: EnemyAttack[];
+        moveSprite: AnimationSprite;
+        desiredDistance: [number, number];
+        dropXP: number;
+    }
+    interface EnemyAttack {
+        requiredDistance: [number, number];
+        windUp: number;
+        cooldown: number;
+        sprite: AnimationSprite;
+        attack: () => void;
+        movement?: (_diff: ƒ.Vector3, _mgtSqrd: number, _charPosition: ƒ.Vector3, _frameTimeInSeconds: number) => void;
+    }
+    interface AnimationSprite {
+        width: number;
+        height: number;
+        totalWidth: number;
+        totalHeight: number;
+        frames: number;
+        fps: number;
+        wrapAfter: number;
+        texture?: ƒ.TextureImage;
+    }
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
+    class EnemyGraphInstance extends ƒ.GraphInstance implements ƒ.Recycable {
+        initialized: boolean;
+        constructor();
+        recycle(): void;
+        set(_graph: ƒ.Graph): Promise<void>;
+    }
+}
+declare namespace Script {
+    class AnimationManager {
+        private readonly provider;
+        private shared;
+        private unique;
+        private currentUniqueId;
+        constructor(provider: Provider);
+        private update;
+        getUniqueAnimationMtx(_sprite: AnimationSprite): [ƒ.Matrix3x3, number];
+        getAnimationMtx(_sprite: AnimationSprite): ƒ.Matrix3x3;
+        removeUniqueAnimationMtx(_id: number): void;
+    }
+}
+declare namespace Script {
+    class EnemyManager {
+        private readonly provider;
+        private characterManager;
+        private enemyScripts;
+        private enemies;
+        private enemy;
+        private enemyNode;
+        constructor(provider: Provider);
+        setup(): void;
+        private start;
+        private loaded;
+        private update;
+        private spawnEnemies;
+        removeEnemy(_enemy: Enemy): void;
+    }
 }

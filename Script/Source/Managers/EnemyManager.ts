@@ -1,0 +1,124 @@
+namespace Script {
+    export class EnemyManager {
+        private characterManager: CharacterManager;
+        private enemyScripts: Enemy[] = [];
+        private enemies: EnemyGraphInstance[] = [];
+        private enemy: ƒ.Graph;
+        private enemyNode: ƒ.Node;
+
+        constructor(private readonly provider: Provider) {
+            if (ƒ.Project.mode === ƒ.MODE.EDITOR) return;
+            document.addEventListener("interactiveViewportStarted", <EventListener>this.start);
+            ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
+            ƒ.Project.addEventListener(ƒ.EVENT.RESOURCES_LOADED, this.loaded.bind(this));
+            this.characterManager = provider.get(CharacterManager);
+        }
+
+        public setup(){
+            ƒ.Debug.log("EnemyManager setup");
+        }
+
+        private start = (_event: CustomEvent) => {
+            let viewport: ƒ.Viewport = _event.detail;
+            this.enemyNode = viewport.getBranch().getChildrenByName("enemies")[0];
+        }
+        private loaded = async () => {
+            this.enemy = <ƒ.Graph>await ƒ.Project.getResourcesByName("enemy")[0];
+        }
+        private update = () => {
+            if (gameState !== GAMESTATE.PLAYING) return;
+            let character = this.characterManager.character;
+            if (!character) return;
+
+            // create new enemies if needed
+            this.spawnEnemies();
+
+            // update enemies
+            let time = ƒ.Loop.timeFrameGame / 1000;
+            for (let enemy of this.enemyScripts) {
+                enemy.update(character.node.mtxWorld.translation, time);
+            }
+        }
+
+        private async spawnEnemies() {
+            if (this.enemies.length >= 2) {
+                return;
+            }
+
+            // debug: spawn two different enemies
+            let newEnemyGraphInstance = ƒ.Recycler.get(EnemyGraphInstance);
+            if (!newEnemyGraphInstance.initialized) {
+                await newEnemyGraphInstance.set(this.enemy);
+            }
+            newEnemyGraphInstance.mtxLocal.translation = this.characterManager.character.node.mtxWorld.translation;
+            newEnemyGraphInstance.mtxLocal.translate(ƒ.Vector3.NORMALIZATION(new ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), 10));
+            this.enemyNode.addChild(newEnemyGraphInstance);
+            this.enemies.push(newEnemyGraphInstance);
+            let enemyScript = newEnemyGraphInstance.getComponent(Enemy);
+            enemyScript.setup({
+                moveSprite: {
+                    fps: 24,
+                    frames: 24,
+                    height: 256,
+                    width: 256,
+                    totalHeight: 1280,
+                    totalWidth: 1280,
+                    wrapAfter: 5,
+                    // texture: <ƒ.TextureImage>await ƒ.Project.getResource("TextureImage|2024-05-03T11:08:44.440Z|38489"),
+                },
+                attacks: [{
+                    cooldown: 3,
+                    requiredDistance: [2, 3],
+                    sprite: {
+                        fps: 2,
+                        frames: 5,
+                        height: 512,
+                        width: 512,
+                        totalHeight: 1280,
+                        totalWidth: 1280,
+                        wrapAfter: 2,
+                        // texture: <ƒ.TextureImage>await ƒ.Project.getResource("TextureImage|2024-05-03T11:08:44.440Z|80004"),
+                    },
+                    windUp: 2,
+                    attack: () => {console.log("time for an attack!")},
+                    movement: () => {}
+                }],
+                speed: 0.5,
+                desiredDistance: [3, 4],
+            });
+            this.enemyScripts.push(enemyScript);
+            
+            newEnemyGraphInstance = ƒ.Recycler.get(EnemyGraphInstance);
+            if (!newEnemyGraphInstance.initialized) {
+                await newEnemyGraphInstance.set(this.enemy);
+            }
+            newEnemyGraphInstance.mtxLocal.translation = this.characterManager.character.node.mtxWorld.translation;
+            newEnemyGraphInstance.mtxLocal.translate(ƒ.Vector3.NORMALIZATION(new ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), 10));
+            this.enemyNode.addChild(newEnemyGraphInstance);
+            this.enemies.push(newEnemyGraphInstance);
+            enemyScript = newEnemyGraphInstance.getComponent(Enemy);
+            enemyScript.setup({
+                moveSprite: {
+                    fps: 24,
+                    frames: 24,
+                    height: 256,
+                    width: 256,
+                    totalHeight: 1280,
+                    totalWidth: 1280,
+                    wrapAfter: 5,
+                    // texture: <ƒ.TextureImage>await ƒ.Project.getResource("TextureImage|2024-05-03T08:57:19.583Z|83481"),
+                },
+                speed: 0.5,
+                desiredDistance: [0, 0.2],
+            });
+            this.enemyScripts.push(enemyScript);
+        }
+
+        public removeEnemy(_enemy: Enemy) {
+            let index = this.enemyScripts.findIndex((n) => n === _enemy);
+            if (index >= 0) {
+                this.enemyScripts.splice(index, 1);
+            }
+        }
+    }
+}
