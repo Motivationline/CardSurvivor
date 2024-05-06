@@ -33,6 +33,7 @@ namespace Script {
             this.prevFrame = frame;
             let column = frame % this.sprite.wrapAfter;
             let row = Math.floor(frame / this.sprite.wrapAfter);
+            // console.log(frame, column, row);
             this.mtx.translation = new ƒ.Vector2(column * this.frameWidth, row * this.frameHeight);
         }
 

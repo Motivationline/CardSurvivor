@@ -63,8 +63,8 @@ namespace Script {
             } else {
                 this.material.mtxPivot = am.getAnimationMtx(_as);
             }
-            if (_as.texture)
-                (<ƒ.CoatTextured>this.material.material.coat).texture = _as.texture;
+            if (_as.material)
+                this.material.material = _as.material;
         }
 
         public update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number) {
@@ -195,6 +195,6 @@ namespace Script {
         frames: number;
         fps: number;
         wrapAfter: number;
-        texture?: ƒ.TextureImage;
+        material?: ƒ.Material;
     }
 }

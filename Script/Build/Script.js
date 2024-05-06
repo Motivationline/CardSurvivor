@@ -388,6 +388,7 @@ var Script;
             this.prevFrame = frame;
             let column = frame % this.sprite.wrapAfter;
             let row = Math.floor(frame / this.sprite.wrapAfter);
+            // console.log(frame, column, row);
             this.mtx.translation = new ƒ.Vector2(column * this.frameWidth, row * this.frameHeight);
         }
         reset(_as, _time = ƒ.Time.game.get()) {
@@ -427,6 +428,7 @@ var Script;
         };
         prevAnimation = AnimationState.IDLE;
         #layers = [];
+        prevDirection = 0;
         constructor() {
             super();
             if (ƒ.Project.mode === ƒ.MODE.EDITOR)
@@ -440,13 +442,23 @@ var Script;
         }
         move(_direction) {
             //TODO: update this to use physics
-            this.node.mtxLocal.translate(ƒ.Vector3.SCALE(new ƒ.Vector3(_direction.x, _direction.y), ƒ.Loop.timeFrameGame / 1000));
+            this.node.mtxLocal.translate(ƒ.Vector3.SCALE(new ƒ.Vector3(_direction.x, _direction.y), Math.min(1, ƒ.Loop.timeFrameGame / 1000)), false);
             this.#animator.setTime();
             if (_direction.magnitudeSquared === 0) {
                 this.setAnimation(AnimationState.IDLE);
             }
             else {
                 this.setAnimation(AnimationState.WALKING);
+            }
+            let dir = Math.sign(_direction.x);
+            if (dir !== this.prevDirection && dir !== 0) {
+                this.prevDirection = dir;
+                if (this.prevDirection > 0) {
+                    this.node.mtxLocal.rotation = new ƒ.Vector3();
+                }
+                else if (this.prevDirection < 0) {
+                    this.node.mtxLocal.rotation = new ƒ.Vector3(0, 180, 0);
+                }
             }
         }
         setAnimation(_state) {
@@ -574,8 +586,8 @@ var Script;
             else {
                 this.material.mtxPivot = am.getAnimationMtx(_as);
             }
-            if (_as.texture)
-                this.material.material.coat.texture = _as.texture;
+            if (_as.material)
+                this.material.material = _as.material;
         }
         update(_charPosition, _frameTimeInSeconds) {
             // check distance to player
@@ -801,26 +813,26 @@ var Script;
             enemyScript.setup({
                 moveSprite: {
                     fps: 24,
-                    frames: 24,
+                    frames: 21,
                     height: 256,
                     width: 256,
                     totalHeight: 1280,
                     totalWidth: 1280,
                     wrapAfter: 5,
-                    // texture: <ƒ.TextureImage>await ƒ.Project.getResource("TextureImage|2024-05-03T11:08:44.440Z|38489"),
+                    material: await Script.ƒ.Project.getResource("Material|2024-05-06T13:30:03.916Z|15502"),
                 },
                 attacks: [{
                         cooldown: 3,
                         requiredDistance: [2, 3],
                         sprite: {
-                            fps: 2,
-                            frames: 5,
-                            height: 512,
-                            width: 512,
+                            fps: 24,
+                            frames: 24,
+                            height: 256,
+                            width: 256,
                             totalHeight: 1280,
                             totalWidth: 1280,
-                            wrapAfter: 2,
-                            // texture: <ƒ.TextureImage>await ƒ.Project.getResource("TextureImage|2024-05-03T11:08:44.440Z|80004"),
+                            wrapAfter: 5,
+                            material: await Script.ƒ.Project.getResource("Material|2024-05-06T13:30:28.224Z|93961"),
                         },
                         windUp: 2,
                         attack: () => { console.log("time for an attack!"); },
@@ -842,13 +854,13 @@ var Script;
             enemyScript.setup({
                 moveSprite: {
                     fps: 24,
-                    frames: 24,
+                    frames: 21,
                     height: 256,
                     width: 256,
                     totalHeight: 1280,
                     totalWidth: 1280,
                     wrapAfter: 5,
-                    // texture: <ƒ.TextureImage>await ƒ.Project.getResource("TextureImage|2024-05-03T08:57:19.583Z|83481"),
+                    material: await Script.ƒ.Project.getResource("Material|2024-05-06T13:29:21.308Z|14942"),
                 },
                 speed: 0.5,
                 desiredDistance: [0, 0.2],

@@ -95,6 +95,7 @@ declare namespace Script {
     class Character extends ƒ.Component {
         #private;
         prevAnimation: AnimationState;
+        private prevDirection;
         constructor();
         move(_direction: ƒ.Vector2): void;
         private setAnimation;
@@ -167,7 +168,7 @@ declare namespace Script {
         frames: number;
         fps: number;
         wrapAfter: number;
-        texture?: ƒ.TextureImage;
+        material?: ƒ.Material;
     }
 }
 declare namespace Script {

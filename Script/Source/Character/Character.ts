@@ -22,6 +22,7 @@ namespace Script {
         };
         prevAnimation: AnimationState = AnimationState.IDLE;
         #layers: CharacterLayer[] = [];
+        private prevDirection: number = 0;
 
         constructor() {
             super();
@@ -35,12 +36,21 @@ namespace Script {
         }
         move(_direction: ƒ.Vector2) {
             //TODO: update this to use physics
-            this.node.mtxLocal.translate(ƒ.Vector3.SCALE(new ƒ.Vector3(_direction.x, _direction.y), ƒ.Loop.timeFrameGame / 1000));
+            this.node.mtxLocal.translate(ƒ.Vector3.SCALE(new ƒ.Vector3(_direction.x, _direction.y), Math.min(1, ƒ.Loop.timeFrameGame / 1000)), false);
             this.#animator.setTime()
             if (_direction.magnitudeSquared === 0) {
                 this.setAnimation(AnimationState.IDLE);
             } else {
                 this.setAnimation(AnimationState.WALKING);
+            }
+            let dir = Math.sign(_direction.x);
+            if (dir !== this.prevDirection && dir !== 0) {
+                this.prevDirection = dir;
+                if (this.prevDirection > 0) {
+                    this.node.mtxLocal.rotation = new ƒ.Vector3();
+                } else if (this.prevDirection < 0) {
+                    this.node.mtxLocal.rotation = new ƒ.Vector3(0, 180, 0);
+                }
             }
 
         }
