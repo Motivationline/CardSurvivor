@@ -18,13 +18,17 @@ namespace Script {
 
   export let gameState: GAMESTATE = GAMESTATE.IDLE;
 
-  function preStart() {
+  async function preStart() {
     if (ƒ.Project.mode === ƒ.MODE.EDITOR) return;
-    provider.add(InputManager)
+    provider
+      .add(Config)
+      .add(InputManager)
       .add(CharacterManager)
       .add(EnemyManager)
       .add(AnimationManager)
 
+    const config = provider.get(Config);
+    await config.loadFiles();
     const inputManager = provider.get(InputManager);
     inputManager.setup(TouchMode.FREE);
     const enemyManager = provider.get(EnemyManager);

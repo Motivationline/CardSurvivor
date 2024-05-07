@@ -132,6 +132,12 @@
                     "idResource": "TextureImage|2024-05-06T07:00:59.320Z|06387"
                   },
                   {
+                    "idResource": "TextureImage|2024-05-07T11:00:27.121Z|90311"
+                  },
+                  {
+                    "idResource": "TextureImage|2024-05-07T11:33:51.821Z|89717"
+                  },
+                  {
                     "idResource": "Material|2024-05-06T13:29:21.308Z|14942"
                   },
                   {
@@ -142,6 +148,12 @@
                   },
                   {
                     "idResource": "Material|2024-05-06T13:30:03.916Z|15502"
+                  },
+                  {
+                    "idResource": "Material|2024-05-07T11:00:09.290Z|11123"
+                  },
+                  {
+                    "idResource": "Material|2024-05-07T11:33:30.222Z|47475"
                   }
                 ]
               },
@@ -153,6 +165,17 @@
                   },
                   {
                     "idResource": "Material|2024-05-06T13:30:28.224Z|93961"
+                  }
+                ]
+              },
+              {
+                "name": "idle",
+                "entries": [
+                  {
+                    "idResource": "TextureImage|2024-05-07T11:00:57.395Z|51320"
+                  },
+                  {
+                    "idResource": "Material|2024-05-07T11:00:47.573Z|73175"
                   }
                 ]
               }

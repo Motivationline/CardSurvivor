@@ -54,6 +54,18 @@
       }
     }
   },
+  "TextureImage|2024-05-03T11:58:41.522Z|76435": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer0.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|76435",
+        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer0.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
   "TextureImage|2024-05-03T11:08:44.440Z|80004": {
     "ƒ.TextureImage": {
       "url": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer0.png",
@@ -76,6 +88,18 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-03T11:58:41.522Z|58044"
         }
+      }
+    }
+  },
+  "TextureImage|2024-05-03T11:58:41.522Z|58044": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer6.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|58044",
+        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer6.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
       }
     }
   },
@@ -104,6 +128,18 @@
       }
     }
   },
+  "TextureImage|2024-05-03T11:58:41.522Z|31908": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer5.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|31908",
+        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer5.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
   "TextureImage|2024-05-03T11:08:44.440Z|89065": {
     "ƒ.TextureImage": {
       "url": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer5.png",
@@ -126,6 +162,18 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-03T11:58:41.522Z|93492"
         }
+      }
+    }
+  },
+  "TextureImage|2024-05-03T11:58:41.522Z|93492": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer4.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|93492",
+        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer4.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
       }
     }
   },
@@ -154,6 +202,18 @@
       }
     }
   },
+  "TextureImage|2024-05-03T11:58:41.522Z|08873": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer3.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|08873",
+        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer3.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
   "TextureImage|2024-05-03T11:08:44.440Z|05684": {
     "ƒ.TextureImage": {
       "url": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer3.png",
@@ -179,6 +239,18 @@
       }
     }
   },
+  "TextureImage|2024-05-03T11:58:41.522Z|82599": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer2.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|82599",
+        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer2.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
   "TextureImage|2024-05-03T11:08:44.440Z|38489": {
     "ƒ.TextureImage": {
       "url": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer2.png",
@@ -201,6 +273,18 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-03T11:58:41.522Z|77653"
         }
+      }
+    }
+  },
+  "TextureImage|2024-05-03T11:58:41.522Z|77653": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer1.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|77653",
+        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer1.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
       }
     }
   },
@@ -682,90 +766,6 @@
       "type": "Graph"
     }
   },
-  "TextureImage|2024-05-03T11:58:41.522Z|76435": {
-    "ƒ.TextureImage": {
-      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer0.png",
-      "type": "TextureImage",
-      "Texture": {
-        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|76435",
-        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer0.png",
-        "mipmap": "CRISP",
-        "wrap": "REPEAT"
-      }
-    }
-  },
-  "TextureImage|2024-05-03T11:58:41.522Z|77653": {
-    "ƒ.TextureImage": {
-      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer1.png",
-      "type": "TextureImage",
-      "Texture": {
-        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|77653",
-        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer1.png",
-        "mipmap": "CRISP",
-        "wrap": "REPEAT"
-      }
-    }
-  },
-  "TextureImage|2024-05-03T11:58:41.522Z|82599": {
-    "ƒ.TextureImage": {
-      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer2.png",
-      "type": "TextureImage",
-      "Texture": {
-        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|82599",
-        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer2.png",
-        "mipmap": "CRISP",
-        "wrap": "REPEAT"
-      }
-    }
-  },
-  "TextureImage|2024-05-03T11:58:41.522Z|08873": {
-    "ƒ.TextureImage": {
-      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer3.png",
-      "type": "TextureImage",
-      "Texture": {
-        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|08873",
-        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer3.png",
-        "mipmap": "CRISP",
-        "wrap": "REPEAT"
-      }
-    }
-  },
-  "TextureImage|2024-05-03T11:58:41.522Z|93492": {
-    "ƒ.TextureImage": {
-      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer4.png",
-      "type": "TextureImage",
-      "Texture": {
-        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|93492",
-        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer4.png",
-        "mipmap": "CRISP",
-        "wrap": "REPEAT"
-      }
-    }
-  },
-  "TextureImage|2024-05-03T11:58:41.522Z|31908": {
-    "ƒ.TextureImage": {
-      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer5.png",
-      "type": "TextureImage",
-      "Texture": {
-        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|31908",
-        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer5.png",
-        "mipmap": "CRISP",
-        "wrap": "REPEAT"
-      }
-    }
-  },
-  "TextureImage|2024-05-03T11:58:41.522Z|58044": {
-    "ƒ.TextureImage": {
-      "url": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer6.png",
-      "type": "TextureImage",
-      "Texture": {
-        "idResource": "TextureImage|2024-05-03T11:58:41.522Z|58044",
-        "name": "Assets\\Character\\base\\idle\\Robot_base_idle_Layer6.png",
-        "mipmap": "CRISP",
-        "wrap": "REPEAT"
-      }
-    }
-  },
   "TextureImage|2024-05-06T07:00:48.720Z|21574": {
     "ƒ.TextureImage": {
       "url": "Assets\\Enemies\\Chair\\Chair_walk_01.png",
@@ -888,6 +888,93 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-06T07:01:14.843Z|93785"
         }
+      }
+    }
+  },
+  "Material|2024-05-07T11:00:09.290Z|11123": {
+    "ƒ.Material": {
+      "name": "CardboardMove",
+      "idResource": "Material|2024-05-07T11:00:09.290Z|11123",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-05-07T11:00:27.121Z|90311"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-05-07T11:00:27.121Z|90311": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Enemies\\Cardboard\\Cardboard_walk_01.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-07T11:00:27.121Z|90311",
+        "name": "Assets\\Enemies\\Cardboard\\Cardboard_walk_01.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-05-07T11:00:47.573Z|73175": {
+    "ƒ.Material": {
+      "name": "ToastIdle",
+      "idResource": "Material|2024-05-07T11:00:47.573Z|73175",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-05-07T11:00:57.395Z|51320"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-05-07T11:00:57.395Z|51320": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Enemies\\Toast\\Toast_idle_01.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-07T11:00:57.395Z|51320",
+        "name": "Assets\\Enemies\\Toast\\Toast_idle_01.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-05-07T11:33:30.222Z|47475": {
+    "ƒ.Material": {
+      "name": "MotorMove",
+      "idResource": "Material|2024-05-07T11:33:30.222Z|47475",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-05-07T11:33:51.821Z|89717"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-05-07T11:33:38.679Z|26510": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Enemies\\Motor\\Motor_walk_01.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-07T11:33:38.679Z|26510",
+        "name": "Assets\\Enemies\\Motor\\Motor_walk_01.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "TextureImage|2024-05-07T11:33:51.821Z|89717": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Enemies\\Motor\\Motor_walk_01.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-07T11:33:51.821Z|89717",
+        "name": "Assets\\Enemies\\Motor\\Motor_walk_01.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
       }
     }
   }

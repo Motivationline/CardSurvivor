@@ -88,7 +88,64 @@ declare namespace Script {
         get matrix(): ƒ.Matrix3x3;
         setTime(_time?: number): void;
         reset(_as: AnimationSprite, _time?: number): void;
+        private fireEvents;
     }
+}
+declare namespace Script {
+    class ProjectileComponent extends ƒ.Component implements Projectile {
+        direction: ƒ.Vector3;
+        target: ƒ.Node;
+        track: number;
+        size: number;
+        speed: number;
+        range: number;
+        piercing: number;
+        protected static defaults: Projectile;
+        setup(_options: Partial<Projectile>, manager: CardManager): void;
+        update(): void;
+        private move;
+    }
+    interface Projectile {
+        direction: ƒ.Vector3;
+        target: ƒ.Node;
+        track: number;
+        size: number;
+        speed: number;
+        range: number;
+        piercing: number;
+    }
+}
+declare namespace Script {
+    class Card {
+        #private;
+        get effects(): PassiveCardEffectObject;
+    }
+    enum PassiveCardEffect {
+        COOLDOWN_REDUCTION = "cooldownReduction",
+        PROJECTILE_SIZE = "projectileSize",
+        PROJECTILE_SPEED = "projectileSpeed",
+        PROJECTILE_AMOUNT = "projectileAmount",
+        PROJECTILE_RANGE = "projectileRange",
+        PROJECTILE_PIERCING = "projectilePiercing",
+        DAMAGE = "damage",
+        EFFECT_DURATION = "effectDuration",
+        WEAPON_DURATION = "weaponDuration",
+        KNOCKBACK = "knockback",
+        CRIT_CHANCE = "criticalHitChance",
+        CRIT_DAMAGE = "critialHitDamage",
+        PLAYER_HEALTH = "playerHealth",
+        PLAYER_REGENERATION = "playerRegeneration",
+        COLLECTION_RADIUS = "collectionRadius",
+        DAMAGE_REDUCTION = "damageReduction"
+    }
+    type PassiveCardEffectObject = {
+        absolute?: {
+            [key in PassiveCardEffect]?: number;
+        };
+        multiplier?: {
+            [key in PassiveCardEffect]?: number;
+        };
+    };
 }
 declare namespace Script {
     import ƒ = FudgeCore;
@@ -132,6 +189,7 @@ declare namespace Script {
         private enemyManager;
         private prevDirection;
         private currentlyActiveAttack;
+        private currentlyActiveSprite;
         private static defaults;
         constructor();
         private deserialized;
@@ -142,6 +200,7 @@ declare namespace Script {
         private move;
         private chooseAttack;
         private executeAttack;
+        private eventListener;
         getDamaged(_dmg: number): void;
     }
     interface EnemyOptions {
@@ -159,9 +218,13 @@ declare namespace Script {
         requiredDistance: [number, number];
         windUp: number;
         cooldown: number;
-        sprite: AnimationSprite;
+        attackSprite?: AnimationSprite;
+        cooldownSprite?: AnimationSprite;
         attack: () => void;
         movement?: (_diff: ƒ.Vector3, _mgtSqrd: number, _charPosition: ƒ.Vector3, _frameTimeInSeconds: number) => void;
+        events?: {
+            [name: string]: (_event?: CustomEvent) => void;
+        };
     }
     interface AnimationSprite {
         width: number;
@@ -172,6 +235,11 @@ declare namespace Script {
         fps: number;
         wrapAfter: number;
         material?: ƒ.Material;
+        events?: AnimationEvent[];
+    }
+    interface AnimationEvent {
+        frame: number;
+        event: string;
     }
 }
 declare namespace Script {
@@ -197,9 +265,26 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    class CardManager {
+        #private;
+        getEffectAbsolute(_effect: PassiveCardEffect): number;
+        getEffectMultiplier(_effect: PassiveCardEffect): number;
+        updateEffects(): void;
+    }
+}
+declare namespace Script {
+    class Config {
+        private animations;
+        constructor();
+        loadFiles(): Promise<void>;
+        getAnimation(_enemyID: string, _animationID: string): AnimationSprite;
+    }
+}
+declare namespace Script {
     class EnemyManager {
         private readonly provider;
         private characterManager;
+        private config;
         private enemyScripts;
         private enemies;
         private enemy;

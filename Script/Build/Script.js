@@ -331,13 +331,17 @@ var Script;
     Script.provider = new Script.Provider();
     document.addEventListener("DOMContentLoaded", preStart);
     Script.gameState = GAMESTATE.IDLE;
-    function preStart() {
+    async function preStart() {
         if (Script.ƒ.Project.mode === Script.ƒ.MODE.EDITOR)
             return;
-        Script.provider.add(Script.InputManager)
+        Script.provider
+            .add(Script.Config)
+            .add(Script.InputManager)
             .add(Script.CharacterManager)
             .add(Script.EnemyManager)
             .add(Script.AnimationManager);
+        const config = Script.provider.get(Script.Config);
+        await config.loadFiles();
         const inputManager = Script.provider.get(Script.InputManager);
         inputManager.setup(Script.TouchMode.FREE);
         const enemyManager = Script.provider.get(Script.EnemyManager);
@@ -385,6 +389,7 @@ var Script;
             let frame = Math.floor(_time / this.frameTime);
             if (frame === this.prevFrame)
                 return;
+            this.fireEvents(this.prevFrame, frame);
             this.prevFrame = frame;
             let column = frame % this.sprite.wrapAfter;
             let row = Math.floor(frame / this.sprite.wrapAfter);
@@ -400,8 +405,89 @@ var Script;
             this.frameHeight = _as.height / _as.totalHeight;
             this.mtx.scaling = new ƒ.Vector2(this.frameWidth, this.frameHeight);
         }
+        fireEvents(_prevFrame, _currentFrame) {
+            if (!this.sprite.events || !this.sprite.events.length)
+                return;
+            if (_prevFrame < 0 || _currentFrame < 0 || _prevFrame > this.sprite.frames || _currentFrame > this.sprite.frames)
+                return;
+            if (_currentFrame < _prevFrame)
+                _currentFrame += this.sprite.frames;
+            for (let frame = _prevFrame + 1; frame <= _currentFrame; frame++) {
+                for (let event of this.sprite.events) {
+                    if (event.frame === frame % this.sprite.frames) {
+                        this.matrix.dispatchEvent(new CustomEvent(event.event, { detail: { frame, sprite: this.sprite } }));
+                    }
+                }
+            }
+        }
     }
     Script.SpriteAnimator = SpriteAnimator;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    class ProjectileComponent extends Script.ƒ.Component {
+        direction;
+        target;
+        track;
+        size;
+        speed;
+        range;
+        piercing;
+        static defaults = {
+            target: undefined,
+            direction: new Script.ƒ.Vector3(),
+            piercing: 0,
+            range: Infinity,
+            size: 0.1,
+            speed: 2,
+            track: 0,
+        };
+        setup(_options, manager) {
+            _options = { ...ProjectileComponent.defaults, ..._options };
+            this.direction = _options.direction;
+            this.target = _options.target;
+            this.track = _options.track;
+            this.size = (_options.size + manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_SIZE)) * manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_SIZE);
+            this.speed = (_options.speed + manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_SPEED)) * manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_SPEED);
+            this.range = (_options.range + manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_RANGE)) * manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_RANGE);
+            this.piercing = (_options.piercing + manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_PIERCING)) * manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_PIERCING);
+        }
+        update() {
+            this.move();
+        }
+        move() {
+        }
+    }
+    Script.ProjectileComponent = ProjectileComponent;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    class Card {
+        #effects;
+        get effects() {
+            return structuredClone(this.#effects);
+        }
+    }
+    Script.Card = Card;
+    let PassiveCardEffect;
+    (function (PassiveCardEffect) {
+        PassiveCardEffect["COOLDOWN_REDUCTION"] = "cooldownReduction";
+        PassiveCardEffect["PROJECTILE_SIZE"] = "projectileSize";
+        PassiveCardEffect["PROJECTILE_SPEED"] = "projectileSpeed";
+        PassiveCardEffect["PROJECTILE_AMOUNT"] = "projectileAmount";
+        PassiveCardEffect["PROJECTILE_RANGE"] = "projectileRange";
+        PassiveCardEffect["PROJECTILE_PIERCING"] = "projectilePiercing";
+        PassiveCardEffect["DAMAGE"] = "damage";
+        PassiveCardEffect["EFFECT_DURATION"] = "effectDuration";
+        PassiveCardEffect["WEAPON_DURATION"] = "weaponDuration";
+        PassiveCardEffect["KNOCKBACK"] = "knockback";
+        PassiveCardEffect["CRIT_CHANCE"] = "criticalHitChance";
+        PassiveCardEffect["CRIT_DAMAGE"] = "critialHitDamage";
+        PassiveCardEffect["PLAYER_HEALTH"] = "playerHealth";
+        PassiveCardEffect["PLAYER_REGENERATION"] = "playerRegeneration";
+        PassiveCardEffect["COLLECTION_RADIUS"] = "collectionRadius";
+        PassiveCardEffect["DAMAGE_REDUCTION"] = "damageReduction";
+    })(PassiveCardEffect = Script.PassiveCardEffect || (Script.PassiveCardEffect = {}));
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
@@ -542,6 +628,7 @@ var Script;
         enemyManager;
         prevDirection;
         currentlyActiveAttack;
+        currentlyActiveSprite;
         static defaults = {
             attacks: [],
             damage: 1,
@@ -597,6 +684,11 @@ var Script;
             if (!_as)
                 return;
             let am = Script.provider.get(Script.AnimationManager);
+            if (this.currentlyActiveSprite && this.currentlyActiveSprite.events) {
+                for (let event of this.currentlyActiveSprite.events) {
+                    this.material.mtxPivot.removeEventListener(event.event, this.eventListener);
+                }
+            }
             if (this.#uniqueAnimationId) {
                 am.removeUniqueAnimationMtx(this.#uniqueAnimationId);
                 this.#uniqueAnimationId = undefined;
@@ -609,6 +701,12 @@ var Script;
             }
             if (_as.material)
                 this.material.material = _as.material;
+            this.currentlyActiveSprite = _as;
+            if (this.currentlyActiveSprite && this.currentlyActiveSprite.events) {
+                for (let event of this.currentlyActiveSprite.events) {
+                    this.material.mtxPivot.addEventListener(event.event, this.eventListener);
+                }
+            }
         }
         update(_charPosition, _frameTimeInSeconds) {
             // check distance to player
@@ -651,7 +749,7 @@ var Script;
             }
             // rotate visually to face correct direction
             let dir = Math.sign(_diff.x);
-            if (dir !== this.prevDirection) {
+            if (dir !== this.prevDirection && dir) {
                 this.prevDirection = dir;
                 if (this.prevDirection > 0) {
                     this.node.mtxLocal.rotation = new Script.ƒ.Vector3();
@@ -677,7 +775,7 @@ var Script;
                 if (_mgtSqrd > this.currentlyDesiredDistanceSquared[0] && _mgtSqrd < this.currentlyDesiredDistanceSquared[1]) {
                     // start the attack
                     this.currentlyActiveAttack.started = true;
-                    this.setCentralAnimator(this.currentlyActiveAttack.sprite, true);
+                    this.setCentralAnimator(this.currentlyActiveAttack.attackSprite, true);
                 }
             }
             if (this.currentlyActiveAttack.started) {
@@ -690,6 +788,7 @@ var Script;
                     // time to execute attack
                     this.currentlyActiveAttack.done = true;
                     this.currentlyActiveAttack.attack();
+                    this.setCentralAnimator(this.currentlyActiveAttack.cooldownSprite, true);
                 }
                 else {
                     //we're on cooldown now
@@ -703,6 +802,13 @@ var Script;
                 }
             }
         }
+        eventListener = (_event) => {
+            if (!this.currentlyActiveAttack.events)
+                return;
+            if (!this.currentlyActiveAttack.events[_event.type])
+                return;
+            this.currentlyActiveAttack.events[_event.type](_event);
+        };
         getDamaged(_dmg) {
             this.health -= _dmg;
             if (this.health > 0)
@@ -787,9 +893,62 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
+    class CardManager {
+        #currentlyActiveCards;
+        #cumulativeEffects = {};
+        getEffectAbsolute(_effect) {
+            return this.#cumulativeEffects.absolute[_effect] ?? 0;
+        }
+        getEffectMultiplier(_effect) {
+            return this.#cumulativeEffects.multiplier[_effect] ?? 1;
+        }
+        updateEffects() {
+            this.#cumulativeEffects = {};
+            for (let card of this.#currentlyActiveCards) {
+                let effects = card.effects;
+                let effect;
+                for (effect in effects.absolute) {
+                    this.#cumulativeEffects.absolute[effect] = (this.#cumulativeEffects.absolute[effect] ?? 0) + effects.absolute[effect];
+                }
+                for (effect in effects.multiplier) {
+                    this.#cumulativeEffects.multiplier[effect] = (this.#cumulativeEffects.multiplier[effect] ?? 1) * effects.multiplier[effect];
+                }
+            }
+        }
+    }
+    Script.CardManager = CardManager;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    class Config {
+        animations;
+        constructor() {
+        }
+        async loadFiles() {
+            const animationFilePath = "./Assets/Enemies/animations.json";
+            this.animations = await (await fetch(animationFilePath)).json();
+        }
+        getAnimation(_enemyID, _animationID) {
+            if (!this.animations[_enemyID])
+                return undefined;
+            if (!this.animations[_enemyID].animations[_animationID])
+                return undefined;
+            let anim = this.animations[_enemyID].animations[_animationID];
+            if (!anim.material) {
+                let materials = Script.ƒ.Project.getResourcesByType(Script.ƒ.Material);
+                anim.material = materials.find(mat => mat.idResource === anim.materialString);
+            }
+            return anim;
+        }
+    }
+    Script.Config = Config;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
     class EnemyManager {
         provider;
         characterManager;
+        config;
         enemyScripts = [];
         enemies = [];
         enemy;
@@ -802,6 +961,7 @@ var Script;
             Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
             Script.ƒ.Project.addEventListener("resourcesLoaded" /* ƒ.EVENT.RESOURCES_LOADED */, this.loaded.bind(this));
             this.characterManager = provider.get(Script.CharacterManager);
+            this.config = provider.get(Script.Config);
         }
         setup() {
             Script.ƒ.Debug.log("EnemyManager setup");
@@ -841,33 +1001,20 @@ var Script;
             this.enemyNode.addChild(newEnemyGraphInstance);
             this.enemies.push(newEnemyGraphInstance);
             let enemyScript = newEnemyGraphInstance.getComponent(Script.Enemy);
+            let animAttackSprite = this.config.getAnimation("toaster", "attack");
             enemyScript.setup({
-                moveSprite: {
-                    fps: 24,
-                    frames: 21,
-                    height: 256,
-                    width: 256,
-                    totalHeight: 1280,
-                    totalWidth: 1280,
-                    wrapAfter: 5,
-                    material: await Script.ƒ.Project.getResource("Material|2024-05-06T13:30:03.916Z|15502"),
-                },
+                moveSprite: this.config.getAnimation("toaster", "move"),
                 attacks: [{
-                        cooldown: 3,
+                        cooldown: 2,
                         requiredDistance: [2, 3],
-                        sprite: {
-                            fps: 24,
-                            frames: 24,
-                            height: 256,
-                            width: 256,
-                            totalHeight: 1280,
-                            totalWidth: 1280,
-                            wrapAfter: 5,
-                            material: await Script.ƒ.Project.getResource("Material|2024-05-06T13:30:28.224Z|93961"),
-                        },
-                        windUp: 2,
+                        attackSprite: animAttackSprite,
+                        cooldownSprite: this.config.getAnimation("toaster", "idle"),
+                        windUp: animAttackSprite.frames / animAttackSprite.fps,
                         attack: () => { console.log("time for an attack!"); },
-                        movement: () => { }
+                        movement: () => { },
+                        events: {
+                            "fire": (_event) => { console.log("firing toast!"); },
+                        }
                     }],
                 speed: 0.5,
                 desiredDistance: [3, 4],
@@ -883,16 +1030,7 @@ var Script;
             this.enemies.push(newEnemyGraphInstance);
             enemyScript = newEnemyGraphInstance.getComponent(Script.Enemy);
             enemyScript.setup({
-                moveSprite: {
-                    fps: 24,
-                    frames: 21,
-                    height: 256,
-                    width: 256,
-                    totalHeight: 1280,
-                    totalWidth: 1280,
-                    wrapAfter: 5,
-                    material: await Script.ƒ.Project.getResource("Material|2024-05-06T13:29:21.308Z|14942"),
-                },
+                moveSprite: this.config.getAnimation("chair", "move"),
                 speed: 0.5,
                 desiredDistance: [0, 0.2],
             });
@@ -907,16 +1045,7 @@ var Script;
             this.enemies.push(newEnemyGraphInstance);
             enemyScript = newEnemyGraphInstance.getComponent(Script.Enemy);
             enemyScript.setup({
-                moveSprite: {
-                    fps: 24,
-                    frames: 24,
-                    height: 256,
-                    width: 256,
-                    totalHeight: 1280,
-                    totalWidth: 1280,
-                    wrapAfter: 5,
-                    material: await Script.ƒ.Project.getResource("Material|2024-05-06T13:29:52.414Z|09807"),
-                },
+                moveSprite: this.config.getAnimation("motor", "move"),
                 speed: 3,
                 directionOverride: Script.ƒ.Vector3.Y(-1),
             });

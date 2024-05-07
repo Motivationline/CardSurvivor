@@ -16,6 +16,7 @@ namespace Script {
         private enemyManager: EnemyManager;
         private prevDirection: number;
         private currentlyActiveAttack: EnemyAttackActive;
+        private currentlyActiveSprite: AnimationSprite;
 
         private static defaults: EnemyOptions = {
             attacks: [],
@@ -76,6 +77,13 @@ namespace Script {
         private setCentralAnimator(_as: AnimationSprite, _unique: boolean = false) {
             if (!_as) return;
             let am: AnimationManager = provider.get(AnimationManager);
+
+            if(this.currentlyActiveSprite && this.currentlyActiveSprite.events){
+                for(let event of this.currentlyActiveSprite.events){
+                    this.material.mtxPivot.removeEventListener(event.event, this.eventListener);
+                }
+            }
+
             if (this.#uniqueAnimationId) {
                 am.removeUniqueAnimationMtx(this.#uniqueAnimationId);
                 this.#uniqueAnimationId = undefined;
@@ -87,6 +95,13 @@ namespace Script {
             }
             if (_as.material)
                 this.material.material = _as.material;
+            this.currentlyActiveSprite = _as;
+            
+            if(this.currentlyActiveSprite && this.currentlyActiveSprite.events){
+                for(let event of this.currentlyActiveSprite.events){
+                    this.material.mtxPivot.addEventListener(event.event, this.eventListener);
+                }
+            }
         }
 
         public update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number) {
@@ -134,7 +149,7 @@ namespace Script {
 
             // rotate visually to face correct direction
             let dir = Math.sign(_diff.x);
-            if (dir !== this.prevDirection) {
+            if (dir !== this.prevDirection && dir) {
                 this.prevDirection = dir;
                 if (this.prevDirection > 0) {
                     this.node.mtxLocal.rotation = new ƒ.Vector3();
@@ -160,7 +175,7 @@ namespace Script {
                 if (_mgtSqrd > this.currentlyDesiredDistanceSquared[0] && _mgtSqrd < this.currentlyDesiredDistanceSquared[1]) {
                     // start the attack
                     this.currentlyActiveAttack.started = true;
-                    this.setCentralAnimator(this.currentlyActiveAttack.sprite, true);
+                    this.setCentralAnimator(this.currentlyActiveAttack.attackSprite, true);
                 }
             }
             if (this.currentlyActiveAttack.started) {
@@ -172,6 +187,7 @@ namespace Script {
                     // time to execute attack
                     this.currentlyActiveAttack.done = true;
                     this.currentlyActiveAttack.attack();
+                    this.setCentralAnimator(this.currentlyActiveAttack.cooldownSprite, true);
                 } else {
                     //we're on cooldown now
                     this.currentlyActiveAttack.cooldown -= _frameTimeInSeconds;
@@ -184,6 +200,13 @@ namespace Script {
                 }
 
             }
+        }
+
+        private eventListener = (_event: CustomEvent) => {
+            if(!this.currentlyActiveAttack.events) return;
+            if(!this.currentlyActiveAttack.events[_event.type]) return;
+            this.currentlyActiveAttack.events[_event.type](_event);
+
         }
 
         public getDamaged(_dmg: number) {
@@ -211,9 +234,11 @@ namespace Script {
         requiredDistance: [number, number];
         windUp: number;
         cooldown: number;
-        sprite: AnimationSprite;
+        attackSprite?: AnimationSprite;
+        cooldownSprite?: AnimationSprite;
         attack: () => void;
         movement?: (_diff: ƒ.Vector3, _mgtSqrd: number, _charPosition: ƒ.Vector3, _frameTimeInSeconds: number) => void;
+        events?: { [name: string]: (_event?: CustomEvent) => void; }
     }
     interface EnemyAttackActive extends EnemyAttack {
         started?: boolean;
@@ -228,5 +253,11 @@ namespace Script {
         fps: number;
         wrapAfter: number;
         material?: ƒ.Material;
+        events?: AnimationEvent[];
+    }
+
+    export interface AnimationEvent {
+        frame: number,
+        event: string,
     }
 }
