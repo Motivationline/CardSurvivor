@@ -24,8 +24,10 @@ namespace Script {
       .add(Config)
       .add(InputManager)
       .add(CharacterManager)
+      .add(ProjectileManager)
       .add(EnemyManager)
       .add(AnimationManager)
+      .add(CardManager)
 
     const config = provider.get(Config);
     await config.loadFiles();
@@ -33,6 +35,8 @@ namespace Script {
     inputManager.setup(TouchMode.FREE);
     const enemyManager = provider.get(EnemyManager);
     enemyManager.setup();
+    const projectileManager = provider.get(ProjectileManager);
+    projectileManager.setup();
   }
 
   function start(_event: CustomEvent): void {

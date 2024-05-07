@@ -184,8 +184,27 @@
         ]
       },
       {
-        "name": "surroundings",
+        "name": "backgrounds",
         "entries": []
+      },
+      {
+        "name": "projectiles",
+        "entries": [
+          {
+            "idResource": "Graph|2024-05-07T12:38:58.660Z|53689"
+          },
+          {
+            "name": "textures",
+            "entries": [
+              {
+                "idResource": "Material|2024-05-07T12:39:47.128Z|21510"
+              },
+              {
+                "idResource": "TextureImage|2024-05-07T12:40:08.563Z|41614"
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "shared",
@@ -194,9 +213,6 @@
             "idResource": "MeshSprite|2024-05-02T11:54:51.781Z|22267"
           }
         ]
-      },
-      {
-        "idResource": "TextureImage|2024-05-03T08:57:12.550Z|06241"
       }
     ]
   }

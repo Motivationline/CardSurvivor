@@ -338,14 +338,18 @@ var Script;
             .add(Script.Config)
             .add(Script.InputManager)
             .add(Script.CharacterManager)
+            .add(Script.ProjectileManager)
             .add(Script.EnemyManager)
-            .add(Script.AnimationManager);
+            .add(Script.AnimationManager)
+            .add(Script.CardManager);
         const config = Script.provider.get(Script.Config);
         await config.loadFiles();
         const inputManager = Script.provider.get(Script.InputManager);
         inputManager.setup(Script.TouchMode.FREE);
         const enemyManager = Script.provider.get(Script.EnemyManager);
         enemyManager.setup();
+        const projectileManager = Script.provider.get(Script.ProjectileManager);
+        projectileManager.setup();
     }
     function start(_event) {
         viewport = _event.detail;
@@ -415,7 +419,7 @@ var Script;
             for (let frame = _prevFrame + 1; frame <= _currentFrame; frame++) {
                 for (let event of this.sprite.events) {
                     if (event.frame === frame % this.sprite.frames) {
-                        this.matrix.dispatchEvent(new CustomEvent(event.event, { detail: { frame, sprite: this.sprite } }));
+                        this.matrix.dispatchEvent(new CustomEvent(event.event, { detail: { frame, sprite: this.sprite }, bubbles: true }));
                     }
                 }
             }
@@ -425,40 +429,99 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
+    let ProjectileTarget;
+    (function (ProjectileTarget) {
+        ProjectileTarget[ProjectileTarget["PLAYER"] = 0] = "PLAYER";
+        ProjectileTarget[ProjectileTarget["ENEMY"] = 1] = "ENEMY";
+    })(ProjectileTarget = Script.ProjectileTarget || (Script.ProjectileTarget = {}));
     class ProjectileComponent extends Script.ƒ.Component {
+        tracking;
         direction;
-        target;
-        track;
+        targetPosition;
+        damage;
         size;
         speed;
         range;
         piercing;
+        target;
         static defaults = {
-            target: undefined,
+            targetPosition: undefined,
             direction: new Script.ƒ.Vector3(),
             piercing: 0,
             range: Infinity,
-            size: 0.1,
+            size: 0.5,
             speed: 2,
-            track: 0,
+            damage: 1,
+            target: ProjectileTarget.PLAYER,
+            tracking: undefined
         };
-        setup(_options, manager) {
+        constructor() {
+            super();
+            if (Script.ƒ.Project.mode == Script.ƒ.MODE.EDITOR)
+                return;
+            this.addEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.init);
+        }
+        init = () => {
+            this.removeEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.init);
+            // setup physics
+            this.node.getComponent(Script.ƒ.ComponentRigidbody).removeEventListener("TriggerEnteredCollision" /* ƒ.EVENT_PHYSICS.TRIGGER_ENTER */, this.onTriggerEnter);
+            this.node.getComponent(Script.ƒ.ComponentRigidbody).removeEventListener("TriggerLeftCollision" /* ƒ.EVENT_PHYSICS.TRIGGER_EXIT */, this.onTriggerExit);
+        };
+        setup(_options, _manager) {
             _options = { ...ProjectileComponent.defaults, ..._options };
             this.direction = _options.direction;
+            this.targetPosition = _options.targetPosition;
+            this.tracking = _options.tracking;
+            this.damage = (_options.damage + _manager.getEffectAbsolute(Script.PassiveCardEffect.DAMAGE)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.DAMAGE);
+            this.size = (_options.size + _manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_SIZE)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_SIZE);
+            this.speed = (_options.speed + _manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_SPEED)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_SPEED);
+            this.range = (_options.range + _manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_RANGE)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_RANGE);
+            this.piercing = (_options.piercing + _manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_PIERCING)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_PIERCING);
             this.target = _options.target;
-            this.track = _options.track;
-            this.size = (_options.size + manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_SIZE)) * manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_SIZE);
-            this.speed = (_options.speed + manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_SPEED)) * manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_SPEED);
-            this.range = (_options.range + manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_RANGE)) * manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_RANGE);
-            this.piercing = (_options.piercing + manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_PIERCING)) * manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_PIERCING);
+            this.node.mtxLocal.scaling = Script.ƒ.Vector3.ONE(this.size);
+            //TODO rotate projectile towards flight direction
         }
-        update() {
+        update(_charPosition, _frameTimeInSeconds) {
             this.move();
         }
         move() {
+            if (this.tracking) {
+                // we need to track a certain node, so modify direction accordingly
+                this.direction = Script.ƒ.Vector3.DIFFERENCE(this.tracking.target.mtxWorld.translation, this.node.mtxWorld.translation);
+            }
+            let dir = this.direction.clone;
+            dir.normalize(Math.min(1, Script.ƒ.Loop.timeFrameGame / 1000));
+            this.node.mtxLocal.translate(dir);
         }
+        onTriggerEnter = (_event) => {
+            console.log("onTriggerEnter", _event);
+        };
+        onTriggerExit = (_event) => {
+            console.log("onTriggerExit", _event);
+        };
     }
     Script.ProjectileComponent = ProjectileComponent;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    class ProjectileGraphInstance extends ƒ.GraphInstance {
+        initialized = false;
+        constructor() {
+            super();
+            // Don't start when running in editor
+            if (ƒ.Project.mode == ƒ.MODE.EDITOR)
+                return;
+        }
+        recycle() {
+            // this.getComponent(ProjectileComponent).recycle();
+        }
+        async set(_graph) {
+            await super.set(_graph);
+            this.initialized = true;
+        }
+    }
+    Script.ProjectileGraphInstance = ProjectileGraphInstance;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
@@ -713,7 +776,7 @@ var Script;
             let diff = Script.ƒ.Vector3.DIFFERENCE(_charPosition, this.node.mtxLocal.translation);
             let mgtSqrd = diff.magnitudeSquared;
             if (this.currentlyActiveAttack && this.currentlyActiveAttack.movement && this.currentlyActiveAttack.started) {
-                this.currentlyActiveAttack.movement(diff, mgtSqrd, _charPosition, _frameTimeInSeconds);
+                this.currentlyActiveAttack.movement.call(this, diff, mgtSqrd, _charPosition, _frameTimeInSeconds);
             }
             else {
                 this.move(diff, mgtSqrd, _frameTimeInSeconds);
@@ -749,7 +812,7 @@ var Script;
             }
             // rotate visually to face correct direction
             let dir = Math.sign(_diff.x);
-            if (dir !== this.prevDirection && dir) {
+            if (dir !== this.prevDirection && !dir) {
                 this.prevDirection = dir;
                 if (this.prevDirection > 0) {
                     this.node.mtxLocal.rotation = new Script.ƒ.Vector3();
@@ -787,7 +850,7 @@ var Script;
                 else if (!this.currentlyActiveAttack.done) {
                     // time to execute attack
                     this.currentlyActiveAttack.done = true;
-                    this.currentlyActiveAttack.attack();
+                    this.currentlyActiveAttack.attack.call(this);
                     this.setCentralAnimator(this.currentlyActiveAttack.cooldownSprite, true);
                 }
                 else {
@@ -807,7 +870,7 @@ var Script;
                 return;
             if (!this.currentlyActiveAttack.events[_event.type])
                 return;
-            this.currentlyActiveAttack.events[_event.type](_event);
+            this.currentlyActiveAttack.events[_event.type].call(this, _event);
         };
         getDamaged(_dmg) {
             this.health -= _dmg;
@@ -894,24 +957,24 @@ var Script;
 var Script;
 (function (Script) {
     class CardManager {
-        #currentlyActiveCards;
-        #cumulativeEffects = {};
+        currentlyActiveCards;
+        cumulativeEffects = {};
         getEffectAbsolute(_effect) {
-            return this.#cumulativeEffects.absolute[_effect] ?? 0;
+            return this.cumulativeEffects.absolute?.[_effect] ?? 0;
         }
         getEffectMultiplier(_effect) {
-            return this.#cumulativeEffects.multiplier[_effect] ?? 1;
+            return this.cumulativeEffects.multiplier?.[_effect] ?? 1;
         }
         updateEffects() {
-            this.#cumulativeEffects = {};
-            for (let card of this.#currentlyActiveCards) {
+            this.cumulativeEffects = {};
+            for (let card of this.currentlyActiveCards) {
                 let effects = card.effects;
                 let effect;
                 for (effect in effects.absolute) {
-                    this.#cumulativeEffects.absolute[effect] = (this.#cumulativeEffects.absolute[effect] ?? 0) + effects.absolute[effect];
+                    this.cumulativeEffects.absolute[effect] = (this.cumulativeEffects.absolute[effect] ?? 0) + effects.absolute[effect];
                 }
                 for (effect in effects.multiplier) {
-                    this.#cumulativeEffects.multiplier[effect] = (this.#cumulativeEffects.multiplier[effect] ?? 1) * effects.multiplier[effect];
+                    this.cumulativeEffects.multiplier[effect] = (this.cumulativeEffects.multiplier[effect] ?? 1) * effects.multiplier[effect];
                 }
             }
         }
@@ -951,7 +1014,7 @@ var Script;
         config;
         enemyScripts = [];
         enemies = [];
-        enemy;
+        enemyGraph;
         enemyNode;
         constructor(provider) {
             this.provider = provider;
@@ -959,7 +1022,7 @@ var Script;
                 return;
             document.addEventListener("interactiveViewportStarted", this.start);
             Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
-            Script.ƒ.Project.addEventListener("resourcesLoaded" /* ƒ.EVENT.RESOURCES_LOADED */, this.loaded.bind(this));
+            Script.ƒ.Project.addEventListener("resourcesLoaded" /* ƒ.EVENT.RESOURCES_LOADED */, this.loaded);
             this.characterManager = provider.get(Script.CharacterManager);
             this.config = provider.get(Script.Config);
         }
@@ -971,7 +1034,7 @@ var Script;
             this.enemyNode = viewport.getBranch().getChildrenByName("enemies")[0];
         };
         loaded = async () => {
-            this.enemy = await Script.ƒ.Project.getResourcesByName("enemy")[0];
+            this.enemyGraph = await Script.ƒ.Project.getResourcesByName("enemy")[0];
         };
         update = () => {
             if (Script.gameState !== Script.GAMESTATE.PLAYING)
@@ -994,10 +1057,10 @@ var Script;
             // debug: spawn two different enemies
             let newEnemyGraphInstance = Script.ƒ.Recycler.get(Script.EnemyGraphInstance);
             if (!newEnemyGraphInstance.initialized) {
-                await newEnemyGraphInstance.set(this.enemy);
+                await newEnemyGraphInstance.set(this.enemyGraph);
             }
             newEnemyGraphInstance.mtxLocal.translation = this.characterManager.character.node.mtxWorld.translation;
-            newEnemyGraphInstance.mtxLocal.translate(Script.ƒ.Vector3.NORMALIZATION(new Script.ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), 10));
+            newEnemyGraphInstance.mtxLocal.translate(Script.ƒ.Vector3.NORMALIZATION(new Script.ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), 5));
             this.enemyNode.addChild(newEnemyGraphInstance);
             this.enemies.push(newEnemyGraphInstance);
             let enemyScript = newEnemyGraphInstance.getComponent(Script.Enemy);
@@ -1010,10 +1073,14 @@ var Script;
                         attackSprite: animAttackSprite,
                         cooldownSprite: this.config.getAnimation("toaster", "idle"),
                         windUp: animAttackSprite.frames / animAttackSprite.fps,
-                        attack: () => { console.log("time for an attack!"); },
-                        movement: () => { },
+                        attack: function () { console.log("time for an attack!"); },
+                        movement: function () { },
                         events: {
-                            "fire": (_event) => { console.log("firing toast!"); },
+                            "fire": function () {
+                                Script.provider.get(Script.ProjectileManager).createProjectile({
+                                    direction: Script.ƒ.Vector3.DIFFERENCE(Script.provider.get(Script.CharacterManager).character.node.mtxWorld.translation, this.node.mtxWorld.translation), target: Script.ProjectileTarget.PLAYER
+                                }, this.node.mtxWorld.translation);
+                            },
                         }
                     }],
                 speed: 0.5,
@@ -1022,10 +1089,10 @@ var Script;
             this.enemyScripts.push(enemyScript);
             newEnemyGraphInstance = Script.ƒ.Recycler.get(Script.EnemyGraphInstance);
             if (!newEnemyGraphInstance.initialized) {
-                await newEnemyGraphInstance.set(this.enemy);
+                await newEnemyGraphInstance.set(this.enemyGraph);
             }
             newEnemyGraphInstance.mtxLocal.translation = this.characterManager.character.node.mtxWorld.translation;
-            newEnemyGraphInstance.mtxLocal.translate(Script.ƒ.Vector3.NORMALIZATION(new Script.ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), 10));
+            newEnemyGraphInstance.mtxLocal.translate(Script.ƒ.Vector3.NORMALIZATION(new Script.ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), 5));
             this.enemyNode.addChild(newEnemyGraphInstance);
             this.enemies.push(newEnemyGraphInstance);
             enemyScript = newEnemyGraphInstance.getComponent(Script.Enemy);
@@ -1037,7 +1104,7 @@ var Script;
             this.enemyScripts.push(enemyScript);
             newEnemyGraphInstance = Script.ƒ.Recycler.get(Script.EnemyGraphInstance);
             if (!newEnemyGraphInstance.initialized) {
-                await newEnemyGraphInstance.set(this.enemy);
+                await newEnemyGraphInstance.set(this.enemyGraph);
             }
             newEnemyGraphInstance.mtxLocal.translation = this.characterManager.character.node.mtxWorld.translation.clone;
             newEnemyGraphInstance.mtxLocal.translate(new Script.ƒ.Vector3(0, 10));
@@ -1055,9 +1122,74 @@ var Script;
             let index = this.enemyScripts.findIndex((n) => n === _enemy);
             if (index >= 0) {
                 this.enemyScripts.splice(index, 1);
+                Script.ƒ.Recycler.storeMultiple(this.enemies.splice(index, 1));
             }
         }
     }
     Script.EnemyManager = EnemyManager;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    class ProjectileManager {
+        provider;
+        characterManager;
+        config;
+        projectileScripts = [];
+        projectiles = [];
+        static projectileGraph;
+        projectilesNode;
+        constructor(provider) {
+            this.provider = provider;
+            if (Script.ƒ.Project.mode === Script.ƒ.MODE.EDITOR)
+                return;
+            document.addEventListener("interactiveViewportStarted", this.start);
+            Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
+            Script.ƒ.Project.addEventListener("resourcesLoaded" /* ƒ.EVENT.RESOURCES_LOADED */, this.loaded);
+            this.characterManager = provider.get(Script.CharacterManager);
+            this.config = provider.get(Script.Config);
+        }
+        setup() {
+            Script.ƒ.Debug.log("EnemyManager setup");
+        }
+        start = (_event) => {
+            let viewport = _event.detail;
+            this.projectilesNode = viewport.getBranch().getChildrenByName("projectiles")[0];
+        };
+        loaded = async () => {
+            ProjectileManager.projectileGraph = await Script.ƒ.Project.getResourcesByName("projectile")[0];
+        };
+        update = () => {
+            if (Script.gameState !== Script.GAMESTATE.PLAYING)
+                return;
+            let character = this.characterManager.character;
+            if (!character)
+                return;
+            // update projectiles
+            let time = Script.ƒ.Loop.timeFrameGame / 1000;
+            for (let projectile of this.projectileScripts) {
+                projectile.update(character.node.mtxWorld.translation, time);
+            }
+        };
+        removeProjectile(_projectile) {
+            let index = this.projectileScripts.findIndex((n) => n === _projectile);
+            if (index >= 0) {
+                this.projectileScripts.splice(index, 1);
+                Script.ƒ.Recycler.storeMultiple(this.projectiles.splice(index, 1));
+            }
+        }
+        async createProjectile(_options, _position, _parent = this.projectilesNode) {
+            let pgi = Script.ƒ.Recycler.get(Script.ProjectileGraphInstance);
+            if (!pgi.initialized) {
+                await pgi.set(ProjectileManager.projectileGraph);
+            }
+            let p = pgi.getComponent(Script.ProjectileComponent);
+            p.setup(_options, Script.provider.get(Script.CardManager));
+            pgi.mtxLocal.translation = _position;
+            _parent.addChild(pgi);
+            this.projectileScripts.push(p);
+            this.projectiles.push(pgi);
+        }
+    }
+    Script.ProjectileManager = ProjectileManager;
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map

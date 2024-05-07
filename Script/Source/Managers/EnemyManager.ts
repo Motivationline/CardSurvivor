@@ -4,14 +4,14 @@ namespace Script {
         private config: Config;
         private enemyScripts: Enemy[] = [];
         private enemies: EnemyGraphInstance[] = [];
-        private enemy: ƒ.Graph;
+        private enemyGraph: ƒ.Graph;
         private enemyNode: ƒ.Node;
 
         constructor(private readonly provider: Provider) {
             if (ƒ.Project.mode === ƒ.MODE.EDITOR) return;
             document.addEventListener("interactiveViewportStarted", <EventListener>this.start);
             ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
-            ƒ.Project.addEventListener(ƒ.EVENT.RESOURCES_LOADED, this.loaded.bind(this));
+            ƒ.Project.addEventListener(ƒ.EVENT.RESOURCES_LOADED, this.loaded);
             this.characterManager = provider.get(CharacterManager);
             this.config = provider.get(Config);
         }
@@ -25,7 +25,7 @@ namespace Script {
             this.enemyNode = viewport.getBranch().getChildrenByName("enemies")[0];
         }
         private loaded = async () => {
-            this.enemy = <ƒ.Graph>await ƒ.Project.getResourcesByName("enemy")[0];
+            this.enemyGraph = <ƒ.Graph>await ƒ.Project.getResourcesByName("enemy")[0];
         }
         private update = () => {
             if (gameState !== GAMESTATE.PLAYING) return;
@@ -50,10 +50,10 @@ namespace Script {
             // debug: spawn two different enemies
             let newEnemyGraphInstance = ƒ.Recycler.get(EnemyGraphInstance);
             if (!newEnemyGraphInstance.initialized) {
-                await newEnemyGraphInstance.set(this.enemy);
+                await newEnemyGraphInstance.set(this.enemyGraph);
             }
             newEnemyGraphInstance.mtxLocal.translation = this.characterManager.character.node.mtxWorld.translation;
-            newEnemyGraphInstance.mtxLocal.translate(ƒ.Vector3.NORMALIZATION(new ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), 10));
+            newEnemyGraphInstance.mtxLocal.translate(ƒ.Vector3.NORMALIZATION(new ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), 5));
             this.enemyNode.addChild(newEnemyGraphInstance);
             this.enemies.push(newEnemyGraphInstance);
             let enemyScript = newEnemyGraphInstance.getComponent(Enemy);
@@ -66,10 +66,15 @@ namespace Script {
                     attackSprite: animAttackSprite,
                     cooldownSprite: this.config.getAnimation("toaster", "idle"),
                     windUp: animAttackSprite.frames / animAttackSprite.fps,
-                    attack: () => { console.log("time for an attack!") },
-                    movement: () => { },
+                    attack: function() { console.log("time for an attack!") },
+                    movement: function() { },
                     events: {
-                        "fire": (_event: CustomEvent) => { console.log("firing toast!"); },
+                        "fire": function() {
+                            provider.get(ProjectileManager).createProjectile({
+                                direction: ƒ.Vector3.DIFFERENCE(provider.get(CharacterManager).character.node.mtxWorld.translation, this.node.mtxWorld.translation), target: ProjectileTarget.PLAYER
+                            },
+                                this.node.mtxWorld.translation);
+                        },
                     }
                 }],
                 speed: 0.5,
@@ -79,10 +84,10 @@ namespace Script {
 
             newEnemyGraphInstance = ƒ.Recycler.get(EnemyGraphInstance);
             if (!newEnemyGraphInstance.initialized) {
-                await newEnemyGraphInstance.set(this.enemy);
+                await newEnemyGraphInstance.set(this.enemyGraph);
             }
             newEnemyGraphInstance.mtxLocal.translation = this.characterManager.character.node.mtxWorld.translation;
-            newEnemyGraphInstance.mtxLocal.translate(ƒ.Vector3.NORMALIZATION(new ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), 10));
+            newEnemyGraphInstance.mtxLocal.translate(ƒ.Vector3.NORMALIZATION(new ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), 5));
             this.enemyNode.addChild(newEnemyGraphInstance);
             this.enemies.push(newEnemyGraphInstance);
             enemyScript = newEnemyGraphInstance.getComponent(Enemy);
@@ -96,7 +101,7 @@ namespace Script {
 
             newEnemyGraphInstance = ƒ.Recycler.get(EnemyGraphInstance);
             if (!newEnemyGraphInstance.initialized) {
-                await newEnemyGraphInstance.set(this.enemy);
+                await newEnemyGraphInstance.set(this.enemyGraph);
             }
             newEnemyGraphInstance.mtxLocal.translation = this.characterManager.character.node.mtxWorld.translation.clone;
             newEnemyGraphInstance.mtxLocal.translate(new ƒ.Vector3(0, 10));
@@ -115,6 +120,7 @@ namespace Script {
             let index = this.enemyScripts.findIndex((n) => n === _enemy);
             if (index >= 0) {
                 this.enemyScripts.splice(index, 1);
+                ƒ.Recycler.storeMultiple(this.enemies.splice(index, 1));
             }
         }
     }

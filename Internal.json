@@ -28,6 +28,14 @@
             "components": {},
             "children": []
           }
+        },
+        {
+          "ƒ.Node": {
+            "name": "projectiles",
+            "active": true,
+            "components": {},
+            "children": []
+          }
         }
       ],
       "idResource": "Graph|2024-05-02T11:53:45.258Z|54899",
@@ -676,18 +684,6 @@
       "type": "Graph"
     }
   },
-  "TextureImage|2024-05-03T08:57:12.550Z|06241": {
-    "ƒ.TextureImage": {
-      "url": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer2.png",
-      "type": "TextureImage",
-      "Texture": {
-        "idResource": "TextureImage|2024-05-03T08:57:12.550Z|06241",
-        "name": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer2.png",
-        "mipmap": "CRISP",
-        "wrap": "REPEAT"
-      }
-    }
-  },
   "Material|2024-05-03T09:37:44.397Z|89821": {
     "ƒ.Material": {
       "name": "EnemyBaseTexture",
@@ -696,8 +692,20 @@
       "coat": {
         "ƒ.CoatTextured": {
           "color": "[1, 1, 1, 1]",
-          "idTexture": "TextureImage|2024-05-03T08:57:12.550Z|06241"
+          "idTexture": "TextureImage|2024-05-06T07:00:55.322Z|77134"
         }
+      }
+    }
+  },
+  "TextureImage|2024-05-06T07:00:55.322Z|77134": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Enemies\\Micorwave\\Microwave_walk_01.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-06T07:00:55.322Z|77134",
+        "name": "Assets\\Enemies\\Micorwave\\Microwave_walk_01.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
       }
     }
   },
@@ -785,18 +793,6 @@
       "Texture": {
         "idResource": "TextureImage|2024-05-06T07:00:52.070Z|64898",
         "name": "Assets\\Enemies\\Closet\\Closet_walk_01.png",
-        "mipmap": "CRISP",
-        "wrap": "REPEAT"
-      }
-    }
-  },
-  "TextureImage|2024-05-06T07:00:55.322Z|77134": {
-    "ƒ.TextureImage": {
-      "url": "Assets\\Enemies\\Micorwave\\Microwave_walk_01.png",
-      "type": "TextureImage",
-      "Texture": {
-        "idResource": "TextureImage|2024-05-06T07:00:55.322Z|77134",
-        "name": "Assets\\Enemies\\Micorwave\\Microwave_walk_01.png",
         "mipmap": "CRISP",
         "wrap": "REPEAT"
       }
@@ -954,18 +950,6 @@
       }
     }
   },
-  "TextureImage|2024-05-07T11:33:38.679Z|26510": {
-    "ƒ.TextureImage": {
-      "url": "Assets\\Enemies\\Motor\\Motor_walk_01.png",
-      "type": "TextureImage",
-      "Texture": {
-        "idResource": "TextureImage|2024-05-07T11:33:38.679Z|26510",
-        "name": "Assets\\Enemies\\Motor\\Motor_walk_01.png",
-        "mipmap": "CRISP",
-        "wrap": "REPEAT"
-      }
-    }
-  },
   "TextureImage|2024-05-07T11:33:51.821Z|89717": {
     "ƒ.TextureImage": {
       "url": "Assets\\Enemies\\Motor\\Motor_walk_01.png",
@@ -976,6 +960,121 @@
         "mipmap": "CRISP",
         "wrap": "REPEAT"
       }
+    }
+  },
+  "Material|2024-05-07T12:39:47.128Z|21510": {
+    "ƒ.Material": {
+      "name": "Toast",
+      "idResource": "Material|2024-05-07T12:39:47.128Z|21510",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-05-07T12:40:08.563Z|41614"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-05-07T12:40:08.563Z|41614": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Projectiles\\Toast.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-07T12:40:08.563Z|41614",
+        "name": "Assets\\Projectiles\\Toast.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Graph|2024-05-07T12:38:58.660Z|53689": {
+    "ƒ.Graph": {
+      "name": "projectile",
+      "active": true,
+      "components": {
+        "ProjectileComponent": [
+          {
+            "Script.ProjectileComponent": {
+              "active": true
+            }
+          }
+        ],
+        "ComponentTransform": [
+          {
+            "ƒ.ComponentTransform": {
+              "local": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "ComponentMesh": [
+          {
+            "ƒ.ComponentMesh": {
+              "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
+              "pivot": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "ComponentMaterial": [
+          {
+            "ƒ.ComponentMaterial": {
+              "sortForAlpha": false,
+              "clrPrimary": "[1, 1, 1, 1]",
+              "clrSecondary": "[1, 1, 1, 1]",
+              "pivot": {
+                "translation": "[0, 0]",
+                "rotation": 0,
+                "scaling": "[1, 1]"
+              },
+              "Component": {
+                "active": true
+              },
+              "idMaterial": "Material|2024-05-07T12:39:47.128Z|21510"
+            }
+          }
+        ],
+        "ComponentRigidbody": [
+          {
+            "ƒ.ComponentRigidbody": {
+              "initialization": "TO_PIVOT",
+              "friction": 0.2,
+              "restitution": 0.2,
+              "mass": 1,
+              "dampTranslation": 0.1,
+              "dampRotation": 0.1,
+              "effectGravity": 1,
+              "typeBody": "KINEMATIC",
+              "typeCollider": "SPHERE",
+              "isTrigger": true,
+              "id": 1,
+              "pivot": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ]
+      },
+      "children": [],
+      "idResource": "Graph|2024-05-07T12:38:58.660Z|53689",
+      "type": "Graph"
     }
   }
 }

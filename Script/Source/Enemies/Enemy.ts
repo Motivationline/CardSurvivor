@@ -111,7 +111,7 @@ namespace Script {
             let mgtSqrd = diff.magnitudeSquared;
 
             if (this.currentlyActiveAttack && this.currentlyActiveAttack.movement && this.currentlyActiveAttack.started) {
-                this.currentlyActiveAttack.movement(diff, mgtSqrd, _charPosition, _frameTimeInSeconds);
+                this.currentlyActiveAttack.movement.call(this, diff, mgtSqrd, _charPosition, _frameTimeInSeconds);
             } else {
                 this.move(diff, mgtSqrd, _frameTimeInSeconds);
             }
@@ -149,7 +149,7 @@ namespace Script {
 
             // rotate visually to face correct direction
             let dir = Math.sign(_diff.x);
-            if (dir !== this.prevDirection && dir) {
+            if (dir !== this.prevDirection && !dir) {
                 this.prevDirection = dir;
                 if (this.prevDirection > 0) {
                     this.node.mtxLocal.rotation = new ƒ.Vector3();
@@ -186,7 +186,7 @@ namespace Script {
                 } else if (!this.currentlyActiveAttack.done) {
                     // time to execute attack
                     this.currentlyActiveAttack.done = true;
-                    this.currentlyActiveAttack.attack();
+                    this.currentlyActiveAttack.attack.call(this);
                     this.setCentralAnimator(this.currentlyActiveAttack.cooldownSprite, true);
                 } else {
                     //we're on cooldown now
@@ -205,7 +205,7 @@ namespace Script {
         private eventListener = (_event: CustomEvent) => {
             if(!this.currentlyActiveAttack.events) return;
             if(!this.currentlyActiveAttack.events[_event.type]) return;
-            this.currentlyActiveAttack.events[_event.type](_event);
+            this.currentlyActiveAttack.events[_event.type].call(this, _event);
 
         }
 

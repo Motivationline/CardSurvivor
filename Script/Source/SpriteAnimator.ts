@@ -57,7 +57,7 @@ namespace Script {
             for (let frame = _prevFrame + 1; frame <= _currentFrame; frame++) {
                 for (let event of this.sprite.events) {
                     if (event.frame === frame % this.sprite.frames) {
-                        this.matrix.dispatchEvent(new CustomEvent(event.event, { detail: { frame, sprite: this.sprite } }));
+                        this.matrix.dispatchEvent(new CustomEvent(event.event, { detail: { frame, sprite: this.sprite }, bubbles: true}));
                     }
                 }
             }

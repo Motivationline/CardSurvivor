@@ -92,27 +92,55 @@ declare namespace Script {
     }
 }
 declare namespace Script {
-    class ProjectileComponent extends ƒ.Component implements Projectile {
-        direction: ƒ.Vector3;
-        target: ƒ.Node;
-        track: number;
-        size: number;
-        speed: number;
-        range: number;
-        piercing: number;
-        protected static defaults: Projectile;
-        setup(_options: Partial<Projectile>, manager: CardManager): void;
-        update(): void;
-        private move;
+    export enum ProjectileTarget {
+        PLAYER = 0,
+        ENEMY = 1
     }
-    interface Projectile {
+    export class ProjectileComponent extends ƒ.Component implements Projectile {
+        tracking: ProjectileTracking;
         direction: ƒ.Vector3;
-        target: ƒ.Node;
-        track: number;
+        targetPosition: ƒ.Vector3;
+        damage: number;
         size: number;
         speed: number;
         range: number;
         piercing: number;
+        target: ProjectileTarget;
+        protected static defaults: Projectile;
+        constructor();
+        protected init: () => void;
+        setup(_options: Partial<Projectile>, _manager: CardManager): void;
+        update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
+        protected move(): void;
+        protected onTriggerEnter: (_event: CustomEvent) => void;
+        protected onTriggerExit: (_event: CustomEvent) => void;
+    }
+    export interface Projectile {
+        direction: ƒ.Vector3;
+        damage: number;
+        targetPosition: ƒ.Vector3;
+        tracking: ProjectileTracking;
+        size: number;
+        speed: number;
+        range: number;
+        piercing: number;
+        target: ProjectileTarget;
+    }
+    interface ProjectileTracking {
+        strength?: number;
+        stopTrackingAfter?: number;
+        stopTrackingInRadius?: number;
+        target: ƒ.Node;
+    }
+    export {};
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
+    class ProjectileGraphInstance extends ƒ.GraphInstance implements ƒ.Recycable {
+        initialized: boolean;
+        constructor();
+        recycle(): void;
+        set(_graph: ƒ.Graph): Promise<void>;
     }
 }
 declare namespace Script {
@@ -266,7 +294,8 @@ declare namespace Script {
 }
 declare namespace Script {
     class CardManager {
-        #private;
+        private currentlyActiveCards;
+        private cumulativeEffects;
         getEffectAbsolute(_effect: PassiveCardEffect): number;
         getEffectMultiplier(_effect: PassiveCardEffect): number;
         updateEffects(): void;
@@ -287,7 +316,7 @@ declare namespace Script {
         private config;
         private enemyScripts;
         private enemies;
-        private enemy;
+        private enemyGraph;
         private enemyNode;
         constructor(provider: Provider);
         setup(): void;
@@ -296,5 +325,23 @@ declare namespace Script {
         private update;
         private spawnEnemies;
         removeEnemy(_enemy: Enemy): void;
+    }
+}
+declare namespace Script {
+    class ProjectileManager {
+        private readonly provider;
+        private characterManager;
+        private config;
+        private projectileScripts;
+        private projectiles;
+        static projectileGraph: ƒ.Graph;
+        private projectilesNode;
+        constructor(provider: Provider);
+        setup(): void;
+        private start;
+        private loaded;
+        private update;
+        removeProjectile(_projectile: ProjectileComponent): void;
+        createProjectile(_options: Partial<Projectile>, _position: ƒ.Vector3, _parent?: ƒ.Node): Promise<void>;
     }
 }
