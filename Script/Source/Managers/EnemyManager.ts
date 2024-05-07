@@ -66,14 +66,20 @@ namespace Script {
                     attackSprite: animAttackSprite,
                     cooldownSprite: this.config.getAnimation("toaster", "idle"),
                     windUp: animAttackSprite.frames / animAttackSprite.fps,
-                    attack: function() { console.log("time for an attack!") },
-                    movement: function() { },
+                    attack: function () { console.log("time for an attack!") },
+                    movement: function () { },
                     events: {
-                        "fire": function() {
+                        "fire": function () {
                             provider.get(ProjectileManager).createProjectile({
-                                direction: ƒ.Vector3.DIFFERENCE(provider.get(CharacterManager).character.node.mtxWorld.translation, this.node.mtxWorld.translation), target: ProjectileTarget.PLAYER
+                                direction: ƒ.Vector3.DIFFERENCE(provider.get(CharacterManager).character.node.mtxWorld.translation, this.node.mtxWorld.translation),
+                                target: ProjectileTarget.PLAYER,
+                                speed: 3,
                             },
-                                this.node.mtxWorld.translation);
+                                ƒ.Vector3.SUM(
+                                    this.node.mtxWorld.translation,
+                                    ƒ.Vector3.Y(0.3)
+                                )
+                            );
                         },
                     }
                 }],

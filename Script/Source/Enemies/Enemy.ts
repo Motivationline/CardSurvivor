@@ -149,7 +149,7 @@ namespace Script {
 
             // rotate visually to face correct direction
             let dir = Math.sign(_diff.x);
-            if (dir !== this.prevDirection && !dir) {
+            if (dir !== this.prevDirection) {
                 this.prevDirection = dir;
                 if (this.prevDirection > 0) {
                     this.node.mtxLocal.rotation = new ƒ.Vector3();

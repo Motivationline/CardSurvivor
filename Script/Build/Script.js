@@ -472,10 +472,10 @@ var Script;
             this.direction = _options.direction;
             this.targetPosition = _options.targetPosition;
             this.tracking = _options.tracking;
-            this.damage = (_options.damage + _manager.getEffectAbsolute(Script.PassiveCardEffect.DAMAGE)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.DAMAGE);
-            this.size = (_options.size + _manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_SIZE)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_SIZE);
-            this.speed = (_options.speed + _manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_SPEED)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_SPEED);
-            this.range = (_options.range + _manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_RANGE)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_RANGE);
+            this.damage = _options.target === ProjectileTarget.PLAYER ? _options.damage : (_options.damage + _manager.getEffectAbsolute(Script.PassiveCardEffect.DAMAGE)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.DAMAGE);
+            this.size = _options.target === ProjectileTarget.PLAYER ? _options.size : (_options.size + _manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_SIZE)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_SIZE);
+            this.speed = _options.target === ProjectileTarget.PLAYER ? _options.speed : (_options.speed + _manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_SPEED)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_SPEED);
+            this.range = _options.target === ProjectileTarget.PLAYER ? _options.range : (_options.range + _manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_RANGE)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_RANGE);
             this.piercing = (_options.piercing + _manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_PIERCING)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_PIERCING);
             this.target = _options.target;
             this.node.mtxLocal.scaling = Script.ƒ.Vector3.ONE(this.size);
@@ -490,7 +490,7 @@ var Script;
                 this.direction = Script.ƒ.Vector3.DIFFERENCE(this.tracking.target.mtxWorld.translation, this.node.mtxWorld.translation);
             }
             let dir = this.direction.clone;
-            dir.normalize(Math.min(1, Script.ƒ.Loop.timeFrameGame / 1000));
+            dir.normalize(Math.min(1, Script.ƒ.Loop.timeFrameGame / 1000) * this.speed);
             this.node.mtxLocal.translate(dir);
         }
         onTriggerEnter = (_event) => {
@@ -812,7 +812,7 @@ var Script;
             }
             // rotate visually to face correct direction
             let dir = Math.sign(_diff.x);
-            if (dir !== this.prevDirection && !dir) {
+            if (dir !== this.prevDirection) {
                 this.prevDirection = dir;
                 if (this.prevDirection > 0) {
                     this.node.mtxLocal.rotation = new Script.ƒ.Vector3();
@@ -1078,8 +1078,10 @@ var Script;
                         events: {
                             "fire": function () {
                                 Script.provider.get(Script.ProjectileManager).createProjectile({
-                                    direction: Script.ƒ.Vector3.DIFFERENCE(Script.provider.get(Script.CharacterManager).character.node.mtxWorld.translation, this.node.mtxWorld.translation), target: Script.ProjectileTarget.PLAYER
-                                }, this.node.mtxWorld.translation);
+                                    direction: Script.ƒ.Vector3.DIFFERENCE(Script.provider.get(Script.CharacterManager).character.node.mtxWorld.translation, this.node.mtxWorld.translation),
+                                    target: Script.ProjectileTarget.PLAYER,
+                                    speed: 3,
+                                }, Script.ƒ.Vector3.SUM(this.node.mtxWorld.translation, Script.ƒ.Vector3.Y(0.3)));
                             },
                         }
                     }],

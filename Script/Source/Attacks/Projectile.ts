@@ -27,17 +27,17 @@ namespace Script {
             tracking: undefined
         }
 
-        constructor(){
+        constructor() {
             super();
-            
+
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
             this.addEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.init)
         }
-        
-        protected init = ()=>{
+
+        protected init = () => {
             this.removeEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.init)
-            
+
             // setup physics
             this.node.getComponent(ƒ.ComponentRigidbody).removeEventListener(ƒ.EVENT_PHYSICS.TRIGGER_ENTER, this.onTriggerEnter);
             this.node.getComponent(ƒ.ComponentRigidbody).removeEventListener(ƒ.EVENT_PHYSICS.TRIGGER_EXIT, this.onTriggerExit);
@@ -48,15 +48,15 @@ namespace Script {
             this.direction = _options.direction;
             this.targetPosition = _options.targetPosition;
             this.tracking = _options.tracking;
-            this.damage = (_options.damage + _manager.getEffectAbsolute(PassiveCardEffect.DAMAGE)) * _manager.getEffectMultiplier(PassiveCardEffect.DAMAGE);
-            this.size = (_options.size + _manager.getEffectAbsolute(PassiveCardEffect.PROJECTILE_SIZE)) * _manager.getEffectMultiplier(PassiveCardEffect.PROJECTILE_SIZE);
-            this.speed = (_options.speed + _manager.getEffectAbsolute(PassiveCardEffect.PROJECTILE_SPEED)) * _manager.getEffectMultiplier(PassiveCardEffect.PROJECTILE_SPEED);
-            this.range = (_options.range + _manager.getEffectAbsolute(PassiveCardEffect.PROJECTILE_RANGE)) * _manager.getEffectMultiplier(PassiveCardEffect.PROJECTILE_RANGE);
+            this.damage = _options.target === ProjectileTarget.PLAYER ? _options.damage : (_options.damage + _manager.getEffectAbsolute(PassiveCardEffect.DAMAGE)) * _manager.getEffectMultiplier(PassiveCardEffect.DAMAGE);
+            this.size = _options.target === ProjectileTarget.PLAYER ? _options.size : (_options.size + _manager.getEffectAbsolute(PassiveCardEffect.PROJECTILE_SIZE)) * _manager.getEffectMultiplier(PassiveCardEffect.PROJECTILE_SIZE);
+            this.speed = _options.target === ProjectileTarget.PLAYER ? _options.speed : (_options.speed + _manager.getEffectAbsolute(PassiveCardEffect.PROJECTILE_SPEED)) * _manager.getEffectMultiplier(PassiveCardEffect.PROJECTILE_SPEED);
+            this.range = _options.target === ProjectileTarget.PLAYER ? _options.range : (_options.range + _manager.getEffectAbsolute(PassiveCardEffect.PROJECTILE_RANGE)) * _manager.getEffectMultiplier(PassiveCardEffect.PROJECTILE_RANGE);
             this.piercing = (_options.piercing + _manager.getEffectAbsolute(PassiveCardEffect.PROJECTILE_PIERCING)) * _manager.getEffectMultiplier(PassiveCardEffect.PROJECTILE_PIERCING)
             this.target = _options.target;
 
             this.node.mtxLocal.scaling = ƒ.Vector3.ONE(this.size);
-            
+
             //TODO rotate projectile towards flight direction
         }
 
@@ -70,16 +70,16 @@ namespace Script {
                 this.direction = ƒ.Vector3.DIFFERENCE(this.tracking.target.mtxWorld.translation, this.node.mtxWorld.translation);
             }
             let dir = this.direction.clone;
-            dir.normalize(Math.min(1, ƒ.Loop.timeFrameGame / 1000));
+            dir.normalize(Math.min(1, ƒ.Loop.timeFrameGame / 1000) * this.speed);
             this.node.mtxLocal.translate(dir);
         }
 
         protected onTriggerEnter = (_event: CustomEvent) => {
             console.log("onTriggerEnter", _event);
-        } 
+        }
         protected onTriggerExit = (_event: CustomEvent) => {
             console.log("onTriggerExit", _event);
-        } 
+        }
     }
 
     export interface Projectile {
