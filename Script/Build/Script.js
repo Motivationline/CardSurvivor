@@ -534,6 +534,7 @@ var Script;
         attacks = [];
         moveSprite;
         desiredDistance = [0, 0];
+        directionOverride;
         currentlyDesiredDistance = [0, 0];
         currentlyDesiredDistanceSquared = [0, 0];
         dropXP = 0;
@@ -541,6 +542,25 @@ var Script;
         enemyManager;
         prevDirection;
         currentlyActiveAttack;
+        static defaults = {
+            attacks: [],
+            damage: 1,
+            speed: 1,
+            desiredDistance: [0, 0],
+            dropXP: 1,
+            health: 1,
+            knockbackMultiplier: 1,
+            moveSprite: {
+                fps: 1,
+                frames: 1,
+                height: 256,
+                width: 256,
+                totalHeight: 256,
+                totalWidth: 256,
+                wrapAfter: 1,
+            },
+            directionOverride: undefined,
+        };
         constructor() {
             super();
             if (Script.ƒ.Project.mode === Script.ƒ.MODE.EDITOR)
@@ -555,7 +575,7 @@ var Script;
             this.enemyManager = Script.provider.get(Script.EnemyManager);
         };
         setup(_options) {
-            _options = { ...this, ..._options };
+            _options = { ...Enemy.defaults, ..._options };
             this.speed = _options.speed;
             this.damage = _options.damage;
             this.knockbackMultiplier = _options.knockbackMultiplier;
@@ -564,6 +584,7 @@ var Script;
             this.moveSprite = _options.moveSprite;
             this.desiredDistance = _options.desiredDistance;
             this.dropXP = _options.dropXP;
+            this.directionOverride = _options.directionOverride;
             this.updateDesiredDistance(this.desiredDistance);
             this.setCentralAnimator(this.moveSprite);
         }
@@ -605,19 +626,29 @@ var Script;
             this.executeAttack(mgtSqrd, _frameTimeInSeconds);
         }
         move(_diff, _mgtSqrd, _frameTimeInSeconds) {
-            //move towards or away from player?
-            _diff.normalize(this.speed * Math.min(1, _frameTimeInSeconds));
-            if (_mgtSqrd < this.currentlyDesiredDistanceSquared[0]) {
-                // we're too close to the player, gotta move away
-                _diff.scale(-1);
+            if (this.directionOverride) {
+                // do we have a movement override?
+                let direction = this.directionOverride.clone;
+                direction.normalize(this.speed * Math.min(1, _frameTimeInSeconds));
+                //TODO: change to physics based movement
+                this.node.mtxLocal.translate(direction, false);
             }
-            else if (_mgtSqrd > this.currentlyDesiredDistanceSquared[0] && _mgtSqrd < this.currentlyDesiredDistanceSquared[1]) {
-                // we're in a good distance to the player, no need to move further
-                _diff = Script.ƒ.Vector3.ZERO();
-                //TODO: set idle animation
+            else {
+                // normal movement
+                _diff.normalize(this.speed * Math.min(1, _frameTimeInSeconds));
+                //move towards or away from player?
+                if (_mgtSqrd < this.currentlyDesiredDistanceSquared[0]) {
+                    // we're too close to the player, gotta move away
+                    _diff.scale(-1);
+                }
+                else if (_mgtSqrd > this.currentlyDesiredDistanceSquared[0] && _mgtSqrd < this.currentlyDesiredDistanceSquared[1]) {
+                    // we're in a good distance to the player, no need to move further
+                    _diff = Script.ƒ.Vector3.ZERO();
+                    //TODO: set idle animation
+                }
+                //TODO: change to physics based movement
+                this.node.mtxLocal.translate(_diff, false);
             }
-            //TODO: change to physics based movement
-            this.node.mtxLocal.translate(_diff, false);
             // rotate visually to face correct direction
             let dir = Math.sign(_diff.x);
             if (dir !== this.prevDirection) {
@@ -864,6 +895,30 @@ var Script;
                 },
                 speed: 0.5,
                 desiredDistance: [0, 0.2],
+            });
+            this.enemyScripts.push(enemyScript);
+            newEnemyGraphInstance = Script.ƒ.Recycler.get(Script.EnemyGraphInstance);
+            if (!newEnemyGraphInstance.initialized) {
+                await newEnemyGraphInstance.set(this.enemy);
+            }
+            newEnemyGraphInstance.mtxLocal.translation = this.characterManager.character.node.mtxWorld.translation.clone;
+            newEnemyGraphInstance.mtxLocal.translate(new Script.ƒ.Vector3(0, 10));
+            this.enemyNode.addChild(newEnemyGraphInstance);
+            this.enemies.push(newEnemyGraphInstance);
+            enemyScript = newEnemyGraphInstance.getComponent(Script.Enemy);
+            enemyScript.setup({
+                moveSprite: {
+                    fps: 24,
+                    frames: 24,
+                    height: 256,
+                    width: 256,
+                    totalHeight: 1280,
+                    totalWidth: 1280,
+                    wrapAfter: 5,
+                    material: await Script.ƒ.Project.getResource("Material|2024-05-06T13:29:52.414Z|09807"),
+                },
+                speed: 3,
+                directionOverride: Script.ƒ.Vector3.Y(-1),
             });
             this.enemyScripts.push(enemyScript);
         }

@@ -124,6 +124,7 @@ declare namespace Script {
         attacks: EnemyAttack[];
         moveSprite: AnimationSprite;
         desiredDistance: [number, number];
+        directionOverride: ƒ.Vector3;
         private currentlyDesiredDistance;
         private currentlyDesiredDistanceSquared;
         dropXP: number;
@@ -131,6 +132,7 @@ declare namespace Script {
         private enemyManager;
         private prevDirection;
         private currentlyActiveAttack;
+        private static defaults;
         constructor();
         private deserialized;
         setup(_options: Partial<EnemyOptions>): void;
@@ -151,6 +153,7 @@ declare namespace Script {
         moveSprite: AnimationSprite;
         desiredDistance: [number, number];
         dropXP: number;
+        directionOverride?: ƒ.Vector3;
     }
     interface EnemyAttack {
         requiredDistance: [number, number];

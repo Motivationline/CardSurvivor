@@ -7,6 +7,7 @@ namespace Script {
         public attacks: EnemyAttack[] = [];
         public moveSprite: AnimationSprite;
         public desiredDistance: [number, number] = [0, 0];
+        public directionOverride: ƒ.Vector3;
         private currentlyDesiredDistance: [number, number] = [0, 0];
         private currentlyDesiredDistanceSquared: [number, number] = [0, 0];
         public dropXP: number = 0;
@@ -15,6 +16,26 @@ namespace Script {
         private enemyManager: EnemyManager;
         private prevDirection: number;
         private currentlyActiveAttack: EnemyAttackActive;
+
+        private static defaults: EnemyOptions = {
+            attacks: [],
+            damage: 1,
+            speed: 1,
+            desiredDistance: [0, 0],
+            dropXP: 1,
+            health: 1,
+            knockbackMultiplier: 1,
+            moveSprite: {
+                fps: 1,
+                frames: 1,
+                height: 256,
+                width: 256,
+                totalHeight: 256,
+                totalWidth: 256,
+                wrapAfter: 1,
+            },
+            directionOverride: undefined,
+        }
 
         constructor() {
             super();
@@ -32,7 +53,7 @@ namespace Script {
         }
 
         setup(_options: Partial<EnemyOptions>) {
-            _options = { ...this, ..._options };
+            _options = { ...Enemy.defaults, ..._options };
             this.speed = _options.speed;
             this.damage = _options.damage;
             this.knockbackMultiplier = _options.knockbackMultiplier;
@@ -41,6 +62,7 @@ namespace Script {
             this.moveSprite = _options.moveSprite;
             this.desiredDistance = _options.desiredDistance;
             this.dropXP = _options.dropXP;
+            this.directionOverride = _options.directionOverride;
             this.updateDesiredDistance(this.desiredDistance);
             this.setCentralAnimator(this.moveSprite);
         }
@@ -87,19 +109,28 @@ namespace Script {
         }
 
         private move(_diff: ƒ.Vector3, _mgtSqrd: number, _frameTimeInSeconds: number) {
-            //move towards or away from player?
-            _diff.normalize(this.speed * Math.min(1, _frameTimeInSeconds));
+            if (this.directionOverride) {
+                // do we have a movement override?
+                let direction = this.directionOverride.clone;
+                direction.normalize(this.speed * Math.min(1, _frameTimeInSeconds));
+                //TODO: change to physics based movement
+                this.node.mtxLocal.translate(direction, false);
+            } else {
+                // normal movement
+                _diff.normalize(this.speed * Math.min(1, _frameTimeInSeconds));
 
-            if (_mgtSqrd < this.currentlyDesiredDistanceSquared[0]) {
-                // we're too close to the player, gotta move away
-                _diff.scale(-1);
-            } else if (_mgtSqrd > this.currentlyDesiredDistanceSquared[0] && _mgtSqrd < this.currentlyDesiredDistanceSquared[1]) {
-                // we're in a good distance to the player, no need to move further
-                _diff = ƒ.Vector3.ZERO();
-                //TODO: set idle animation
+                //move towards or away from player?
+                if (_mgtSqrd < this.currentlyDesiredDistanceSquared[0]) {
+                    // we're too close to the player, gotta move away
+                    _diff.scale(-1);
+                } else if (_mgtSqrd > this.currentlyDesiredDistanceSquared[0] && _mgtSqrd < this.currentlyDesiredDistanceSquared[1]) {
+                    // we're in a good distance to the player, no need to move further
+                    _diff = ƒ.Vector3.ZERO();
+                    //TODO: set idle animation
+                }
+                //TODO: change to physics based movement
+                this.node.mtxLocal.translate(_diff, false);
             }
-            //TODO: change to physics based movement
-            this.node.mtxLocal.translate(_diff, false);
 
             // rotate visually to face correct direction
             let dir = Math.sign(_diff.x);
@@ -173,6 +204,7 @@ namespace Script {
         moveSprite: AnimationSprite;
         desiredDistance: [number, number];
         dropXP: number;
+        directionOverride?: ƒ.Vector3;
     }
 
     export interface EnemyAttack {

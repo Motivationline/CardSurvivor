@@ -49,7 +49,7 @@
       "coat": {
         "ƒ.CoatTextured": {
           "color": "[1, 1, 1, 1]",
-          "idTexture": "TextureImage|2024-05-03T11:08:44.440Z|80004"
+          "idTexture": "TextureImage|2024-05-03T11:58:41.522Z|76435"
         }
       }
     }
@@ -74,7 +74,7 @@
       "coat": {
         "ƒ.CoatTextured": {
           "color": "[1, 1, 1, 1]",
-          "idTexture": "TextureImage|2024-05-03T11:08:44.440Z|17242"
+          "idTexture": "TextureImage|2024-05-03T11:58:41.522Z|58044"
         }
       }
     }
@@ -99,7 +99,7 @@
       "coat": {
         "ƒ.CoatTextured": {
           "color": "[1, 1, 1, 1]",
-          "idTexture": "TextureImage|2024-05-03T11:08:44.440Z|89065"
+          "idTexture": "TextureImage|2024-05-03T11:58:41.522Z|31908"
         }
       }
     }
@@ -124,7 +124,7 @@
       "coat": {
         "ƒ.CoatTextured": {
           "color": "[1, 1, 1, 1]",
-          "idTexture": "TextureImage|2024-05-03T11:08:44.440Z|87336"
+          "idTexture": "TextureImage|2024-05-03T11:58:41.522Z|93492"
         }
       }
     }
@@ -149,7 +149,7 @@
       "coat": {
         "ƒ.CoatTextured": {
           "color": "[1, 1, 1, 1]",
-          "idTexture": "TextureImage|2024-05-03T11:08:44.440Z|05684"
+          "idTexture": "TextureImage|2024-05-03T11:58:41.522Z|08873"
         }
       }
     }
@@ -174,7 +174,7 @@
       "coat": {
         "ƒ.CoatTextured": {
           "color": "[1, 1, 1, 1]",
-          "idTexture": "TextureImage|2024-05-03T11:08:44.440Z|38489"
+          "idTexture": "TextureImage|2024-05-03T11:58:41.522Z|82599"
         }
       }
     }
@@ -199,7 +199,7 @@
       "coat": {
         "ƒ.CoatTextured": {
           "color": "[1, 1, 1, 1]",
-          "idTexture": "TextureImage|2024-05-03T11:08:44.440Z|74472"
+          "idTexture": "TextureImage|2024-05-03T11:58:41.522Z|77653"
         }
       }
     }
@@ -675,8 +675,7 @@
               "idMaterial": "Material|2024-05-03T09:37:44.397Z|89821"
             }
           }
-        ],
-        "ComponentGraphFilter": []
+        ]
       },
       "children": [],
       "idResource": "Graph|2024-05-03T09:17:54.314Z|34670",

@@ -112,6 +112,32 @@ namespace Script {
                 desiredDistance: [0, 0.2],
             });
             this.enemyScripts.push(enemyScript);
+
+
+            newEnemyGraphInstance = ƒ.Recycler.get(EnemyGraphInstance);
+            if (!newEnemyGraphInstance.initialized) {
+                await newEnemyGraphInstance.set(this.enemy);
+            }
+            newEnemyGraphInstance.mtxLocal.translation = this.characterManager.character.node.mtxWorld.translation.clone;
+            newEnemyGraphInstance.mtxLocal.translate(new ƒ.Vector3(0, 10));
+            this.enemyNode.addChild(newEnemyGraphInstance);
+            this.enemies.push(newEnemyGraphInstance);
+            enemyScript = newEnemyGraphInstance.getComponent(Enemy);
+            enemyScript.setup({
+                moveSprite: {
+                    fps: 24,
+                    frames: 24,
+                    height: 256,
+                    width: 256,
+                    totalHeight: 1280,
+                    totalWidth: 1280,
+                    wrapAfter: 5,
+                    material: <ƒ.Material>await ƒ.Project.getResource("Material|2024-05-06T13:29:52.414Z|09807"),
+                },
+                speed: 3,
+                directionOverride: ƒ.Vector3.Y(-1),
+            });
+            this.enemyScripts.push(enemyScript);
         }
 
         public removeEnemy(_enemy: Enemy) {
