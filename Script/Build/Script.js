@@ -38,6 +38,28 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
+    async function initI18n(..._languages) {
+        let resources = {};
+        for (let lang of _languages) {
+            try {
+                let resource = await (await fetch(`Text/${lang}.json`)).json();
+                resources[lang] = { translation: resource };
+            }
+            catch (error) {
+                console.error(`failed to load language ${lang} due to error:`, error);
+            }
+        }
+        i18next.init({
+            lng: "en",
+            fallbackLng: "de",
+            resources,
+            debug: true,
+        });
+    }
+    Script.initI18n = initI18n;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
     class Provider {
         items;
         constructor() {
@@ -429,11 +451,71 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
+    let PassiveCardEffect;
+    (function (PassiveCardEffect) {
+        PassiveCardEffect["COOLDOWN_REDUCTION"] = "cooldownReduction";
+        PassiveCardEffect["PROJECTILE_SIZE"] = "projectileSize";
+        PassiveCardEffect["PROJECTILE_SPEED"] = "projectileSpeed";
+        PassiveCardEffect["PROJECTILE_AMOUNT"] = "projectileAmount";
+        PassiveCardEffect["PROJECTILE_RANGE"] = "projectileRange";
+        PassiveCardEffect["PROJECTILE_PIERCING"] = "projectilePiercing";
+        PassiveCardEffect["DAMAGE"] = "damage";
+        PassiveCardEffect["EFFECT_DURATION"] = "effectDuration";
+        PassiveCardEffect["WEAPON_DURATION"] = "weaponDuration";
+        PassiveCardEffect["KNOCKBACK"] = "knockback";
+        PassiveCardEffect["CRIT_CHANCE"] = "criticalHitChance";
+        PassiveCardEffect["CRIT_DAMAGE"] = "critialHitDamage";
+        PassiveCardEffect["PLAYER_HEALTH"] = "playerHealth";
+        PassiveCardEffect["PLAYER_REGENERATION"] = "playerRegeneration";
+        PassiveCardEffect["COLLECTION_RADIUS"] = "collectionRadius";
+        PassiveCardEffect["DAMAGE_REDUCTION"] = "damageReduction";
+    })(PassiveCardEffect = Script.PassiveCardEffect || (Script.PassiveCardEffect = {}));
+    let CardRarity;
+    (function (CardRarity) {
+        CardRarity["COMMON"] = "common";
+        CardRarity["UNCOMMON"] = "uncommon";
+        CardRarity["RARE"] = "rare";
+        CardRarity["EPIC"] = "epic";
+        CardRarity["LEGENDARY"] = "legendary";
+    })(CardRarity = Script.CardRarity || (Script.CardRarity = {}));
+    let ProjectileTargetMode;
+    (function (ProjectileTargetMode) {
+        ProjectileTargetMode[ProjectileTargetMode["NONE"] = 0] = "NONE";
+        ProjectileTargetMode[ProjectileTargetMode["CLOSEST"] = 1] = "CLOSEST";
+        ProjectileTargetMode[ProjectileTargetMode["STRONGEST"] = 2] = "STRONGEST";
+    })(ProjectileTargetMode = Script.ProjectileTargetMode || (Script.ProjectileTargetMode = {}));
     let ProjectileTarget;
     (function (ProjectileTarget) {
         ProjectileTarget[ProjectileTarget["PLAYER"] = 0] = "PLAYER";
         ProjectileTarget[ProjectileTarget["ENEMY"] = 1] = "ENEMY";
     })(ProjectileTarget = Script.ProjectileTarget || (Script.ProjectileTarget = {}));
+    //#endregion
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    class HitZoneGraphInstance extends ƒ.GraphInstance {
+        initialized = false;
+        constructor() {
+            super();
+            // Don't start when running in editor
+            if (ƒ.Project.mode == ƒ.MODE.EDITOR)
+                return;
+        }
+        recycle() {
+            // this.getComponent(ProjectileComponent).recycle();
+        }
+        async set(_graph) {
+            await super.set(_graph);
+            this.initialized = true;
+        }
+    }
+    Script.HitZoneGraphInstance = HitZoneGraphInstance;
+})(Script || (Script = {}));
+/// <reference path="../Types.ts" />
+var Script;
+/// <reference path="../Types.ts" />
+(function (Script) {
     class ProjectileComponent extends Script.ƒ.Component {
         tracking;
         direction;
@@ -444,6 +526,12 @@ var Script;
         range;
         piercing;
         target;
+        diminishing;
+        artillery;
+        impact;
+        targetMode;
+        lockedToEntity;
+        hazardZone;
         static defaults = {
             targetPosition: undefined,
             direction: new Script.ƒ.Vector3(),
@@ -452,8 +540,13 @@ var Script;
             size: 0.5,
             speed: 2,
             damage: 1,
-            target: ProjectileTarget.PLAYER,
-            tracking: undefined
+            target: Script.ProjectileTarget.PLAYER,
+            tracking: undefined,
+            diminishing: false,
+            targetMode: Script.ProjectileTargetMode.NONE,
+            lockedToEntity: false,
+            impact: undefined,
+            artillery: false
         };
         constructor() {
             super();
@@ -467,31 +560,82 @@ var Script;
             this.node.getComponent(Script.ƒ.ComponentRigidbody).removeEventListener("TriggerEnteredCollision" /* ƒ.EVENT_PHYSICS.TRIGGER_ENTER */, this.onTriggerEnter);
             this.node.getComponent(Script.ƒ.ComponentRigidbody).removeEventListener("TriggerLeftCollision" /* ƒ.EVENT_PHYSICS.TRIGGER_EXIT */, this.onTriggerExit);
         };
-        setup(_options, _manager) {
+        async setup(_options, _manager) {
             _options = { ...ProjectileComponent.defaults, ..._options };
             this.direction = _options.direction;
             this.targetPosition = _options.targetPosition;
             this.tracking = _options.tracking;
-            this.damage = _options.target === ProjectileTarget.PLAYER ? _options.damage : (_options.damage + _manager.getEffectAbsolute(Script.PassiveCardEffect.DAMAGE)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.DAMAGE);
-            this.size = _options.target === ProjectileTarget.PLAYER ? _options.size : (_options.size + _manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_SIZE)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_SIZE);
-            this.speed = _options.target === ProjectileTarget.PLAYER ? _options.speed : (_options.speed + _manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_SPEED)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_SPEED);
-            this.range = _options.target === ProjectileTarget.PLAYER ? _options.range : (_options.range + _manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_RANGE)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_RANGE);
+            this.damage = _options.target === Script.ProjectileTarget.PLAYER ? _options.damage : (_options.damage + _manager.getEffectAbsolute(Script.PassiveCardEffect.DAMAGE)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.DAMAGE);
+            this.size = _options.target === Script.ProjectileTarget.PLAYER ? _options.size : (_options.size + _manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_SIZE)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_SIZE);
+            this.speed = _options.target === Script.ProjectileTarget.PLAYER ? _options.speed : (_options.speed + _manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_SPEED)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_SPEED);
+            this.range = _options.target === Script.ProjectileTarget.PLAYER ? _options.range : (_options.range + _manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_RANGE)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_RANGE);
             this.piercing = (_options.piercing + _manager.getEffectAbsolute(Script.PassiveCardEffect.PROJECTILE_PIERCING)) * _manager.getEffectMultiplier(Script.PassiveCardEffect.PROJECTILE_PIERCING);
             this.target = _options.target;
+            this.artillery = _options.artillery;
+            this.diminishing = _options.diminishing;
+            this.impact = _options.impact;
+            this.targetMode = _options.targetMode;
+            this.lockedToEntity = _options.lockedToEntity;
             this.node.mtxLocal.scaling = Script.ƒ.Vector3.ONE(this.size);
+            this.hazardZone = undefined;
             //TODO rotate projectile towards flight direction
+            if (this.artillery) {
+                let pos = new Script.ƒ.Vector3();
+                if (this.target === Script.ProjectileTarget.PLAYER) {
+                    pos = await Script.provider.get(Script.CharacterManager).character.node.mtxWorld.translation.clone;
+                }
+                let hz = await Script.provider.get(Script.ProjectileManager).createHitZone(pos);
+                this.tracking = {
+                    strength: 200,
+                    target: hz,
+                    startTrackingAfter: 1
+                };
+                this.hazardZone = hz;
+                this.direction = Script.ƒ.Vector3.Y(this.speed);
+                this.targetPosition = pos;
+            }
+            if (this.tracking) {
+                this.tracking = { ...{ stopTrackingAfter: Infinity, stopTrackingInRadius: 0, strength: 1, startTrackingAfter: 0 }, ...this.tracking };
+            }
         }
         update(_charPosition, _frameTimeInSeconds) {
-            this.move();
+            this.move(_frameTimeInSeconds);
         }
-        move() {
+        move(_frameTimeInSeconds) {
             if (this.tracking) {
-                // we need to track a certain node, so modify direction accordingly
-                this.direction = Script.ƒ.Vector3.DIFFERENCE(this.tracking.target.mtxWorld.translation, this.node.mtxWorld.translation);
+                this.tracking.startTrackingAfter -= _frameTimeInSeconds;
+                if (this.tracking.startTrackingAfter <= 0) {
+                    this.tracking.stopTrackingAfter -= _frameTimeInSeconds;
+                    let diff = Script.ƒ.Vector3.DIFFERENCE(this.tracking.target.mtxWorld.translation, this.node.mtxWorld.translation);
+                    // we need to track a certain node, so modify direction accordingly
+                    this.direction.add(Script.ƒ.Vector3.SCALE(diff, (this.tracking.strength ?? 1) * Math.min(_frameTimeInSeconds, 1)));
+                    let mgtSqrd = diff.magnitudeSquared;
+                    if (this.tracking.stopTrackingAfter <= 0 || (mgtSqrd <= Math.pow(this.tracking.stopTrackingInRadius, 2) && mgtSqrd !== 0)) {
+                        console.log("stop tracking", this.tracking.stopTrackingAfter);
+                        // end of tracking
+                        this.tracking = undefined;
+                    }
+                }
             }
             let dir = this.direction.clone;
-            dir.normalize(Math.min(1, Script.ƒ.Loop.timeFrameGame / 1000) * this.speed);
+            dir.normalize(Math.min(1, _frameTimeInSeconds) * this.speed);
             this.node.mtxLocal.translate(dir);
+            if (this.targetPosition && this.node.mtxWorld.translation.equals(this.targetPosition, 0.5)) {
+                if (this.artillery && this.tracking.startTrackingAfter > 0)
+                    return;
+                // target position reached
+                if (this.hazardZone) {
+                    Script.ƒ.Recycler.store(this.hazardZone);
+                    this.hazardZone.getParent().removeChild(this.hazardZone);
+                    this.hazardZone = undefined;
+                }
+                if (this.impact && this.impact.length) {
+                    for (let impact of this.impact) {
+                        //TODO implement impacts
+                    }
+                }
+                Script.provider.get(Script.ProjectileManager).removeProjectile(this);
+            }
         }
         onTriggerEnter = (_event) => {
             console.log("onTriggerEnter", _event);
@@ -523,34 +667,140 @@ var Script;
     }
     Script.ProjectileGraphInstance = ProjectileGraphInstance;
 })(Script || (Script = {}));
+/// <reference path="../Types.ts" />
+var Script;
+/// <reference path="../Types.ts" />
+(function (Script) {
+    Script.projectiles = {
+        "toastPlayer": {
+            damage: 1,
+            speed: 3,
+        },
+        "toast": {
+            damage: 1,
+            speed: 3,
+            targetMode: Script.ProjectileTargetMode.CLOSEST,
+            artillery: true,
+        }
+    };
+})(Script || (Script = {}));
 var Script;
 (function (Script) {
     class Card {
-        #effects;
+        name;
+        description;
+        image;
+        rarity;
+        levels;
+        #level;
+        #cm;
+        #pm;
+        #charm;
+        constructor(_init, _level = 0, _nameFallback = "unknown") {
+            this.name = _init.name ?? `cards.${_nameFallback}.name`;
+            this.description = _init.description ?? i18next.t(`cards.${_nameFallback}.text`);
+            this.image = _init.image;
+            this.rarity = _init.rarity;
+            this.levels = _init.levels;
+            this.level = _level;
+            this.#cm = Script.provider.get(Script.CardManager);
+            this.#pm = Script.provider.get(Script.ProjectileManager);
+            this.#charm = Script.provider.get(Script.CharacterManager);
+        }
+        get level() {
+            return this.#level;
+        }
+        set level(_level) {
+            this.#level = Math.max(0, Math.min(this.levels.length, _level));
+        }
         get effects() {
-            return structuredClone(this.#effects);
+            return structuredClone(this.levels[this.level].passiveEffects);
+        }
+        update(_time, _cumulatedEffects) {
+            if (!this.levels[this.level].activeEffects || !this.levels[this.level].activeEffects.length)
+                return;
+            for (let effect of this.levels[this.level].activeEffects) {
+                if (isNaN(effect.currentCooldown))
+                    effect.currentCooldown = 0;
+                effect.currentCooldown -= _time;
+                if (effect.currentCooldown <= 0) {
+                    effect.currentCooldown = this.#cm.modifyValue(effect.cooldown, Script.PassiveCardEffect.COOLDOWN_REDUCTION, effect.modifiers);
+                    switch (effect.type) {
+                        case "projectile":
+                            for (let i = 0; i < (effect.amount ?? 1); i++) {
+                                setTimeout(() => {
+                                    let pos = this.#charm.character.node.mtxWorld.translation.clone;
+                                    if (effect.offset) {
+                                        if (typeof effect.offset === "string") {
+                                            pos.add(eval(effect.offset));
+                                        }
+                                        else {
+                                            pos.add(effect.offset);
+                                        }
+                                    }
+                                    let projectile = Script.projectiles[effect.projectile];
+                                    Script.provider.get(Script.ProjectileManager).createProjectile(projectile, pos, projectile.lockedToEntity ? this.#charm.character.node : undefined);
+                                }, i * (effect.delay ?? 0));
+                            }
+                            break;
+                    }
+                }
+            }
         }
     }
     Script.Card = Card;
-    let PassiveCardEffect;
-    (function (PassiveCardEffect) {
-        PassiveCardEffect["COOLDOWN_REDUCTION"] = "cooldownReduction";
-        PassiveCardEffect["PROJECTILE_SIZE"] = "projectileSize";
-        PassiveCardEffect["PROJECTILE_SPEED"] = "projectileSpeed";
-        PassiveCardEffect["PROJECTILE_AMOUNT"] = "projectileAmount";
-        PassiveCardEffect["PROJECTILE_RANGE"] = "projectileRange";
-        PassiveCardEffect["PROJECTILE_PIERCING"] = "projectilePiercing";
-        PassiveCardEffect["DAMAGE"] = "damage";
-        PassiveCardEffect["EFFECT_DURATION"] = "effectDuration";
-        PassiveCardEffect["WEAPON_DURATION"] = "weaponDuration";
-        PassiveCardEffect["KNOCKBACK"] = "knockback";
-        PassiveCardEffect["CRIT_CHANCE"] = "criticalHitChance";
-        PassiveCardEffect["CRIT_DAMAGE"] = "critialHitDamage";
-        PassiveCardEffect["PLAYER_HEALTH"] = "playerHealth";
-        PassiveCardEffect["PLAYER_REGENERATION"] = "playerRegeneration";
-        PassiveCardEffect["COLLECTION_RADIUS"] = "collectionRadius";
-        PassiveCardEffect["DAMAGE_REDUCTION"] = "damageReduction";
-    })(PassiveCardEffect = Script.PassiveCardEffect || (Script.PassiveCardEffect = {}));
+})(Script || (Script = {}));
+/// <reference path="../Types.ts" />
+var Script;
+/// <reference path="../Types.ts" />
+(function (Script) {
+    Script.cards = {
+        "test": {
+            image: "./Assets/Cards/test.png",
+            rarity: Script.CardRarity.COMMON,
+            levels: [
+                {
+                    activeEffects: [{
+                            type: "projectile",
+                            projectile: "toastPlayer",
+                            amount: 1,
+                            cooldown: 5,
+                        }]
+                },
+                {
+                    activeEffects: [{
+                            type: "projectile",
+                            projectile: "toastPlayer",
+                            amount: 2,
+                            cooldown: 5,
+                        }]
+                }
+            ]
+        },
+        "testSize": {
+            image: "./Assets/Cards/test.png",
+            rarity: Script.CardRarity.COMMON,
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            projectileSize: 1.5
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            projectileSize: 2,
+                        },
+                        absolute: {
+                            cooldownReduction: 2
+                        }
+                    }
+                }
+            ]
+        }
+    };
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
@@ -675,6 +925,54 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
+    Script.enemies = {
+        microwave: {
+            moveSprite: ["microwave", "move"],
+            damage: 5,
+            desiredDistance: [0, 0],
+            health: 10,
+            speed: 1,
+            knockbackMultiplier: 1,
+            dropXP: 1,
+        },
+        toaster: {
+            moveSprite: ["toaster", "move"],
+            speed: 0.5,
+            desiredDistance: [3, 4],
+            attacks: [
+                {
+                    cooldown: 2,
+                    requiredDistance: [2, 3],
+                    attackSprite: ["toaster", "attack"],
+                    cooldownSprite: ["toaster", "idle"],
+                    windUp: 1,
+                    movement: () => { },
+                    events: {
+                        fire: function () {
+                            Script.provider.get(Script.ProjectileManager).createProjectile({
+                                direction: Script.ƒ.Vector3.DIFFERENCE(Script.provider.get(Script.CharacterManager).character.node.mtxWorld.translation, this.node.mtxWorld.translation),
+                                target: Script.ProjectileTarget.PLAYER,
+                                speed: 20,
+                                artillery: true
+                            }, Script.ƒ.Vector3.SUM(this.node.mtxWorld.translation, Script.ƒ.Vector3.Y(0.3)));
+                        }
+                    }
+                }
+            ]
+        },
+        motor: {
+            moveSprite: ["motor", "move"],
+            speed: 3,
+        },
+        chair: {
+            moveSprite: ["chair", "move"],
+            speed: 0.5,
+            desiredDistance: [0, 0],
+        }
+    };
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
     class Enemy extends Script.ƒ.Component {
         speed = 1;
         damage = 1;
@@ -731,16 +1029,26 @@ var Script;
             this.knockbackMultiplier = _options.knockbackMultiplier;
             this.health = _options.health;
             this.attacks = _options.attacks;
-            this.moveSprite = _options.moveSprite;
             this.desiredDistance = _options.desiredDistance;
             this.dropXP = _options.dropXP;
             this.directionOverride = _options.directionOverride;
             this.updateDesiredDistance(this.desiredDistance);
+            this.moveSprite = this.getSprite(_options.moveSprite);
             this.setCentralAnimator(this.moveSprite);
         }
         updateDesiredDistance(_distance) {
             this.currentlyDesiredDistance = _distance;
             this.currentlyDesiredDistanceSquared = [this.currentlyDesiredDistance[0] * this.currentlyDesiredDistance[0], this.currentlyDesiredDistance[1] * this.currentlyDesiredDistance[1]];
+        }
+        getSprite(_sp) {
+            if (!_sp)
+                return undefined;
+            if (("frames" in _sp)) {
+                return _sp;
+            }
+            else {
+                return Script.provider.get(Script.Config).getAnimation(_sp[0], _sp[1]);
+            }
         }
         #uniqueAnimationId;
         setCentralAnimator(_as, _unique = false) {
@@ -838,7 +1146,7 @@ var Script;
                 if (_mgtSqrd > this.currentlyDesiredDistanceSquared[0] && _mgtSqrd < this.currentlyDesiredDistanceSquared[1]) {
                     // start the attack
                     this.currentlyActiveAttack.started = true;
-                    this.setCentralAnimator(this.currentlyActiveAttack.attackSprite, true);
+                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.attackSprite), true);
                 }
             }
             if (this.currentlyActiveAttack.started) {
@@ -850,8 +1158,8 @@ var Script;
                 else if (!this.currentlyActiveAttack.done) {
                     // time to execute attack
                     this.currentlyActiveAttack.done = true;
-                    this.currentlyActiveAttack.attack.call(this);
-                    this.setCentralAnimator(this.currentlyActiveAttack.cooldownSprite, true);
+                    this.currentlyActiveAttack.attack?.call(this);
+                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.cooldownSprite), true);
                 }
                 else {
                     //we're on cooldown now
@@ -959,11 +1267,17 @@ var Script;
     class CardManager {
         currentlyActiveCards;
         cumulativeEffects = {};
-        getEffectAbsolute(_effect) {
-            return this.cumulativeEffects.absolute?.[_effect] ?? 0;
+        getEffectAbsolute(_effect, _modifier = this.cumulativeEffects) {
+            return _modifier.absolute?.[_effect] ?? 0;
         }
-        getEffectMultiplier(_effect) {
-            return this.cumulativeEffects.multiplier?.[_effect] ?? 1;
+        getEffectMultiplier(_effect, _modifier = this.cumulativeEffects) {
+            return _modifier.multiplier?.[_effect] ?? 1;
+        }
+        modifyValue(_value, _effect, _localModifiers) {
+            if (_localModifiers) {
+                _value = (_value + this.getEffectAbsolute(_effect, _localModifiers)) * this.getEffectMultiplier(_effect, _localModifiers);
+            }
+            return (_value + this.getEffectAbsolute(_effect)) * this.getEffectMultiplier(_effect);
         }
         updateEffects() {
             this.cumulativeEffects = {};
@@ -1064,30 +1378,7 @@ var Script;
             this.enemyNode.addChild(newEnemyGraphInstance);
             this.enemies.push(newEnemyGraphInstance);
             let enemyScript = newEnemyGraphInstance.getComponent(Script.Enemy);
-            let animAttackSprite = this.config.getAnimation("toaster", "attack");
-            enemyScript.setup({
-                moveSprite: this.config.getAnimation("toaster", "move"),
-                attacks: [{
-                        cooldown: 2,
-                        requiredDistance: [2, 3],
-                        attackSprite: animAttackSprite,
-                        cooldownSprite: this.config.getAnimation("toaster", "idle"),
-                        windUp: animAttackSprite.frames / animAttackSprite.fps,
-                        attack: function () { console.log("time for an attack!"); },
-                        movement: function () { },
-                        events: {
-                            "fire": function () {
-                                Script.provider.get(Script.ProjectileManager).createProjectile({
-                                    direction: Script.ƒ.Vector3.DIFFERENCE(Script.provider.get(Script.CharacterManager).character.node.mtxWorld.translation, this.node.mtxWorld.translation),
-                                    target: Script.ProjectileTarget.PLAYER,
-                                    speed: 3,
-                                }, Script.ƒ.Vector3.SUM(this.node.mtxWorld.translation, Script.ƒ.Vector3.Y(0.3)));
-                            },
-                        }
-                    }],
-                speed: 0.5,
-                desiredDistance: [3, 4],
-            });
+            enemyScript.setup(Script.enemies["toaster"]);
             this.enemyScripts.push(enemyScript);
             newEnemyGraphInstance = Script.ƒ.Recycler.get(Script.EnemyGraphInstance);
             if (!newEnemyGraphInstance.initialized) {
@@ -1098,11 +1389,7 @@ var Script;
             this.enemyNode.addChild(newEnemyGraphInstance);
             this.enemies.push(newEnemyGraphInstance);
             enemyScript = newEnemyGraphInstance.getComponent(Script.Enemy);
-            enemyScript.setup({
-                moveSprite: this.config.getAnimation("chair", "move"),
-                speed: 0.5,
-                desiredDistance: [0, 0.2],
-            });
+            enemyScript.setup(Script.enemies["chair"]);
             this.enemyScripts.push(enemyScript);
             newEnemyGraphInstance = Script.ƒ.Recycler.get(Script.EnemyGraphInstance);
             if (!newEnemyGraphInstance.initialized) {
@@ -1139,6 +1426,7 @@ var Script;
         projectileScripts = [];
         projectiles = [];
         static projectileGraph;
+        static hitZoneGraph;
         projectilesNode;
         constructor(provider) {
             this.provider = provider;
@@ -1159,6 +1447,7 @@ var Script;
         };
         loaded = async () => {
             ProjectileManager.projectileGraph = await Script.ƒ.Project.getResourcesByName("projectile")[0];
+            ProjectileManager.hitZoneGraph = await Script.ƒ.Project.getResourcesByName("hitzone")[0];
         };
         update = () => {
             if (Script.gameState !== Script.GAMESTATE.PLAYING)
@@ -1178,6 +1467,7 @@ var Script;
                 this.projectileScripts.splice(index, 1);
                 Script.ƒ.Recycler.storeMultiple(this.projectiles.splice(index, 1));
             }
+            _projectile.node.getParent().removeChild(_projectile.node);
         }
         async createProjectile(_options, _position, _parent = this.projectilesNode) {
             let pgi = Script.ƒ.Recycler.get(Script.ProjectileGraphInstance);
@@ -1186,10 +1476,20 @@ var Script;
             }
             let p = pgi.getComponent(Script.ProjectileComponent);
             p.setup(_options, Script.provider.get(Script.CardManager));
-            pgi.mtxLocal.translation = _position;
+            pgi.mtxLocal.translation = Script.ƒ.Vector3.SUM(_position);
             _parent.addChild(pgi);
             this.projectileScripts.push(p);
             this.projectiles.push(pgi);
+        }
+        async createHitZone(_position, _size = 1, _parent = this.projectilesNode) {
+            let hz = Script.ƒ.Recycler.get(Script.HitZoneGraphInstance);
+            if (!hz.initialized) {
+                await hz.set(ProjectileManager.hitZoneGraph);
+            }
+            hz.getComponent(Script.ƒ.ComponentMesh).mtxPivot.scaling = Script.ƒ.Vector3.ONE(_size);
+            hz.mtxLocal.translation = _position;
+            _parent.addChild(hz);
+            return hz;
         }
     }
     Script.ProjectileManager = ProjectileManager;

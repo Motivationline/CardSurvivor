@@ -8,6 +8,9 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    function initI18n(..._languages: string[]): Promise<void>;
+}
+declare namespace Script {
     export class Provider {
         private readonly items;
         constructor();
@@ -92,63 +95,37 @@ declare namespace Script {
     }
 }
 declare namespace Script {
-    export enum ProjectileTarget {
-        PLAYER = 0,
-        ENEMY = 1
+    export interface Cards {
+        [id: string]: iCard;
     }
-    export class ProjectileComponent extends ƒ.Component implements Projectile {
-        tracking: ProjectileTracking;
-        direction: ƒ.Vector3;
-        targetPosition: ƒ.Vector3;
-        damage: number;
-        size: number;
-        speed: number;
-        range: number;
-        piercing: number;
-        target: ProjectileTarget;
-        protected static defaults: Projectile;
-        constructor();
-        protected init: () => void;
-        setup(_options: Partial<Projectile>, _manager: CardManager): void;
-        update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
-        protected move(): void;
-        protected onTriggerEnter: (_event: CustomEvent) => void;
-        protected onTriggerExit: (_event: CustomEvent) => void;
+    export interface iCard {
+        name?: string;
+        description?: string;
+        image: string;
+        rarity: CardRarity;
+        levels: CardLevel[];
     }
-    export interface Projectile {
-        direction: ƒ.Vector3;
-        damage: number;
-        targetPosition: ƒ.Vector3;
-        tracking: ProjectileTracking;
-        size: number;
-        speed: number;
-        range: number;
-        piercing: number;
-        target: ProjectileTarget;
+    export interface CardLevel {
+        passiveEffects?: PassiveCardEffectObject;
+        activeEffects?: ActiveEffect[];
     }
-    interface ProjectileTracking {
-        strength?: number;
-        stopTrackingAfter?: number;
-        stopTrackingInRadius?: number;
-        target: ƒ.Node;
+    export type ActiveEffect = CardEffectProjectile | CardEffectAOE;
+    interface ActiveCardEffectBase {
+        cooldown: number;
+        currentCooldown?: number;
+        modifiers?: PassiveCardEffectObject;
     }
-    export {};
-}
-declare namespace Script {
-    import ƒ = FudgeCore;
-    class ProjectileGraphInstance extends ƒ.GraphInstance implements ƒ.Recycable {
-        initialized: boolean;
-        constructor();
-        recycle(): void;
-        set(_graph: ƒ.Graph): Promise<void>;
+    interface CardEffectProjectile extends ActiveCardEffectBase {
+        type: "projectile";
+        projectile: string;
+        amount: number;
+        delay?: number;
+        offset?: ƒ.Vector3 | string;
     }
-}
-declare namespace Script {
-    class Card {
-        #private;
-        get effects(): PassiveCardEffectObject;
+    interface CardEffectAOE extends ActiveCardEffectBase {
+        type: "aoe";
     }
-    enum PassiveCardEffect {
+    export enum PassiveCardEffect {
         COOLDOWN_REDUCTION = "cooldownReduction",
         PROJECTILE_SIZE = "projectileSize",
         PROJECTILE_SPEED = "projectileSpeed",
@@ -166,7 +143,14 @@ declare namespace Script {
         COLLECTION_RADIUS = "collectionRadius",
         DAMAGE_REDUCTION = "damageReduction"
     }
-    type PassiveCardEffectObject = {
+    export enum CardRarity {
+        COMMON = "common",
+        UNCOMMON = "uncommon",
+        RARE = "rare",
+        EPIC = "epic",
+        LEGENDARY = "legendary"
+    }
+    export type PassiveCardEffectObject = {
         absolute?: {
             [key in PassiveCardEffect]?: number;
         };
@@ -174,6 +158,120 @@ declare namespace Script {
             [key in PassiveCardEffect]?: number;
         };
     };
+    export interface Projectiles {
+        [id: string]: ProjectileData;
+    }
+    interface ProjectileData {
+        damage: number;
+        size?: number;
+        speed: number;
+        range?: number;
+        piercing?: number;
+        diminishing?: boolean;
+        targetMode?: ProjectileTargetMode;
+        lockedToEntity?: boolean;
+        impact?: ActiveEffect[];
+        artillery?: boolean;
+    }
+    export enum ProjectileTargetMode {
+        NONE = 0,
+        CLOSEST = 1,
+        STRONGEST = 2
+    }
+    export enum ProjectileTarget {
+        PLAYER = 0,
+        ENEMY = 1
+    }
+    export interface Projectile extends ProjectileData {
+        direction: ƒ.Vector3;
+        damage: number;
+        targetPosition: ƒ.Vector3;
+        tracking: ProjectileTracking;
+        size: number;
+        speed: number;
+        range: number;
+        piercing: number;
+        diminishing: boolean;
+        target: ProjectileTarget;
+        targetMode: ProjectileTargetMode;
+        lockedToEntity: boolean;
+        impact: ActiveEffect[];
+        artillery: boolean;
+    }
+    export interface ProjectileTracking {
+        strength?: number;
+        startTrackingAfter?: number;
+        stopTrackingAfter?: number;
+        stopTrackingInRadius?: number;
+        target: ƒ.Node;
+    }
+    export {};
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
+    class HitZoneGraphInstance extends ƒ.GraphInstance implements ƒ.Recycable {
+        initialized: boolean;
+        constructor();
+        recycle(): void;
+        set(_graph: ƒ.Graph): Promise<void>;
+    }
+}
+declare namespace Script {
+    class ProjectileComponent extends ƒ.Component implements Projectile {
+        tracking: ProjectileTracking;
+        direction: ƒ.Vector3;
+        targetPosition: ƒ.Vector3;
+        damage: number;
+        size: number;
+        speed: number;
+        range: number;
+        piercing: number;
+        target: ProjectileTarget;
+        diminishing: boolean;
+        artillery: boolean;
+        impact: ActiveEffect[];
+        targetMode: ProjectileTargetMode;
+        lockedToEntity: boolean;
+        private hazardZone;
+        protected static defaults: Projectile;
+        constructor();
+        protected init: () => void;
+        setup(_options: Partial<Projectile>, _manager: CardManager): Promise<void>;
+        update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
+        protected move(_frameTimeInSeconds: number): void;
+        protected onTriggerEnter: (_event: CustomEvent) => void;
+        protected onTriggerExit: (_event: CustomEvent) => void;
+    }
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
+    class ProjectileGraphInstance extends ƒ.GraphInstance implements ƒ.Recycable {
+        initialized: boolean;
+        constructor();
+        recycle(): void;
+        set(_graph: ƒ.Graph): Promise<void>;
+    }
+}
+declare namespace Script {
+    const projectiles: Projectiles;
+}
+declare namespace Script {
+    class Card implements iCard {
+        #private;
+        name: string;
+        description: string;
+        image: string;
+        rarity: CardRarity;
+        levels: CardLevel[];
+        constructor(_init: iCard, _level?: number, _nameFallback?: string);
+        get level(): number;
+        set level(_level: number);
+        get effects(): PassiveCardEffectObject;
+        update(_time: number, _cumulatedEffects: PassiveCardEffectObject): void;
+    }
+}
+declare namespace Script {
+    const cards: Cards;
 }
 declare namespace Script {
     import ƒ = FudgeCore;
@@ -200,6 +298,11 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    const enemies: {
+        [id: string]: Partial<EnemyOptions>;
+    };
+}
+declare namespace Script {
     class Enemy extends ƒ.Component implements EnemyOptions {
         #private;
         speed: number;
@@ -223,6 +326,7 @@ declare namespace Script {
         private deserialized;
         setup(_options: Partial<EnemyOptions>): void;
         private updateDesiredDistance;
+        private getSprite;
         private setCentralAnimator;
         update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
         private move;
@@ -237,7 +341,7 @@ declare namespace Script {
         knockbackMultiplier: number;
         health: number;
         attacks: EnemyAttack[];
-        moveSprite: AnimationSprite;
+        moveSprite: AnimationSprite | [string, string];
         desiredDistance: [number, number];
         dropXP: number;
         directionOverride?: ƒ.Vector3;
@@ -246,9 +350,9 @@ declare namespace Script {
         requiredDistance: [number, number];
         windUp: number;
         cooldown: number;
-        attackSprite?: AnimationSprite;
-        cooldownSprite?: AnimationSprite;
-        attack: () => void;
+        attackSprite?: AnimationSprite | [string, string];
+        cooldownSprite?: AnimationSprite | [string, string];
+        attack?: () => void;
         movement?: (_diff: ƒ.Vector3, _mgtSqrd: number, _charPosition: ƒ.Vector3, _frameTimeInSeconds: number) => void;
         events?: {
             [name: string]: (_event?: CustomEvent) => void;
@@ -296,8 +400,9 @@ declare namespace Script {
     class CardManager {
         private currentlyActiveCards;
         private cumulativeEffects;
-        getEffectAbsolute(_effect: PassiveCardEffect): number;
-        getEffectMultiplier(_effect: PassiveCardEffect): number;
+        getEffectAbsolute(_effect: PassiveCardEffect, _modifier?: PassiveCardEffectObject): number;
+        getEffectMultiplier(_effect: PassiveCardEffect, _modifier?: PassiveCardEffectObject): number;
+        modifyValue(_value: number, _effect: PassiveCardEffect, _localModifiers?: PassiveCardEffectObject): number;
         updateEffects(): void;
     }
 }
@@ -335,6 +440,7 @@ declare namespace Script {
         private projectileScripts;
         private projectiles;
         static projectileGraph: ƒ.Graph;
+        static hitZoneGraph: ƒ.Graph;
         private projectilesNode;
         constructor(provider: Provider);
         setup(): void;
@@ -343,5 +449,6 @@ declare namespace Script {
         private update;
         removeProjectile(_projectile: ProjectileComponent): void;
         createProjectile(_options: Partial<Projectile>, _position: ƒ.Vector3, _parent?: ƒ.Node): Promise<void>;
+        createHitZone(_position: ƒ.Vector3, _size?: number, _parent?: ƒ.Node): Promise<ƒ.GraphInstance>;
     }
 }

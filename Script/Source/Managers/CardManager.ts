@@ -3,11 +3,17 @@ namespace Script {
         private currentlyActiveCards: Card[];
         private cumulativeEffects: PassiveCardEffectObject = {};
 
-        public getEffectAbsolute(_effect: PassiveCardEffect): number {
-            return this.cumulativeEffects.absolute?.[_effect] ?? 0;
+        public getEffectAbsolute(_effect: PassiveCardEffect, _modifier: PassiveCardEffectObject = this.cumulativeEffects): number {
+            return _modifier.absolute?.[_effect] ?? 0;
         }
-        public getEffectMultiplier(_effect: PassiveCardEffect): number {
-            return this.cumulativeEffects.multiplier?.[_effect] ?? 1;
+        public getEffectMultiplier(_effect: PassiveCardEffect, _modifier: PassiveCardEffectObject = this.cumulativeEffects): number {
+            return _modifier.multiplier?.[_effect] ?? 1;
+        }
+        public modifyValue(_value: number, _effect: PassiveCardEffect, _localModifiers?: PassiveCardEffectObject){
+            if(_localModifiers){
+                _value = (_value + this.getEffectAbsolute(_effect, _localModifiers)) * this.getEffectMultiplier(_effect, _localModifiers);
+            }
+            return (_value + this.getEffectAbsolute(_effect)) * this.getEffectMultiplier(_effect);
         }
 
         public updateEffects(){

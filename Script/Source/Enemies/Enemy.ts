@@ -60,11 +60,11 @@ namespace Script {
             this.knockbackMultiplier = _options.knockbackMultiplier;
             this.health = _options.health;
             this.attacks = _options.attacks;
-            this.moveSprite = _options.moveSprite;
             this.desiredDistance = _options.desiredDistance;
             this.dropXP = _options.dropXP;
             this.directionOverride = _options.directionOverride;
             this.updateDesiredDistance(this.desiredDistance);
+            this.moveSprite = this.getSprite(_options.moveSprite);
             this.setCentralAnimator(this.moveSprite);
         }
 
@@ -73,13 +73,22 @@ namespace Script {
             this.currentlyDesiredDistanceSquared = [this.currentlyDesiredDistance[0] * this.currentlyDesiredDistance[0], this.currentlyDesiredDistance[1] * this.currentlyDesiredDistance[1]];
         }
 
+        private getSprite(_sp: AnimationSprite | [string, string]): AnimationSprite {
+            if (!_sp) return undefined;
+            if (("frames" in _sp)) {
+                return _sp;
+            } else {
+                return provider.get(Config).getAnimation(_sp[0], _sp[1]);
+            }
+        }
+
         #uniqueAnimationId: number;
         private setCentralAnimator(_as: AnimationSprite, _unique: boolean = false) {
             if (!_as) return;
             let am: AnimationManager = provider.get(AnimationManager);
 
-            if(this.currentlyActiveSprite && this.currentlyActiveSprite.events){
-                for(let event of this.currentlyActiveSprite.events){
+            if (this.currentlyActiveSprite && this.currentlyActiveSprite.events) {
+                for (let event of this.currentlyActiveSprite.events) {
                     this.material.mtxPivot.removeEventListener(event.event, this.eventListener);
                 }
             }
@@ -96,9 +105,9 @@ namespace Script {
             if (_as.material)
                 this.material.material = _as.material;
             this.currentlyActiveSprite = _as;
-            
-            if(this.currentlyActiveSprite && this.currentlyActiveSprite.events){
-                for(let event of this.currentlyActiveSprite.events){
+
+            if (this.currentlyActiveSprite && this.currentlyActiveSprite.events) {
+                for (let event of this.currentlyActiveSprite.events) {
                     this.material.mtxPivot.addEventListener(event.event, this.eventListener);
                 }
             }
@@ -175,7 +184,7 @@ namespace Script {
                 if (_mgtSqrd > this.currentlyDesiredDistanceSquared[0] && _mgtSqrd < this.currentlyDesiredDistanceSquared[1]) {
                     // start the attack
                     this.currentlyActiveAttack.started = true;
-                    this.setCentralAnimator(this.currentlyActiveAttack.attackSprite, true);
+                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.attackSprite), true);
                 }
             }
             if (this.currentlyActiveAttack.started) {
@@ -186,8 +195,8 @@ namespace Script {
                 } else if (!this.currentlyActiveAttack.done) {
                     // time to execute attack
                     this.currentlyActiveAttack.done = true;
-                    this.currentlyActiveAttack.attack.call(this);
-                    this.setCentralAnimator(this.currentlyActiveAttack.cooldownSprite, true);
+                    this.currentlyActiveAttack.attack?.call(this);
+                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.cooldownSprite), true);
                 } else {
                     //we're on cooldown now
                     this.currentlyActiveAttack.cooldown -= _frameTimeInSeconds;
@@ -203,8 +212,8 @@ namespace Script {
         }
 
         private eventListener = (_event: CustomEvent) => {
-            if(!this.currentlyActiveAttack.events) return;
-            if(!this.currentlyActiveAttack.events[_event.type]) return;
+            if (!this.currentlyActiveAttack.events) return;
+            if (!this.currentlyActiveAttack.events[_event.type]) return;
             this.currentlyActiveAttack.events[_event.type].call(this, _event);
 
         }
@@ -224,7 +233,7 @@ namespace Script {
         knockbackMultiplier: number;
         health: number;
         attacks: EnemyAttack[];
-        moveSprite: AnimationSprite;
+        moveSprite: AnimationSprite | [string, string];
         desiredDistance: [number, number];
         dropXP: number;
         directionOverride?: ƒ.Vector3;
@@ -234,9 +243,9 @@ namespace Script {
         requiredDistance: [number, number];
         windUp: number;
         cooldown: number;
-        attackSprite?: AnimationSprite;
-        cooldownSprite?: AnimationSprite;
-        attack: () => void;
+        attackSprite?: AnimationSprite | [string, string];
+        cooldownSprite?: AnimationSprite | [string, string];
+        attack?: () => void;
         movement?: (_diff: ƒ.Vector3, _mgtSqrd: number, _charPosition: ƒ.Vector3, _frameTimeInSeconds: number) => void;
         events?: { [name: string]: (_event?: CustomEvent) => void; }
     }

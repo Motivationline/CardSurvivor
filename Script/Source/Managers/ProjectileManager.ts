@@ -5,6 +5,7 @@ namespace Script {
         private projectileScripts: ProjectileComponent[] = [];
         private projectiles: ProjectileGraphInstance[] = [];
         static projectileGraph: ƒ.Graph;
+        static hitZoneGraph: ƒ.Graph;
         private projectilesNode: ƒ.Node;
 
         constructor(private readonly provider: Provider) {
@@ -26,6 +27,7 @@ namespace Script {
         }
         private loaded = async () => {
             ProjectileManager.projectileGraph = <ƒ.Graph>await ƒ.Project.getResourcesByName("projectile")[0];
+            ProjectileManager.hitZoneGraph = <ƒ.Graph>await ƒ.Project.getResourcesByName("hitzone")[0];
         }
         private update = () => {
             if (gameState !== GAMESTATE.PLAYING) return;
@@ -46,6 +48,7 @@ namespace Script {
                 this.projectileScripts.splice(index, 1);
                 ƒ.Recycler.storeMultiple(this.projectiles.splice(index, 1));
             }
+            _projectile.node.getParent().removeChild(_projectile.node);
         }
 
         public async createProjectile(_options: Partial<Projectile>, _position: ƒ.Vector3, _parent: ƒ.Node = this.projectilesNode) {
@@ -56,11 +59,22 @@ namespace Script {
             let p = pgi.getComponent(ProjectileComponent);
             p.setup(_options, provider.get(CardManager));
 
-            pgi.mtxLocal.translation = _position;
+            pgi.mtxLocal.translation = ƒ.Vector3.SUM(_position);
             _parent.addChild(pgi);
 
             this.projectileScripts.push(p);
             this.projectiles.push(pgi);
+        }
+
+        public async createHitZone(_position: ƒ.Vector3, _size: number = 1, _parent: ƒ.Node = this.projectilesNode): Promise<ƒ.GraphInstance> {
+            let hz = ƒ.Recycler.get(HitZoneGraphInstance);
+            if(!hz.initialized) {
+                await hz.set(ProjectileManager.hitZoneGraph);
+            }
+            hz.getComponent(ƒ.ComponentMesh).mtxPivot.scaling = ƒ.Vector3.ONE(_size);
+            hz.mtxLocal.translation = _position;
+            _parent.addChild(hz);
+            return hz;
         }
     }
 }

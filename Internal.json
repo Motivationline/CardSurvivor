@@ -1101,5 +1101,75 @@
       "idResource": "Graph|2024-05-07T12:38:58.660Z|53689",
       "type": "Graph"
     }
+  },
+  "Graph|2024-05-08T08:43:55.311Z|38959": {
+    "ƒ.Graph": {
+      "name": "hitzone",
+      "active": true,
+      "components": {
+        "ComponentMaterial": [
+          {
+            "ƒ.ComponentMaterial": {
+              "sortForAlpha": false,
+              "clrPrimary": "[1, 1, 1, 1]",
+              "clrSecondary": "[1, 1, 1, 1]",
+              "pivot": {
+                "translation": "[0, 0]",
+                "rotation": 0,
+                "scaling": "[1, 1]"
+              },
+              "Component": {
+                "active": true
+              },
+              "idMaterial": "Material|2024-05-08T08:44:14.000Z|26880"
+            }
+          }
+        ],
+        "ComponentMesh": [
+          {
+            "ƒ.ComponentMesh": {
+              "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
+              "pivot": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "ComponentTransform": [
+          {
+            "ƒ.ComponentTransform": {
+              "local": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ]
+      },
+      "children": [],
+      "idResource": "Graph|2024-05-08T08:43:55.311Z|38959",
+      "type": "Graph"
+    }
+  },
+  "Material|2024-05-08T08:44:14.000Z|26880": {
+    "ƒ.Material": {
+      "name": "hitzoneTexture",
+      "idResource": "Material|2024-05-08T08:44:14.000Z|26880",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]"
+        }
+      }
+    }
   }
 }

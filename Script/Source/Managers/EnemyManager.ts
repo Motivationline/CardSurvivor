@@ -57,35 +57,7 @@ namespace Script {
             this.enemyNode.addChild(newEnemyGraphInstance);
             this.enemies.push(newEnemyGraphInstance);
             let enemyScript = newEnemyGraphInstance.getComponent(Enemy);
-            let animAttackSprite = this.config.getAnimation("toaster", "attack");
-            enemyScript.setup({
-                moveSprite: this.config.getAnimation("toaster", "move"),
-                attacks: [{
-                    cooldown: 2,
-                    requiredDistance: [2, 3],
-                    attackSprite: animAttackSprite,
-                    cooldownSprite: this.config.getAnimation("toaster", "idle"),
-                    windUp: animAttackSprite.frames / animAttackSprite.fps,
-                    attack: function () { console.log("time for an attack!") },
-                    movement: function () { },
-                    events: {
-                        "fire": function () {
-                            provider.get(ProjectileManager).createProjectile({
-                                direction: ƒ.Vector3.DIFFERENCE(provider.get(CharacterManager).character.node.mtxWorld.translation, this.node.mtxWorld.translation),
-                                target: ProjectileTarget.PLAYER,
-                                speed: 3,
-                            },
-                                ƒ.Vector3.SUM(
-                                    this.node.mtxWorld.translation,
-                                    ƒ.Vector3.Y(0.3)
-                                )
-                            );
-                        },
-                    }
-                }],
-                speed: 0.5,
-                desiredDistance: [3, 4],
-            });
+            enemyScript.setup(enemies["toaster"]);
             this.enemyScripts.push(enemyScript);
 
             newEnemyGraphInstance = ƒ.Recycler.get(EnemyGraphInstance);
@@ -97,11 +69,7 @@ namespace Script {
             this.enemyNode.addChild(newEnemyGraphInstance);
             this.enemies.push(newEnemyGraphInstance);
             enemyScript = newEnemyGraphInstance.getComponent(Enemy);
-            enemyScript.setup({
-                moveSprite: this.config.getAnimation("chair", "move"),
-                speed: 0.5,
-                desiredDistance: [0, 0.2],
-            });
+            enemyScript.setup(enemies["chair"]);
             this.enemyScripts.push(enemyScript);
 
 
