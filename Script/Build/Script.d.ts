@@ -321,6 +321,7 @@ declare namespace Script {
         private prevDirection;
         private currentlyActiveAttack;
         private currentlyActiveSprite;
+        private rigidbody;
         private static defaults;
         constructor();
         private deserialized;

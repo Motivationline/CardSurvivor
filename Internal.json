@@ -792,6 +792,31 @@
               "idMaterial": "Material|2024-05-03T09:37:44.397Z|89821"
             }
           }
+        ],
+        "ComponentRigidbody": [
+          {
+            "ƒ.ComponentRigidbody": {
+              "initialization": "TO_PIVOT",
+              "friction": 1000,
+              "restitution": 0,
+              "mass": 0.1,
+              "dampTranslation": 1,
+              "dampRotation": 0,
+              "effectGravity": 0,
+              "typeBody": "DYNAMIC",
+              "typeCollider": "SPHERE",
+              "isTrigger": false,
+              "id": 0,
+              "pivot": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[0.5999999046325684, 0.5999999046325684, 0.5999999642372131]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
         ]
       },
       "children": [],
@@ -1102,6 +1127,19 @@
       "type": "Graph"
     }
   },
+  "Material|2024-05-08T08:44:14.000Z|26880": {
+    "ƒ.Material": {
+      "name": "hitzoneTexture",
+      "idResource": "Material|2024-05-08T08:44:14.000Z|26880",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-05-14T10:45:35.593Z|70410"
+        }
+      }
+    }
+  },
   "Graph|2024-05-08T08:43:55.311Z|38959": {
     "ƒ.Graph": {
       "name": "hitzone",
@@ -1110,7 +1148,7 @@
         "ComponentMaterial": [
           {
             "ƒ.ComponentMaterial": {
-              "sortForAlpha": false,
+              "sortForAlpha": true,
               "clrPrimary": "[1, 1, 1, 1]",
               "clrSecondary": "[1, 1, 1, 1]",
               "pivot": {
@@ -1160,15 +1198,15 @@
       "type": "Graph"
     }
   },
-  "Material|2024-05-08T08:44:14.000Z|26880": {
-    "ƒ.Material": {
-      "name": "hitzoneTexture",
-      "idResource": "Material|2024-05-08T08:44:14.000Z|26880",
-      "shader": "ShaderLitTextured",
-      "coat": {
-        "ƒ.CoatTextured": {
-          "color": "[1, 1, 1, 1]"
-        }
+  "TextureImage|2024-05-14T10:45:35.593Z|70410": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Displays\\reddot.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-14T10:45:35.593Z|70410",
+        "name": "Assets\\Displays\\reddot.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
       }
     }
   }

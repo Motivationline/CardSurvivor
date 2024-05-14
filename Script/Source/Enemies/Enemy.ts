@@ -17,6 +17,7 @@ namespace Script {
         private prevDirection: number;
         private currentlyActiveAttack: EnemyAttackActive;
         private currentlyActiveSprite: AnimationSprite;
+        private rigidbody: ƒ.ComponentRigidbody;
 
         private static defaults: EnemyOptions = {
             attacks: [],
@@ -46,11 +47,12 @@ namespace Script {
         }
 
         private deserialized = () => {
-            if (ƒ.Project.mode === ƒ.MODE.EDITOR) return;
-
             this.removeEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.deserialized);
             this.material = this.node.getComponent(ƒ.ComponentMaterial);
             this.enemyManager = provider.get(EnemyManager);
+            this.rigidbody = this.node.getComponent(ƒ.ComponentRigidbody);
+            this.rigidbody.effectGravity = 0;
+            this.rigidbody.effectRotation = new ƒ.Vector3(0, 0, 0);
         }
 
         setup(_options: Partial<EnemyOptions>) {
@@ -136,13 +138,14 @@ namespace Script {
             if (this.directionOverride) {
                 // do we have a movement override?
                 let direction = this.directionOverride.clone;
-                direction.normalize(this.speed * Math.min(1, _frameTimeInSeconds));
+                direction.normalize(this.speed);
                 //TODO: change to physics based movement
-                this.node.mtxLocal.translate(direction, false);
+                // this.node.mtxLocal.translate(direction, false);
+                this.rigidbody.setVelocity(direction);
             } else {
                 // normal movement
-                _diff.normalize(this.speed * Math.min(1, _frameTimeInSeconds));
-
+                _diff.normalize(this.speed);
+                
                 //move towards or away from player?
                 if (_mgtSqrd < this.currentlyDesiredDistanceSquared[0]) {
                     // we're too close to the player, gotta move away
@@ -153,17 +156,18 @@ namespace Script {
                     //TODO: set idle animation
                 }
                 //TODO: change to physics based movement
-                this.node.mtxLocal.translate(_diff, false);
+                // this.node.mtxLocal.translate(_diff, false);
+                this.rigidbody.setVelocity(_diff);
             }
 
             // rotate visually to face correct direction
             let dir = Math.sign(_diff.x);
-            if (dir !== this.prevDirection) {
+            if (dir !== this.prevDirection && dir !== 0) {
                 this.prevDirection = dir;
                 if (this.prevDirection > 0) {
-                    this.node.mtxLocal.rotation = new ƒ.Vector3();
+                    this.node.getComponent(ƒ.ComponentMesh).mtxPivot.rotation = new ƒ.Vector3();
                 } else if (this.prevDirection < 0) {
-                    this.node.mtxLocal.rotation = new ƒ.Vector3(0, 180, 0);
+                    this.node.getComponent(ƒ.ComponentMesh).mtxPivot.rotation = new ƒ.Vector3(0, 180, 0);
                 }
             }
         }

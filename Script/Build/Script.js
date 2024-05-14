@@ -375,14 +375,15 @@ var Script;
     }
     function start(_event) {
         viewport = _event.detail;
+        // viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
         Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         Script.ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
         Script.gameState = GAMESTATE.PLAYING;
     }
     function update(_event) {
-        // ƒ.Physics.simulate();  // if physics is included and used
+        Script.ƒ.Physics.simulate(); // if physics is included and used
         viewport.draw();
-        Script.ƒ.AudioManager.default.update();
+        // ƒ.AudioManager.default.update();
     }
 })(Script || (Script = {}));
 var Script;
@@ -990,6 +991,7 @@ var Script;
         prevDirection;
         currentlyActiveAttack;
         currentlyActiveSprite;
+        rigidbody;
         static defaults = {
             attacks: [],
             damage: 1,
@@ -1016,11 +1018,12 @@ var Script;
             this.addEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.deserialized);
         }
         deserialized = () => {
-            if (Script.ƒ.Project.mode === Script.ƒ.MODE.EDITOR)
-                return;
             this.removeEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.deserialized);
             this.material = this.node.getComponent(Script.ƒ.ComponentMaterial);
             this.enemyManager = Script.provider.get(Script.EnemyManager);
+            this.rigidbody = this.node.getComponent(Script.ƒ.ComponentRigidbody);
+            this.rigidbody.effectGravity = 0;
+            this.rigidbody.effectRotation = new Script.ƒ.Vector3(0, 0, 0);
         };
         setup(_options) {
             _options = { ...Enemy.defaults, ..._options };
@@ -1098,13 +1101,14 @@ var Script;
             if (this.directionOverride) {
                 // do we have a movement override?
                 let direction = this.directionOverride.clone;
-                direction.normalize(this.speed * Math.min(1, _frameTimeInSeconds));
+                direction.normalize(this.speed);
                 //TODO: change to physics based movement
-                this.node.mtxLocal.translate(direction, false);
+                // this.node.mtxLocal.translate(direction, false);
+                this.rigidbody.setVelocity(direction);
             }
             else {
                 // normal movement
-                _diff.normalize(this.speed * Math.min(1, _frameTimeInSeconds));
+                _diff.normalize(this.speed);
                 //move towards or away from player?
                 if (_mgtSqrd < this.currentlyDesiredDistanceSquared[0]) {
                     // we're too close to the player, gotta move away
@@ -1116,17 +1120,18 @@ var Script;
                     //TODO: set idle animation
                 }
                 //TODO: change to physics based movement
-                this.node.mtxLocal.translate(_diff, false);
+                // this.node.mtxLocal.translate(_diff, false);
+                this.rigidbody.setVelocity(_diff);
             }
             // rotate visually to face correct direction
             let dir = Math.sign(_diff.x);
-            if (dir !== this.prevDirection) {
+            if (dir !== this.prevDirection && dir !== 0) {
                 this.prevDirection = dir;
                 if (this.prevDirection > 0) {
-                    this.node.mtxLocal.rotation = new Script.ƒ.Vector3();
+                    this.node.getComponent(Script.ƒ.ComponentMesh).mtxPivot.rotation = new Script.ƒ.Vector3();
                 }
                 else if (this.prevDirection < 0) {
-                    this.node.mtxLocal.rotation = new Script.ƒ.Vector3(0, 180, 0);
+                    this.node.getComponent(Script.ƒ.ComponentMesh).mtxPivot.rotation = new Script.ƒ.Vector3(0, 180, 0);
                 }
             }
         }
@@ -1465,7 +1470,7 @@ var Script;
             let index = this.projectileScripts.findIndex((n) => n === _projectile);
             if (index >= 0) {
                 this.projectileScripts.splice(index, 1);
-                Script.ƒ.Recycler.storeMultiple(this.projectiles.splice(index, 1));
+                Script.ƒ.Recycler.storeMultiple(...this.projectiles.splice(index, 1));
             }
             _projectile.node.getParent().removeChild(_projectile.node);
         }

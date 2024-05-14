@@ -46,7 +46,7 @@ namespace Script {
             let index = this.projectileScripts.findIndex((n) => n === _projectile);
             if (index >= 0) {
                 this.projectileScripts.splice(index, 1);
-                ƒ.Recycler.storeMultiple(this.projectiles.splice(index, 1));
+                ƒ.Recycler.storeMultiple(...this.projectiles.splice(index, 1));
             }
             _projectile.node.getParent().removeChild(_projectile.node);
         }
