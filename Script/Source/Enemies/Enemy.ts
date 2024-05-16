@@ -1,5 +1,6 @@
+/// <reference path="../Animateable.ts" />
 namespace Script {
-    export class Enemy extends ƒ.Component implements EnemyOptions {
+    export class Enemy extends Animateable implements EnemyOptions, Hittable {
         public speed: number = 1;
         public damage: number = 1;
         public knockbackMultiplier: number = 1;
@@ -12,11 +13,9 @@ namespace Script {
         private currentlyDesiredDistanceSquared: [number, number] = [0, 0];
         public dropXP: number = 0;
 
-        private material: ƒ.ComponentMaterial;
         private enemyManager: EnemyManager;
         private prevDirection: number;
         private currentlyActiveAttack: EnemyAttackActive;
-        private currentlyActiveSprite: AnimationSprite;
         private rigidbody: ƒ.ComponentRigidbody;
 
         private static defaults: EnemyOptions = {
@@ -43,12 +42,11 @@ namespace Script {
             super();
 
             if (ƒ.Project.mode === ƒ.MODE.EDITOR) return;
-            this.addEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.deserialized);
+            this.addEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.deserializedListener);
         }
-
-        private deserialized = () => {
-            this.removeEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.deserialized);
-            this.material = this.node.getComponent(ƒ.ComponentMaterial);
+        
+        protected deserializedListener = () => {
+            this.removeEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.deserializedListener);
             this.enemyManager = provider.get(EnemyManager);
             this.rigidbody = this.node.getComponent(ƒ.ComponentRigidbody);
             this.rigidbody.effectGravity = 0;
@@ -73,46 +71,6 @@ namespace Script {
         private updateDesiredDistance(_distance: [number, number]) {
             this.currentlyDesiredDistance = _distance;
             this.currentlyDesiredDistanceSquared = [this.currentlyDesiredDistance[0] * this.currentlyDesiredDistance[0], this.currentlyDesiredDistance[1] * this.currentlyDesiredDistance[1]];
-        }
-
-        private getSprite(_sp: AnimationSprite | [string, string]): AnimationSprite {
-            if (!_sp) return undefined;
-            if (("frames" in _sp)) {
-                return _sp;
-            } else {
-                return provider.get(Config).getAnimation(_sp[0], _sp[1]);
-            }
-        }
-
-        #uniqueAnimationId: number;
-        private setCentralAnimator(_as: AnimationSprite, _unique: boolean = false) {
-            if (!_as) return;
-            let am: AnimationManager = provider.get(AnimationManager);
-
-            if (this.currentlyActiveSprite && this.currentlyActiveSprite.events) {
-                for (let event of this.currentlyActiveSprite.events) {
-                    this.material.mtxPivot.removeEventListener(event.event, this.eventListener);
-                }
-            }
-
-            if (this.#uniqueAnimationId) {
-                am.removeUniqueAnimationMtx(this.#uniqueAnimationId);
-                this.#uniqueAnimationId = undefined;
-            }
-            if (_unique) {
-                [this.material.mtxPivot, this.#uniqueAnimationId] = am.getUniqueAnimationMtx(_as);
-            } else {
-                this.material.mtxPivot = am.getAnimationMtx(_as);
-            }
-            if (_as.material)
-                this.material.material = _as.material;
-            this.currentlyActiveSprite = _as;
-
-            if (this.currentlyActiveSprite && this.currentlyActiveSprite.events) {
-                for (let event of this.currentlyActiveSprite.events) {
-                    this.material.mtxPivot.addEventListener(event.event, this.eventListener);
-                }
-            }
         }
 
         public update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number) {
@@ -188,7 +146,7 @@ namespace Script {
                 if (_mgtSqrd > this.currentlyDesiredDistanceSquared[0] && _mgtSqrd < this.currentlyDesiredDistanceSquared[1]) {
                     // start the attack
                     this.currentlyActiveAttack.started = true;
-                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.attackSprite), true);
+                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.attackSprite), true, this.eventListener);
                 }
             }
             if (this.currentlyActiveAttack.started) {
@@ -200,7 +158,7 @@ namespace Script {
                     // time to execute attack
                     this.currentlyActiveAttack.done = true;
                     this.currentlyActiveAttack.attack?.call(this);
-                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.cooldownSprite), true);
+                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.cooldownSprite), true, this.eventListener);
                 } else {
                     //we're on cooldown now
                     this.currentlyActiveAttack.cooldown -= _frameTimeInSeconds;
@@ -222,12 +180,16 @@ namespace Script {
 
         }
 
-        public getDamaged(_dmg: number) {
-            this.health -= _dmg;
-            if (this.health > 0) return;
+        public hit(_hit: Hit): number {
+            this.health -= _hit.damage;
+            //TODO display damage numbers
+            //TODO apply knockback
+            if (this.health > 0) return _hit.damage;
 
             this.enemyManager.removeEnemy(this);
+            this.removeAnimationEventListeners();
             //TODO: drop XP
+            return _hit.damage + this.health;
         }
     }
 

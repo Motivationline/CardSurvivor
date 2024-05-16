@@ -23,7 +23,8 @@ namespace Script {
 
         private update = () => {
             if(!this.#character) return;
-            if(gameState !== GAMESTATE.PLAYING) return;
+            if (gameState === GAMESTATE.PAUSED) return;
+            if (gameState === GAMESTATE.IDLE) return;
 
             this.#character.move(this.movementVector);
         }

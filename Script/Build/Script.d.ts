@@ -1,5 +1,20 @@
 declare namespace Script {
     import ƒ = FudgeCore;
+    class Animateable extends ƒ.Component {
+        private material;
+        private currentlyActiveSprite;
+        private currentlyActiveEventListener;
+        private uniqueAnimationId;
+        constructor();
+        protected deserialized: () => void;
+        protected getSprite(_sp: AnimationSprite | [string, string]): AnimationSprite;
+        protected setCentralAnimator(_as: AnimationSprite, _unique?: boolean, _eventListener?: (_event: CustomEvent) => void): void;
+        protected removeAnimationEventListeners(): void;
+        update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
+    }
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
     class CustomComponentScript extends ƒ.ComponentScript {
         static readonly iSubclass: number;
         message: string;
@@ -9,6 +24,23 @@ declare namespace Script {
 }
 declare namespace Script {
     function initI18n(..._languages: string[]): Promise<void>;
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
+    abstract class InitializableGraphInstance extends ƒ.GraphInstance implements ƒ.Recycable {
+        initialized: boolean;
+        constructor();
+        recycle(): void;
+        set(_graph: ƒ.Graph): Promise<void>;
+    }
+    class ProjectileGraphInstance extends InitializableGraphInstance {
+    }
+    class HitZoneGraphInstance extends InitializableGraphInstance {
+    }
+    class EnemyGraphInstance extends InitializableGraphInstance {
+    }
+    class AOEGraphInstance extends InitializableGraphInstance {
+    }
 }
 declare namespace Script {
     export class Provider {
@@ -71,7 +103,8 @@ declare namespace Script {
     enum GAMESTATE {
         IDLE = 0,
         PLAYING = 1,
-        PAUSED = 2
+        PAUSED = 2,
+        ROOM_CLEAR = 3
     }
     const provider: Provider;
     let gameState: GAMESTATE;
@@ -111,7 +144,7 @@ declare namespace Script {
     }
     export type ActiveEffect = CardEffectProjectile | CardEffectAOE;
     interface ActiveCardEffectBase {
-        cooldown: number;
+        cooldown?: number;
         currentCooldown?: number;
         modifiers?: PassiveCardEffectObject;
     }
@@ -124,6 +157,7 @@ declare namespace Script {
     }
     interface CardEffectAOE extends ActiveCardEffectBase {
         type: "aoe";
+        aoe: string;
     }
     export enum PassiveCardEffect {
         COOLDOWN_REDUCTION = "cooldownReduction",
@@ -172,6 +206,7 @@ declare namespace Script {
         lockedToEntity?: boolean;
         impact?: ActiveEffect[];
         artillery?: boolean;
+        sprite: AnimationSprite | [string, string];
     }
     export enum ProjectileTargetMode {
         NONE = 0,
@@ -205,19 +240,77 @@ declare namespace Script {
         stopTrackingInRadius?: number;
         target: ƒ.Node;
     }
+    export interface AreasOfEffect {
+        [key: string]: AreaOfEffect;
+    }
+    export interface AreaOfEffect {
+        variant: "aoe" | "explosion";
+        size: number;
+        damage: number;
+        sprite: AnimationSprite | [string, string];
+        duration: number;
+        events?: {
+            [name: string]: (_event?: CustomEvent) => void;
+        };
+        targetMode?: ProjectileTargetMode;
+    }
+    export interface Hittable {
+        health: number;
+        hit: (_hit: Hit) => number;
+    }
+    export interface Hit {
+        damage: number;
+        knockbackDirection?: ƒ.Vector3;
+    }
+    export interface Pools {
+        [key: string]: string[][];
+    }
+    export interface Rooms {
+        [key: string]: Room[];
+    }
+    export interface Room {
+        duration: number;
+        defaultWave?: Wave;
+        waveAmount?: number;
+        waves?: Wave[];
+        reward?: boolean;
+        canStopAfter?: boolean;
+        boss?: boolean;
+        bonus?: PassiveCardEffectObject;
+    }
+    export interface Wave {
+        enemies: ({
+            pool: number;
+            weight?: number;
+            elite?: boolean;
+        } | string)[];
+        amount: number;
+        duration: number;
+        minEnemiesOverride?: number;
+    }
     export {};
 }
 declare namespace Script {
     import ƒ = FudgeCore;
-    class HitZoneGraphInstance extends ƒ.GraphInstance implements ƒ.Recycable {
-        initialized: boolean;
-        constructor();
-        recycle(): void;
-        set(_graph: ƒ.Graph): Promise<void>;
+    class AOE extends Animateable implements AreaOfEffect {
+        duration: number;
+        events?: {
+            [name: string]: (_event?: CustomEvent<any>) => void;
+        };
+        targetMode?: ProjectileTargetMode;
+        size: number;
+        damage: number;
+        sprite: AnimationSprite | [string, string];
+        variant: "aoe" | "explosion";
+        private defaults;
+        setup(_options: Partial<AreaOfEffect>): void;
+        private explode;
+        update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
+        private eventListener;
     }
 }
 declare namespace Script {
-    class ProjectileComponent extends ƒ.Component implements Projectile {
+    class ProjectileComponent extends Animateable implements Projectile {
         tracking: ProjectileTracking;
         direction: ƒ.Vector3;
         targetPosition: ƒ.Vector3;
@@ -232,6 +325,7 @@ declare namespace Script {
         impact: ActiveEffect[];
         targetMode: ProjectileTargetMode;
         lockedToEntity: boolean;
+        sprite: AnimationSprite;
         private hazardZone;
         protected static defaults: Projectile;
         constructor();
@@ -239,21 +333,14 @@ declare namespace Script {
         setup(_options: Partial<Projectile>, _manager: CardManager): Promise<void>;
         update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
         protected move(_frameTimeInSeconds: number): void;
-        protected onTriggerEnter: (_event: CustomEvent) => void;
-        protected onTriggerExit: (_event: CustomEvent) => void;
-    }
-}
-declare namespace Script {
-    import ƒ = FudgeCore;
-    class ProjectileGraphInstance extends ƒ.GraphInstance implements ƒ.Recycable {
-        initialized: boolean;
-        constructor();
-        recycle(): void;
-        set(_graph: ƒ.Graph): Promise<void>;
+        protected onTriggerEnter: (_event: ƒ.EventPhysics) => void;
+        protected onTriggerExit: (_event: ƒ.EventPhysics) => void;
+        protected hit(_hittable: Hittable): void;
     }
 }
 declare namespace Script {
     const projectiles: Projectiles;
+    const areasOfEffect: AreasOfEffect;
 }
 declare namespace Script {
     class Card implements iCard {
@@ -275,12 +362,17 @@ declare namespace Script {
 }
 declare namespace Script {
     import ƒ = FudgeCore;
-    class Character extends ƒ.Component {
+    class Character extends ƒ.Component implements Hittable {
         #private;
         prevAnimation: AnimationState;
         private prevDirection;
+        health: number;
+        maxHealth: number;
         constructor();
+        private init;
         move(_direction: ƒ.Vector2): void;
+        hit(_hit: Hit): number;
+        private updateHealth;
         private setAnimation;
         private setupAnimator;
     }
@@ -303,8 +395,7 @@ declare namespace Script {
     };
 }
 declare namespace Script {
-    class Enemy extends ƒ.Component implements EnemyOptions {
-        #private;
+    class Enemy extends Animateable implements EnemyOptions, Hittable {
         speed: number;
         damage: number;
         knockbackMultiplier: number;
@@ -316,25 +407,21 @@ declare namespace Script {
         private currentlyDesiredDistance;
         private currentlyDesiredDistanceSquared;
         dropXP: number;
-        private material;
         private enemyManager;
         private prevDirection;
         private currentlyActiveAttack;
-        private currentlyActiveSprite;
         private rigidbody;
         private static defaults;
         constructor();
-        private deserialized;
+        protected deserializedListener: () => void;
         setup(_options: Partial<EnemyOptions>): void;
         private updateDesiredDistance;
-        private getSprite;
-        private setCentralAnimator;
         update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
         private move;
         private chooseAttack;
         private executeAttack;
         private eventListener;
-        getDamaged(_dmg: number): void;
+        hit(_hit: Hit): number;
     }
     interface EnemyOptions {
         speed: number;
@@ -373,15 +460,6 @@ declare namespace Script {
     interface AnimationEvent {
         frame: number;
         event: string;
-    }
-}
-declare namespace Script {
-    import ƒ = FudgeCore;
-    class EnemyGraphInstance extends ƒ.GraphInstance implements ƒ.Recycable {
-        initialized: boolean;
-        constructor();
-        recycle(): void;
-        set(_graph: ƒ.Graph): Promise<void>;
     }
 }
 declare namespace Script {
@@ -424,11 +502,27 @@ declare namespace Script {
         private enemies;
         private enemyGraph;
         private enemyNode;
+        private currentWave;
+        private currentRoom;
+        private currentArea;
+        private currentWaveEnd;
+        private currentRoomEnd;
+        private timeElement;
         constructor(provider: Provider);
         setup(): void;
         private start;
         private loaded;
         private update;
+        nextWaveOverride: boolean;
+        private roomManagement;
+        private endRoom;
+        private nextRoom;
+        private spawnWave;
+        private getWave;
+        private poolSelections;
+        private getEnemyList;
+        private spawnEnemy;
+        private debugEvents;
         private spawnEnemies;
         removeEnemy(_enemy: Enemy): void;
     }
@@ -449,7 +543,8 @@ declare namespace Script {
         private loaded;
         private update;
         removeProjectile(_projectile: ProjectileComponent): void;
+        removeAOE(_aoe: AOE): void;
         createProjectile(_options: Partial<Projectile>, _position: ƒ.Vector3, _parent?: ƒ.Node): Promise<void>;
-        createHitZone(_position: ƒ.Vector3, _size?: number, _parent?: ƒ.Node): Promise<ƒ.GraphInstance>;
+        createHitZone(_position: ƒ.Vector3, _size?: number, _parent?: ƒ.Node): Promise<HitZoneGraphInstance>;
     }
 }

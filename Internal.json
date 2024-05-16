@@ -1140,6 +1140,18 @@
       }
     }
   },
+  "TextureImage|2024-05-14T10:45:35.593Z|70410": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Displays\\reddot.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-14T10:45:35.593Z|70410",
+        "name": "Assets\\Displays\\reddot.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
   "Graph|2024-05-08T08:43:55.311Z|38959": {
     "ƒ.Graph": {
       "name": "hitzone",
@@ -1198,13 +1210,109 @@
       "type": "Graph"
     }
   },
-  "TextureImage|2024-05-14T10:45:35.593Z|70410": {
+  "TextureImage|2024-05-14T12:52:23.956Z|42262": {
     "ƒ.TextureImage": {
-      "url": "Assets\\Displays\\reddot.png",
+      "url": "Assets\\Effects\\explosion_01.png",
       "type": "TextureImage",
       "Texture": {
-        "idResource": "TextureImage|2024-05-14T10:45:35.593Z|70410",
-        "name": "Assets\\Displays\\reddot.png",
+        "idResource": "TextureImage|2024-05-14T12:52:23.956Z|42262",
+        "name": "Assets\\Effects\\explosion_01.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-05-14T12:52:38.980Z|47111": {
+    "ƒ.Material": {
+      "name": "Explosion",
+      "idResource": "Material|2024-05-14T12:52:38.980Z|47111",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-05-14T12:52:23.956Z|42262"
+        }
+      }
+    }
+  },
+  "Graph|2024-05-14T12:57:42.823Z|22114": {
+    "ƒ.Graph": {
+      "name": "aoe",
+      "active": true,
+      "components": {
+        "ComponentTransform": [
+          {
+            "ƒ.ComponentTransform": {
+              "local": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "ComponentMaterial": [
+          {
+            "ƒ.ComponentMaterial": {
+              "sortForAlpha": false,
+              "clrPrimary": "[1, 1, 1, 1]",
+              "clrSecondary": "[1, 1, 1, 1]",
+              "pivot": {
+                "translation": "[0, 0]",
+                "rotation": 0,
+                "scaling": "[1, 1]"
+              },
+              "Component": {
+                "active": true
+              },
+              "idMaterial": "Material|2024-05-14T12:52:38.980Z|47111"
+            }
+          }
+        ],
+        "ComponentMesh": [
+          {
+            "ƒ.ComponentMesh": {
+              "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
+              "pivot": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ]
+      },
+      "children": [],
+      "idResource": "Graph|2024-05-14T12:57:42.823Z|22114",
+      "type": "Graph"
+    }
+  },
+  "Material|2024-05-16T13:17:56.829Z|14508": {
+    "ƒ.Material": {
+      "name": "VentilatorMove",
+      "idResource": "Material|2024-05-16T13:17:56.829Z|14508",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-05-16T13:18:15.776Z|88341"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-05-16T13:18:15.776Z|88341": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Enemies\\Ventilator\\Ventilator_walk_01.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-05-16T13:18:15.776Z|88341",
+        "name": "Assets\\Enemies\\Ventilator\\Ventilator_walk_01.png",
         "mipmap": "CRISP",
         "wrap": "REPEAT"
       }

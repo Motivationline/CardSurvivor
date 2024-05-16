@@ -1,7 +1,9 @@
 /// <reference path="../Types.ts" />
+/// <reference path="../Animateable.ts" />
+
 namespace Script {
 
-    export class ProjectileComponent extends ƒ.Component implements Projectile {
+    export class ProjectileComponent extends Animateable implements Projectile {
         tracking: ProjectileTracking;
         direction: ƒ.Vector3;
         targetPosition: ƒ.Vector3;
@@ -16,7 +18,8 @@ namespace Script {
         impact: ActiveEffect[];
         targetMode: ProjectileTargetMode;
         lockedToEntity: boolean;
-        private hazardZone: ƒ.GraphInstance;
+        sprite: AnimationSprite;
+        private hazardZone: HitZoneGraphInstance;
 
         protected static defaults: Projectile = {
             targetPosition: undefined,
@@ -32,7 +35,8 @@ namespace Script {
             targetMode: ProjectileTargetMode.NONE,
             lockedToEntity: false,
             impact: undefined,
-            artillery: false
+            artillery: false,
+            sprite: ["projectile", "toast"],
         }
 
         constructor() {
@@ -47,8 +51,8 @@ namespace Script {
             this.removeEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.init)
 
             // setup physics
-            this.node.getComponent(ƒ.ComponentRigidbody).removeEventListener(ƒ.EVENT_PHYSICS.TRIGGER_ENTER, this.onTriggerEnter);
-            this.node.getComponent(ƒ.ComponentRigidbody).removeEventListener(ƒ.EVENT_PHYSICS.TRIGGER_EXIT, this.onTriggerExit);
+            this.node.getComponent(ƒ.ComponentRigidbody).addEventListener(ƒ.EVENT_PHYSICS.TRIGGER_ENTER, this.onTriggerEnter);
+            this.node.getComponent(ƒ.ComponentRigidbody).addEventListener(ƒ.EVENT_PHYSICS.TRIGGER_EXIT, this.onTriggerExit);
         }
 
         async setup(_options: Partial<Projectile>, _manager: CardManager): Promise<void> {
@@ -67,6 +71,8 @@ namespace Script {
             this.impact = _options.impact;
             this.targetMode = _options.targetMode;
             this.lockedToEntity = _options.lockedToEntity;
+            this.sprite = this.getSprite(_options.sprite);
+            this.setCentralAnimator(this.sprite);
 
             this.node.mtxLocal.scaling = ƒ.Vector3.ONE(this.size);
 
@@ -121,7 +127,7 @@ namespace Script {
             this.node.mtxLocal.translate(dir);
 
             if (this.targetPosition && this.node.mtxWorld.translation.equals(this.targetPosition, 0.5)) {
-                if(this.artillery && this.tracking.startTrackingAfter > 0) return;
+                if (this.artillery && this.tracking.startTrackingAfter > 0) return;
                 // target position reached
                 if (this.hazardZone) {
                     ƒ.Recycler.store(this.hazardZone);
@@ -138,11 +144,20 @@ namespace Script {
             }
         }
 
-        protected onTriggerEnter = (_event: CustomEvent) => {
-            console.log("onTriggerEnter", _event);
+        protected onTriggerEnter = (_event: ƒ.EventPhysics) => {
+            if (_event.cmpRigidbody.node.name === "enemy" && this.target === ProjectileTarget.ENEMY) {
+                this.hit(_event.cmpRigidbody.node.getComponent(Enemy))
+            } else if (_event.cmpRigidbody.node.name === "character" && this.target === ProjectileTarget.PLAYER) {
+                if (this.artillery) return;
+                this.hit(_event.cmpRigidbody.node.getComponent(Character))
+            }
         }
-        protected onTriggerExit = (_event: CustomEvent) => {
-            console.log("onTriggerExit", _event);
+        protected onTriggerExit = (_event: ƒ.EventPhysics) => {
+            // console.log("onTriggerExit", _event);
+        }
+
+        protected hit(_hittable: Hittable) {
+            console.log("hit", _hittable);
         }
     }
 

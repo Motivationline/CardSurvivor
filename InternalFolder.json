@@ -138,6 +138,9 @@
                     "idResource": "TextureImage|2024-05-07T11:33:51.821Z|89717"
                   },
                   {
+                    "idResource": "TextureImage|2024-05-16T13:18:15.776Z|88341"
+                  },
+                  {
                     "idResource": "Material|2024-05-06T13:29:21.308Z|14942"
                   },
                   {
@@ -154,6 +157,9 @@
                   },
                   {
                     "idResource": "Material|2024-05-07T11:33:30.222Z|47475"
+                  },
+                  {
+                    "idResource": "Material|2024-05-16T13:17:56.829Z|14508"
                   }
                 ]
               },
@@ -212,6 +218,25 @@
           },
           {
             "idResource": "Material|2024-05-08T08:44:14.000Z|26880"
+          }
+        ]
+      },
+      {
+        "name": "aoes",
+        "entries": [
+          {
+            "idResource": "Graph|2024-05-14T12:57:42.823Z|22114"
+          },
+          {
+            "name": "textures",
+            "entries": [
+              {
+                "idResource": "Material|2024-05-14T12:52:38.980Z|47111"
+              },
+              {
+                "idResource": "TextureImage|2024-05-14T12:52:23.956Z|42262"
+              }
+            ]
           }
         ]
       },

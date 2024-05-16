@@ -2,8 +2,8 @@ namespace Script {
     export class ProjectileManager {
         private characterManager: CharacterManager;
         private config: Config;
-        private projectileScripts: ProjectileComponent[] = [];
-        private projectiles: ProjectileGraphInstance[] = [];
+        private projectileScripts: Animateable[] = [];
+        private projectiles: InitializableGraphInstance[] = [];
         static projectileGraph: ƒ.Graph;
         static hitZoneGraph: ƒ.Graph;
         private projectilesNode: ƒ.Node;
@@ -30,7 +30,8 @@ namespace Script {
             ProjectileManager.hitZoneGraph = <ƒ.Graph>await ƒ.Project.getResourcesByName("hitzone")[0];
         }
         private update = () => {
-            if (gameState !== GAMESTATE.PLAYING) return;
+            if (gameState === GAMESTATE.PAUSED) return;
+            if (gameState === GAMESTATE.IDLE) return;
             let character = this.characterManager.character;
             if (!character) return;
 
@@ -50,6 +51,14 @@ namespace Script {
             }
             _projectile.node.getParent().removeChild(_projectile.node);
         }
+        public removeAOE(_aoe: AOE) {
+            let index = this.projectileScripts.findIndex((n) => n === _aoe);
+            if (index >= 0) {
+                this.projectileScripts.splice(index, 1);
+                ƒ.Recycler.storeMultiple(...this.projectiles.splice(index, 1));
+            }
+            _aoe.node.getParent().removeChild(_aoe.node);
+        }
 
         public async createProjectile(_options: Partial<Projectile>, _position: ƒ.Vector3, _parent: ƒ.Node = this.projectilesNode) {
             let pgi = ƒ.Recycler.get(ProjectileGraphInstance);
@@ -66,7 +75,7 @@ namespace Script {
             this.projectiles.push(pgi);
         }
 
-        public async createHitZone(_position: ƒ.Vector3, _size: number = 1, _parent: ƒ.Node = this.projectilesNode): Promise<ƒ.GraphInstance> {
+        public async createHitZone(_position: ƒ.Vector3, _size: number = 1, _parent: ƒ.Node = this.projectilesNode): Promise<HitZoneGraphInstance> {
             let hz = ƒ.Recycler.get(HitZoneGraphInstance);
             if(!hz.initialized) {
                 await hz.set(ProjectileManager.hitZoneGraph);

@@ -2,6 +2,71 @@
 var Script;
 (function (Script) {
     var ƒ = FudgeCore;
+    class Animateable extends ƒ.Component {
+        material;
+        currentlyActiveSprite;
+        currentlyActiveEventListener;
+        uniqueAnimationId;
+        constructor() {
+            super();
+            if (ƒ.Project.mode === ƒ.MODE.EDITOR)
+                return;
+            this.addEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.deserialized);
+        }
+        deserialized = () => {
+            this.removeEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.deserialized);
+            this.material = this.node.getComponent(ƒ.ComponentMaterial);
+        };
+        getSprite(_sp) {
+            if (!_sp)
+                return undefined;
+            if (("frames" in _sp)) {
+                return _sp;
+            }
+            else {
+                return Script.provider.get(Script.Config).getAnimation(_sp[0], _sp[1]);
+            }
+        }
+        setCentralAnimator(_as, _unique = false, _eventListener) {
+            if (!_as)
+                return;
+            let am = Script.provider.get(Script.AnimationManager);
+            this.removeAnimationEventListeners();
+            if (this.uniqueAnimationId) {
+                am.removeUniqueAnimationMtx(this.uniqueAnimationId);
+                this.uniqueAnimationId = undefined;
+            }
+            if (_unique) {
+                [this.material.mtxPivot, this.uniqueAnimationId] = am.getUniqueAnimationMtx(_as);
+            }
+            else {
+                this.material.mtxPivot = am.getAnimationMtx(_as);
+            }
+            if (_as.material)
+                this.material.material = _as.material;
+            this.currentlyActiveSprite = _as;
+            if (this.currentlyActiveSprite && this.currentlyActiveSprite.events && _eventListener) {
+                for (let event of this.currentlyActiveSprite.events) {
+                    this.material.mtxPivot.addEventListener(event.event, _eventListener);
+                }
+                this.currentlyActiveEventListener = _eventListener;
+            }
+        }
+        removeAnimationEventListeners() {
+            if (this.currentlyActiveSprite && this.currentlyActiveSprite.events && this.currentlyActiveEventListener) {
+                for (let event of this.currentlyActiveSprite.events) {
+                    this.material.mtxPivot.removeEventListener(event.event, this.currentlyActiveEventListener);
+                }
+            }
+        }
+        update(_charPosition, _frameTimeInSeconds) { }
+        ;
+    }
+    Script.Animateable = Animateable;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
     class CustomComponentScript extends ƒ.ComponentScript {
         // Register the script as component for use in the editor via drag&drop
@@ -57,6 +122,39 @@ var Script;
         });
     }
     Script.initI18n = initI18n;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    class InitializableGraphInstance extends ƒ.GraphInstance {
+        initialized = false;
+        constructor() {
+            super();
+            // Don't start when running in editor
+            // if (ƒ.Project.mode == ƒ.MODE.EDITOR)
+            //     return;
+        }
+        recycle() {
+            // this.getComponent(ProjectileComponent).recycle();
+        }
+        async set(_graph) {
+            await super.set(_graph);
+            this.initialized = true;
+        }
+    }
+    Script.InitializableGraphInstance = InitializableGraphInstance;
+    class ProjectileGraphInstance extends InitializableGraphInstance {
+    }
+    Script.ProjectileGraphInstance = ProjectileGraphInstance;
+    class HitZoneGraphInstance extends InitializableGraphInstance {
+    }
+    Script.HitZoneGraphInstance = HitZoneGraphInstance;
+    class EnemyGraphInstance extends InitializableGraphInstance {
+    }
+    Script.EnemyGraphInstance = EnemyGraphInstance;
+    class AOEGraphInstance extends InitializableGraphInstance {
+    }
+    Script.AOEGraphInstance = AOEGraphInstance;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
@@ -201,7 +299,9 @@ var Script;
         update = () => {
             if (!this.#character)
                 return;
-            if (Script.gameState !== Script.GAMESTATE.PLAYING)
+            if (Script.gameState === Script.GAMESTATE.PAUSED)
+                return;
+            if (Script.gameState === Script.GAMESTATE.IDLE)
                 return;
             this.#character.move(this.movementVector);
         };
@@ -347,6 +447,7 @@ var Script;
         GAMESTATE[GAMESTATE["IDLE"] = 0] = "IDLE";
         GAMESTATE[GAMESTATE["PLAYING"] = 1] = "PLAYING";
         GAMESTATE[GAMESTATE["PAUSED"] = 2] = "PAUSED";
+        GAMESTATE[GAMESTATE["ROOM_CLEAR"] = 3] = "ROOM_CLEAR";
     })(GAMESTATE = Script.GAMESTATE || (Script.GAMESTATE = {}));
     let viewport;
     document.addEventListener("interactiveViewportStarted", start);
@@ -494,30 +595,61 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
-    var ƒ = FudgeCore;
-    class HitZoneGraphInstance extends ƒ.GraphInstance {
-        initialized = false;
-        constructor() {
-            super();
-            // Don't start when running in editor
-            if (ƒ.Project.mode == ƒ.MODE.EDITOR)
+    class AOE extends Script.Animateable {
+        duration;
+        events;
+        targetMode;
+        size;
+        damage;
+        sprite;
+        variant;
+        defaults = {
+            size: 1,
+            damage: 0,
+            sprite: ["aoe", "explosion"],
+            duration: 1,
+            variant: "explosion",
+        };
+        setup(_options) {
+            _options = { ...this.defaults, ..._options };
+            this.size = _options.size;
+            this.damage = _options.damage;
+            this.variant = _options.variant;
+            this.duration = _options.duration;
+            this.targetMode = _options.targetMode;
+            this.events = _options.events;
+            this.sprite = this.getSprite(_options.sprite);
+            this.setCentralAnimator(this.sprite, true, this.eventListener);
+            setTimeout(() => {
+                Script.provider.get(Script.ProjectileManager).removeAOE(this);
+            }, this.duration * 1000);
+        }
+        // should be called through a timing listener
+        explode() {
+            if (this.variant !== "explosion")
                 return;
         }
-        recycle() {
-            // this.getComponent(ProjectileComponent).recycle();
+        update(_charPosition, _frameTimeInSeconds) {
+            if (this.variant !== "aoe")
+                return;
         }
-        async set(_graph) {
-            await super.set(_graph);
-            this.initialized = true;
-        }
+        eventListener = (_event) => {
+            if (!this.events)
+                return;
+            if (!this.events[_event.type])
+                return;
+            this.events[_event.type].call(this, _event);
+        };
     }
-    Script.HitZoneGraphInstance = HitZoneGraphInstance;
+    Script.AOE = AOE;
 })(Script || (Script = {}));
 /// <reference path="../Types.ts" />
+/// <reference path="../Animateable.ts" />
 var Script;
 /// <reference path="../Types.ts" />
+/// <reference path="../Animateable.ts" />
 (function (Script) {
-    class ProjectileComponent extends Script.ƒ.Component {
+    class ProjectileComponent extends Script.Animateable {
         tracking;
         direction;
         targetPosition;
@@ -532,6 +664,7 @@ var Script;
         impact;
         targetMode;
         lockedToEntity;
+        sprite;
         hazardZone;
         static defaults = {
             targetPosition: undefined,
@@ -547,7 +680,8 @@ var Script;
             targetMode: Script.ProjectileTargetMode.NONE,
             lockedToEntity: false,
             impact: undefined,
-            artillery: false
+            artillery: false,
+            sprite: ["projectile", "toast"],
         };
         constructor() {
             super();
@@ -558,8 +692,8 @@ var Script;
         init = () => {
             this.removeEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.init);
             // setup physics
-            this.node.getComponent(Script.ƒ.ComponentRigidbody).removeEventListener("TriggerEnteredCollision" /* ƒ.EVENT_PHYSICS.TRIGGER_ENTER */, this.onTriggerEnter);
-            this.node.getComponent(Script.ƒ.ComponentRigidbody).removeEventListener("TriggerLeftCollision" /* ƒ.EVENT_PHYSICS.TRIGGER_EXIT */, this.onTriggerExit);
+            this.node.getComponent(Script.ƒ.ComponentRigidbody).addEventListener("TriggerEnteredCollision" /* ƒ.EVENT_PHYSICS.TRIGGER_ENTER */, this.onTriggerEnter);
+            this.node.getComponent(Script.ƒ.ComponentRigidbody).addEventListener("TriggerLeftCollision" /* ƒ.EVENT_PHYSICS.TRIGGER_EXIT */, this.onTriggerExit);
         };
         async setup(_options, _manager) {
             _options = { ...ProjectileComponent.defaults, ..._options };
@@ -577,6 +711,8 @@ var Script;
             this.impact = _options.impact;
             this.targetMode = _options.targetMode;
             this.lockedToEntity = _options.lockedToEntity;
+            this.sprite = this.getSprite(_options.sprite);
+            this.setCentralAnimator(this.sprite);
             this.node.mtxLocal.scaling = Script.ƒ.Vector3.ONE(this.size);
             this.hazardZone = undefined;
             //TODO rotate projectile towards flight direction
@@ -639,34 +775,23 @@ var Script;
             }
         }
         onTriggerEnter = (_event) => {
-            console.log("onTriggerEnter", _event);
+            if (_event.cmpRigidbody.node.name === "enemy" && this.target === Script.ProjectileTarget.ENEMY) {
+                this.hit(_event.cmpRigidbody.node.getComponent(Script.Enemy));
+            }
+            else if (_event.cmpRigidbody.node.name === "character" && this.target === Script.ProjectileTarget.PLAYER) {
+                if (this.artillery)
+                    return;
+                this.hit(_event.cmpRigidbody.node.getComponent(Script.Character));
+            }
         };
         onTriggerExit = (_event) => {
-            console.log("onTriggerExit", _event);
+            // console.log("onTriggerExit", _event);
         };
+        hit(_hittable) {
+            console.log("hit", _hittable);
+        }
     }
     Script.ProjectileComponent = ProjectileComponent;
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
-    var ƒ = FudgeCore;
-    class ProjectileGraphInstance extends ƒ.GraphInstance {
-        initialized = false;
-        constructor() {
-            super();
-            // Don't start when running in editor
-            if (ƒ.Project.mode == ƒ.MODE.EDITOR)
-                return;
-        }
-        recycle() {
-            // this.getComponent(ProjectileComponent).recycle();
-        }
-        async set(_graph) {
-            await super.set(_graph);
-            this.initialized = true;
-        }
-    }
-    Script.ProjectileGraphInstance = ProjectileGraphInstance;
 })(Script || (Script = {}));
 /// <reference path="../Types.ts" />
 var Script;
@@ -676,12 +801,32 @@ var Script;
         "toastPlayer": {
             damage: 1,
             speed: 3,
+            sprite: ["toaster", "projectile"],
         },
         "toast": {
             damage: 1,
             speed: 3,
             targetMode: Script.ProjectileTargetMode.CLOSEST,
             artillery: true,
+            impact: [{
+                    type: "aoe",
+                    aoe: "toastImpact"
+                }],
+            sprite: ["projectile", "toast"],
+        }
+    };
+    Script.areasOfEffect = {
+        "toastImpact": {
+            variant: "explosion",
+            damage: 10,
+            size: 1,
+            sprite: ["aec", "explosion"],
+            duration: 1,
+            events: {
+                "explode": function (_event) {
+                    this.explode();
+                }
+            }
         }
     };
 })(Script || (Script = {}));
@@ -828,7 +973,10 @@ var Script;
         };
         prevAnimation = AnimationState.IDLE;
         #layers = [];
+        #healthElement;
         prevDirection = 0;
+        health = 100;
+        maxHealth = 100;
         constructor() {
             super();
             if (ƒ.Project.mode === ƒ.MODE.EDITOR)
@@ -836,9 +984,13 @@ var Script;
             this.addEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, () => {
                 this.node.addEventListener("graphInstantiated" /* ƒ.EVENT.GRAPH_INSTANTIATED */, () => {
                     Script.provider.get(Script.CharacterManager).character = this;
+                    this.init();
                 }, true);
                 this.setupAnimator();
             });
+        }
+        init() {
+            this.#healthElement = document.getElementById("healthbar");
         }
         move(_direction) {
             //TODO: update this to use physics
@@ -860,6 +1012,19 @@ var Script;
                     this.node.mtxLocal.rotation = new ƒ.Vector3(0, 180, 0);
                 }
             }
+        }
+        hit(_hit) {
+            this.health -= _hit.damage;
+            //TODO display damage numbers
+            //update display
+            this.updateHealth();
+            if (this.health > 0)
+                return _hit.damage;
+            // TODO: Game Over
+        }
+        updateHealth() {
+            this.#healthElement.max = this.maxHealth;
+            this.#healthElement.value = this.health;
         }
         setAnimation(_state) {
             if (_state === this.prevAnimation)
@@ -965,6 +1130,11 @@ var Script;
             moveSprite: ["motor", "move"],
             speed: 3,
         },
+        ventilator: {
+            moveSprite: ["ventilator", "move"],
+            speed: 0.5,
+            desiredDistance: [0, 0],
+        },
         chair: {
             moveSprite: ["chair", "move"],
             speed: 0.5,
@@ -972,9 +1142,11 @@ var Script;
         }
     };
 })(Script || (Script = {}));
+/// <reference path="../Animateable.ts" />
 var Script;
+/// <reference path="../Animateable.ts" />
 (function (Script) {
-    class Enemy extends Script.ƒ.Component {
+    class Enemy extends Script.Animateable {
         speed = 1;
         damage = 1;
         knockbackMultiplier = 1;
@@ -986,11 +1158,9 @@ var Script;
         currentlyDesiredDistance = [0, 0];
         currentlyDesiredDistanceSquared = [0, 0];
         dropXP = 0;
-        material;
         enemyManager;
         prevDirection;
         currentlyActiveAttack;
-        currentlyActiveSprite;
         rigidbody;
         static defaults = {
             attacks: [],
@@ -1015,11 +1185,10 @@ var Script;
             super();
             if (Script.ƒ.Project.mode === Script.ƒ.MODE.EDITOR)
                 return;
-            this.addEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.deserialized);
+            this.addEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.deserializedListener);
         }
-        deserialized = () => {
-            this.removeEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.deserialized);
-            this.material = this.node.getComponent(Script.ƒ.ComponentMaterial);
+        deserializedListener = () => {
+            this.removeEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.deserializedListener);
             this.enemyManager = Script.provider.get(Script.EnemyManager);
             this.rigidbody = this.node.getComponent(Script.ƒ.ComponentRigidbody);
             this.rigidbody.effectGravity = 0;
@@ -1042,45 +1211,6 @@ var Script;
         updateDesiredDistance(_distance) {
             this.currentlyDesiredDistance = _distance;
             this.currentlyDesiredDistanceSquared = [this.currentlyDesiredDistance[0] * this.currentlyDesiredDistance[0], this.currentlyDesiredDistance[1] * this.currentlyDesiredDistance[1]];
-        }
-        getSprite(_sp) {
-            if (!_sp)
-                return undefined;
-            if (("frames" in _sp)) {
-                return _sp;
-            }
-            else {
-                return Script.provider.get(Script.Config).getAnimation(_sp[0], _sp[1]);
-            }
-        }
-        #uniqueAnimationId;
-        setCentralAnimator(_as, _unique = false) {
-            if (!_as)
-                return;
-            let am = Script.provider.get(Script.AnimationManager);
-            if (this.currentlyActiveSprite && this.currentlyActiveSprite.events) {
-                for (let event of this.currentlyActiveSprite.events) {
-                    this.material.mtxPivot.removeEventListener(event.event, this.eventListener);
-                }
-            }
-            if (this.#uniqueAnimationId) {
-                am.removeUniqueAnimationMtx(this.#uniqueAnimationId);
-                this.#uniqueAnimationId = undefined;
-            }
-            if (_unique) {
-                [this.material.mtxPivot, this.#uniqueAnimationId] = am.getUniqueAnimationMtx(_as);
-            }
-            else {
-                this.material.mtxPivot = am.getAnimationMtx(_as);
-            }
-            if (_as.material)
-                this.material.material = _as.material;
-            this.currentlyActiveSprite = _as;
-            if (this.currentlyActiveSprite && this.currentlyActiveSprite.events) {
-                for (let event of this.currentlyActiveSprite.events) {
-                    this.material.mtxPivot.addEventListener(event.event, this.eventListener);
-                }
-            }
         }
         update(_charPosition, _frameTimeInSeconds) {
             // check distance to player
@@ -1151,7 +1281,7 @@ var Script;
                 if (_mgtSqrd > this.currentlyDesiredDistanceSquared[0] && _mgtSqrd < this.currentlyDesiredDistanceSquared[1]) {
                     // start the attack
                     this.currentlyActiveAttack.started = true;
-                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.attackSprite), true);
+                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.attackSprite), true, this.eventListener);
                 }
             }
             if (this.currentlyActiveAttack.started) {
@@ -1164,7 +1294,7 @@ var Script;
                     // time to execute attack
                     this.currentlyActiveAttack.done = true;
                     this.currentlyActiveAttack.attack?.call(this);
-                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.cooldownSprite), true);
+                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.cooldownSprite), true, this.eventListener);
                 }
                 else {
                     //we're on cooldown now
@@ -1185,36 +1315,19 @@ var Script;
                 return;
             this.currentlyActiveAttack.events[_event.type].call(this, _event);
         };
-        getDamaged(_dmg) {
-            this.health -= _dmg;
+        hit(_hit) {
+            this.health -= _hit.damage;
+            //TODO display damage numbers
+            //TODO apply knockback
             if (this.health > 0)
-                return;
+                return _hit.damage;
             this.enemyManager.removeEnemy(this);
+            this.removeAnimationEventListeners();
             //TODO: drop XP
+            return _hit.damage + this.health;
         }
     }
     Script.Enemy = Enemy;
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
-    var ƒ = FudgeCore;
-    class EnemyGraphInstance extends ƒ.GraphInstance {
-        initialized = false;
-        constructor() {
-            super();
-            // Don't start when running in editor
-            if (ƒ.Project.mode == ƒ.MODE.EDITOR)
-                return;
-        }
-        recycle() {
-            // this.getComponent(Enemy).recycle();
-        }
-        async set(_graph) {
-            await super.set(_graph);
-            this.initialized = true;
-        }
-    }
-    Script.EnemyGraphInstance = EnemyGraphInstance;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
@@ -1327,6 +1440,119 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
+    const pools = {
+        "electronics": [
+            ["microwave"],
+            ["toaster", "chair"],
+            ["ventilator"],
+            ["motor"],
+            ["chair"],
+        ]
+    };
+    const rooms = {
+        "electronics": [
+            // room 1
+            {
+                duration: 60,
+                defaultWave: {
+                    enemies: [{ pool: 0 }],
+                    amount: 15,
+                    duration: 10,
+                    minEnemiesOverride: 5,
+                },
+                waveAmount: 6,
+            },
+            // room 2
+            {
+                duration: 60,
+                defaultWave: {
+                    enemies: [
+                        { pool: 0, weight: 6 },
+                        { pool: 1, weight: 4 },
+                    ],
+                    amount: 15,
+                    duration: 10,
+                    minEnemiesOverride: 5,
+                },
+                waveAmount: 6,
+                waves: [
+                    {
+                        enemies: [
+                            { pool: 1 }
+                        ],
+                        amount: 8,
+                        duration: 10,
+                    },
+                ]
+            },
+            // room 3
+            {
+                duration: 60,
+                defaultWave: {
+                    enemies: [
+                        { pool: 0, weight: 6 },
+                        { pool: 1, weight: 4 },
+                    ],
+                    amount: 15,
+                    duration: 10,
+                    minEnemiesOverride: 5,
+                },
+                waveAmount: 6,
+                waves: [
+                    {
+                        enemies: [
+                            { pool: 0, weight: 6 },
+                            { pool: 1, weight: 4 },
+                            { pool: 0, elite: true },
+                        ],
+                        amount: 15,
+                        duration: 10,
+                    }
+                ],
+            },
+            // room bonus
+            {
+                duration: Infinity,
+                reward: true,
+            },
+            // room 4
+            {
+                duration: 60,
+                defaultWave: {
+                    enemies: [
+                        { pool: 0, weight: 55 },
+                        { pool: 1, weight: 25 },
+                        { pool: 2, weight: 20 },
+                    ],
+                    amount: 15,
+                    duration: 10,
+                    minEnemiesOverride: 5,
+                },
+                waveAmount: 6,
+                waves: [
+                    {
+                        enemies: [
+                            { pool: 2 },
+                        ],
+                        amount: 8,
+                        duration: 10,
+                    }
+                ],
+            },
+            // room 5
+            {
+                duration: 60,
+                boss: true,
+                canStopAfter: true,
+                defaultWave: {
+                    amount: 1,
+                    duration: 60,
+                    enemies: ["microwave-boss"],
+                },
+                waveAmount: 1
+            }
+        ]
+    };
     class EnemyManager {
         provider;
         characterManager;
@@ -1335,6 +1561,12 @@ var Script;
         enemies = [];
         enemyGraph;
         enemyNode;
+        currentWave = -1;
+        currentRoom = -1;
+        currentArea = "electronics";
+        currentWaveEnd = 0;
+        currentRoomEnd = 0;
+        timeElement = document.getElementById("timer");
         constructor(provider) {
             this.provider = provider;
             if (Script.ƒ.Project.mode === Script.ƒ.MODE.EDITOR)
@@ -1344,6 +1576,7 @@ var Script;
             Script.ƒ.Project.addEventListener("resourcesLoaded" /* ƒ.EVENT.RESOURCES_LOADED */, this.loaded);
             this.characterManager = provider.get(Script.CharacterManager);
             this.config = provider.get(Script.Config);
+            document.addEventListener("keypress", this.debugEvents);
         }
         setup() {
             Script.ƒ.Debug.log("EnemyManager setup");
@@ -1356,17 +1589,165 @@ var Script;
             this.enemyGraph = await Script.ƒ.Project.getResourcesByName("enemy")[0];
         };
         update = () => {
-            if (Script.gameState !== Script.GAMESTATE.PLAYING)
+            if (Script.gameState === Script.GAMESTATE.PAUSED)
+                return;
+            if (Script.gameState === Script.GAMESTATE.IDLE)
                 return;
             let character = this.characterManager.character;
             if (!character)
                 return;
-            // create new enemies if needed
-            this.spawnEnemies();
+            this.roomManagement();
             // update enemies
             let time = Script.ƒ.Loop.timeFrameGame / 1000;
             for (let enemy of this.enemyScripts) {
                 enemy.update(character.node.mtxWorld.translation, time);
+            }
+        };
+        nextWaveOverride = false;
+        async roomManagement() {
+            if (Script.gameState === Script.GAMESTATE.ROOM_CLEAR)
+                return;
+            let currentTime = Script.ƒ.Time.game.get();
+            let nextWave = this.getWave(this.currentArea, this.currentRoom, this.currentWave + 1);
+            // should we start a new wave?
+            if (nextWave && (this.nextWaveOverride ||
+                this.currentWave < 0 || // no wave yet
+                this.currentWaveEnd < currentTime || // wave timer is up
+                this.enemies.length <= (nextWave?.minEnemiesOverride ?? 0) // wave min enemies are reached
+            )) {
+                this.nextWaveOverride = false;
+                if (await this.spawnWave(nextWave)) {
+                    this.currentWave++;
+                }
+            }
+            // no more enenmies left, everything was killed
+            // @ts-expect-error
+            if (this.enemies.length === 0 && Script.gameState !== Script.GAMESTATE.ROOM_CLEAR) {
+                this.endRoom();
+            }
+            // is the rooms timer up?
+            // TODO special cases for boss rooms and no-damage runs
+            // @ts-expect-error
+            if (this.currentRoomEnd < currentTime && Script.gameState !== Script.GAMESTATE.ROOM_CLEAR) {
+                this.endRoom();
+            }
+            // update timer
+            this.timeElement.innerText = `room ${this.currentRoom} ends in: ${this.currentRoomEnd - currentTime}ms - wave ${this.currentWave} ends in: ${this.currentWaveEnd - currentTime}ms`;
+        }
+        endRoom() {
+            while (this.enemyScripts.length > 0) {
+                this.enemyScripts[0].hit({ damage: Infinity });
+            }
+            //TODO collect XP
+            console.log(`Room ${this.currentRoom} done. Press N to continue.`);
+            Script.gameState = Script.GAMESTATE.ROOM_CLEAR;
+        }
+        nextRoom() {
+            this.currentRoom++;
+            this.currentWave = -1;
+            this.currentWaveEnd = 0;
+            if (rooms[this.currentArea].length <= this.currentRoom) {
+                console.log("LAST ROOM CLEARED");
+                Script.gameState = Script.GAMESTATE.IDLE;
+                return;
+            }
+            let room = rooms[this.currentArea][this.currentRoom];
+            this.currentRoomEnd = Script.ƒ.Time.game.get() + room.duration * 1000;
+            Script.gameState = Script.GAMESTATE.PLAYING;
+            if (room.reward) {
+                //TODO spawn reward stuff
+            }
+        }
+        async spawnWave(wave) {
+            if (!wave) {
+                this.currentWaveEnd = Infinity;
+                return false;
+            }
+            console.log(`spawning wave ${this.currentWave + 1} in room ${this.currentRoom}`);
+            this.currentWaveEnd = Script.ƒ.Time.game.get() + wave.duration * 1000;
+            let { totalWeight, enemies, elites } = this.getEnemyList(wave);
+            for (let elite of elites) {
+                this.spawnEnemy(elite);
+            }
+            for (let i = 0; i < wave.amount; i++) {
+                let x = Math.random() * totalWeight;
+                for (let enemy of enemies) {
+                    x -= enemy.weight;
+                    if (x <= 0) {
+                        await this.spawnEnemy(enemy.name);
+                        break;
+                    }
+                }
+            }
+            return true;
+        }
+        getWave(_area, _room, _wave) {
+            if (!rooms[_area])
+                return undefined;
+            if (!rooms[_area][_room])
+                return undefined;
+            if (rooms[_area][_room].waveAmount !== undefined && rooms[_area][_room].waveAmount <= _wave)
+                return undefined;
+            return rooms[_area][_room].waves?.[_wave] ?? rooms[_area][_room].defaultWave;
+        }
+        poolSelections = [];
+        getEnemyList(_wave) {
+            let totalWeight = 0;
+            let enemies = [];
+            let elites = [];
+            for (let enemy of _wave.enemies) {
+                if (typeof enemy === "string") {
+                    enemies.push({ name: enemy, weight: 1 });
+                    totalWeight++;
+                }
+                else {
+                    if (!this.poolSelections[enemy.pool]) {
+                        this.poolSelections[enemy.pool] = pools[this.currentArea][enemy.pool][Math.floor(Math.random() * pools[this.currentArea][enemy.pool].length)];
+                    }
+                    let name = this.poolSelections[enemy.pool];
+                    if (enemy.elite) {
+                        elites.push(name);
+                    }
+                    else {
+                        enemy.weight = enemy.weight ?? 1;
+                        enemies.push({ name, weight: enemy.weight });
+                        totalWeight += enemy.weight;
+                    }
+                }
+            }
+            return { totalWeight, enemies, elites };
+        }
+        async spawnEnemy(_enemy, _relativePosition = Script.ƒ.Vector3.NORMALIZATION(new Script.ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), 5)) {
+            let newEnemyGraphInstance = Script.ƒ.Recycler.get(Script.EnemyGraphInstance);
+            if (!newEnemyGraphInstance.initialized) {
+                await newEnemyGraphInstance.set(this.enemyGraph);
+            }
+            newEnemyGraphInstance.mtxLocal.translation = this.characterManager.character.node.mtxWorld.translation;
+            newEnemyGraphInstance.mtxLocal.translate(_relativePosition);
+            this.enemyNode.addChild(newEnemyGraphInstance);
+            this.enemies.push(newEnemyGraphInstance);
+            let enemyScript = newEnemyGraphInstance.getComponent(Script.Enemy);
+            enemyScript.setup(Script.enemies[_enemy]);
+            this.enemyScripts.push(enemyScript);
+        }
+        debugEvents = (_event) => {
+            switch (_event.key) {
+                case "v":
+                    this.nextWaveOverride = true;
+                    break;
+                case "b":
+                    this.endRoom();
+                    break;
+                case "n":
+                    this.nextRoom();
+                    break;
+                case "k":
+                    for (let i = 0; i < 5; i++) {
+                        if (this.enemyScripts.length > 0) {
+                            this.enemyScripts[0].hit({ damage: Infinity });
+                        }
+                    }
+                    break;
             }
         };
         async spawnEnemies() {
@@ -1374,50 +1755,56 @@ var Script;
                 return;
             }
             // debug: spawn two different enemies
-            let newEnemyGraphInstance = Script.ƒ.Recycler.get(Script.EnemyGraphInstance);
+            /*
+            let newEnemyGraphInstance = ƒ.Recycler.get(EnemyGraphInstance);
             if (!newEnemyGraphInstance.initialized) {
                 await newEnemyGraphInstance.set(this.enemyGraph);
             }
             newEnemyGraphInstance.mtxLocal.translation = this.characterManager.character.node.mtxWorld.translation;
-            newEnemyGraphInstance.mtxLocal.translate(Script.ƒ.Vector3.NORMALIZATION(new Script.ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), 5));
+            newEnemyGraphInstance.mtxLocal.translate(ƒ.Vector3.NORMALIZATION(new ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), 5));
             this.enemyNode.addChild(newEnemyGraphInstance);
             this.enemies.push(newEnemyGraphInstance);
-            let enemyScript = newEnemyGraphInstance.getComponent(Script.Enemy);
-            enemyScript.setup(Script.enemies["toaster"]);
+            let enemyScript = newEnemyGraphInstance.getComponent(Enemy);
+            enemyScript.setup(enemies["toaster"]);
             this.enemyScripts.push(enemyScript);
-            newEnemyGraphInstance = Script.ƒ.Recycler.get(Script.EnemyGraphInstance);
+
+            newEnemyGraphInstance = ƒ.Recycler.get(EnemyGraphInstance);
             if (!newEnemyGraphInstance.initialized) {
                 await newEnemyGraphInstance.set(this.enemyGraph);
             }
             newEnemyGraphInstance.mtxLocal.translation = this.characterManager.character.node.mtxWorld.translation;
-            newEnemyGraphInstance.mtxLocal.translate(Script.ƒ.Vector3.NORMALIZATION(new Script.ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), 5));
+            newEnemyGraphInstance.mtxLocal.translate(ƒ.Vector3.NORMALIZATION(new ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), 5));
             this.enemyNode.addChild(newEnemyGraphInstance);
             this.enemies.push(newEnemyGraphInstance);
-            enemyScript = newEnemyGraphInstance.getComponent(Script.Enemy);
-            enemyScript.setup(Script.enemies["chair"]);
+            enemyScript = newEnemyGraphInstance.getComponent(Enemy);
+            enemyScript.setup(enemies["chair"]);
             this.enemyScripts.push(enemyScript);
-            newEnemyGraphInstance = Script.ƒ.Recycler.get(Script.EnemyGraphInstance);
+
+
+            newEnemyGraphInstance = ƒ.Recycler.get(EnemyGraphInstance);
             if (!newEnemyGraphInstance.initialized) {
                 await newEnemyGraphInstance.set(this.enemyGraph);
             }
             newEnemyGraphInstance.mtxLocal.translation = this.characterManager.character.node.mtxWorld.translation.clone;
-            newEnemyGraphInstance.mtxLocal.translate(new Script.ƒ.Vector3(0, 10));
+            newEnemyGraphInstance.mtxLocal.translate(new ƒ.Vector3(0, 10));
             this.enemyNode.addChild(newEnemyGraphInstance);
             this.enemies.push(newEnemyGraphInstance);
-            enemyScript = newEnemyGraphInstance.getComponent(Script.Enemy);
+            enemyScript = newEnemyGraphInstance.getComponent(Enemy);
             enemyScript.setup({
                 moveSprite: this.config.getAnimation("motor", "move"),
                 speed: 3,
-                directionOverride: Script.ƒ.Vector3.Y(-1),
+                directionOverride: ƒ.Vector3.Y(-1),
             });
             this.enemyScripts.push(enemyScript);
+            */
         }
         removeEnemy(_enemy) {
             let index = this.enemyScripts.findIndex((n) => n === _enemy);
             if (index >= 0) {
                 this.enemyScripts.splice(index, 1);
-                Script.ƒ.Recycler.storeMultiple(this.enemies.splice(index, 1));
+                Script.ƒ.Recycler.storeMultiple(...this.enemies.splice(index, 1));
             }
+            _enemy.node.getParent().removeChild(_enemy.node);
         }
     }
     Script.EnemyManager = EnemyManager;
@@ -1455,7 +1842,9 @@ var Script;
             ProjectileManager.hitZoneGraph = await Script.ƒ.Project.getResourcesByName("hitzone")[0];
         };
         update = () => {
-            if (Script.gameState !== Script.GAMESTATE.PLAYING)
+            if (Script.gameState === Script.GAMESTATE.PAUSED)
+                return;
+            if (Script.gameState === Script.GAMESTATE.IDLE)
                 return;
             let character = this.characterManager.character;
             if (!character)
@@ -1473,6 +1862,14 @@ var Script;
                 Script.ƒ.Recycler.storeMultiple(...this.projectiles.splice(index, 1));
             }
             _projectile.node.getParent().removeChild(_projectile.node);
+        }
+        removeAOE(_aoe) {
+            let index = this.projectileScripts.findIndex((n) => n === _aoe);
+            if (index >= 0) {
+                this.projectileScripts.splice(index, 1);
+                Script.ƒ.Recycler.storeMultiple(...this.projectiles.splice(index, 1));
+            }
+            _aoe.node.getParent().removeChild(_aoe.node);
         }
         async createProjectile(_options, _position, _parent = this.projectilesNode) {
             let pgi = Script.ƒ.Recycler.get(Script.ProjectileGraphInstance);

@@ -43,6 +43,11 @@ namespace Script {
             moveSprite: ["motor", "move"],
             speed: 3,
         },
+        ventilator: {
+            moveSprite: ["ventilator", "move"],
+            speed: 0.5,
+            desiredDistance: [0, 0],
+        },
         chair: {
             moveSprite: ["chair", "move"],
             speed: 0.5,

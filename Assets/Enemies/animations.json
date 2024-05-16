@@ -108,5 +108,47 @@
                 "materialString": "Material|2024-05-07T11:33:30.222Z|47475"
             }
         }
+    },
+    "ventilator": {
+        "animations": {
+            "move": {
+                "fps": 24,
+                "frames": 24,
+                "height": 256,
+                "width": 256,
+                "totalHeight": 1280,
+                "totalWidth": 1280,
+                "wrapAfter": 5,
+                "materialString": "Material|2024-05-16T13:17:56.829Z|14508"
+            }
+        }
+    },
+    "aoe": {
+        "animations": {
+            "explosion": {
+                "fps": 21,
+                "frames": 21,
+                "height": 256,
+                "width": 256,
+                "totalHeight": 1280,
+                "totalWidth": 1280,
+                "wrapAfter": 5,
+                "materialString": "Material|2024-05-14T12:52:38.980Z|47111"
+            }
+        }
+    },
+    "projectile": {
+        "animations": {
+            "toast": {
+                "fps": 1,
+                "frames": 1,
+                "height": 256,
+                "width": 256,
+                "totalHeight": 256,
+                "totalWidth": 256,
+                "wrapAfter": 1,
+                "materialString": "Material|2024-05-07T12:39:47.128Z|21510"
+            }
+        }
     }
 }

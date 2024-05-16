@@ -8,6 +8,7 @@ namespace Script {
     IDLE,
     PLAYING,
     PAUSED,
+    ROOM_CLEAR,
   }
 
   let viewport: ƒ.Viewport;

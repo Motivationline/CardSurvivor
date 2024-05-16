@@ -1,6 +1,6 @@
 namespace Script {
     import ƒ = FudgeCore;
-    export class Character extends ƒ.Component {
+    export class Character extends ƒ.Component implements Hittable {
         #animator: SpriteAnimator;
         #walkingSprite: AnimationSprite = {
             fps: 24,
@@ -22,7 +22,10 @@ namespace Script {
         };
         prevAnimation: AnimationState = AnimationState.IDLE;
         #layers: CharacterLayer[] = [];
+        #healthElement: HTMLProgressElement;
         private prevDirection: number = 0;
+        health: number = 100;
+        maxHealth: number = 100;
 
         constructor() {
             super();
@@ -30,10 +33,16 @@ namespace Script {
             this.addEventListener(ƒ.EVENT.NODE_DESERIALIZED, () => {
                 this.node.addEventListener(ƒ.EVENT.GRAPH_INSTANTIATED, () => {
                     provider.get(CharacterManager).character = this;
+                    this.init();
                 }, true);
                 this.setupAnimator();
-            })
+            });
         }
+
+        private init() {
+            this.#healthElement = <HTMLProgressElement>document.getElementById("healthbar");
+        }
+
         move(_direction: ƒ.Vector2) {
             //TODO: update this to use physics
             this.node.mtxLocal.translate(ƒ.Vector3.SCALE(new ƒ.Vector3(_direction.x, _direction.y), Math.min(1, ƒ.Loop.timeFrameGame / 1000)), false);
@@ -53,6 +62,21 @@ namespace Script {
                 }
             }
 
+        }
+
+        hit(_hit: Hit): number {
+            this.health -= _hit.damage;
+            //TODO display damage numbers
+            //update display
+            this.updateHealth();
+            if (this.health > 0) return _hit.damage;
+
+            // TODO: Game Over
+        }
+
+        private updateHealth() {
+            this.#healthElement.max = this.maxHealth;
+            this.#healthElement.value = this.health;
         }
 
         private setAnimation(_state: AnimationState) {

@@ -17,7 +17,7 @@ namespace Script {
     export type ActiveEffect = CardEffectProjectile | CardEffectAOE;
 
     interface ActiveCardEffectBase {
-        cooldown: number,
+        cooldown?: number,
         currentCooldown?: number,
         modifiers?: PassiveCardEffectObject,
     }
@@ -33,6 +33,7 @@ namespace Script {
 
     interface CardEffectAOE extends ActiveCardEffectBase {
         type: "aoe",
+        aoe: string,
     }
 
     export enum PassiveCardEffect {
@@ -85,6 +86,7 @@ namespace Script {
         lockedToEntity?: boolean,
         impact?: ActiveEffect[],
         artillery?: boolean,
+        sprite: AnimationSprite | [string, string],
     }
     export enum ProjectileTargetMode {
         NONE,
@@ -118,6 +120,58 @@ namespace Script {
         stopTrackingAfter?: number,
         stopTrackingInRadius?: number,
         target: ƒ.Node,
+    }
+
+    export interface AreasOfEffect {
+        [key: string]: AreaOfEffect,
+    }
+    export interface AreaOfEffect {
+        variant: "aoe" | "explosion",
+        size: number,
+        damage: number,
+        sprite: AnimationSprite | [string, string],
+        duration: number,
+        events?: { [name: string]: (_event?: CustomEvent) => void; }
+        targetMode?: ProjectileTargetMode,
+    }
+    //#endregion
+
+    //#region Hittable
+    export interface Hittable {
+        health: number,
+        hit: (_hit: Hit) => number,
+    }
+
+    export interface Hit {
+        damage: number,
+        knockbackDirection?: ƒ.Vector3,
+    }
+    //#endregion
+
+    //#region Enemy Management
+    export interface Pools {
+        [key: string]: string[][];
+    }
+    
+    export interface Rooms {
+        [key: string]: Room[];
+    }
+
+    export interface Room {
+        duration: number,
+        defaultWave?: Wave,
+        waveAmount? : number,
+        waves?: Wave[],
+        reward?: boolean,
+        canStopAfter?: boolean,
+        boss?: boolean,
+        bonus?: PassiveCardEffectObject,
+    }
+    export interface Wave {
+        enemies: ({pool: number, weight?: number, elite?: boolean} | string)[],
+        amount: number,
+        duration: number,
+        minEnemiesOverride?: number,
     }
     //#endregion
 }
