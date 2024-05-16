@@ -23,12 +23,7 @@ namespace Script {
                     movement: () => { },
                     events: {
                         fire: function () {
-                            provider.get(ProjectileManager).createProjectile({
-                                direction: ƒ.Vector3.DIFFERENCE(provider.get(CharacterManager).character.node.mtxWorld.translation, this.node.mtxWorld.translation),
-                                target: ProjectileTarget.PLAYER,
-                                speed: 20,
-                                artillery: true
-                            },
+                            provider.get(ProjectileManager).createProjectile(projectiles["toast"],
                                 ƒ.Vector3.SUM(
                                     this.node.mtxWorld.translation,
                                     ƒ.Vector3.Y(0.3)
@@ -52,6 +47,9 @@ namespace Script {
             moveSprite: ["chair", "move"],
             speed: 0.5,
             desiredDistance: [0, 0],
+        },
+        closet: {
+            
         }
     }
 }

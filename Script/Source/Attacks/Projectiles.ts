@@ -3,15 +3,9 @@
 namespace Script {
 
     export const projectiles: Projectiles = {
-        "toastPlayer": {
-            damage: 1,
-            speed: 3,
-            sprite: ["toaster", "projectile"],
-        },
         "toast": {
             damage: 1,
-            speed: 3,
-            targetMode: ProjectileTargetMode.CLOSEST,
+            speed: 20,
             artillery: true,
             impact: [{
                 type: "aoe",
@@ -27,7 +21,7 @@ namespace Script {
             variant: "explosion",
             damage: 10,
             size: 1,
-            sprite: ["aec", "explosion"],
+            sprite: ["aoe", "explosion"],
             duration: 1,
             events: {
                 "explode": function (_event) {

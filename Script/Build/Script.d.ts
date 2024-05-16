@@ -172,8 +172,8 @@ declare namespace Script {
         KNOCKBACK = "knockback",
         CRIT_CHANCE = "criticalHitChance",
         CRIT_DAMAGE = "critialHitDamage",
-        PLAYER_HEALTH = "playerHealth",
-        PLAYER_REGENERATION = "playerRegeneration",
+        HEALTH = "health",
+        REGENERATION = "regeneration",
         COLLECTION_RADIUS = "collectionRadius",
         DAMAGE_REDUCTION = "damageReduction"
     }
@@ -249,6 +249,7 @@ declare namespace Script {
         damage: number;
         sprite: AnimationSprite | [string, string];
         duration: number;
+        damageDelay?: number;
         events?: {
             [name: string]: (_event?: CustomEvent) => void;
         };
@@ -303,7 +304,7 @@ declare namespace Script {
         sprite: AnimationSprite | [string, string];
         variant: "aoe" | "explosion";
         private defaults;
-        setup(_options: Partial<AreaOfEffect>): void;
+        setup(_options: Partial<AreaOfEffect>, _manager: CardManager): void;
         private explode;
         update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
         private eventListener;
@@ -481,7 +482,8 @@ declare namespace Script {
         private cumulativeEffects;
         getEffectAbsolute(_effect: PassiveCardEffect, _modifier?: PassiveCardEffectObject): number;
         getEffectMultiplier(_effect: PassiveCardEffect, _modifier?: PassiveCardEffectObject): number;
-        modifyValue(_value: number, _effect: PassiveCardEffect, _localModifiers?: PassiveCardEffectObject): number;
+        modifyValuePlayer(_value: number, _effect: PassiveCardEffect, _localModifiers?: PassiveCardEffectObject): number;
+        modifyValue(_value: number, _effect: PassiveCardEffect, _modifier: PassiveCardEffectObject): number;
         updateEffects(): void;
     }
 }
@@ -535,6 +537,7 @@ declare namespace Script {
         private projectileScripts;
         private projectiles;
         static projectileGraph: ƒ.Graph;
+        static aoeGraph: ƒ.Graph;
         static hitZoneGraph: ƒ.Graph;
         private projectilesNode;
         constructor(provider: Provider);
@@ -545,6 +548,7 @@ declare namespace Script {
         removeProjectile(_projectile: ProjectileComponent): void;
         removeAOE(_aoe: AOE): void;
         createProjectile(_options: Partial<Projectile>, _position: ƒ.Vector3, _parent?: ƒ.Node): Promise<void>;
+        createAOE(_options: Partial<AreaOfEffect>, _position: ƒ.Vector3, _parent?: ƒ.Node): Promise<void>;
         createHitZone(_position: ƒ.Vector3, _size?: number, _parent?: ƒ.Node): Promise<HitZoneGraphInstance>;
     }
 }

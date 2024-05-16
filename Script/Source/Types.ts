@@ -49,8 +49,8 @@ namespace Script {
         KNOCKBACK = "knockback",
         CRIT_CHANCE = "criticalHitChance",
         CRIT_DAMAGE = "critialHitDamage",
-        PLAYER_HEALTH = "playerHealth",
-        PLAYER_REGENERATION = "playerRegeneration",
+        HEALTH = "health",
+        REGENERATION = "regeneration",
         COLLECTION_RADIUS = "collectionRadius",
         DAMAGE_REDUCTION = "damageReduction",
     }
@@ -131,6 +131,7 @@ namespace Script {
         damage: number,
         sprite: AnimationSprite | [string, string],
         duration: number,
+        damageDelay?: number,
         events?: { [name: string]: (_event?: CustomEvent) => void; }
         targetMode?: ProjectileTargetMode,
     }

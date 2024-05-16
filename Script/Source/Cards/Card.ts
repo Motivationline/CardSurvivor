@@ -41,7 +41,7 @@ namespace Script {
                 if (isNaN(effect.currentCooldown)) effect.currentCooldown = 0;
                 effect.currentCooldown -= _time;
                 if (effect.currentCooldown <= 0) {
-                    effect.currentCooldown = this.#cm.modifyValue(effect.cooldown, PassiveCardEffect.COOLDOWN_REDUCTION, effect.modifiers);
+                    effect.currentCooldown = this.#cm.modifyValuePlayer(effect.cooldown, PassiveCardEffect.COOLDOWN_REDUCTION, effect.modifiers);
                     switch (effect.type) {
                         case "projectile":
                             for (let i: number = 0; i < (effect.amount ?? 1); i++) {

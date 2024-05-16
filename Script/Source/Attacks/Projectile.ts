@@ -60,11 +60,11 @@ namespace Script {
             this.direction = _options.direction;
             this.targetPosition = _options.targetPosition;
             this.tracking = _options.tracking;
-            this.damage = _options.target === ProjectileTarget.PLAYER ? _options.damage : (_options.damage + _manager.getEffectAbsolute(PassiveCardEffect.DAMAGE)) * _manager.getEffectMultiplier(PassiveCardEffect.DAMAGE);
-            this.size = _options.target === ProjectileTarget.PLAYER ? _options.size : (_options.size + _manager.getEffectAbsolute(PassiveCardEffect.PROJECTILE_SIZE)) * _manager.getEffectMultiplier(PassiveCardEffect.PROJECTILE_SIZE);
-            this.speed = _options.target === ProjectileTarget.PLAYER ? _options.speed : (_options.speed + _manager.getEffectAbsolute(PassiveCardEffect.PROJECTILE_SPEED)) * _manager.getEffectMultiplier(PassiveCardEffect.PROJECTILE_SPEED);
-            this.range = _options.target === ProjectileTarget.PLAYER ? _options.range : (_options.range + _manager.getEffectAbsolute(PassiveCardEffect.PROJECTILE_RANGE)) * _manager.getEffectMultiplier(PassiveCardEffect.PROJECTILE_RANGE);
-            this.piercing = (_options.piercing + _manager.getEffectAbsolute(PassiveCardEffect.PROJECTILE_PIERCING)) * _manager.getEffectMultiplier(PassiveCardEffect.PROJECTILE_PIERCING)
+            this.damage = _options.target === ProjectileTarget.PLAYER ? _options.damage : _manager.modifyValuePlayer(_options.damage, PassiveCardEffect.DAMAGE);
+            this.size = _options.target === ProjectileTarget.PLAYER ? _options.size : _manager.modifyValuePlayer(_options.size, PassiveCardEffect.PROJECTILE_SIZE);
+            this.speed = _options.target === ProjectileTarget.PLAYER ? _options.speed : _manager.modifyValuePlayer(_options.speed, PassiveCardEffect.PROJECTILE_SPEED);
+            this.range = _options.target === ProjectileTarget.PLAYER ? _options.range : _manager.modifyValuePlayer(_options.range, PassiveCardEffect.PROJECTILE_RANGE);
+            this.piercing = _options.target === ProjectileTarget.PLAYER ? _options.piercing : _manager.modifyValuePlayer(_options.piercing, PassiveCardEffect.PROJECTILE_PIERCING);
             this.target = _options.target;
             this.artillery = _options.artillery;
             this.diminishing = _options.diminishing;
@@ -138,6 +138,14 @@ namespace Script {
                 if (this.impact && this.impact.length) {
                     for (let impact of this.impact) {
                         //TODO implement impacts
+                        switch (impact.type) {
+                            case "projectile":
+                                provider.get(ProjectileManager).createProjectile(projectiles[impact.projectile], this.targetPosition)
+                                break;
+                            case "aoe":
+                                provider.get(ProjectileManager).createAOE(areasOfEffect[impact.aoe], this.targetPosition);
+                                break;
+                        }
                     }
                 }
                 provider.get(ProjectileManager).removeProjectile(this);

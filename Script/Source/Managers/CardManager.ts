@@ -9,11 +9,14 @@ namespace Script {
         public getEffectMultiplier(_effect: PassiveCardEffect, _modifier: PassiveCardEffectObject = this.cumulativeEffects): number {
             return _modifier.multiplier?.[_effect] ?? 1;
         }
-        public modifyValue(_value: number, _effect: PassiveCardEffect, _localModifiers?: PassiveCardEffectObject){
+        public modifyValuePlayer(_value: number, _effect: PassiveCardEffect, _localModifiers?: PassiveCardEffectObject){
             if(_localModifiers){
                 _value = (_value + this.getEffectAbsolute(_effect, _localModifiers)) * this.getEffectMultiplier(_effect, _localModifiers);
             }
             return (_value + this.getEffectAbsolute(_effect)) * this.getEffectMultiplier(_effect);
+        }
+        public modifyValue(_value: number, _effect: PassiveCardEffect, _modifier: PassiveCardEffectObject): number {
+            return (_value + this.getEffectAbsolute(_effect, _modifier)) * this.getEffectMultiplier(_effect, _modifier)
         }
 
         public updateEffects(){

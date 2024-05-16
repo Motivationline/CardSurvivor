@@ -17,7 +17,7 @@ namespace Script {
             variant: "explosion",
         }
 
-        setup(_options: Partial<AreaOfEffect>) {
+        setup(_options: Partial<AreaOfEffect>, _manager: CardManager) {
             _options = { ...this.defaults, ..._options };
             this.size = _options.size;
             this.damage = _options.damage;
@@ -28,8 +28,10 @@ namespace Script {
             this.events = _options.events;
             this.sprite = this.getSprite(_options.sprite);
             this.setCentralAnimator(this.sprite, true, this.eventListener);
+            this.node.mtxLocal.scaling = ƒ.Vector3.ONE(this.size);
 
             setTimeout(() => {
+                this.removeAnimationEventListeners();
                 provider.get(ProjectileManager).removeAOE(this);
             }, this.duration * 1000);
         }
@@ -37,7 +39,7 @@ namespace Script {
         // should be called through a timing listener
         private explode() {
             if(this.variant !== "explosion") return;
-            
+            console.log("explode");
         }
         
         public update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number){

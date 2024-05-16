@@ -5,6 +5,7 @@ namespace Script {
         private projectileScripts: Animateable[] = [];
         private projectiles: InitializableGraphInstance[] = [];
         static projectileGraph: ƒ.Graph;
+        static aoeGraph: ƒ.Graph;
         static hitZoneGraph: ƒ.Graph;
         private projectilesNode: ƒ.Node;
 
@@ -28,6 +29,7 @@ namespace Script {
         private loaded = async () => {
             ProjectileManager.projectileGraph = <ƒ.Graph>await ƒ.Project.getResourcesByName("projectile")[0];
             ProjectileManager.hitZoneGraph = <ƒ.Graph>await ƒ.Project.getResourcesByName("hitzone")[0];
+            ProjectileManager.aoeGraph = <ƒ.Graph>await ƒ.Project.getResourcesByName("aoe")[0];
         }
         private update = () => {
             if (gameState === GAMESTATE.PAUSED) return;
@@ -73,6 +75,20 @@ namespace Script {
 
             this.projectileScripts.push(p);
             this.projectiles.push(pgi);
+        }
+        public async createAOE(_options: Partial<AreaOfEffect>, _position: ƒ.Vector3, _parent: ƒ.Node = this.projectilesNode) {
+            let aoeGi = ƒ.Recycler.get(AOEGraphInstance);
+            if (!aoeGi.initialized) {
+                await aoeGi.set(ProjectileManager.aoeGraph);
+            }
+            let a = aoeGi.getComponent(AOE);
+            a.setup(_options, provider.get(CardManager));
+
+            aoeGi.mtxLocal.translation = ƒ.Vector3.SUM(_position);
+            _parent.addChild(aoeGi);
+
+            this.projectileScripts.push(a);
+            this.projectiles.push(aoeGi);
         }
 
         public async createHitZone(_position: ƒ.Vector3, _size: number = 1, _parent: ƒ.Node = this.projectilesNode): Promise<HitZoneGraphInstance> {

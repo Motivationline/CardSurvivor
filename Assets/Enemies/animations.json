@@ -133,7 +133,13 @@
                 "totalHeight": 1280,
                 "totalWidth": 1280,
                 "wrapAfter": 5,
-                "materialString": "Material|2024-05-14T12:52:38.980Z|47111"
+                "materialString": "Material|2024-05-14T12:52:38.980Z|47111",
+                "events": [
+                    {
+                        "frame": 2,
+                        "event": "explode"
+                    }
+                ]
             }
         }
     },

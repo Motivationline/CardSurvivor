@@ -42,7 +42,7 @@ namespace Script {
                         ],
                         amount: 8,
                         duration: 10,
-                    },
+                    }
                 ]
             },
             // room 3
@@ -110,6 +110,15 @@ namespace Script {
                     enemies: ["microwave-boss"],
                 },
                 waveAmount: 1
+            },
+            //room 6
+            {
+                duration: 60,
+                bonus: {
+                    multiplier: {
+                        health: 1.5
+                    }
+                }
             }
         ]
     }
