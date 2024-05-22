@@ -175,7 +175,9 @@ declare namespace Script {
         HEALTH = "health",
         REGENERATION = "regeneration",
         COLLECTION_RADIUS = "collectionRadius",
-        DAMAGE_REDUCTION = "damageReduction"
+        DAMAGE_REDUCTION = "damageReduction",
+        CARD_SLOTS = "cardSlots",
+        MOVEMENT_SPEED = "movementSpeed"
     }
     export enum CardRarity {
         COMMON = "common",
@@ -369,11 +371,16 @@ declare namespace Script {
         private prevDirection;
         health: number;
         maxHealth: number;
+        private rigidbody;
+        private cardManager;
+        speed: number;
         constructor();
         private init;
-        move(_direction: ƒ.Vector2): void;
+        move(_direction: ƒ.Vector2, _time: number): void;
+        update(_direction: ƒ.Vector2): void;
         hit(_hit: Hit): number;
-        private updateHealth;
+        private changeVisualDirection;
+        private updateHealthVisually;
         private setAnimation;
         private setupAnimator;
     }
@@ -412,6 +419,7 @@ declare namespace Script {
         private prevDirection;
         private currentlyActiveAttack;
         private rigidbody;
+        private touchingPlayer;
         private static defaults;
         constructor();
         protected deserializedListener: () => void;
@@ -422,6 +430,8 @@ declare namespace Script {
         private chooseAttack;
         private executeAttack;
         private eventListener;
+        private onCollisionEnter;
+        private onCollisionExit;
         hit(_hit: Hit): number;
     }
     interface EnemyOptions {

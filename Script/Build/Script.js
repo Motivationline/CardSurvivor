@@ -303,7 +303,7 @@ var Script;
                 return;
             if (Script.gameState === Script.GAMESTATE.IDLE)
                 return;
-            this.#character.move(this.movementVector);
+            this.#character.update(this.movementVector);
         };
     }
     Script.CharacterManager = CharacterManager;
@@ -571,6 +571,8 @@ var Script;
         PassiveCardEffect["REGENERATION"] = "regeneration";
         PassiveCardEffect["COLLECTION_RADIUS"] = "collectionRadius";
         PassiveCardEffect["DAMAGE_REDUCTION"] = "damageReduction";
+        PassiveCardEffect["CARD_SLOTS"] = "cardSlots";
+        PassiveCardEffect["MOVEMENT_SPEED"] = "movementSpeed";
     })(PassiveCardEffect = Script.PassiveCardEffect || (Script.PassiveCardEffect = {}));
     let CardRarity;
     (function (CardRarity) {
@@ -761,6 +763,7 @@ var Script;
             let dir = this.direction.clone;
             dir.normalize(Math.min(1, _frameTimeInSeconds) * this.speed);
             this.node.mtxLocal.translate(dir);
+            //TODO check if flew past target position (due to lag?) and still explode
             if (this.targetPosition && this.node.mtxWorld.translation.equals(this.targetPosition, 0.5)) {
                 if (this.artillery && this.tracking.startTrackingAfter > 0)
                     return;
@@ -785,6 +788,7 @@ var Script;
                 }
                 Script.provider.get(Script.ProjectileManager).removeProjectile(this);
             }
+            //TODO remove projectile if too far off screen
         }
         onTriggerEnter = (_event) => {
             if (_event.cmpRigidbody.node.name === "enemy" && this.target === Script.ProjectileTarget.ENEMY) {
@@ -983,6 +987,9 @@ var Script;
         prevDirection = 0;
         health = 100;
         maxHealth = 100;
+        rigidbody;
+        cardManager;
+        speed = 1;
         constructor() {
             super();
             if (ƒ.Project.mode === ƒ.MODE.EDITOR)
@@ -997,10 +1004,12 @@ var Script;
         }
         init() {
             this.#healthElement = document.getElementById("healthbar");
+            this.rigidbody = this.node.getComponent(ƒ.ComponentRigidbody);
+            this.cardManager = Script.provider.get(Script.CardManager);
         }
-        move(_direction) {
+        move(_direction, _time) {
             //TODO: update this to use physics
-            this.node.mtxLocal.translate(ƒ.Vector3.SCALE(new ƒ.Vector3(_direction.x, _direction.y), Math.min(1, ƒ.Loop.timeFrameGame / 1000)), false);
+            this.rigidbody.setVelocity(ƒ.Vector3.SCALE(new ƒ.Vector3(_direction.x, _direction.y), this.cardManager.modifyValuePlayer(this.speed, Script.PassiveCardEffect.MOVEMENT_SPEED)));
             this.#animator.setTime();
             if (_direction.magnitudeSquared === 0) {
                 this.setAnimation(AnimationState.IDLE);
@@ -1012,10 +1021,27 @@ var Script;
             if (dir !== this.prevDirection && dir !== 0) {
                 this.prevDirection = dir;
                 if (this.prevDirection > 0) {
-                    this.node.mtxLocal.rotation = new ƒ.Vector3();
+                    this.changeVisualDirection();
                 }
                 else if (this.prevDirection < 0) {
-                    this.node.mtxLocal.rotation = new ƒ.Vector3(0, 180, 0);
+                    this.changeVisualDirection(180);
+                }
+            }
+            // for (let collision of this.rigidbody.collisions) {
+            //     if (collision.node.name === "enemy") {
+            //         this.hit({ damage: collision.node.getComponent(Enemy).damage * _time });
+            //     }
+            // }
+        }
+        update(_direction) {
+            let time = Math.min(1, ƒ.Loop.timeFrameGame / 1000);
+            this.move(_direction, time);
+            // regenerate health
+            if (Script.gameState === Script.GAMESTATE.PLAYING) {
+                let regeneration = this.cardManager.modifyValuePlayer(0, Script.PassiveCardEffect.REGENERATION);
+                if (regeneration > 0) {
+                    this.health = Math.min(this.maxHealth, this.health + regeneration);
+                    this.updateHealthVisually();
                 }
             }
         }
@@ -1023,12 +1049,20 @@ var Script;
             this.health -= _hit.damage;
             //TODO display damage numbers
             //update display
-            this.updateHealth();
+            this.updateHealthVisually();
             if (this.health > 0)
                 return _hit.damage;
             // TODO: Game Over
+            return 0;
         }
-        updateHealth() {
+        changeVisualDirection(_rot = 0) {
+            for (let child of this.node.getChildren()) {
+                let mesh = child.getComponent(ƒ.ComponentMesh);
+                if (mesh)
+                    mesh.mtxPivot.rotation = new ƒ.Vector3(0, _rot, 0);
+            }
+        }
+        updateHealthVisually() {
             this.#healthElement.max = this.maxHealth;
             this.#healthElement.value = this.health;
         }
@@ -1103,7 +1137,7 @@ var Script;
             damage: 5,
             desiredDistance: [0, 0],
             health: 10,
-            speed: 1,
+            speed: 0.8,
             knockbackMultiplier: 1,
             dropXP: 1,
         },
@@ -1164,6 +1198,7 @@ var Script;
         prevDirection;
         currentlyActiveAttack;
         rigidbody;
+        touchingPlayer;
         static defaults = {
             attacks: [],
             damage: 1,
@@ -1195,6 +1230,8 @@ var Script;
             this.rigidbody = this.node.getComponent(Script.ƒ.ComponentRigidbody);
             this.rigidbody.effectGravity = 0;
             this.rigidbody.effectRotation = new Script.ƒ.Vector3(0, 0, 0);
+            this.rigidbody.addEventListener("ColliderEnteredCollision" /* ƒ.EVENT_PHYSICS.COLLISION_ENTER */, this.onCollisionEnter);
+            this.rigidbody.addEventListener("ColliderLeftCollision" /* ƒ.EVENT_PHYSICS.COLLISION_EXIT */, this.onCollisionExit);
         };
         setup(_options) {
             _options = { ...Enemy.defaults, ..._options };
@@ -1266,6 +1303,11 @@ var Script;
                     this.node.getComponent(Script.ƒ.ComponentMesh).mtxPivot.rotation = new Script.ƒ.Vector3(0, 180, 0);
                 }
             }
+            // are we touching the player?
+            if (this.touchingPlayer) {
+                // provider.get(CharacterManager).character.hit({ damage: this.damage * _frameTimeInSeconds });
+                // console.log(this.rigidbody.collisions);
+            }
         }
         chooseAttack() {
             if (this.currentlyActiveAttack || this.attacks.length === 0)
@@ -1316,6 +1358,16 @@ var Script;
             if (!this.currentlyActiveAttack.events[_event.type])
                 return;
             this.currentlyActiveAttack.events[_event.type].call(this, _event);
+        };
+        onCollisionEnter = (_event) => {
+            if (_event.cmpRigidbody.node.name !== "character")
+                return;
+            this.touchingPlayer = true;
+        };
+        onCollisionExit = (_event) => {
+            if (_event.cmpRigidbody.node.name !== "character")
+                return;
+            this.touchingPlayer = false;
         };
         hit(_hit) {
             this.health -= _hit.damage;

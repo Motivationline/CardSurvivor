@@ -26,7 +26,7 @@ namespace Script {
             if (gameState === GAMESTATE.PAUSED) return;
             if (gameState === GAMESTATE.IDLE) return;
 
-            this.#character.move(this.movementVector);
+            this.#character.update(this.movementVector);
         }
     }
 

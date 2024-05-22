@@ -53,6 +53,8 @@ namespace Script {
         REGENERATION = "regeneration",
         COLLECTION_RADIUS = "collectionRadius",
         DAMAGE_REDUCTION = "damageReduction",
+        CARD_SLOTS = "cardSlots",
+        MOVEMENT_SPEED = "movementSpeed",
     }
 
     export enum CardRarity {

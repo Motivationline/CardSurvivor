@@ -40,6 +40,21 @@ canvas.fullscreen {
   display: none !important;
 }
 
+/* Game Overlay */
+#healthbar {
+  position: absolute;
+  top: calc(50% - 6vh);
+  left: calc(50% - 5vw);
+  width: 10vw;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+progress[value]::-webkit-progress-value,
+progress[value]::-moz-progress-bar{
+  background-color: green;
+}
+
 /* touch stuff */
 #swipe-game-overlay {
   display: none;

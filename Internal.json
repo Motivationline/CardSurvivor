@@ -24,17 +24,17 @@
           }
         },
         {
-          "ƒ.GraphInstance": {
-            "deserializeFromSource": true,
-            "idSource": "Graph|2024-05-02T11:53:50.845Z|82610"
-          }
-        },
-        {
           "ƒ.Node": {
             "name": "enemies",
             "active": true,
             "components": {},
             "children": []
+          }
+        },
+        {
+          "ƒ.GraphInstance": {
+            "deserializeFromSource": true,
+            "idSource": "Graph|2024-05-02T11:53:50.845Z|82610"
           }
         }
       ],
@@ -343,15 +343,15 @@
               "mass": 1,
               "dampTranslation": 0.1,
               "dampRotation": 0.1,
-              "effectGravity": 1,
-              "typeBody": "KINEMATIC",
+              "effectGravity": 0,
+              "typeBody": "DYNAMIC",
               "typeCollider": "SPHERE",
               "isTrigger": true,
               "id": 0,
               "pivot": {
-                "translation": "[0, 0, 0]",
+                "translation": "[0, -0.05000000447034836, 0]",
                 "rotation": "[0, 0, 0]",
-                "scaling": "[1, 1, 1]"
+                "scaling": "[0.800000011920929, 0.800000011920929, 0.7999999523162842]"
               },
               "Component": {
                 "active": true
@@ -810,7 +810,7 @@
               "pivot": {
                 "translation": "[0, 0, 0]",
                 "rotation": "[0, 0, 0]",
-                "scaling": "[0.5999999046325684, 0.5999999046325684, 0.5999999642372131]"
+                "scaling": "[0.3999999165534973, 0.3999999165534973, 0.3999999761581421]"
               },
               "Component": {
                 "active": true

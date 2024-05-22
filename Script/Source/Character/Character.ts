@@ -26,6 +26,9 @@ namespace Script {
         private prevDirection: number = 0;
         health: number = 100;
         maxHealth: number = 100;
+        private rigidbody: ƒ.ComponentRigidbody;
+        private cardManager: CardManager;
+        speed: number = 1;
 
         constructor() {
             super();
@@ -41,11 +44,13 @@ namespace Script {
 
         private init() {
             this.#healthElement = <HTMLProgressElement>document.getElementById("healthbar");
+            this.rigidbody = this.node.getComponent(ƒ.ComponentRigidbody);
+            this.cardManager = provider.get(CardManager);
         }
 
-        move(_direction: ƒ.Vector2) {
+        move(_direction: ƒ.Vector2, _time: number) {
             //TODO: update this to use physics
-            this.node.mtxLocal.translate(ƒ.Vector3.SCALE(new ƒ.Vector3(_direction.x, _direction.y), Math.min(1, ƒ.Loop.timeFrameGame / 1000)), false);
+            this.rigidbody.setVelocity(ƒ.Vector3.SCALE(new ƒ.Vector3(_direction.x, _direction.y), this.cardManager.modifyValuePlayer(this.speed, PassiveCardEffect.MOVEMENT_SPEED)));
             this.#animator.setTime()
             if (_direction.magnitudeSquared === 0) {
                 this.setAnimation(AnimationState.IDLE);
@@ -56,25 +61,52 @@ namespace Script {
             if (dir !== this.prevDirection && dir !== 0) {
                 this.prevDirection = dir;
                 if (this.prevDirection > 0) {
-                    this.node.mtxLocal.rotation = new ƒ.Vector3();
+                    this.changeVisualDirection();
                 } else if (this.prevDirection < 0) {
-                    this.node.mtxLocal.rotation = new ƒ.Vector3(0, 180, 0);
+                    this.changeVisualDirection(180);
                 }
             }
 
+            // for (let collision of this.rigidbody.collisions) {
+            //     if (collision.node.name === "enemy") {
+            //         this.hit({ damage: collision.node.getComponent(Enemy).damage * _time });
+            //     }
+            // }
+        }
+
+        update(_direction: ƒ.Vector2) {
+            let time: number = Math.min(1, ƒ.Loop.timeFrameGame / 1000);
+            this.move(_direction, time);
+
+            // regenerate health
+            if (gameState === GAMESTATE.PLAYING) {
+                let regeneration: number = this.cardManager.modifyValuePlayer(0, PassiveCardEffect.REGENERATION);
+                if (regeneration > 0) {
+                    this.health = Math.min(this.maxHealth, this.health + regeneration);
+                    this.updateHealthVisually();
+                }
+            }
         }
 
         hit(_hit: Hit): number {
             this.health -= _hit.damage;
             //TODO display damage numbers
             //update display
-            this.updateHealth();
+            this.updateHealthVisually();
             if (this.health > 0) return _hit.damage;
 
             // TODO: Game Over
+            return 0;
         }
 
-        private updateHealth() {
+        private changeVisualDirection(_rot: number = 0) {
+            for (let child of this.node.getChildren()) {
+                let mesh = child.getComponent(ƒ.ComponentMesh);
+                if (mesh) mesh.mtxPivot.rotation = new ƒ.Vector3(0, _rot, 0);
+            }
+        }
+
+        private updateHealthVisually() {
             this.#healthElement.max = this.maxHealth;
             this.#healthElement.value = this.health;
         }
@@ -91,7 +123,7 @@ namespace Script {
                     this.#animator.reset(this.#walkingSprite);
                     break;
             }
-            for(let layer of this.#layers){
+            for (let layer of this.#layers) {
                 layer.setTexture(_state);
             }
         }

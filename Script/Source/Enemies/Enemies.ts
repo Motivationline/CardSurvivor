@@ -5,7 +5,7 @@ namespace Script {
             damage: 5,
             desiredDistance: [0, 0],
             health: 10,
-            speed: 1,
+            speed: 0.8,
             knockbackMultiplier: 1,
             dropXP: 1,
         },

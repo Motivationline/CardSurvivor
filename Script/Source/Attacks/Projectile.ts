@@ -126,6 +126,7 @@ namespace Script {
             dir.normalize(Math.min(1, _frameTimeInSeconds) * this.speed);
             this.node.mtxLocal.translate(dir);
 
+            //TODO check if flew past target position (due to lag?) and still explode
             if (this.targetPosition && this.node.mtxWorld.translation.equals(this.targetPosition, 0.5)) {
                 if (this.artillery && this.tracking.startTrackingAfter > 0) return;
                 // target position reached
@@ -150,6 +151,8 @@ namespace Script {
                 }
                 provider.get(ProjectileManager).removeProjectile(this);
             }
+
+            //TODO remove projectile if too far off screen
         }
 
         protected onTriggerEnter = (_event: ƒ.EventPhysics) => {

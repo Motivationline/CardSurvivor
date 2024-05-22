@@ -17,6 +17,7 @@ namespace Script {
         private prevDirection: number;
         private currentlyActiveAttack: EnemyAttackActive;
         private rigidbody: ƒ.ComponentRigidbody;
+        private touchingPlayer: boolean;
 
         private static defaults: EnemyOptions = {
             attacks: [],
@@ -44,13 +45,15 @@ namespace Script {
             if (ƒ.Project.mode === ƒ.MODE.EDITOR) return;
             this.addEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.deserializedListener);
         }
-        
+
         protected deserializedListener = () => {
             this.removeEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.deserializedListener);
             this.enemyManager = provider.get(EnemyManager);
             this.rigidbody = this.node.getComponent(ƒ.ComponentRigidbody);
             this.rigidbody.effectGravity = 0;
             this.rigidbody.effectRotation = new ƒ.Vector3(0, 0, 0);
+            this.rigidbody.addEventListener(ƒ.EVENT_PHYSICS.COLLISION_ENTER, this.onCollisionEnter);
+            this.rigidbody.addEventListener(ƒ.EVENT_PHYSICS.COLLISION_EXIT, this.onCollisionExit);
         }
 
         setup(_options: Partial<EnemyOptions>) {
@@ -103,7 +106,7 @@ namespace Script {
             } else {
                 // normal movement
                 _diff.normalize(this.speed);
-                
+
                 //move towards or away from player?
                 if (_mgtSqrd < this.currentlyDesiredDistanceSquared[0]) {
                     // we're too close to the player, gotta move away
@@ -127,6 +130,12 @@ namespace Script {
                 } else if (this.prevDirection < 0) {
                     this.node.getComponent(ƒ.ComponentMesh).mtxPivot.rotation = new ƒ.Vector3(0, 180, 0);
                 }
+            }
+
+            // are we touching the player?
+            if (this.touchingPlayer) {
+                // provider.get(CharacterManager).character.hit({ damage: this.damage * _frameTimeInSeconds });
+                // console.log(this.rigidbody.collisions);
             }
         }
 
@@ -178,6 +187,15 @@ namespace Script {
             if (!this.currentlyActiveAttack.events[_event.type]) return;
             this.currentlyActiveAttack.events[_event.type].call(this, _event);
 
+        }
+
+        private onCollisionEnter = (_event: ƒ.EventPhysics) => {
+            if (_event.cmpRigidbody.node.name !== "character") return;
+            this.touchingPlayer = true;
+        }
+        private onCollisionExit = (_event: ƒ.EventPhysics) => {
+            if (_event.cmpRigidbody.node.name !== "character") return;
+            this.touchingPlayer = false;
         }
 
         public hit(_hit: Hit): number {
