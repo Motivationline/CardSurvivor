@@ -191,7 +191,39 @@
       },
       {
         "name": "backgrounds",
-        "entries": []
+        "entries": [
+          {
+            "idResource": "MeshQuad|2024-05-21T08:35:52.875Z|05645"
+          },
+          {
+            "name": "pics",
+            "entries": [
+              {
+                "idResource": "TextureImage|2024-05-21T08:50:38.931Z|19812"
+              },
+              {
+                "idResource": "TextureImage|2024-05-21T08:32:50.452Z|25258"
+              },
+              {
+                "idResource": "TextureImage|2024-05-21T08:52:45.867Z|31540"
+              }
+            ]
+          },
+          {
+            "name": "mats",
+            "entries": [
+              {
+                "idResource": "Material|2024-05-21T08:34:38.180Z|66174"
+              },
+              {
+                "idResource": "Material|2024-05-21T08:51:49.385Z|33047"
+              },
+              {
+                "idResource": "Material|2024-05-21T08:50:29.200Z|15429"
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "projectiles",
