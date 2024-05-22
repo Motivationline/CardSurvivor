@@ -21,7 +21,7 @@ namespace Script {
         currentCooldown?: number,
         modifiers?: PassiveCardEffectObject,
     }
-    
+
     interface CardEffectProjectile extends ActiveCardEffectBase {
         type: "projectile",
         projectile: string,
@@ -83,6 +83,7 @@ namespace Script {
         speed: number,
         range?: number,
         piercing?: number,
+        target?: ProjectileTarget;
         diminishing?: boolean,
         targetMode?: ProjectileTargetMode,
         lockedToEntity?: boolean,
@@ -130,6 +131,7 @@ namespace Script {
     export interface AreaOfEffect {
         variant: "aoe" | "explosion",
         size: number,
+        target: ProjectileTarget,
         damage: number,
         sprite: AnimationSprite | [string, string],
         duration: number,
@@ -155,7 +157,7 @@ namespace Script {
     export interface Pools {
         [key: string]: string[][];
     }
-    
+
     export interface Rooms {
         [key: string]: Room[];
     }
@@ -163,7 +165,7 @@ namespace Script {
     export interface Room {
         duration: number,
         defaultWave?: Wave,
-        waveAmount? : number,
+        waveAmount?: number,
         waves?: Wave[],
         reward?: boolean,
         canStopAfter?: boolean,
@@ -171,7 +173,7 @@ namespace Script {
         bonus?: PassiveCardEffectObject,
     }
     export interface Wave {
-        enemies: ({pool: number, weight?: number, elite?: boolean} | string)[],
+        enemies: ({ pool: number, weight?: number, elite?: boolean } | string)[],
         amount: number,
         duration: number,
         minEnemiesOverride?: number,

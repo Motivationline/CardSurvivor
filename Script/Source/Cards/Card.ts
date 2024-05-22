@@ -55,7 +55,7 @@ namespace Script {
                                         }
                                     }
                                     let projectile = projectiles[effect.projectile];
-                                    provider.get(ProjectileManager).createProjectile(projectile, pos, projectile.lockedToEntity ? this.#charm.character.node : undefined)
+                                    this.#pm.createProjectile(projectile, pos, effect.modifiers, projectile.lockedToEntity ? this.#charm.character.node : undefined)
                                 }, i * (effect.delay ?? 0));
                             }
                             break;

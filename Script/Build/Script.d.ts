@@ -203,6 +203,7 @@ declare namespace Script {
         speed: number;
         range?: number;
         piercing?: number;
+        target?: ProjectileTarget;
         diminishing?: boolean;
         targetMode?: ProjectileTargetMode;
         lockedToEntity?: boolean;
@@ -248,6 +249,7 @@ declare namespace Script {
     export interface AreaOfEffect {
         variant: "aoe" | "explosion";
         size: number;
+        target: ProjectileTarget;
         damage: number;
         sprite: AnimationSprite | [string, string];
         duration: number;
@@ -305,8 +307,10 @@ declare namespace Script {
         damage: number;
         sprite: AnimationSprite | [string, string];
         variant: "aoe" | "explosion";
+        target: ProjectileTarget;
+        private rigidbody;
         private defaults;
-        setup(_options: Partial<AreaOfEffect>, _manager: CardManager): void;
+        setup(_options: Partial<AreaOfEffect>, _modifier: PassiveCardEffectObject): void;
         private explode;
         update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
         private eventListener;
@@ -333,7 +337,7 @@ declare namespace Script {
         protected static defaults: Projectile;
         constructor();
         protected init: () => void;
-        setup(_options: Partial<Projectile>, _manager: CardManager): Promise<void>;
+        setup(_options: Partial<Projectile>, _modifier: PassiveCardEffectObject): Promise<void>;
         update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
         protected move(_frameTimeInSeconds: number): void;
         protected onTriggerEnter: (_event: ƒ.EventPhysics) => void;
@@ -557,8 +561,8 @@ declare namespace Script {
         private update;
         removeProjectile(_projectile: ProjectileComponent): void;
         removeAOE(_aoe: AOE): void;
-        createProjectile(_options: Partial<Projectile>, _position: ƒ.Vector3, _parent?: ƒ.Node): Promise<void>;
-        createAOE(_options: Partial<AreaOfEffect>, _position: ƒ.Vector3, _parent?: ƒ.Node): Promise<void>;
+        createProjectile(_options: Partial<Projectile>, _position: ƒ.Vector3, _modifiers: PassiveCardEffectObject, _parent?: ƒ.Node): Promise<void>;
+        createAOE(_options: Partial<AreaOfEffect>, _position: ƒ.Vector3, _modifiers: PassiveCardEffectObject, _parent?: ƒ.Node): Promise<void>;
         createHitZone(_position: ƒ.Vector3, _size?: number, _parent?: ƒ.Node): Promise<HitZoneGraphInstance>;
     }
 }

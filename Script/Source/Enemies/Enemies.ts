@@ -27,7 +27,8 @@ namespace Script {
                                 ƒ.Vector3.SUM(
                                     this.node.mtxWorld.translation,
                                     ƒ.Vector3.Y(0.3)
-                                )
+                                ),
+                                undefined,
                             );
                         }
                     }

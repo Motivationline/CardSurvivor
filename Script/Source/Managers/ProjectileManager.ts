@@ -62,13 +62,13 @@ namespace Script {
             _aoe.node.getParent().removeChild(_aoe.node);
         }
 
-        public async createProjectile(_options: Partial<Projectile>, _position: ƒ.Vector3, _parent: ƒ.Node = this.projectilesNode) {
+        public async createProjectile(_options: Partial<Projectile>, _position: ƒ.Vector3, _modifiers: PassiveCardEffectObject, _parent: ƒ.Node = this.projectilesNode) {
             let pgi = ƒ.Recycler.get(ProjectileGraphInstance);
             if (!pgi.initialized) {
                 await pgi.set(ProjectileManager.projectileGraph);
             }
             let p = pgi.getComponent(ProjectileComponent);
-            p.setup(_options, provider.get(CardManager));
+            p.setup(_options, _modifiers);
 
             pgi.mtxLocal.translation = ƒ.Vector3.SUM(_position);
             _parent.addChild(pgi);
@@ -76,13 +76,13 @@ namespace Script {
             this.projectileScripts.push(p);
             this.projectiles.push(pgi);
         }
-        public async createAOE(_options: Partial<AreaOfEffect>, _position: ƒ.Vector3, _parent: ƒ.Node = this.projectilesNode) {
+        public async createAOE(_options: Partial<AreaOfEffect>, _position: ƒ.Vector3, _modifiers: PassiveCardEffectObject, _parent: ƒ.Node = this.projectilesNode) {
             let aoeGi = ƒ.Recycler.get(AOEGraphInstance);
             if (!aoeGi.initialized) {
                 await aoeGi.set(ProjectileManager.aoeGraph);
             }
             let a = aoeGi.getComponent(AOE);
-            a.setup(_options, provider.get(CardManager));
+            a.setup(_options, _modifiers);
 
             aoeGi.mtxLocal.translation = ƒ.Vector3.SUM(_position);
             _parent.addChild(aoeGi);

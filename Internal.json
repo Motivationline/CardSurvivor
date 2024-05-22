@@ -345,13 +345,13 @@
               "dampRotation": 0.1,
               "effectGravity": 0,
               "typeBody": "DYNAMIC",
-              "typeCollider": "SPHERE",
+              "typeCollider": "CAPSULE",
               "isTrigger": true,
               "id": 0,
               "pivot": {
                 "translation": "[0, -0.05000000447034836, 0]",
                 "rotation": "[0, 0, 0]",
-                "scaling": "[0.800000011920929, 0.800000011920929, 0.7999999523162842]"
+                "scaling": "[0.5999999642372131, 0.30000007152557373, 0.5999999046325684]"
               },
               "Component": {
                 "active": true
@@ -1291,6 +1291,31 @@
           {
             "Script.AOE": {
               "active": true
+            }
+          }
+        ],
+        "ComponentRigidbody": [
+          {
+            "ƒ.ComponentRigidbody": {
+              "initialization": "TO_PIVOT",
+              "friction": 0.2,
+              "restitution": 0.2,
+              "mass": 1,
+              "dampTranslation": 0.1,
+              "dampRotation": 0.1,
+              "effectGravity": 1,
+              "typeBody": "KINEMATIC",
+              "typeCollider": "SPHERE",
+              "isTrigger": false,
+              "id": 0,
+              "pivot": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[0.8999999761581421, 0.8999999761581421, 0.8999999761581421]"
+              },
+              "Component": {
+                "active": true
+              }
             }
           }
         ]

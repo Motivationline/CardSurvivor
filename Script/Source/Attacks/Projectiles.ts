@@ -12,10 +12,11 @@ namespace Script {
                 aoe: "toastImpact"
             }],
             sprite: ["projectile", "toast"],
+            target: ProjectileTarget.PLAYER,
         }
     }
-
-
+    
+    
     export const areasOfEffect: AreasOfEffect = {
         "toastImpact": {
             variant: "explosion",
@@ -23,12 +24,12 @@ namespace Script {
             size: 1,
             sprite: ["aoe", "explosion"],
             duration: 1,
+            target: ProjectileTarget.PLAYER,
             events: {
                 "explode": function (_event) {
                     this.explode();
                 }
-            }
+            },
         }
     }
-
 }

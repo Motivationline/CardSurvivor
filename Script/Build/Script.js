@@ -606,24 +606,30 @@ var Script;
         damage;
         sprite;
         variant;
+        target;
+        rigidbody;
         defaults = {
             size: 1,
             damage: 0,
             sprite: ["aoe", "explosion"],
             duration: 1,
             variant: "explosion",
+            target: Script.ProjectileTarget.ENEMY,
         };
-        setup(_options, _manager) {
+        setup(_options, _modifier) {
+            let cm = Script.provider.get(Script.CardManager);
             _options = { ...this.defaults, ..._options };
-            this.size = _options.size;
-            this.damage = _options.damage;
+            this.size = cm.modifyValue(_options.size, Script.PassiveCardEffect.PROJECTILE_SIZE, _modifier);
+            this.damage = cm.modifyValue(_options.damage, Script.PassiveCardEffect.DAMAGE, _modifier);
             this.variant = _options.variant;
-            this.duration = _options.duration;
+            this.duration = cm.modifyValue(_options.duration, Script.PassiveCardEffect.EFFECT_DURATION, _modifier);
             this.targetMode = _options.targetMode;
+            this.target = _options.target;
             this.events = _options.events;
             this.sprite = this.getSprite(_options.sprite);
             this.setCentralAnimator(this.sprite, true, this.eventListener);
             this.node.mtxLocal.scaling = ƒ.Vector3.ONE(this.size);
+            this.rigidbody = this.node.getComponent(ƒ.ComponentRigidbody);
             setTimeout(() => {
                 this.removeAnimationEventListeners();
                 Script.provider.get(Script.ProjectileManager).removeAOE(this);
@@ -633,7 +639,15 @@ var Script;
         explode() {
             if (this.variant !== "explosion")
                 return;
-            console.log("explode");
+            for (let collision of this.rigidbody.collisions) {
+                if (this.target === Script.ProjectileTarget.ENEMY && collision.node.name === "enemy") {
+                    collision.node.getComponent(Script.Enemy).hit({ damage: this.damage });
+                }
+                else if (this.target === Script.ProjectileTarget.PLAYER && collision.node.name === "character") {
+                    let char = Script.provider.get(Script.CharacterManager).character;
+                    char.hit({ damage: this.damage });
+                }
+            }
         }
         update(_charPosition, _frameTimeInSeconds) {
             if (this.variant !== "aoe")
@@ -680,7 +694,7 @@ var Script;
             size: 0.5,
             speed: 2,
             damage: 1,
-            target: Script.ProjectileTarget.PLAYER,
+            target: Script.ProjectileTarget.ENEMY,
             tracking: undefined,
             diminishing: false,
             targetMode: Script.ProjectileTargetMode.NONE,
@@ -701,16 +715,17 @@ var Script;
             this.node.getComponent(Script.ƒ.ComponentRigidbody).addEventListener("TriggerEnteredCollision" /* ƒ.EVENT_PHYSICS.TRIGGER_ENTER */, this.onTriggerEnter);
             this.node.getComponent(Script.ƒ.ComponentRigidbody).addEventListener("TriggerLeftCollision" /* ƒ.EVENT_PHYSICS.TRIGGER_EXIT */, this.onTriggerExit);
         };
-        async setup(_options, _manager) {
+        async setup(_options, _modifier) {
+            let cm = Script.provider.get(Script.CardManager);
             _options = { ...ProjectileComponent.defaults, ..._options };
             this.direction = _options.direction;
             this.targetPosition = _options.targetPosition;
             this.tracking = _options.tracking;
-            this.damage = _options.target === Script.ProjectileTarget.PLAYER ? _options.damage : _manager.modifyValuePlayer(_options.damage, Script.PassiveCardEffect.DAMAGE);
-            this.size = _options.target === Script.ProjectileTarget.PLAYER ? _options.size : _manager.modifyValuePlayer(_options.size, Script.PassiveCardEffect.PROJECTILE_SIZE);
-            this.speed = _options.target === Script.ProjectileTarget.PLAYER ? _options.speed : _manager.modifyValuePlayer(_options.speed, Script.PassiveCardEffect.PROJECTILE_SPEED);
-            this.range = _options.target === Script.ProjectileTarget.PLAYER ? _options.range : _manager.modifyValuePlayer(_options.range, Script.PassiveCardEffect.PROJECTILE_RANGE);
-            this.piercing = _options.target === Script.ProjectileTarget.PLAYER ? _options.piercing : _manager.modifyValuePlayer(_options.piercing, Script.PassiveCardEffect.PROJECTILE_PIERCING);
+            this.damage = cm.modifyValue(_options.damage, Script.PassiveCardEffect.DAMAGE, _modifier);
+            this.size = cm.modifyValue(_options.size, Script.PassiveCardEffect.PROJECTILE_SIZE, _modifier);
+            this.speed = cm.modifyValue(_options.speed, Script.PassiveCardEffect.PROJECTILE_SPEED, _modifier);
+            this.range = cm.modifyValue(_options.range, Script.PassiveCardEffect.PROJECTILE_RANGE, _modifier);
+            this.piercing = cm.modifyValue(_options.piercing, Script.PassiveCardEffect.PROJECTILE_PIERCING, _modifier);
             this.target = _options.target;
             this.artillery = _options.artillery;
             this.diminishing = _options.diminishing;
@@ -778,10 +793,10 @@ var Script;
                         //TODO implement impacts
                         switch (impact.type) {
                             case "projectile":
-                                Script.provider.get(Script.ProjectileManager).createProjectile(Script.projectiles[impact.projectile], this.targetPosition);
+                                Script.provider.get(Script.ProjectileManager).createProjectile(Script.projectiles[impact.projectile], this.targetPosition, impact.modifiers);
                                 break;
                             case "aoe":
-                                Script.provider.get(Script.ProjectileManager).createAOE(Script.areasOfEffect[impact.aoe], this.targetPosition);
+                                Script.provider.get(Script.ProjectileManager).createAOE(Script.areasOfEffect[impact.aoe], this.targetPosition, impact.modifiers);
                                 break;
                         }
                     }
@@ -823,6 +838,7 @@ var Script;
                     aoe: "toastImpact"
                 }],
             sprite: ["projectile", "toast"],
+            target: Script.ProjectileTarget.PLAYER,
         }
     };
     Script.areasOfEffect = {
@@ -832,11 +848,12 @@ var Script;
             size: 1,
             sprite: ["aoe", "explosion"],
             duration: 1,
+            target: Script.ProjectileTarget.PLAYER,
             events: {
                 "explode": function (_event) {
                     this.explode();
                 }
-            }
+            },
         }
     };
 })(Script || (Script = {}));
@@ -895,7 +912,7 @@ var Script;
                                         }
                                     }
                                     let projectile = Script.projectiles[effect.projectile];
-                                    Script.provider.get(Script.ProjectileManager).createProjectile(projectile, pos, projectile.lockedToEntity ? this.#charm.character.node : undefined);
+                                    this.#pm.createProjectile(projectile, pos, effect.modifiers, projectile.lockedToEntity ? this.#charm.character.node : undefined);
                                 }, i * (effect.delay ?? 0));
                             }
                             break;
@@ -1155,7 +1172,7 @@ var Script;
                     movement: () => { },
                     events: {
                         fire: function () {
-                            Script.provider.get(Script.ProjectileManager).createProjectile(Script.projectiles["toast"], Script.ƒ.Vector3.SUM(this.node.mtxWorld.translation, Script.ƒ.Vector3.Y(0.3)));
+                            Script.provider.get(Script.ProjectileManager).createProjectile(Script.projectiles["toast"], Script.ƒ.Vector3.SUM(this.node.mtxWorld.translation, Script.ƒ.Vector3.Y(0.3)), undefined);
                         }
                     }
                 }
@@ -1305,7 +1322,10 @@ var Script;
             }
             // are we touching the player?
             if (this.touchingPlayer) {
-                // provider.get(CharacterManager).character.hit({ damage: this.damage * _frameTimeInSeconds });
+                let character = Script.provider.get(Script.CharacterManager).character;
+                let mag = Script.ƒ.Vector3.DIFFERENCE(character.node.mtxWorld.translation, this.node.mtxWorld.translation).magnitudeSquared;
+                if (mag < 0.64 /* 0.8² (player hitbox size) TODO: update this if player or enemy size changes */)
+                    character.hit({ damage: this.damage * _frameTimeInSeconds });
                 // console.log(this.rigidbody.collisions);
             }
         }
@@ -1939,25 +1959,25 @@ var Script;
             }
             _aoe.node.getParent().removeChild(_aoe.node);
         }
-        async createProjectile(_options, _position, _parent = this.projectilesNode) {
+        async createProjectile(_options, _position, _modifiers, _parent = this.projectilesNode) {
             let pgi = Script.ƒ.Recycler.get(Script.ProjectileGraphInstance);
             if (!pgi.initialized) {
                 await pgi.set(ProjectileManager.projectileGraph);
             }
             let p = pgi.getComponent(Script.ProjectileComponent);
-            p.setup(_options, Script.provider.get(Script.CardManager));
+            p.setup(_options, _modifiers);
             pgi.mtxLocal.translation = Script.ƒ.Vector3.SUM(_position);
             _parent.addChild(pgi);
             this.projectileScripts.push(p);
             this.projectiles.push(pgi);
         }
-        async createAOE(_options, _position, _parent = this.projectilesNode) {
+        async createAOE(_options, _position, _modifiers, _parent = this.projectilesNode) {
             let aoeGi = Script.ƒ.Recycler.get(Script.AOEGraphInstance);
             if (!aoeGi.initialized) {
                 await aoeGi.set(ProjectileManager.aoeGraph);
             }
             let a = aoeGi.getComponent(Script.AOE);
-            a.setup(_options, Script.provider.get(Script.CardManager));
+            a.setup(_options, _modifiers);
             aoeGi.mtxLocal.translation = Script.ƒ.Vector3.SUM(_position);
             _parent.addChild(aoeGi);
             this.projectileScripts.push(a);
