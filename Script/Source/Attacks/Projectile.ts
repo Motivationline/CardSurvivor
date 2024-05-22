@@ -62,7 +62,7 @@ namespace Script {
             this.targetPosition = _options.targetPosition;
             this.tracking = _options.tracking;
             this.damage = cm.modifyValue(_options.damage, PassiveCardEffect.DAMAGE, _modifier);
-            this.size =  cm.modifyValue(_options.size, PassiveCardEffect.PROJECTILE_SIZE, _modifier);
+            this.size = cm.modifyValue(_options.size, PassiveCardEffect.PROJECTILE_SIZE, _modifier);
             this.speed = cm.modifyValue(_options.speed, PassiveCardEffect.PROJECTILE_SPEED, _modifier);
             this.range = cm.modifyValue(_options.range, PassiveCardEffect.PROJECTILE_RANGE, _modifier);
             this.piercing = cm.modifyValue(_options.piercing, PassiveCardEffect.PROJECTILE_PIERCING, _modifier);
@@ -84,8 +84,10 @@ namespace Script {
                 let pos = new ƒ.Vector3();
                 if (this.target === ProjectileTarget.PLAYER) {
                     pos = await provider.get(CharacterManager).character.node.mtxWorld.translation.clone;
+                } else if (this.target === ProjectileTarget.ENEMY) {
+                    pos = provider.get(EnemyManager).getEnemy(this.targetMode).mtxWorld.translation.clone;
                 }
-                let hz = await provider.get(ProjectileManager).createHitZone(pos)
+                let hz = await provider.get(ProjectileManager).createHitZone(pos);
                 this.tracking = {
                     strength: 200,
                     target: hz,
@@ -96,8 +98,17 @@ namespace Script {
                 this.targetPosition = pos;
             }
 
+            if (this.targetMode !== ProjectileTargetMode.NONE) {
+                this.targetPosition = provider.get(EnemyManager).getEnemy(this.targetMode).mtxWorld.translation.clone;
+                this.direction = ƒ.Vector3.DIFFERENCE(this.targetPosition, this.node.mtxLocal.translation);
+            }
+
             if (this.tracking) {
                 this.tracking = { ...{ stopTrackingAfter: Infinity, stopTrackingInRadius: 0, strength: 1, startTrackingAfter: 0 }, ...this.tracking }
+            }
+
+            if (_options.afterSetup) {
+                _options.afterSetup.call(this);
             }
         }
 
@@ -153,7 +164,7 @@ namespace Script {
                 provider.get(ProjectileManager).removeProjectile(this);
             }
 
-            //TODO remove projectile if too far off screen
+            //TODO remove projectile if too far off screen, don't forget hitzone
         }
 
         protected onTriggerEnter = (_event: ƒ.EventPhysics) => {

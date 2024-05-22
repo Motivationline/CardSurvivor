@@ -67,10 +67,11 @@ namespace Script {
             if (!pgi.initialized) {
                 await pgi.set(ProjectileManager.projectileGraph);
             }
+            pgi.mtxLocal.translation = ƒ.Vector3.SUM(_position);
+            
             let p = pgi.getComponent(ProjectileComponent);
             p.setup(_options, _modifiers);
 
-            pgi.mtxLocal.translation = ƒ.Vector3.SUM(_position);
             _parent.addChild(pgi);
 
             this.projectileScripts.push(p);

@@ -473,10 +473,12 @@ var Script;
         enemyManager.setup();
         const projectileManager = Script.provider.get(Script.ProjectileManager);
         projectileManager.setup();
+        const cardManager = Script.provider.get(Script.CardManager);
+        cardManager.updateEffects();
     }
     function start(_event) {
         viewport = _event.detail;
-        // viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
+        viewport.physicsDebugMode = Script.ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
         Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         Script.ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
         Script.gameState = GAMESTATE.PLAYING;
@@ -587,6 +589,7 @@ var Script;
         ProjectileTargetMode[ProjectileTargetMode["NONE"] = 0] = "NONE";
         ProjectileTargetMode[ProjectileTargetMode["CLOSEST"] = 1] = "CLOSEST";
         ProjectileTargetMode[ProjectileTargetMode["STRONGEST"] = 2] = "STRONGEST";
+        ProjectileTargetMode[ProjectileTargetMode["RANDOM"] = 3] = "RANDOM";
     })(ProjectileTargetMode = Script.ProjectileTargetMode || (Script.ProjectileTargetMode = {}));
     let ProjectileTarget;
     (function (ProjectileTarget) {
@@ -742,6 +745,9 @@ var Script;
                 if (this.target === Script.ProjectileTarget.PLAYER) {
                     pos = await Script.provider.get(Script.CharacterManager).character.node.mtxWorld.translation.clone;
                 }
+                else if (this.target === Script.ProjectileTarget.ENEMY) {
+                    pos = Script.provider.get(Script.EnemyManager).getEnemy(this.targetMode).mtxWorld.translation.clone;
+                }
                 let hz = await Script.provider.get(Script.ProjectileManager).createHitZone(pos);
                 this.tracking = {
                     strength: 200,
@@ -752,8 +758,15 @@ var Script;
                 this.direction = Script.ƒ.Vector3.Y(this.speed);
                 this.targetPosition = pos;
             }
+            if (this.targetMode !== Script.ProjectileTargetMode.NONE) {
+                this.targetPosition = Script.provider.get(Script.EnemyManager).getEnemy(this.targetMode).mtxWorld.translation.clone;
+                this.direction = Script.ƒ.Vector3.DIFFERENCE(this.targetPosition, this.node.mtxLocal.translation);
+            }
             if (this.tracking) {
                 this.tracking = { ...{ stopTrackingAfter: Infinity, stopTrackingInRadius: 0, strength: 1, startTrackingAfter: 0 }, ...this.tracking };
+            }
+            if (_options.afterSetup) {
+                _options.afterSetup.call(this);
             }
         }
         update(_charPosition, _frameTimeInSeconds) {
@@ -803,7 +816,7 @@ var Script;
                 }
                 Script.provider.get(Script.ProjectileManager).removeProjectile(this);
             }
-            //TODO remove projectile if too far off screen
+            //TODO remove projectile if too far off screen, don't forget hitzone
         }
         onTriggerEnter = (_event) => {
             if (_event.cmpRigidbody.node.name === "enemy" && this.target === Script.ProjectileTarget.ENEMY) {
@@ -839,6 +852,25 @@ var Script;
                 }],
             sprite: ["projectile", "toast"],
             target: Script.ProjectileTarget.PLAYER,
+        },
+        "anvil": {
+            damage: 5,
+            speed: 20,
+            impact: [{
+                    type: "aoe",
+                    aoe: "anvilImpact"
+                }],
+            sprite: ["projectile", "toast"],
+            target: Script.ProjectileTarget.ENEMY,
+            targetMode: Script.ProjectileTargetMode.RANDOM,
+            afterSetup: function () {
+                if (this.targetPosition) {
+                    let target = this.targetPosition.clone;
+                    this.node.mtxLocal.translation = target;
+                    this.node.mtxLocal.translate(Script.ƒ.Vector3.Y(10));
+                    this.direction = Script.ƒ.Vector3.Y(-1);
+                }
+            }
         }
     };
     Script.areasOfEffect = {
@@ -849,6 +881,19 @@ var Script;
             sprite: ["aoe", "explosion"],
             duration: 1,
             target: Script.ProjectileTarget.PLAYER,
+            events: {
+                "explode": function (_event) {
+                    this.explode();
+                }
+            },
+        },
+        "anvilImpact": {
+            variant: "explosion",
+            damage: 10,
+            size: 1,
+            sprite: ["aoe", "explosion"],
+            duration: 1,
+            target: Script.ProjectileTarget.ENEMY,
             events: {
                 "explode": function (_event) {
                     this.explode();
@@ -912,7 +957,7 @@ var Script;
                                         }
                                     }
                                     let projectile = Script.projectiles[effect.projectile];
-                                    this.#pm.createProjectile(projectile, pos, effect.modifiers, projectile.lockedToEntity ? this.#charm.character.node : undefined);
+                                    this.#pm.createProjectile(projectile, pos, _cumulatedEffects, projectile.lockedToEntity ? this.#charm.character.node : undefined);
                                 }, i * (effect.delay ?? 0));
                             }
                             break;
@@ -972,6 +1017,20 @@ var Script;
                     }
                 }
             ]
+        },
+        "anvil": {
+            image: "./Assets/Cards/Items/Anvil",
+            rarity: Script.CardRarity.COMMON,
+            name: "anvil",
+            levels: [{
+                    activeEffects: [{
+                            type: "projectile",
+                            amount: 1,
+                            projectile: "anvil",
+                            cooldown: 3,
+                            currentCooldown: 3,
+                        }]
+                }]
         }
     };
 })(Script || (Script = {}));
@@ -1457,8 +1516,21 @@ var Script;
 var Script;
 (function (Script) {
     class CardManager {
-        currentlyActiveCards;
-        cumulativeEffects = {};
+        currentlyActiveCards = [];
+        cumulativeEffects = { absolute: {}, multiplier: {} };
+        constructor() {
+            this.currentlyActiveCards.push(new Script.Card(Script.cards["anvil"], 0), new Script.Card(Script.cards["testSize"], 1));
+            this.updateEffects();
+            Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
+        }
+        update = () => {
+            if (Script.gameState !== Script.GAMESTATE.PLAYING)
+                return;
+            let time = Script.ƒ.Loop.timeFrameGame / 1000;
+            for (let card of this.currentlyActiveCards) {
+                card.update(time, this.combineEffects(this.cumulativeEffects, card.effects));
+            }
+        };
         getEffectAbsolute(_effect, _modifier = this.cumulativeEffects) {
             return _modifier.absolute?.[_effect] ?? 0;
         }
@@ -1472,20 +1544,34 @@ var Script;
             return (_value + this.getEffectAbsolute(_effect)) * this.getEffectMultiplier(_effect);
         }
         modifyValue(_value, _effect, _modifier) {
+            if (!_modifier)
+                return _value;
             return (_value + this.getEffectAbsolute(_effect, _modifier)) * this.getEffectMultiplier(_effect, _modifier);
         }
         updateEffects() {
-            this.cumulativeEffects = {};
+            let cardEffects = [];
             for (let card of this.currentlyActiveCards) {
                 let effects = card.effects;
+                if (!effects)
+                    continue;
+                cardEffects.push(effects);
+            }
+            this.cumulativeEffects = this.combineEffects(...cardEffects);
+        }
+        combineEffects(..._effects) {
+            let combined = { absolute: {}, multiplier: {} };
+            for (let effectObj of _effects) {
+                if (!effectObj)
+                    continue;
                 let effect;
-                for (effect in effects.absolute) {
-                    this.cumulativeEffects.absolute[effect] = (this.cumulativeEffects.absolute[effect] ?? 0) + effects.absolute[effect];
+                for (effect in effectObj.absolute) {
+                    combined.absolute[effect] = (combined.absolute[effect] ?? 0) + effectObj.absolute[effect];
                 }
-                for (effect in effects.multiplier) {
-                    this.cumulativeEffects.multiplier[effect] = (this.cumulativeEffects.multiplier[effect] ?? 1) * effects.multiplier[effect];
+                for (effect in effectObj.multiplier) {
+                    combined.multiplier[effect] = (combined.multiplier[effect] ?? 1) * effectObj.multiplier[effect];
                 }
             }
+            return combined;
         }
     }
     Script.CardManager = CardManager;
@@ -1890,7 +1976,25 @@ var Script;
                 this.enemyScripts.splice(index, 1);
                 Script.ƒ.Recycler.storeMultiple(...this.enemies.splice(index, 1));
             }
-            _enemy.node.getParent().removeChild(_enemy.node);
+            _enemy.node.getParent()?.removeChild(_enemy.node);
+        }
+        getEnemy(_mode, _maxDistance = 20) {
+            if (!this.enemies || this.enemies.length === 0)
+                return undefined;
+            _maxDistance *= _maxDistance;
+            let characterPos = Script.provider.get(Script.CharacterManager).character.node.mtxWorld.translation;
+            let enemies = [...this.enemies];
+            if (_mode === Script.ProjectileTargetMode.RANDOM) {
+                //TODO: make sure chosen enemy is visible on screen
+                while (enemies.length > 0) {
+                    let index = Math.floor(Math.random() * this.enemies.length);
+                    let enemy = this.enemies.splice(index, 1)[0];
+                    if (Script.ƒ.Vector3.DIFFERENCE(enemy.mtxWorld.translation, characterPos).magnitudeSquared <= _maxDistance) {
+                        return enemy;
+                    }
+                }
+            }
+            return undefined;
         }
     }
     Script.EnemyManager = EnemyManager;
@@ -1964,9 +2068,9 @@ var Script;
             if (!pgi.initialized) {
                 await pgi.set(ProjectileManager.projectileGraph);
             }
+            pgi.mtxLocal.translation = Script.ƒ.Vector3.SUM(_position);
             let p = pgi.getComponent(Script.ProjectileComponent);
             p.setup(_options, _modifiers);
-            pgi.mtxLocal.translation = Script.ƒ.Vector3.SUM(_position);
             _parent.addChild(pgi);
             this.projectileScripts.push(p);
             this.projectiles.push(pgi);

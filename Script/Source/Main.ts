@@ -38,11 +38,13 @@ namespace Script {
     enemyManager.setup();
     const projectileManager = provider.get(ProjectileManager);
     projectileManager.setup();
+    const cardManager = provider.get(CardManager);
+    cardManager.updateEffects();
   }
 
   function start(_event: CustomEvent): void {
     viewport = _event.detail;
-    // viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
+    viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a

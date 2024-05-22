@@ -43,7 +43,8 @@ canvas.fullscreen {
 /* Game Overlay */
 #healthbar {
   position: absolute;
-  top: calc(50% - 6vh);
+  /* top: calc(50% - 6vh); */
+  bottom: 1px;
   left: calc(50% - 5vw);
   width: 10vw;
   appearance: none;

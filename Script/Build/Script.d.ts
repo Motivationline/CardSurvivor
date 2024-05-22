@@ -210,11 +210,13 @@ declare namespace Script {
         impact?: ActiveEffect[];
         artillery?: boolean;
         sprite: AnimationSprite | [string, string];
+        afterSetup?: () => void;
     }
     export enum ProjectileTargetMode {
         NONE = 0,
         CLOSEST = 1,
-        STRONGEST = 2
+        STRONGEST = 2,
+        RANDOM = 3
     }
     export enum ProjectileTarget {
         PLAYER = 0,
@@ -494,11 +496,14 @@ declare namespace Script {
     class CardManager {
         private currentlyActiveCards;
         private cumulativeEffects;
+        constructor();
+        private update;
         getEffectAbsolute(_effect: PassiveCardEffect, _modifier?: PassiveCardEffectObject): number;
         getEffectMultiplier(_effect: PassiveCardEffect, _modifier?: PassiveCardEffectObject): number;
         modifyValuePlayer(_value: number, _effect: PassiveCardEffect, _localModifiers?: PassiveCardEffectObject): number;
         modifyValue(_value: number, _effect: PassiveCardEffect, _modifier: PassiveCardEffectObject): number;
         updateEffects(): void;
+        combineEffects(..._effects: PassiveCardEffectObject[]): PassiveCardEffectObject;
     }
 }
 declare namespace Script {
@@ -541,6 +546,7 @@ declare namespace Script {
         private debugEvents;
         private spawnEnemies;
         removeEnemy(_enemy: Enemy): void;
+        getEnemy(_mode: ProjectileTargetMode, _maxDistance?: number): EnemyGraphInstance;
     }
 }
 declare namespace Script {

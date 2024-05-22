@@ -216,7 +216,7 @@ namespace Script {
 
         private endRoom() {
             while (this.enemyScripts.length > 0) {
-                this.enemyScripts[0].hit({damage: Infinity});
+                this.enemyScripts[0].hit({ damage: Infinity });
             }
             //TODO collect XP
             console.log(`Room ${this.currentRoom} done. Press N to continue.`);
@@ -333,7 +333,7 @@ namespace Script {
                 case "k":
                     for (let i = 0; i < 5; i++) {
                         if (this.enemyScripts.length > 0) {
-                            this.enemyScripts[0].hit({damage: Infinity});
+                            this.enemyScripts[0].hit({ damage: Infinity });
                         }
                     }
                     break;
@@ -396,7 +396,25 @@ namespace Script {
                 this.enemyScripts.splice(index, 1);
                 ƒ.Recycler.storeMultiple(...this.enemies.splice(index, 1));
             }
-            _enemy.node.getParent().removeChild(_enemy.node);
+            _enemy.node.getParent()?.removeChild(_enemy.node);
+        }
+
+        public getEnemy(_mode: ProjectileTargetMode, _maxDistance: number = 20): EnemyGraphInstance {
+            if (!this.enemies || this.enemies.length === 0) return undefined;
+            _maxDistance *= _maxDistance;
+            let characterPos = provider.get(CharacterManager).character.node.mtxWorld.translation;
+            let enemies = [...this.enemies];
+            if (_mode === ProjectileTargetMode.RANDOM) {
+                //TODO: make sure chosen enemy is visible on screen
+                while (enemies.length > 0) {
+                    let index = Math.floor(Math.random() * this.enemies.length)
+                    let enemy = this.enemies.splice(index, 1)[0];
+                    if (ƒ.Vector3.DIFFERENCE(enemy.mtxWorld.translation, characterPos).magnitudeSquared <= _maxDistance) {
+                        return enemy;
+                    }
+                }
+            }
+            return undefined;
         }
     }
 }

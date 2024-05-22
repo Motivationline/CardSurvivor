@@ -90,11 +90,13 @@ namespace Script {
         impact?: ActiveEffect[],
         artillery?: boolean,
         sprite: AnimationSprite | [string, string],
+        afterSetup?: () => void,
     }
     export enum ProjectileTargetMode {
         NONE,
         CLOSEST,
         STRONGEST,
+        RANDOM,
     }
     export enum ProjectileTarget {
         PLAYER,

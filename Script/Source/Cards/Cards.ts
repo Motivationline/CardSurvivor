@@ -45,6 +45,20 @@ namespace Script {
                     }
                 }
             ]
+        },
+        "anvil": {
+            image: "./Assets/Cards/Items/Anvil",
+            rarity: CardRarity.COMMON,
+            name: "anvil",
+            levels: [{
+                activeEffects: [{
+                    type: "projectile",
+                    amount: 1,
+                    projectile: "anvil",
+                    cooldown: 3,
+                    currentCooldown: 3,
+                }]
+            }]
         }
     }
 }
