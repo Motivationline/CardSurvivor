@@ -66,9 +66,11 @@
     </div>
     <div class="overlay hidden" id="pause-overlay">
     </div>
-    <div class="overlay hidden" id="main-menu-overlay">
+    <div class="overlay" id="main-menu-overlay">
+        <button onclick="showDeck()">Deck</button>
+        <button onclick="showGame()">Game</button>
     </div>
-    <div class="overlay" id="collection-overlay">
+    <div class="overlay hidden" id="collection-overlay">
         <input type="checkbox" name="largeDeck" id="largeDeck" hidden>
         <div id="collection-wrapper" class="contains-cards"></div>
         <div id="deck-outer-wrapper">
@@ -105,5 +107,13 @@
         </div>
     </div>
 </template>
-
+<script>
+    function showGame(){
+        document.getElementById("main-menu-overlay").classList.add("hidden");
+    }
+    function showDeck() {
+        document.getElementById("main-menu-overlay").classList.add("hidden");
+        document.getElementById("collection-overlay").classList.remove("hidden");
+    }
+</script>
 </html>

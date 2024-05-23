@@ -605,6 +605,10 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    class MenuManager {
+    }
+}
+declare namespace Script {
     class ProjectileManager {
         private readonly provider;
         private characterManager;

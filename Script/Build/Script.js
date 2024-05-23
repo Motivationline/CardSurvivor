@@ -2267,6 +2267,12 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
+    class MenuManager {
+    }
+    Script.MenuManager = MenuManager;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
     class ProjectileManager {
         provider;
         characterManager;
