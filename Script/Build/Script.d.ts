@@ -368,6 +368,48 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    interface iCardCollection {
+        [id: string]: {
+            lvl: number;
+            amount: number;
+        };
+    }
+    class CardCollection {
+        private collection;
+        private deck;
+        private selection;
+        private deckElement;
+        private selectionElement;
+        private collectionElement;
+        private cardVisuals;
+        constructor(provider: Provider);
+        setup(): void;
+        addCardToCollection(_name: string, _amount: number): void;
+        getCardLevel(_name: string): number;
+        addCardToDeck(_name: string): void;
+        removeCardFromDeck(_name: string, _updateVisuals?: boolean): void;
+        addCardToSelection(_name: string): void;
+        removeCardFromSelection(_name: string, _updateVisuals?: boolean): void;
+        private removeFromArray;
+        private addToArray;
+        private updateVisuals;
+        private fillWithPlaceholders;
+        private getCardPlaceholder;
+    }
+}
+declare namespace Script {
+    class CardVisual {
+        #private;
+        static template: HTMLTemplateElement;
+        private static canvas;
+        constructor(_card: iCard, _parent: HTMLElement);
+        get htmlElement(): HTMLElement;
+        private getTextWidth;
+        private getCanvasFont;
+        private getCssStyle;
+    }
+}
+declare namespace Script {
     const cards: Cards;
 }
 declare namespace Script {
@@ -513,6 +555,16 @@ declare namespace Script {
         constructor();
         loadFiles(): Promise<void>;
         getAnimation(_enemyID: string, _animationID: string): AnimationSprite;
+    }
+}
+declare namespace Script {
+    class DataManager {
+        savedCollectionRaw: iCardCollection;
+        savedDeckRaw: string[];
+        savedSelectionRaw: string[];
+        load(): Promise<void>;
+        private catchObjChange;
+        private catchArrayChange;
     }
 }
 declare namespace Script {

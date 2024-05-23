@@ -29,7 +29,11 @@ namespace Script {
       .add(EnemyManager)
       .add(AnimationManager)
       .add(CardManager)
+      .add(DataManager)
+      .add(CardCollection)
 
+    const dataManager = provider.get(DataManager);
+    await dataManager.load();
     const config = provider.get(Config);
     await config.loadFiles();
     const inputManager = provider.get(InputManager);
@@ -40,6 +44,8 @@ namespace Script {
     projectileManager.setup();
     const cardManager = provider.get(CardManager);
     cardManager.updateEffects();
+    const cardCollector = provider.get(CardCollection);
+    cardCollector.setup();
   }
 
   function start(_event: CustomEvent): void {

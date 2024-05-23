@@ -464,7 +464,11 @@ var Script;
             .add(Script.ProjectileManager)
             .add(Script.EnemyManager)
             .add(Script.AnimationManager)
-            .add(Script.CardManager);
+            .add(Script.CardManager)
+            .add(Script.DataManager)
+            .add(Script.CardCollection);
+        const dataManager = Script.provider.get(Script.DataManager);
+        await dataManager.load();
         const config = Script.provider.get(Script.Config);
         await config.loadFiles();
         const inputManager = Script.provider.get(Script.InputManager);
@@ -475,6 +479,8 @@ var Script;
         projectileManager.setup();
         const cardManager = Script.provider.get(Script.CardManager);
         cardManager.updateEffects();
+        const cardCollector = Script.provider.get(Script.CardCollection);
+        cardCollector.setup();
     }
     function start(_event) {
         viewport = _event.detail;
@@ -972,13 +978,201 @@ var Script;
     }
     Script.Card = Card;
 })(Script || (Script = {}));
+var Script;
+(function (Script) {
+    class CardCollection {
+        collection;
+        deck;
+        selection;
+        deckElement;
+        selectionElement;
+        collectionElement;
+        cardVisuals = new Map();
+        constructor(provider) {
+            let dm = provider.get(Script.DataManager);
+            this.collection = dm.savedCollectionRaw;
+            this.deck = dm.savedDeckRaw;
+            this.selection = dm.savedSelectionRaw;
+        }
+        setup() {
+            this.selectionElement = document.getElementById("selection");
+            this.deckElement = document.getElementById("deck");
+            this.collectionElement = document.getElementById("collection-wrapper");
+            for (let cardID in Script.cards) {
+                let card = Script.cards[cardID];
+                let visual = new Script.CardVisual(card, this.collectionElement);
+                this.cardVisuals.set(cardID, visual);
+            }
+            this.updateVisuals(true);
+        }
+        addCardToCollection(_name, _amount) {
+            if (!this.collection[_name]) {
+                this.collection[_name] = { amount: 0, lvl: 0 };
+            }
+            this.collection[_name].amount += _amount;
+        }
+        getCardLevel(_name) {
+            return this.collection[_name]?.lvl ?? 0;
+        }
+        addCardToDeck(_name) {
+            this.addToArray(_name, this.deck);
+            this.removeCardFromSelection(_name, false);
+            this.updateVisuals();
+        }
+        removeCardFromDeck(_name, _updateVisuals = true) {
+            this.removeFromArray(_name, this.deck);
+            if (_updateVisuals)
+                this.updateVisuals();
+        }
+        addCardToSelection(_name) {
+            this.addToArray(_name, this.selection);
+            this.removeCardFromDeck(_name, false);
+            this.updateVisuals();
+        }
+        removeCardFromSelection(_name, _updateVisuals = true) {
+            this.removeFromArray(_name, this.selection);
+            if (_updateVisuals)
+                this.updateVisuals();
+        }
+        removeFromArray(_element, _array) {
+            let index = _array.indexOf(_element);
+            if (index >= 0) {
+                _array.splice(index, 1);
+            }
+        }
+        addToArray(_element, _array) {
+            if (_array.includes(_element))
+                return;
+            _array.push(_element);
+        }
+        updateVisuals(_updateCollection = false) {
+            // collection
+            if (!_updateCollection)
+                return;
+            let allCardsForCollection = [];
+            for (let cardID in this.collection) {
+                let visual = this.cardVisuals.get(cardID);
+                if (!visual)
+                    continue;
+                allCardsForCollection.push(visual.htmlElement);
+            }
+            for (let cardID in Script.cards) {
+                if (this.collection[cardID])
+                    continue;
+                let visual = this.cardVisuals.get(cardID);
+                if (!visual)
+                    continue;
+                allCardsForCollection.push(visual.htmlElement);
+                visual.htmlElement.classList.add("locked");
+            }
+            // for debugging we're adding a bunch of empty stuff to fill up to 100.
+            this.fillWithPlaceholders(allCardsForCollection, 100);
+            this.collectionElement.replaceChildren(...allCardsForCollection);
+            // selection
+            let cardsInSelection = [];
+            for (let card of this.selection) {
+                let visual = this.cardVisuals.get(card);
+                if (!visual)
+                    continue;
+                cardsInSelection.push(visual.htmlElement);
+            }
+            this.fillWithPlaceholders(cardsInSelection, 5);
+            this.selectionElement.replaceChildren(...cardsInSelection);
+            // deck
+            let cardsInDeck = [];
+            for (let card of this.deck) {
+                let visual = this.cardVisuals.get(card);
+                if (!visual)
+                    continue;
+                cardsInDeck.push(visual.htmlElement);
+            }
+            this.fillWithPlaceholders(cardsInDeck, 15);
+            this.deckElement.replaceChildren(...cardsInDeck);
+        }
+        fillWithPlaceholders(_array, _maxAmount) {
+            for (let i = _array.length; i < _maxAmount; i++) {
+                _array.push(this.getCardPlaceholder());
+            }
+        }
+        getCardPlaceholder() {
+            let elem = document.createElement("div");
+            elem.classList.add("card", "placeholder");
+            return elem;
+        }
+    }
+    Script.CardCollection = CardCollection;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    class CardVisual {
+        static template;
+        static canvas;
+        #name;
+        #image;
+        #text;
+        #htmlElement;
+        constructor(_card, _parent) {
+            this.#name = _card.name ?? "no name";
+            this.#text = _card.description ?? "no description";
+            this.#image = _card.image;
+            this.#htmlElement = CardVisual.template.content.cloneNode(true).childNodes[1];
+            // figure out how large the title text should be
+            let fontSize = 10;
+            let heightRaw = getComputedStyle(_parent).getPropertyValue("--card-size");
+            let tmpDiv = document.createElement("div");
+            tmpDiv.style.width = heightRaw;
+            document.documentElement.appendChild(tmpDiv);
+            let height = tmpDiv.offsetWidth;
+            document.documentElement.removeChild(tmpDiv);
+            let cardWidth = height * (15 / 21) - 0.15 * height;
+            let currentTextWidth = this.getTextWidth(this.#name, `normal  ${height / 100 * fontSize}px 'Luckiest Guy'`);
+            let factor = cardWidth / currentTextWidth;
+            fontSize *= factor;
+            let nameElement = this.#htmlElement.querySelector(".card-name");
+            nameElement.style.fontSize = `calc(var(--card-size) / 100 * ${fontSize})`;
+            // fill card with data
+            nameElement.innerHTML = this.#name.toLocaleUpperCase();
+            requestAnimationFrame(() => {
+                // turn into circle
+                new CircleType(nameElement).radius(cardWidth * 2);
+            });
+            this.#htmlElement.querySelector(".card-text").innerText = this.#text;
+            this.#htmlElement.querySelector(".card-image img").src = "Assets/Cards/Items/" + this.#image;
+            this.#htmlElement.classList.add(_card.rarity);
+        }
+        get htmlElement() {
+            return this.#htmlElement;
+        }
+        getTextWidth(_text, _font) {
+            const canvas = CardVisual.canvas || (CardVisual.canvas = document.createElement("canvas"));
+            const context = canvas.getContext("2d");
+            context.font = _font;
+            const metrics = context.measureText(_text);
+            return metrics.width;
+        }
+        getCanvasFont(el = document.body) {
+            const fontWeight = this.getCssStyle(el, 'font-weight') || 'normal';
+            const fontSize = this.getCssStyle(el, 'font-size') || '10vh';
+            const fontFamily = this.getCssStyle(el, 'font-family') || 'Luckiest Guy';
+            return `${fontWeight} ${fontSize} ${fontFamily}`;
+        }
+        getCssStyle(element, prop) {
+            return window.getComputedStyle(element, null).getPropertyValue(prop);
+        }
+    }
+    Script.CardVisual = CardVisual;
+    document.addEventListener("DOMContentLoaded", initCardTemplate);
+    function initCardTemplate() {
+        CardVisual.template = document.getElementById("card");
+    }
+})(Script || (Script = {}));
 /// <reference path="../Types.ts" />
 var Script;
 /// <reference path="../Types.ts" />
 (function (Script) {
     Script.cards = {
         "test": {
-            image: "./Assets/Cards/test.png",
+            image: "Pen.png",
             rarity: Script.CardRarity.COMMON,
             levels: [
                 {
@@ -1000,8 +1194,8 @@ var Script;
             ]
         },
         "testSize": {
-            image: "./Assets/Cards/test.png",
-            rarity: Script.CardRarity.COMMON,
+            image: "Pen.png",
+            rarity: Script.CardRarity.RARE,
             levels: [
                 {
                     passiveEffects: {
@@ -1023,7 +1217,7 @@ var Script;
             ]
         },
         "anvil": {
-            image: "./Assets/Cards/Items/Anvil",
+            image: "Anvil.png",
             rarity: Script.CardRarity.COMMON,
             name: "anvil",
             levels: [{
@@ -1604,6 +1798,51 @@ var Script;
         }
     }
     Script.Config = Config;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    class DataManager {
+        savedCollectionRaw = {};
+        savedDeckRaw = [];
+        savedSelectionRaw = [];
+        async load() {
+            this.savedCollectionRaw = this.catchObjChange(JSON.parse(localStorage.getItem("collection") ?? "{}"), () => { localStorage.setItem("collection", JSON.stringify(this.savedCollectionRaw)); });
+            this.savedDeckRaw = this.catchArrayChange(JSON.parse(localStorage.getItem("deck") ?? "[]"), () => { localStorage.setItem("deck", JSON.stringify(this.savedDeckRaw)); });
+            this.savedSelectionRaw = this.catchArrayChange(JSON.parse(localStorage.getItem("selection") ?? "[]"), () => { localStorage.setItem("selection", JSON.stringify(this.savedSelectionRaw)); });
+        }
+        catchObjChange(object, onChange) {
+            const handler = {
+                get(target, property, receiver) {
+                    try {
+                        return new Proxy(target[property], handler);
+                    }
+                    catch (err) {
+                        return Reflect.get(target, property, receiver);
+                    }
+                },
+                set(target, prop, value, receiver) {
+                    let result = Reflect.set(target, prop, value, receiver);
+                    if (result)
+                        onChange();
+                    return result;
+                }
+            };
+            const handlerForArray = {};
+            return new Proxy(object, handler);
+        }
+        catchArrayChange(object, onChange) {
+            const handler = {
+                set(target, prop, value, receiver) {
+                    let result = Reflect.set(target, prop, value, receiver);
+                    if (result)
+                        onChange();
+                    return result;
+                }
+            };
+            return new Proxy(object, handler);
+        }
+    }
+    Script.DataManager = DataManager;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {

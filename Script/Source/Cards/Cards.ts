@@ -2,7 +2,7 @@
 namespace Script {
     export const cards: Cards = {
         "test": {
-            image: "./Assets/Cards/test.png",
+            image: "Pen.png",
             rarity: CardRarity.COMMON,
             levels: [
                 {
@@ -24,8 +24,8 @@ namespace Script {
             ]
         },
         "testSize": {
-            image: "./Assets/Cards/test.png",
-            rarity: CardRarity.COMMON,
+            image: "Pen.png",
+            rarity: CardRarity.RARE,
             levels: [
                 {
                     passiveEffects: {
@@ -47,7 +47,7 @@ namespace Script {
             ]
         },
         "anvil": {
-            image: "./Assets/Cards/Items/Anvil",
+            image: "Anvil.png",
             rarity: CardRarity.COMMON,
             name: "anvil",
             levels: [{

@@ -66,6 +66,44 @@
     </div>
     <div class="overlay hidden" id="pause-overlay">
     </div>
+    <div class="overlay hidden" id="main-menu-overlay">
+    </div>
+    <div class="overlay" id="collection-overlay">
+        <input type="checkbox" name="largeDeck" id="largeDeck" hidden>
+        <div id="collection-wrapper" class="contains-cards"></div>
+        <div id="deck-outer-wrapper">
+            <label for="largeDeck">
+                <div id="deck-selection">
+                    <button>1</button>
+                    <button>2</button>
+                    <span>12/20</span>
+                    <button>3</button>
+                    <button>4</button>
+                </div>
+            </label>
+            <div id="deck-wrapper">
+                <div id="selection" class="contains-cards"></div>
+                <div id="deck" class="contains-cards"></div>
+            </div>
+        </div>
+        <div id="card-popup" class="overlay hidden">
+            <div id="card-popup-card"></div>
+            <div id="card-popup-selection"></div>
+            <div id="card-popup-deck"></div>
+            <div id="card-popup-close"></div>
+        </div>
+    </div>
 </body>
+
+<template id="card">
+    <div class="card">
+        <div class="card-name"></div>
+        <div class="card-image">
+            <img src="" alt="">
+        </div>
+        <div class="card-text">
+        </div>
+    </div>
+</template>
 
 </html>
