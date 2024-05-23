@@ -15,7 +15,7 @@ namespace Script {
             target: ProjectileTarget.PLAYER,
         },
         "anvil": {
-            damage: 5,
+            damage: 20,
             speed: 20,
             impact: [{
                 type: "aoe",
@@ -52,7 +52,7 @@ namespace Script {
         },
         "anvilImpact": {
             variant: "explosion",
-            damage: 10,
+            damage: 20,
             size: 1,
             sprite: ["aoe", "explosion"],
             duration: 1,

@@ -394,11 +394,11 @@ var Script;
                 return;
             }
             if (_event.type === ƒ.EVENT_TOUCH.MOVE && this.curentlyActiveTouchId === touches[0].identifier) {
-                let offsetX = _event.detail.offset.data[0];
-                let offsetY = _event.detail.offset.data[1];
+                let offsetX = _event.detail.offset.x;
+                let offsetY = _event.detail.offset.y;
                 if (this.#touchMode === TouchMode.LOCKED) {
-                    offsetX = _event.detail.position.data[0] - this.#touchStart.x;
-                    offsetY = _event.detail.position.data[1] - this.#touchStart.y;
+                    offsetX = _event.detail.position.x - this.#touchStart.x;
+                    offsetY = _event.detail.position.y - this.#touchStart.y;
                 }
                 let direction = new ƒ.Vector2(offsetX, -offsetY);
                 direction.scale(this.touchRadiusScale);
@@ -689,6 +689,7 @@ var Script;
         lockedToEntity;
         sprite;
         hazardZone;
+        prevDistance;
         static defaults = {
             targetPosition: undefined,
             direction: new Script.ƒ.Vector3(),
@@ -739,6 +740,7 @@ var Script;
             this.setCentralAnimator(this.sprite);
             this.node.mtxLocal.scaling = Script.ƒ.Vector3.ONE(this.size);
             this.hazardZone = undefined;
+            this.prevDistance = Infinity;
             //TODO rotate projectile towards flight direction
             if (this.artillery) {
                 let pos = new Script.ƒ.Vector3();
@@ -792,7 +794,8 @@ var Script;
             dir.normalize(Math.min(1, _frameTimeInSeconds) * this.speed);
             this.node.mtxLocal.translate(dir);
             //TODO check if flew past target position (due to lag?) and still explode
-            if (this.targetPosition && this.node.mtxWorld.translation.equals(this.targetPosition, 0.5)) {
+            let distanceToTarget = Script.ƒ.Vector3.DIFFERENCE(this.targetPosition, this.node.mtxWorld.translation).magnitudeSquared;
+            if (this.targetPosition && (this.node.mtxWorld.translation.equals(this.targetPosition, 0.5) || distanceToTarget > this.prevDistance)) {
                 if (this.artillery && this.tracking.startTrackingAfter > 0)
                     return;
                 // target position reached
@@ -816,6 +819,7 @@ var Script;
                 }
                 Script.provider.get(Script.ProjectileManager).removeProjectile(this);
             }
+            this.prevDistance = distanceToTarget;
             //TODO remove projectile if too far off screen, don't forget hitzone
         }
         onTriggerEnter = (_event) => {
@@ -832,7 +836,7 @@ var Script;
             // console.log("onTriggerExit", _event);
         };
         hit(_hittable) {
-            console.log("hit", _hittable);
+            // _hittable.hit({damage: this.damage});
         }
     }
     Script.ProjectileComponent = ProjectileComponent;
@@ -854,7 +858,7 @@ var Script;
             target: Script.ProjectileTarget.PLAYER,
         },
         "anvil": {
-            damage: 5,
+            damage: 20,
             speed: 20,
             impact: [{
                     type: "aoe",
@@ -889,7 +893,7 @@ var Script;
         },
         "anvilImpact": {
             variant: "explosion",
-            damage: 10,
+            damage: 20,
             size: 1,
             sprite: ["aoe", "explosion"],
             duration: 1,
@@ -1382,9 +1386,9 @@ var Script;
             // are we touching the player?
             if (this.touchingPlayer) {
                 let character = Script.provider.get(Script.CharacterManager).character;
-                let mag = Script.ƒ.Vector3.DIFFERENCE(character.node.mtxWorld.translation, this.node.mtxWorld.translation).magnitudeSquared;
-                if (mag < 0.64 /* 0.8² (player hitbox size) TODO: update this if player or enemy size changes */)
-                    character.hit({ damage: this.damage * _frameTimeInSeconds });
+                // let mag = ƒ.Vector3.DIFFERENCE(character.node.mtxWorld.translation, this.node.mtxWorld.translation).magnitudeSquared;
+                // if (mag < 0.64 /* 0.8² (player hitbox size) TODO: update this if player or enemy size changes */)
+                character.hit({ damage: this.damage * _frameTimeInSeconds });
                 // console.log(this.rigidbody.collisions);
             }
         }
@@ -1749,6 +1753,10 @@ var Script;
             this.characterManager = provider.get(Script.CharacterManager);
             this.config = provider.get(Script.Config);
             document.addEventListener("keypress", this.debugEvents);
+            document.getElementById("debug-next-wave").addEventListener("touchstart", this.debugButtons);
+            document.getElementById("debug-end-room").addEventListener("touchstart", this.debugButtons);
+            document.getElementById("debug-next-room").addEventListener("touchstart", this.debugButtons);
+            document.getElementById("debug-kill-enemies").addEventListener("touchstart", this.debugButtons);
         }
         setup() {
             Script.ƒ.Debug.log("EnemyManager setup");
@@ -1914,14 +1922,33 @@ var Script;
                     this.nextRoom();
                     break;
                 case "k":
-                    for (let i = 0; i < 5; i++) {
-                        if (this.enemyScripts.length > 0) {
-                            this.enemyScripts[0].hit({ damage: Infinity });
-                        }
-                    }
+                    this.debugRemoveEnemies();
                     break;
             }
         };
+        debugButtons = (_event) => {
+            switch (_event.target.id) {
+                case "debug-next-wave":
+                    this.nextWaveOverride = true;
+                    break;
+                case "debug-end-room":
+                    this.endRoom();
+                    break;
+                case "debug-next-room":
+                    this.nextRoom();
+                    break;
+                case "debug-kill-enemies":
+                    this.debugRemoveEnemies();
+                    break;
+            }
+        };
+        debugRemoveEnemies(_amt = 5) {
+            for (let i = 0; i < 5; i++) {
+                if (this.enemyScripts.length > 0) {
+                    this.enemyScripts[0].hit({ damage: Infinity });
+                }
+            }
+        }
         async spawnEnemies() {
             if (this.enemies.length >= 2) {
                 return;

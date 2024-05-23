@@ -147,7 +147,11 @@ namespace Script {
             this.characterManager = provider.get(CharacterManager);
             this.config = provider.get(Config);
 
-            document.addEventListener("keypress", this.debugEvents)
+            document.addEventListener("keypress", this.debugEvents);
+            document.getElementById("debug-next-wave").addEventListener("touchstart", this.debugButtons);
+            document.getElementById("debug-end-room").addEventListener("touchstart", this.debugButtons);
+            document.getElementById("debug-next-room").addEventListener("touchstart", this.debugButtons);
+            document.getElementById("debug-kill-enemies").addEventListener("touchstart", this.debugButtons);
         }
 
         public setup() {
@@ -331,12 +335,34 @@ namespace Script {
                     this.nextRoom();
                     break;
                 case "k":
-                    for (let i = 0; i < 5; i++) {
-                        if (this.enemyScripts.length > 0) {
-                            this.enemyScripts[0].hit({ damage: Infinity });
-                        }
-                    }
+                    this.debugRemoveEnemies();
                     break;
+            }
+        }
+
+        private debugButtons = (_event: TouchEvent) => {
+            switch ((<HTMLElement>_event.target).id) {
+                case "debug-next-wave":
+                    this.nextWaveOverride = true;
+                    break;
+                case "debug-end-room":
+                    this.endRoom();
+                    break;
+                case "debug-next-room":
+                    this.nextRoom();
+                    break;
+                case "debug-kill-enemies":
+                    this.debugRemoveEnemies();
+                    break;
+            }
+        }
+
+        private debugRemoveEnemies(_amt: number = 5) {
+
+            for (let i = 0; i < 5; i++) {
+                if (this.enemyScripts.length > 0) {
+                    this.enemyScripts[0].hit({ damage: Infinity });
+                }
             }
         }
 

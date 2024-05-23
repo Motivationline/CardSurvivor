@@ -86,11 +86,11 @@ namespace Script {
                 return;
             }
             if (_event.type === ƒ.EVENT_TOUCH.MOVE && this.curentlyActiveTouchId === touches[0].identifier) {
-                let offsetX = _event.detail.offset.data[0];
-                let offsetY = _event.detail.offset.data[1];
+                let offsetX = _event.detail.offset.x;
+                let offsetY = _event.detail.offset.y;
                 if (this.#touchMode === TouchMode.LOCKED) {
-                    offsetX = _event.detail.position.data[0] - this.#touchStart.x;
-                    offsetY = _event.detail.position.data[1] - this.#touchStart.y;
+                    offsetX = _event.detail.position.x - this.#touchStart.x;
+                    offsetY = _event.detail.position.y - this.#touchStart.y;
                 }
 
                 let direction = new ƒ.Vector2(offsetX, -offsetY);

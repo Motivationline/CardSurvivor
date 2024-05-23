@@ -20,6 +20,7 @@ namespace Script {
         lockedToEntity: boolean;
         sprite: AnimationSprite;
         private hazardZone: HitZoneGraphInstance;
+        private prevDistance: number;
 
         protected static defaults: Projectile = {
             targetPosition: undefined,
@@ -78,6 +79,7 @@ namespace Script {
             this.node.mtxLocal.scaling = ƒ.Vector3.ONE(this.size);
 
             this.hazardZone = undefined;
+            this.prevDistance = Infinity;
             //TODO rotate projectile towards flight direction
 
             if (this.artillery) {
@@ -139,7 +141,8 @@ namespace Script {
             this.node.mtxLocal.translate(dir);
 
             //TODO check if flew past target position (due to lag?) and still explode
-            if (this.targetPosition && this.node.mtxWorld.translation.equals(this.targetPosition, 0.5)) {
+            let distanceToTarget = ƒ.Vector3.DIFFERENCE(this.targetPosition, this.node.mtxWorld.translation).magnitudeSquared;
+            if (this.targetPosition && (this.node.mtxWorld.translation.equals(this.targetPosition, 0.5) || distanceToTarget > this.prevDistance)) {
                 if (this.artillery && this.tracking.startTrackingAfter > 0) return;
                 // target position reached
                 if (this.hazardZone) {
@@ -163,7 +166,7 @@ namespace Script {
                 }
                 provider.get(ProjectileManager).removeProjectile(this);
             }
-
+            this.prevDistance = distanceToTarget;
             //TODO remove projectile if too far off screen, don't forget hitzone
         }
 
@@ -180,7 +183,7 @@ namespace Script {
         }
 
         protected hit(_hittable: Hittable) {
-            console.log("hit", _hittable);
+            // _hittable.hit({damage: this.damage});
         }
     }
 

@@ -336,6 +336,7 @@ declare namespace Script {
         lockedToEntity: boolean;
         sprite: AnimationSprite;
         private hazardZone;
+        private prevDistance;
         protected static defaults: Projectile;
         constructor();
         protected init: () => void;
@@ -544,6 +545,8 @@ declare namespace Script {
         private getEnemyList;
         private spawnEnemy;
         private debugEvents;
+        private debugButtons;
+        private debugRemoveEnemies;
         private spawnEnemies;
         removeEnemy(_enemy: Enemy): void;
         getEnemy(_mode: ProjectileTargetMode, _maxDistance?: number): EnemyGraphInstance;

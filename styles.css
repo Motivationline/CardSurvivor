@@ -95,3 +95,14 @@ progress[value]::-moz-progress-bar{
     display: block;
   }
 }
+
+#mobile-debug {
+  position: absolute;
+  bottom: 2rem;
+  width: 100%;
+}
+
+#mobile-debug > button {
+  height: 4.5rem;
+  width: 23%;
+}

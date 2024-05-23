@@ -1,22 +1,26 @@
 <!DOCTYPE html>
+<html lang="en">
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     <title>CardSurvivor</title>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css" />
 
     <!--Editor settings of this project-->
-    <meta type="settings" autoview="Graph|2024-05-02T11:53:45.258Z|54899" project="{'name':'CardSurvivor','graphAutoView':'Graph|2024-05-02T11:53:45.258Z|54899'}" />
+    <meta type="settings" autoview="Graph|2024-05-02T11:53:45.258Z|54899"
+        project="{'name':'CardSurvivor','graphAutoView':'Graph|2024-05-02T11:53:45.258Z|54899'}" />
 
     <script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/peterhry/CircleType@2.3.1/dist/circletype.min.js"></script>
 
     <!--Activate the following line to include the FUDGE-version of Oimo-Physics. You may want to download a local copy to work offline and be independent from future changes!-->
-    <script type="text/javascript" src="https://jirkadelloro.github.io/FUDGE/Physics/OimoPhysics.js"></script>
+    <script type="text/javascript" src="https://hs-furtwangen.github.io/FUDGE/Distribution/OimoPhysics.js"></script>
 
     <!--Load FUDGE. You may want to download local copies to work offline and be independent from future changes! Developers working on FUDGE itself may want to create symlinks-->
-    <script type="text/javascript" src="https://jirkadelloro.github.io/FUDGE/Core/Build/FudgeCore.js"></script>
-    <script type="text/javascript" src="https://jirkadelloro.github.io/FUDGE/Aid/Build/FudgeAid.js"></script>
+    <script type="text/javascript" src="https://hs-furtwangen.github.io/FUDGE/Distribution/FudgeCore.js"></script>
+    <script type="text/javascript" src="https://hs-furtwangen.github.io/FUDGE/Distribution/FudgeAid.js"></script>
 
     <!--Link internal resources. The editor only loads the first, but at runtime, multiple files can contribute-->
     <link type="resources" src="Internal.json" />
@@ -45,14 +49,23 @@
             <div id="touch-circle-inner" class="touch-circle">
             </div>
         </div>
+        <!-- debug -->
+        <div id="mobile-debug">
+            <button id="debug-next-wave">next wave</button>
+            <button id="debug-end-room">end room</button>
+            <button id="debug-next-room">next room</button>
+            <button id="debug-kill-enemies">kill 5 enemies</button>
+        </div>
     </div>
     <div class="overlay" id="game-overlay">
         <progress id="healthbar" max="100" value="100">
-</progress>
+        </progress>
+        <!-- debug -->
         <span id="timer">0:00</span>
         <span style="margin-left: 1rem;">V - next wave, B - end room, N - next room, K - kill 5 enemies</span>
     </div>
     <div class="overlay hidden" id="pause-overlay">
     </div>
 </body>
+
 </html>
