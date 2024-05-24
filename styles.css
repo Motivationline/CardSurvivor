@@ -46,9 +46,28 @@ canvas.fullscreen {
   display: none !important;
 }
 
+.center-center {
+  display: grid;
+  place-items: center;
+}
+
+button {
+  background-color: var(--ui-color-foreground);
+  border: 1px solid var(--ui-color-foreground);
+  color: var(--ui-color-background);
+  border-radius: 0.25rem;
+  font-size: inherit;
+}
+button.inverted {
+  background-color: var(--ui-color-background);
+  color: var(--ui-color-foreground);
+}
+
+/* main menu */
+
 #main-menu-overlay {
   z-index: 10000;
-  background-color: #ffdfa2;
+  background-color: var(--ui-color-background);
 
   display: flex;
   flex-direction: column;
@@ -82,13 +101,15 @@ progress[value]::-moz-progress-bar{
 }
 
 /* collection & deck */
-#collection-overlay {
+#collection-overlay {  
+  --gap: 2vw;
+  --padding: 3vw;
   background-color: var(--ui-color-background);
   z-index: 1001;
   display: flex;
   flex-direction: column;
   color: black;
-  --card-size: 10vh;
+  --card-size: calc(((100vw - 4 * var(--gap) - 2 * var(--padding))/ 5) * 21 / 15);
 }
 
 #collection-overlay * {
@@ -125,8 +146,8 @@ progress[value]::-moz-progress-bar{
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 10px;
-  padding: 10px;
+  gap: var(--gap);
+  padding: var(--padding);
   justify-content: space-between;
 }
 
@@ -134,23 +155,31 @@ progress[value]::-moz-progress-bar{
   display: flex;
   justify-content: space-evenly;
   border-top: 2px solid var(--ui-color-foreground);
-  padding: 0.5em;
-  font-size: 2em;
+  padding: 0.2em;
+  font-size: 6vw;
+  align-items: baseline;
 }
 
 #deck-selection button {
-  padding: 0 1em;
-  background-color: var(--ui-color-background);
-  border: 1px solid var(--ui-color-foreground);
-  border-radius: 5px;
+  /* padding: 0 1em; */
+  width: 1.5em;
+  height: 1.5em;
 }
 #deck-selection button.active {
   background-color: var(--ui-color-foreground);
   color: var(--ui-color-background);
 }
+#deck-back-button {
+  padding: 0.25em;
+}
 
 #selection {
   border-bottom: 1px dashed var(--ui-color-foreground);
+  padding-top: 3px;
+}
+
+#selection .card {
+  outline: 2px solid var(--ui-color-foreground);
 }
 
 /* cards */
@@ -284,4 +313,23 @@ progress[value]::-moz-progress-bar{
 #mobile-debug > button {
   height: 4.5rem;
   width: 23%;
+}
+
+@media screen and (min-width: 400px) {
+  #deck-outer-wrapper,
+  #collection-wrapper {
+    height: 100% !important;
+  }
+  #deck-outer-wrapper {
+    max-width: calc((var(--card-size) * 15 / 21) * 5 + (var(--gap) * 4) + (var(--padding) * 2));
+  }
+  #collection-overlay {
+    flex-direction: row;
+    --card-size: 8vw;
+    --gap: 0.5vw;
+    --padding: 1vw;
+  }
+  #deck-selection {
+    font-size: 3vw;
+  }
 }
