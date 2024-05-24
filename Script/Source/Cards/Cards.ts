@@ -275,10 +275,10 @@ namespace Script {
             name: "Magnifying Glas",
             levels: []
         },
-        "Tatoo Ink": {
+        "Tattoo Ink": {
             image: "TatooInk.png",
             rarity: CardRarity.RARE,
-            name: "Tatoo Ink",
+            name: "Tattoo Ink",
             levels: []
         },
         "Calculator": {
