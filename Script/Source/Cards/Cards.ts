@@ -215,10 +215,10 @@ namespace Script {
             name: "Tape Measure",
             levels: []
         },
-        "....": {
-            image: "",
+        "LegalWig": {
+            image: "LegalWig.png",
             rarity: CardRarity.UNCOMMON,
-            name: "no name looool",
+            name: "Legal Wig",
             levels: []
         },
         "Toolbelt": {
