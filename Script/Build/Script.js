@@ -1582,7 +1582,97 @@ var Script;
             rarity: Script.CardRarity.RARE,
             name: "Riot Shields",
             levels: []
-        }
+        },
+        "Piercing Gun": {
+            image: "PiercingGun.png",
+            rarity: Script.CardRarity.EPIC,
+            name: "Piercing Gun",
+            levels: []
+        },
+        "Stopwatch": {
+            image: "Stopwatch.png",
+            rarity: Script.CardRarity.EPIC,
+            name: "Stopwatch",
+            levels: []
+        },
+        "Rake": {
+            image: "Rake.png",
+            rarity: Script.CardRarity.EPIC,
+            name: "Rake",
+            levels: []
+        },
+        "Jumper Cable": {
+            image: "Jumper Cable.png",
+            rarity: Script.CardRarity.EPIC,
+            name: "Jumper Cable",
+            levels: []
+        },
+        "Shredder": {
+            image: "Shredder.png",
+            rarity: Script.CardRarity.EPIC,
+            name: "Shredder",
+            levels: []
+        },
+        "Whiteboard": {
+            image: "Whiteboard.png",
+            rarity: Script.CardRarity.EPIC,
+            name: "Whiteboard",
+            levels: []
+        },
+        "Drawing Table": {
+            image: "Drawingtable.png",
+            rarity: Script.CardRarity.EPIC,
+            name: "DrawingTable",
+            levels: []
+        },
+        "Press Vest": {
+            image: "PressVest.png",
+            rarity: Script.CardRarity.EPIC,
+            name: "Press Vest",
+            levels: []
+        },
+        "Tong": {
+            image: "Tong.png",
+            rarity: Script.CardRarity.EPIC,
+            name: "Tong",
+            levels: []
+        },
+        "High-Vis West": {
+            image: "HighVisWest.png",
+            rarity: Script.CardRarity.EPIC,
+            name: "High-Vis West",
+            levels: []
+        },
+        "Apprenticeship": {
+            image: "Apprenticeship.png",
+            rarity: Script.CardRarity.LEGENDARY,
+            name: "Apprenticeship",
+            levels: []
+        },
+        "Diploma": {
+            image: "Diploma.png",
+            rarity: Script.CardRarity.LEGENDARY,
+            name: "Diploma",
+            levels: []
+        },
+        "Internship": {
+            image: "Internship.png",
+            rarity: Script.CardRarity.LEGENDARY,
+            name: "Internship",
+            levels: []
+        },
+        "Certification": {
+            image: "Certification.png",
+            rarity: Script.CardRarity.LEGENDARY,
+            name: "Certification",
+            levels: []
+        },
+        "Training": {
+            image: "Training.png",
+            rarity: Script.CardRarity.LEGENDARY,
+            name: "Training",
+            levels: []
+        },
     };
 })(Script || (Script = {}));
 var Script;
