@@ -227,10 +227,10 @@ progress[value]::-moz-progress-bar {
 
   --name-text-color: white;
 
-  --name-text-outline: #623600;
-  --name-text-dropshadow: #512400;
+  --name-text-outline: #797a7a;
+  --name-text-dropshadow: #616161;
 
-  --text-text-color: #ffdfa2;
+  --text-text-color: #efefef;
   --text-text-dropshadow: rgba(0, 0, 0, 0.25);
 
   background-image: url("Assets/Cards/PlainCards/Common.png");
@@ -239,18 +239,32 @@ progress[value]::-moz-progress-bar {
 
 .card.uncommon {
   background-image: url("Assets/Cards/PlainCards/Uncommon.png");
+  --text-text-color: #d5fee6;
+  --name-text-outline: #0a6200;
+  --name-text-dropshadow: #005117;
+  
 }
 
 .card.rare {
   background-image: url("Assets/Cards/PlainCards/Rare.png");
+  --text-text-color: #d5f6fe;
+  --name-text-outline: #004562;
+  --name-text-dropshadow: #000f51;
 }
 
 .card.epic {
   background-image: url("Assets/Cards/PlainCards/Epic.png");
+  --text-text-color: #f1d5fe;
+  --name-text-outline: #3e0062;
+  --name-text-dropshadow: #480051;
 }
 
 .card.legendary {
   background-image: url("Assets/Cards/PlainCards/Legendary.png");
+  --name-text-outline: #623600;
+  --name-text-dropshadow: #512400;
+  --text-text-color: #ffdfa2;
+
 }
 
 .card.placeholder {
