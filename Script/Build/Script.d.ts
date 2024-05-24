@@ -390,6 +390,7 @@ declare namespace Script {
         private cardVisuals;
         constructor(provider: Provider);
         setup(): void;
+        private openPopup;
         addCardToCollection(_name: string, _amount: number): void;
         getCardLevel(_name: string): number;
         addCardToDeck(_name: string): void;
@@ -401,8 +402,11 @@ declare namespace Script {
         private addToArray;
         private installListeners;
         private updateVisuals;
+        private putCardsInDeck;
         private fillWithPlaceholders;
         private getCardPlaceholder;
+        private compareRarity;
+        private getRarityNumber;
     }
 }
 declare namespace Script {
