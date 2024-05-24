@@ -984,26 +984,82 @@ var Script;
         collection;
         deck;
         selection;
+        maxDeckSize = 15;
+        maxSelectedSize = 5;
         deckElement;
         selectionElement;
         collectionElement;
+        popupElement;
+        popupButtons;
+        deckSelectionSizeElement;
+        selectedCard;
         cardVisuals = new Map();
         constructor(provider) {
             let dm = provider.get(Script.DataManager);
             this.collection = dm.savedCollectionRaw;
             this.deck = dm.savedDeckRaw;
             this.selection = dm.savedSelectionRaw;
+            //TODO remove this
+            for (let cardID in Script.cards) {
+                if (!this.collection[cardID])
+                    this.addCardToCollection(cardID, 1);
+            }
         }
         setup() {
             this.selectionElement = document.getElementById("selection");
             this.deckElement = document.getElementById("deck");
             this.collectionElement = document.getElementById("collection-wrapper");
+            this.popupElement = document.getElementById("card-popup");
+            this.deckSelectionSizeElement = document.getElementById("deck-selection-size");
+            this.popupButtons = {
+                deckFrom: document.getElementById("card-popup-deck-from"),
+                deckTo: document.getElementById("card-popup-deck-to"),
+                selectionFrom: document.getElementById("card-popup-selection-from"),
+                selectionTo: document.getElementById("card-popup-selection-to"),
+            };
+            this.installListeners();
             for (let cardID in Script.cards) {
                 let card = Script.cards[cardID];
                 let visual = new Script.CardVisual(card, this.collectionElement);
                 this.cardVisuals.set(cardID, visual);
+                const openPopup = (_event) => {
+                    this.popupElement.classList.remove("hidden");
+                    let cardElement = visual.htmlElement.cloneNode(true);
+                    cardElement.classList.remove("locked");
+                    this.popupElement.querySelector("#card-popup-card").replaceChildren(cardElement);
+                    this.selectedCard = cardID;
+                    // hide/show correct buttons
+                    for (let button in this.popupButtons) {
+                        //@ts-ignore
+                        this.popupButtons[button].classList.add("hidden");
+                        //@ts-ignore
+                        this.popupButtons[button].disabled = false;
+                    }
+                    if (this.collection[cardID]) {
+                        // card is in selection, so it's selectable
+                        if (this.selection.includes(cardID)) {
+                            this.popupButtons.deckTo.classList.remove("hidden");
+                            this.popupButtons.selectionFrom.classList.remove("hidden");
+                        }
+                        else if (this.deck.includes(cardID)) {
+                            this.popupButtons.deckFrom.classList.remove("hidden");
+                            this.popupButtons.selectionTo.classList.remove("hidden");
+                        }
+                        else {
+                            this.popupButtons.deckTo.classList.remove("hidden");
+                            this.popupButtons.selectionTo.classList.remove("hidden");
+                        }
+                        if (this.deck.length >= this.maxDeckSize) {
+                            this.popupButtons.deckTo.disabled = true;
+                        }
+                        if (this.selection.length >= this.maxSelectedSize) {
+                            this.popupButtons.selectionTo.disabled = true;
+                        }
+                    }
+                };
+                visual.htmlElement.addEventListener("pointerdown", openPopup);
             }
-            this.updateVisuals(true);
+            this.updateVisuals();
         }
         addCardToCollection(_name, _amount) {
             if (!this.collection[_name]) {
@@ -1034,6 +1090,9 @@ var Script;
             if (_updateVisuals)
                 this.updateVisuals();
         }
+        hidePopup() {
+            this.popupElement.classList.add("hidden");
+        }
         removeFromArray(_element, _array) {
             let index = _array.indexOf(_element);
             if (index >= 0) {
@@ -1045,10 +1104,20 @@ var Script;
                 return;
             _array.push(_element);
         }
-        updateVisuals(_updateCollection = false) {
+        installListeners() {
+            document.getElementById("card-popup-close").querySelector("button").addEventListener("click", () => { this.hidePopup(); });
+            document.getElementById("deck-back-button").querySelector("button").addEventListener("click", () => {
+                this.hidePopup();
+                document.getElementById("main-menu-overlay").classList.remove("hidden");
+                document.getElementById("collection-overlay").classList.add("hidden");
+            });
+            this.popupButtons.selectionTo.addEventListener("click", () => { this.addCardToSelection(this.selectedCard); this.hidePopup(); });
+            this.popupButtons.selectionFrom.addEventListener("click", () => { this.removeCardFromSelection(this.selectedCard); this.hidePopup(); });
+            this.popupButtons.deckTo.addEventListener("click", () => { this.addCardToDeck(this.selectedCard); this.hidePopup(); });
+            this.popupButtons.deckFrom.addEventListener("click", () => { this.removeCardFromDeck(this.selectedCard); this.hidePopup(); });
+        }
+        updateVisuals() {
             // collection
-            if (!_updateCollection)
-                return;
             let allCardsForCollection = [];
             for (let cardID in this.collection) {
                 let visual = this.cardVisuals.get(cardID);
@@ -1076,7 +1145,7 @@ var Script;
                     continue;
                 cardsInSelection.push(visual.htmlElement);
             }
-            this.fillWithPlaceholders(cardsInSelection, 5);
+            this.fillWithPlaceholders(cardsInSelection, this.maxSelectedSize);
             this.selectionElement.replaceChildren(...cardsInSelection);
             // deck
             let cardsInDeck = [];
@@ -1086,8 +1155,10 @@ var Script;
                     continue;
                 cardsInDeck.push(visual.htmlElement);
             }
-            this.fillWithPlaceholders(cardsInDeck, 15);
+            this.fillWithPlaceholders(cardsInDeck, this.maxDeckSize);
             this.deckElement.replaceChildren(...cardsInDeck);
+            // number
+            this.deckSelectionSizeElement.innerText = `${this.deck.length + this.selection.length}/${this.maxDeckSize + this.maxSelectedSize}`;
         }
         fillWithPlaceholders(_array, _maxAmount) {
             for (let i = _array.length; i < _maxAmount; i++) {
@@ -1128,6 +1199,7 @@ var Script;
             let currentTextWidth = this.getTextWidth(this.#name, `normal  ${height / 100 * fontSize}px 'Luckiest Guy'`);
             let factor = cardWidth / currentTextWidth;
             fontSize *= factor;
+            fontSize = Math.min(22, fontSize);
             let nameElement = this.#htmlElement.querySelector(".card-name");
             nameElement.style.fontSize = `calc(var(--card-size) / 100 * ${fontSize})`;
             // fill card with data

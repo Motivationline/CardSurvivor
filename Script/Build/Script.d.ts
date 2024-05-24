@@ -378,9 +378,15 @@ declare namespace Script {
         private collection;
         private deck;
         private selection;
+        private maxDeckSize;
+        private maxSelectedSize;
         private deckElement;
         private selectionElement;
         private collectionElement;
+        private popupElement;
+        private popupButtons;
+        private deckSelectionSizeElement;
+        private selectedCard;
         private cardVisuals;
         constructor(provider: Provider);
         setup(): void;
@@ -390,8 +396,10 @@ declare namespace Script {
         removeCardFromDeck(_name: string, _updateVisuals?: boolean): void;
         addCardToSelection(_name: string): void;
         removeCardFromSelection(_name: string, _updateVisuals?: boolean): void;
+        private hidePopup;
         private removeFromArray;
         private addToArray;
+        private installListeners;
         private updateVisuals;
         private fillWithPlaceholders;
         private getCardPlaceholder;

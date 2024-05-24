@@ -57,10 +57,18 @@ button {
   color: var(--ui-color-background);
   border-radius: 0.25rem;
   font-size: inherit;
+  cursor: pointer;
 }
+
 button.inverted {
   background-color: var(--ui-color-background);
   color: var(--ui-color-foreground);
+}
+
+button:disabled {
+  background-color: var(--ui-color-background);
+  color: var(--ui-color-foreground);
+  cursor: default;
 }
 
 /* main menu */
@@ -75,6 +83,7 @@ button.inverted {
   gap: 1em;
   padding: 1em;
 }
+
 #main-menu-overlay button {
   padding: 0.5em;
   font-size: 2em;
@@ -96,12 +105,12 @@ button.inverted {
 }
 
 progress[value]::-webkit-progress-value,
-progress[value]::-moz-progress-bar{
+progress[value]::-moz-progress-bar {
   background-color: green;
 }
 
 /* collection & deck */
-#collection-overlay {  
+#collection-overlay {
   --gap: 2vw;
   --padding: 3vw;
   background-color: var(--ui-color-background);
@@ -130,10 +139,11 @@ progress[value]::-moz-progress-bar{
   transition: height 0.2s;
 }
 
-#largeDeck:checked ~ #collection-wrapper {
+#largeDeck:checked~#collection-wrapper {
   height: 33vh;
 }
-#largeDeck:checked ~ #deck-outer-wrapper {
+
+#largeDeck:checked~#deck-outer-wrapper {
   height: 66vh;
 }
 
@@ -165,10 +175,12 @@ progress[value]::-moz-progress-bar{
   width: 1.5em;
   height: 1.5em;
 }
+
 #deck-selection button.active {
   background-color: var(--ui-color-foreground);
   color: var(--ui-color-background);
 }
+
 #deck-back-button {
   padding: 0.25em;
 }
@@ -182,9 +194,30 @@ progress[value]::-moz-progress-bar{
   outline: 2px solid var(--ui-color-foreground);
 }
 
+/* popup */
+
+#card-popup {
+  background-color: rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#card-popup-card {
+  --card-size: min(75vh, calc(100vw * 21 / 15));
+  height: var(--card-size);
+}
+
+#card-popup-selection-wrapper {
+  display: flex;
+  
+}
+
 /* cards */
 .card {
   box-sizing: border-box;
+  user-select: none;
+  cursor: pointer;
   position: relative;
   height: var(--card-size);
   aspect-ratio: 15 / 21;
@@ -207,12 +240,15 @@ progress[value]::-moz-progress-bar{
 .card.uncommon {
   background-image: url("Assets/Cards/PlainCards/Uncommon.png");
 }
+
 .card.rare {
   background-image: url("Assets/Cards/PlainCards/Rare.png");
 }
+
 .card.epic {
   background-image: url("Assets/Cards/PlainCards/Epic.png");
 }
+
 .card.legendary {
   background-image: url("Assets/Cards/PlainCards/Legendary.png");
 }
@@ -220,6 +256,7 @@ progress[value]::-moz-progress-bar{
 .card.placeholder {
   background-image: none;
   border: 1px solid var(--ui-color-foreground);
+  cursor: default;
 }
 
 .card-name {
@@ -227,9 +264,9 @@ progress[value]::-moz-progress-bar{
   position: relative;
   --shadow-width: 0.05em;
   text-shadow: 0.05em 0.05em var(--name-text-outline),
-  -0.05em 0.05em var(--name-text-outline),
-  0.05em -0.05em var(--name-text-outline),
-  -0.05em -0.05em var(--name-text-outline);
+    -0.05em 0.05em var(--name-text-outline),
+    0.05em -0.05em var(--name-text-outline),
+    -0.05em -0.05em var(--name-text-outline);
   filter: drop-shadow(0 0.12em 0 var(--name-text-dropshadow));
   color: var(--name-text-color);
   transform: translate(0, calc(var(--card-size) * 0.1));
@@ -282,7 +319,7 @@ progress[value]::-moz-progress-bar{
 }
 
 #touch-circle {
-  width: 15vw;  
+  width: 15vw;
 }
 
 #touch-circle-inner {
@@ -290,6 +327,7 @@ progress[value]::-moz-progress-bar{
   left: 2.5vw;
   top: 2.5vw;
 }
+
 #touch-circle.locked {
   bottom: 10vh;
   left: calc(50vw - 7.5vw);
@@ -310,26 +348,35 @@ progress[value]::-moz-progress-bar{
   width: 100%;
 }
 
-#mobile-debug > button {
+#mobile-debug>button {
   height: 4.5rem;
   width: 23%;
 }
 
-@media screen and (min-width: 400px) {
+@media screen and (min-width: 500px) {
+
   #deck-outer-wrapper,
   #collection-wrapper {
     height: 100% !important;
   }
+  
   #deck-outer-wrapper {
-    max-width: calc((var(--card-size) * 15 / 21) * 5 + (var(--gap) * 4) + (var(--padding) * 2));
+    max-width: calc((var(--card-size) * 15 / 21) * 5 + (var(--gap) * 5) + (var(--padding) * 2));
+    border-left: 2px solid var(--ui-color-foreground);
   }
+  #collection-wrapper {
+    --card-size: 12vw;
+  }
+
   #collection-overlay {
     flex-direction: row;
     --card-size: 8vw;
     --gap: 0.5vw;
     --padding: 1vw;
   }
+
   #deck-selection {
     font-size: 3vw;
+    border-top: none;
   }
 }

@@ -27,6 +27,7 @@ namespace Script {
             let factor = cardWidth / currentTextWidth;
             fontSize *= factor;
 
+            fontSize = Math.min(22, fontSize);
             let nameElement = <HTMLElement>this.#htmlElement.querySelector(".card-name");
             nameElement.style.fontSize = `calc(var(--card-size) / 100 * ${fontSize})`;
 

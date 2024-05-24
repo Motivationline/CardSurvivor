@@ -76,9 +76,9 @@
         <div id="deck-outer-wrapper">
             <label for="largeDeck">
                 <div id="deck-selection">
-                    <button class="inverted">1</button>
+                    <button class="inverted active">1</button>
                     <button class="inverted">2</button>
-                    <span>12/20</span>
+                    <span id="deck-selection-size">12/20</span>
                     <button class="inverted">3</button>
                     <button class="inverted">4</button>
                 </div>
@@ -93,9 +93,17 @@
         </div>
         <div id="card-popup" class="overlay hidden">
             <div id="card-popup-card"></div>
-            <div id="card-popup-selection"></div>
-            <div id="card-popup-deck"></div>
-            <div id="card-popup-close"></div>
+            <div id="card-popup-selection-wrapper">
+                <div id="card-popup-selection">
+                    <button id="card-popup-selection-to">To Selection</button>
+                    <button id="card-popup-selection-from">From Selection</button>
+                </div>
+                <div id="card-popup-deck">
+                    <button id="card-popup-deck-to">To Deck</button>
+                    <button id="card-popup-deck-from">From Deck</button>
+                </div>
+            </div>
+            <div id="card-popup-close"><button>Close</button></div>
         </div>
     </div>
 </body>
