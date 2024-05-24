@@ -227,8 +227,8 @@ progress[value]::-moz-progress-bar {
 
   --name-text-color: white;
 
-  --name-text-outline: #797a7a;
-  --name-text-dropshadow: #616161;
+  --name-text-outline: #616161;
+  --name-text-dropshadow: #545454;
 
   --text-text-color: #efefef;
   --text-text-dropshadow: rgba(0, 0, 0, 0.25);
@@ -248,7 +248,7 @@ progress[value]::-moz-progress-bar {
 .card.rare {
   background-image: url("Assets/Cards/PlainCards/Rare.png");
   --text-text-color: #d5f6fe;
-  --name-text-outline: #004562;
+  --name-text-outline: #002662;
   --name-text-dropshadow: #000f51;
 }
 
