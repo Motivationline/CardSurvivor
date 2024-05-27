@@ -994,7 +994,7 @@ namespace Script {
             ]
         },
         "Disposable Gloves": {
-            image: "",
+            image: "DisposableGloves.png",
             rarity: CardRarity.COMMON,
             name: "Disposable Gloves",
             levels: [
@@ -1173,10 +1173,10 @@ namespace Script {
             name: "Fire Hose",
             levels: []
         },
-        "Syrringe": {
+        "Syringe": {
             image: "Syrringe.png",
             rarity: CardRarity.UNCOMMON,
-            name: "Syrringe",
+            name: "Syringe",
             levels: []
         },
         "Sketchbook": {
@@ -1185,10 +1185,10 @@ namespace Script {
             name: "Sketchbook",
             levels: []
         },
-        "...": {
-            image: "",
+        "Plow": {
+            image: "Plow.png",
             rarity: CardRarity.UNCOMMON,
-            name: "noo name lol",
+            name: "Plow",
             levels: []
         },
         "Jump Rope": {
@@ -1215,16 +1215,10 @@ namespace Script {
             name: "Toolbelt",
             levels: []
         },
-        ".....": {
-            image: "",
+        "Razor": {
+            image: "Razor.png",
             rarity: CardRarity.UNCOMMON,
-            name: "no name looooool",
-            levels: []
-        },
-        "......": {
-            image: "",
-            rarity: CardRarity.UNCOMMON,
-            name: "no name loooooooool",
+            name: "Razor",
             levels: []
         },
         "Binder": {
@@ -1233,10 +1227,10 @@ namespace Script {
             name: "Binder",
             levels: []
         },
-        ".......": {
-            image: "",
+        "Flashlight": {
+            image: "Flashlight.png",
             rarity: CardRarity.UNCOMMON,
-            name: "no name loooooooooool",
+            name: "Flashlight",
             levels: []
         },
         "Hard Drive": {
@@ -1245,10 +1239,10 @@ namespace Script {
             name: "Hard Drive",
             levels: []
         },
-        "........": {
-            image: "",
+        "Stethoscope": {
+            image: "Stethoscope.png",
             rarity: CardRarity.UNCOMMON,
-            name: "no name looooooooooooooooooooooool",
+            name: "Stethoscope",
             levels: []
         },
         "Apple": {
@@ -1258,10 +1252,10 @@ namespace Script {
             levels: []
         },
         // ---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---
-        "Magnifying Glas": {
+        "Magnifying Glass": {
             image: "MagnifyingGlas.png",
             rarity: CardRarity.RARE,
-            name: "Magnifying Glas",
+            name: "Magnifying Glass",
             levels: []
         },
         "Tattoo Ink": {
@@ -1300,10 +1294,10 @@ namespace Script {
             name: "Ear Protection",
             levels: []
         },
-        "Athletic": {
+        "Athletic Tape": {
             image: "Athletic.png",
             rarity: CardRarity.RARE,
-            name: "Athletic",
+            name: "Athletic Tape",
             levels: []
         },
         "Newspaper": {
@@ -1324,10 +1318,10 @@ namespace Script {
             name: "Bucket",
             levels: []
         },
-        "Riot Shields": {
+        "Riot Shield": {
             image: "RiotShields.png",
             rarity: CardRarity.RARE,
-            name: "Riot Shields",
+            name: "Riot Shield",
             levels: []
         },
         // ---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---
@@ -1367,10 +1361,10 @@ namespace Script {
             name: "Whiteboard",
             levels: []
         },
-        "Drawing Table": {
-            image: "Drawingtable.png",
+        "Drawing Tablet": {
+            image: "DrawingTablet.png",
             rarity: CardRarity.EPIC,
-            name: "DrawingTable",
+            name: "DrawingTablet",
             levels: []
         },
         "Press Vest": {
@@ -1393,25 +1387,25 @@ namespace Script {
         },
         // ---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---
         "Apprenticeship": {
-            image: "Apprenticeship.png",
+            image: "Apprenticeship.gif",
             rarity: CardRarity.LEGENDARY,
             name: "Apprenticeship",
             levels: []
         },
         "Diploma": {
-            image: "Diploma.png",
+            image: "Diploma.gif",
             rarity: CardRarity.LEGENDARY,
             name: "Diploma",
             levels: []
         },
         "Internship": {
-            image: "Internship.png",
+            image: "Internship.gif",
             rarity: CardRarity.LEGENDARY,
             name: "Internship",
             levels: []
         },
         "Certification": {
-            image: "Certification.png",
+            image: "Certification.gif",
             rarity: CardRarity.LEGENDARY,
             name: "Certification",
             levels: []

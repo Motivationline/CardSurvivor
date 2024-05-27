@@ -1,15 +1,691 @@
 {
-    "card": {
-        "Drone": {
-            "name": "Drone",
-            "description": "Shoot projectiles in the direction that you move. Lorem ipsum dolor sit amet",
-            "levels": {
-                "1": "",
-                "2": "",
-                "3": "",
-                "4": "",
-                "5": ""
-            }
-        }
+  "card": {
+    //---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---
+    "Hammer": {
+      "name": "Hammer",
+      "description": "Throw piercing hammers at nearby enemies.",
+      "levels": {
+        "1": "Throws 1 hammer every 2 seconds dealing 8 damage. Piercing 2.",
+        "2": "Throws 1 hammer every 2 seconds dealing 12 damage. Piercing 2.",
+        "3": "Throws 2 hammers every 2 seconds dealing 12 damage. Piercing 2.",
+        "4": "Throws 2 hammers every 2 seconds dealing 15 damage. Piercing 3.",
+        "5": "Throws 2 hammers every 1.5 seconds dealing 15 damage. Piercing 4."
+      }
+    },
+    "Anvil": {
+      "name": "Anvil",
+      "description": "Drop anvils on random enemies.",
+      "levels": {
+        "1": "Drops 1 anvil every 3 seconds dealing 10 damage in the area.",
+        "2": "Drops 1 anvil every 3 seconds dealing 14 damage in the area.",
+        "3": "Drops 2 anvils every 3 seconds dealing 14 damage in the area.",
+        "4": "Drops 2 anvils every 3 seconds dealing 20 damage in the area.",
+        "5": "Drops 3 anvils every 2 seconds dealing 20 damage in the area."
+      }
+    },
+    "Pen": {
+      "name": "Pen",
+      "description": "Throw lot's of weak pens at nearby enemies.",
+      "levels": {
+        "1": "Throws 1 pen every 0.5 seconds dealing 2 damage.",
+        "2": "Throws 1 pen every 0.5 seconds dealing 4 damage.",
+        "3": "Throws 2 pens every 0.5 seconds dealing 4 damage.",
+        "4": "Throws 2 pens every 0.5 seconds dealing 6 damage.",
+        "5": "Throws 3 pens every 0.4 seconds dealing 6 damage."
+      }
+    },
+    "Lightbulb": {
+      "name": "Lightbulb",
+      "description": "Stun enemies in an area around you.",
+      "levels": {
+        "1": "Flashes light every 5 seconds around you dealing 5 damage and stunning for 1 second.",
+        "2": "Flashes light every 5 seconds around you dealing 6 damage and stunning for 1 second.",
+        "3": "Flashes light every 5 seconds around you dealing 6 damage and stunning for 1.5 seconds.",
+        "4": "Flashes light every 4 seconds around you dealing 6 damage and stunning for 1.5 seconds.",
+        "5": "Flashes light every 4 seconds around you dealing 8 damage and stunning for 2 seconds."
+      }
+    },
+    "Smoke Mask": {
+      "name": "Smoke Mask",
+      "description": "Deal constant damage in an area around you.",
+      "levels": {
+        "1": "Emmits smoke every 2 seconds around you dealing 2 damage.",
+        "2": "Emmits smoke every 2 seconds around you dealing 3 damage.",
+        "3": "Emmits smoke every 1.5 seconds around you dealing 3 damage.",
+        "4": "Emmits smoke every 1 second around you dealing 4 damage.",
+        "5": "Emmits smoke every 1 second around you dealing 5 damage. Increase area by 50%."
+      }
+    },
+    "Discus": {
+      "name": "Discus",
+      "description": "Throw discs that bounce between enemies.",
+      "levels": {
+        "1": "Throws 1 disc every 3 seconds dealing 5 damage. It bounces 2 times.",
+        "2": "Throws 1 disc every 3 seconds dealing 8 damage. It bounces 2 times.",
+        "3": "Throws 1 disc every 2 seconds dealing 8 damage. It bounces 2 times.",
+        "4": "Throws 1 disc every 2 seconds dealing 10 damage. It bounces 3 times.",
+        "5": "Throws 2 discs every 2 seconds dealing 10 damage. They bounce 4 times."
+      }
+    },
+    "Civil Code": {
+      "name": "Civil Code",
+      "description": "Throw books that deal more damage the further they travel.",
+      "levels": {
+        "1": "Throws 1 book every 3 seconds dealing 3-30 damage, depending on the distance.",
+        "2": "Throws 1 book every 3 seconds dealing 4-40 damage, depending on the distance.",
+        "3": "Throws 1 book every 2.5 seconds dealing 5-50 damage, depending on the distance.",
+        "4": "Throws 1 book every 2 seconds dealing 6-60 damage, depending on the distance.",
+        "5": "Throws 2 books every 2 seconds dealing 8-80 damage, depending on the distance."
+      }
+    },
+    "Divider": {
+      "name": "Divider",
+      "description": "Throw piercing dividers that come back to you.",
+      "levels": {
+        "1": "Throws 1 divider every 2 seconds dealing 5 damage. Piercing 3.",
+        "2": "Throws 1 divider every 2 seconds dealing 7 damage. Piercing 3.",
+        "3": "Throws 2 dividers every 2 seconds dealing 7 damage. Piercing 3.",
+        "4": "Throws 2 dividers every 2 seconds dealing 8 damage. Piercing 4.",
+        "5": "Throws 2 dividers every 2 seconds dealing 10 damage. Piercing 6."
+      }
+    },
+    "Needles": {
+      "name": "Needles",
+      "description": "Leave a trail of needles.",
+      "levels": {
+        "1": "Leave an area of needles every 5 units that deal 5 damage.",
+        "2": "Leave an area of needles every 4 units that deal 6 damage.",
+        "3": "Leave an area of needles every 4 units that deal 8 damage.",
+        "4": "Leave an area of needles every 3 units that deal 8 damage.",
+        "5": "Leave an area of needles every 2 units that deal 10 damage."
+      }
+    },
+    "Chisel": {
+      "name": "Chisel",
+      "description": "Throw chisels at nearby enemies.",
+      "levels": {
+        "1": "Throws 1 chisel every 2 seconds dealing 15 damage.",
+        "2": "Throws 1 chisel every 2 seconds dealing 25 damage.",
+        "3": "Throws 2 chisels every 2 seconds dealing 25 damage.",
+        "4": "Throws 2 chisels every 2 seconds dealing 35 damage.",
+        "5": "Throws 2 chisels every 1.5 seconds dealing 40 damage."
+      }
+    },
+    "Helmet": {
+      "name": "Helmet",
+      "description": "Take less damage from projectiles.",
+      "levels": {
+        "1": "10% less damage from projectiles.",
+        "2": "20% less damage from projectiles.",
+        "3": "30% less damage from projectiles.",
+        "4": "40% less damage from projectiles.",
+        "5": "60% less damage from projectiles."
+      }
+    },
+    "Safety Boots": {
+      "name": "Safety Boots",
+      "description": "More resistant against ground effects.",
+      "levels": {
+        "1": "10% more resistant against ground effects.",
+        "2": "20% more resistant against ground effects.",
+        "3": "30% more resistant against ground effects.",
+        "4": "40% more resistant against ground effects.",
+        "5": "60% more resistant against ground effects."
+      }
+    },
+    "Microphone": {
+      "name": "Microphone",
+      "description": "Increases your projectile range.",
+      "levels": {
+        "1": "15% increased projectile range.",
+        "2": "30% increased projectile range.",
+        "3": "50% increased projectile range.",
+        "4": "70% increased projectile range.",
+        "5": "100% increased projectile range."
+      }
+    },
+    "Gavel": {
+      "name": "Gavel",
+      "description": "Increases your damage.",
+      "levels": {
+        "1": "+1 damage.",
+        "2": "+2 damage.",
+        "3": "+3 damage.",
+        "4": "+5 damage.",
+        "5": "+8 damage."
+      }
+    },
+    "First Aid Kit": {
+      "name": "First Aid Kit",
+      "description": "Increases your maximum health.",
+      "levels": {
+        "1": "+10 maximum health.",
+        "2": "+20 maximum health.",
+        "3": "+35 maximum health.",
+        "4": "+50 maximum health.",
+        "5": "+75 maximum health."
+      }
+    },
+    "Running Shoes": {
+      "name": "Running Shoes",
+      "description": "Increases your movement speed.",
+      "levels": {
+        "1": "+5% movement speed.",
+        "2": "+15% movement speed.",
+        "3": "+30% movement speed.",
+        "4": "+50% movement speed.",
+        "5": "+75% movement speed."
+      }
+    },
+    "Disposable Gloves": {
+      "name": "Disposable Gloves",
+      "description": "Reduces your incoming damage.",
+      "levels": {
+        "1": "-1 damage taken (minimum 1).",
+        "2": "-2 damage taken (minimum 1).",
+        "3": "-4 damage taken (minimum 1).",
+        "4": "-6 damage taken (minimum 1).",
+        "5": "-10 damage taken (minimum 1)."
+      }
+    },
+    "Printer": {
+      "name": "Printer",
+      "description": "Gain more experience points.",
+      "levels": {
+        "1": "+5% increased experience gain.",
+        "2": "+10% increased experience gain.",
+        "3": "+25% increased experience gain.",
+        "4": "+40% increased experience gain.",
+        "5": "+60% increased experience gain."
+      }
+    },
+    "Solar Panel": {
+      "name": "Solar Panel",
+      "description": "Regenerates your health passively.",
+      "levels": {
+        "1": "+0.5 health every 1 second.",
+        "2": "+1 health every 1 second.",
+        "3": "+2 health every 1 seconds.",
+        "4": "+4 health every 1 seconds.",
+        "5": "+7 health every 1 second."
+      }
+    },
+    "Drone": {
+      "name": "Drone",
+      "description": "Increases your field of view.",
+      "levels": {
+        "1": "+5% field of view.",
+        "2": "+10% field of view.",
+        "3": "+20% field of view.",
+        "4": "+35% field of view.",
+        "5": "+50% field of view."
+      }
+    },
+    //---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---
+    "Pills": {
+      "name": "Pills",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Fire Hose": {
+      "name": "Fire Hose",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Syringe": {
+      "name": "Syringe",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Sketchbook": {
+      "name": "Sketchbook",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Plow": {
+      "name": "Plow",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Jump Rope": {
+      "name": "Jump Rope",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Tape Measure": {
+      "name": "Tape Measure",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Legal Wig": {
+      "name": "Legal Wig",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Toolbelt": {
+      "name": "Toolbelt",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Razor": {
+      "name": "Razor",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Binder": {
+      "name": "Binder",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Flashlight": {
+      "name": "Flashlight",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Hard Drive": {
+      "name": "Hard Drive",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Stethoscope": {
+      "name": "Stethoscope",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Apple": {
+      "name": "Apple",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    //---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE
+    "Magnifying Glass": {
+      "name": "Magnifying Glass",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Tattoo Ink": {
+      "name": "Tattoo Ink",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Calculator": {
+      "name": "Calculator",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Bandages": {
+      "name": "Bandages",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Face Shield": {
+      "name": "Face Shield",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "3D Printer": {
+      "name": "3D Printer",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Ear Protection": {
+      "name": "Ear Protection",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Athletic Tape": {
+      "name": "Athletic Tape",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Newspaper": {
+      "name": "Newspaper",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Screwdriver": {
+      "name": "Screwdriver",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Bucket": {
+      "name": "Bucket",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Riot Shield": {
+      "name": "Riot Shield",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    //---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---
+    "Piercing Gun": {
+      "name": "Piercing Gun",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Stopwatch": {
+      "name": "Stopwatch",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Rake": {
+      "name": "Rake",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Jumper Cable": {
+      "name": "Jumper Cable",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Shredder": {
+      "name": "Shredder",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Whiteboard": {
+      "name": "Whiteboard",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Drawing Tablet": {
+      "name": "Drawing Tablet",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Press Vest": {
+      "name": "Press Vest",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Tong": {
+      "name": "Tong",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "High-Vis West": {
+      "name": "High-Vis West",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    //---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---
+    "Apprenticeship": {
+      "name": "Apprenticeship",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Diploma": {
+      "name": "Diploma",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Internship": {
+      "name": "Internship",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Certification": {
+      "name": "Certification",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "Training": {
+      "name": "Training",
+      "description": "",
+      "levels": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
     }
+  }
 }
