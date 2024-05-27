@@ -37,8 +37,8 @@ namespace Script {
 
             //TODO remove this
             for (let cardID in cards) {
-                if (!this.collection[cardID])
-                    this.addCardToCollection(cardID, 1);
+                // if (!this.collection[cardID])
+                // this.addCardToCollection(cardID, 1);
             }
         }
 
@@ -62,46 +62,60 @@ namespace Script {
                 let visual = new CardVisual(card, this.collectionElement);
                 this.cardVisuals.set(cardID, visual);
 
-                const openPopup = (_event: PointerEvent) => {
-                    this.popupElement.classList.remove("hidden");
-                    let cardElement = <HTMLElement>visual.htmlElement.cloneNode(true);
-                    cardElement.classList.remove("locked")
-                    this.popupElement.querySelector("#card-popup-card").replaceChildren(cardElement);
-                    this.selectedCard = cardID;
+                visual.htmlElement.addEventListener("click", this.openPopup);
 
-                    // hide/show correct buttons
-                    for (let button in this.popupButtons) {
-                        //@ts-ignore
-                        this.popupButtons[button].classList.add("hidden");
-                        //@ts-ignore
-                        this.popupButtons[button].disabled = false;
-                    }
-                    if (this.collection[cardID]) {
-                        // card is in selection, so it's selectable
-                        if (this.selection.includes(cardID)) {
-                            this.popupButtons.deckTo.classList.remove("hidden");
-                            this.popupButtons.selectionFrom.classList.remove("hidden");
-                        }
-                        else if (this.deck.includes(cardID)) {
-                            this.popupButtons.deckFrom.classList.remove("hidden");
-                            this.popupButtons.selectionTo.classList.remove("hidden");
-                        } else {
-                            this.popupButtons.deckTo.classList.remove("hidden");
-                            this.popupButtons.selectionTo.classList.remove("hidden");
-                        }
-                        if (this.deck.length >= this.maxDeckSize) {
-                            this.popupButtons.deckTo.disabled = true;
-                        }
-                        if (this.selection.length >= this.maxSelectedSize) {
-                            this.popupButtons.selectionTo.disabled = true;
-                        }
-                    }
-                }
-
-                visual.htmlElement.addEventListener("pointerdown", openPopup);
+                visual.htmlElement.dataset.card = cardID;
             }
             this.updateVisuals();
 
+        }
+
+        private openPopup = (_event: MouseEvent) => {
+            let cardID = (<HTMLElement>_event.currentTarget).dataset.card;
+            if (!cardID) return;
+            // TODO change this to not create a popup
+            // if (!this.collection[cardID]) return;
+            if (!this.collection[cardID]) {
+                this.addCardToCollection(cardID, 1);
+                this.updateVisuals();
+                return;
+            }
+            let visual = this.cardVisuals.get(cardID);
+            if (!visual) return;
+
+            this.popupElement.classList.remove("hidden");
+            let cardElement = <HTMLElement>visual.htmlElement.cloneNode(true);
+            cardElement.classList.remove("locked", "selected")
+            this.popupElement.querySelector("#card-popup-card").replaceChildren(cardElement);
+            this.selectedCard = cardID;
+
+            // hide/show correct buttons
+            for (let button in this.popupButtons) {
+                //@ts-ignore
+                this.popupButtons[button].classList.add("hidden");
+                //@ts-ignore
+                this.popupButtons[button].disabled = false;
+            }
+            if (this.collection[cardID]) {
+                // card is in selection, so it's selectable
+                if (this.selection.includes(cardID)) {
+                    this.popupButtons.deckTo.classList.remove("hidden");
+                    this.popupButtons.selectionFrom.classList.remove("hidden");
+                }
+                else if (this.deck.includes(cardID)) {
+                    this.popupButtons.deckFrom.classList.remove("hidden");
+                    this.popupButtons.selectionTo.classList.remove("hidden");
+                } else {
+                    this.popupButtons.deckTo.classList.remove("hidden");
+                    this.popupButtons.selectionTo.classList.remove("hidden");
+                }
+                if (this.deck.length >= this.maxDeckSize) {
+                    this.popupButtons.deckTo.disabled = true;
+                }
+                if (this.selection.length >= this.maxSelectedSize) {
+                    this.popupButtons.selectionTo.disabled = true;
+                }
+            }
         }
 
         addCardToCollection(_name: string, _amount: number) {
@@ -165,15 +179,21 @@ namespace Script {
             this.popupButtons.selectionFrom.addEventListener("click", () => { this.removeCardFromSelection(this.selectedCard); this.hidePopup(); })
             this.popupButtons.deckTo.addEventListener("click", () => { this.addCardToDeck(this.selectedCard); this.hidePopup(); })
             this.popupButtons.deckFrom.addEventListener("click", () => { this.removeCardFromDeck(this.selectedCard); this.hidePopup(); })
+
+            this.popupElement.addEventListener("click", (_e) => {
+                if (_e.target === this.popupElement) this.hidePopup();
+            })
         }
 
         private updateVisuals() {
             // collection
             let allCardsForCollection: HTMLElement[] = [];
-            for (let cardID in this.collection) {
+            let collectionEntires: string[] = Object.keys(this.collection).sort(this.compareRarity);
+            for (let cardID of collectionEntires) {
                 let visual = this.cardVisuals.get(cardID);
                 if (!visual) continue;
                 allCardsForCollection.push(visual.htmlElement);
+                visual.htmlElement.classList.remove("locked", "selected");
             }
             for (let cardID in cards) {
                 if (this.collection[cardID]) continue;
@@ -188,27 +208,28 @@ namespace Script {
             this.collectionElement.replaceChildren(...allCardsForCollection);
 
             // selection
-            let cardsInSelection: HTMLElement[] = [];
-            for (let card of this.selection) {
-                let visual = this.cardVisuals.get(card);
-                if (!visual) continue;
-                cardsInSelection.push(visual.htmlElement);
-            }
-            this.fillWithPlaceholders(cardsInSelection, this.maxSelectedSize);
-            this.selectionElement.replaceChildren(...cardsInSelection);
+            this.putCardsInDeck(this.selection, this.selectionElement, this.maxSelectedSize);
 
             // deck
-            let cardsInDeck: HTMLElement[] = [];
-            for (let card of this.deck) {
-                let visual = this.cardVisuals.get(card);
-                if (!visual) continue;
-                cardsInDeck.push(visual.htmlElement);
-            }
-            this.fillWithPlaceholders(cardsInDeck, this.maxDeckSize);
-            this.deckElement.replaceChildren(...cardsInDeck);
+            this.putCardsInDeck(this.deck, this.deckElement, this.maxDeckSize);
 
             // number
             this.deckSelectionSizeElement.innerText = `${this.deck.length + this.selection.length}/${this.maxDeckSize + this.maxSelectedSize}`;
+        }
+
+        private putCardsInDeck(_selection: string[], _parent: HTMLElement, _maxSize: number) {
+            let cards: HTMLElement[] = [];
+            for (let card of _selection) {
+                let visual = this.cardVisuals.get(card);
+                if (!visual) continue;
+                let clone = <HTMLElement>visual.htmlElement.cloneNode(true);
+                clone.classList.remove("selected", "locked");
+                clone.addEventListener("click", this.openPopup);
+                cards.push(clone);
+                visual.htmlElement.classList.add("selected");
+            }
+            this.fillWithPlaceholders(cards, _maxSize);
+            _parent.replaceChildren(...cards);
         }
 
         private fillWithPlaceholders(_array: HTMLElement[], _maxAmount: number) {
@@ -221,6 +242,22 @@ namespace Script {
             let elem = document.createElement("div");
             elem.classList.add("card", "placeholder");
             return elem;
+        }
+
+        private compareRarity = (a: string, b: string): number => {
+            let cardA = cards[a];
+            let cardB = cards[b];
+            if(!cardA) return -1;
+            if(!cardB) return 1;
+            return this.getRarityNumber(cardA.rarity) - this.getRarityNumber(cardB.rarity);
+        }
+
+        private getRarityNumber(_rarity: CardRarity): number {
+            if(_rarity === CardRarity.UNCOMMON) return 1;
+            if(_rarity === CardRarity.RARE) return 2;
+            if(_rarity === CardRarity.EPIC) return 3;
+            if(_rarity === CardRarity.LEGENDARY) return 4;
+            return 0;
         }
     }
 }

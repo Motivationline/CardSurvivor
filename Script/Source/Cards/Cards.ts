@@ -215,10 +215,10 @@ namespace Script {
             name: "Tape Measure",
             levels: []
         },
-        "....": {
-            image: "",
+        "LegalWig": {
+            image: "LegalWig.png",
             rarity: CardRarity.UNCOMMON,
-            name: "no name looool",
+            name: "Legal Wig",
             levels: []
         },
         "Toolbelt": {
@@ -275,10 +275,10 @@ namespace Script {
             name: "Magnifying Glas",
             levels: []
         },
-        "Tatoo Ink": {
+        "Tattoo Ink": {
             image: "TatooInk.png",
             rarity: CardRarity.RARE,
-            name: "Tatoo Ink",
+            name: "Tattoo Ink",
             levels: []
         },
         "Calculator": {
@@ -340,6 +340,97 @@ namespace Script {
             rarity: CardRarity.RARE,
             name: "Riot Shields",
             levels: []
-        }
+        },
+        "Piercing Gun": {
+            image: "PiercingGun.png",
+            rarity: CardRarity.EPIC,
+            name: "Piercing Gun",
+            levels: []
+        },
+        "Stopwatch": {
+            image: "Stopwatch.png",
+            rarity: CardRarity.EPIC,
+            name: "Stopwatch",
+            levels: []
+        },
+        "Rake": {
+            image: "Rake.png",
+            rarity: CardRarity.EPIC,
+            name: "Rake",
+            levels: []
+        },
+        "Jumper Cable": {
+            image: "Jumper Cable.png",
+            rarity: CardRarity.EPIC,
+            name: "Jumper Cable",
+            levels: []
+        },
+        "Shredder": {
+            image: "Shredder.png",
+            rarity: CardRarity.EPIC,
+            name: "Shredder",
+            levels: []
+        },
+        "Whiteboard": {
+            image: "Whiteboard.png",
+            rarity: CardRarity.EPIC,
+            name: "Whiteboard",
+            levels: []
+        },
+        "Drawing Table": {
+            image: "Drawingtable.png",
+            rarity: CardRarity.EPIC,
+            name: "DrawingTable",
+            levels: []
+        },
+        "Press Vest": {
+            image: "PressVest.png",
+            rarity: CardRarity.EPIC,
+            name: "Press Vest",
+            levels: []
+        },
+        "Tong": {
+            image: "Tong.png",
+            rarity: CardRarity.EPIC,
+            name: "Tong",
+            levels: []
+        },
+        "High-Vis West": {
+            image: "HighVisWest.png",
+            rarity: CardRarity.EPIC,
+            name: "High-Vis West",
+            levels: []
+        },
+        "Apprenticeship": {
+            image: "Apprenticeship.png",
+            rarity: CardRarity.LEGENDARY,
+            name: "Apprenticeship",
+            levels: []
+        },
+        "Diploma": {
+            image: "Diploma.png",
+            rarity: CardRarity.LEGENDARY,
+            name: "Diploma",
+            levels: []
+        },
+        "Internship": {
+            image: "Internship.png",
+            rarity: CardRarity.LEGENDARY,
+            name: "Internship",
+            levels: []
+        },
+        "Certification": {
+            image: "Certification.png",
+            rarity: CardRarity.LEGENDARY,
+            name: "Certification",
+            levels: []
+        },
+        "Training": {
+            image: "Training.png",
+            rarity: CardRarity.LEGENDARY,
+            name: "Training",
+            levels: []
+        },
+
     }
 }

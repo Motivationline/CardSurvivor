@@ -1001,8 +1001,8 @@ var Script;
             this.selection = dm.savedSelectionRaw;
             //TODO remove this
             for (let cardID in Script.cards) {
-                if (!this.collection[cardID])
-                    this.addCardToCollection(cardID, 1);
+                // if (!this.collection[cardID])
+                // this.addCardToCollection(cardID, 1);
             }
         }
         setup() {
@@ -1022,45 +1022,59 @@ var Script;
                 let card = Script.cards[cardID];
                 let visual = new Script.CardVisual(card, this.collectionElement);
                 this.cardVisuals.set(cardID, visual);
-                const openPopup = (_event) => {
-                    this.popupElement.classList.remove("hidden");
-                    let cardElement = visual.htmlElement.cloneNode(true);
-                    cardElement.classList.remove("locked");
-                    this.popupElement.querySelector("#card-popup-card").replaceChildren(cardElement);
-                    this.selectedCard = cardID;
-                    // hide/show correct buttons
-                    for (let button in this.popupButtons) {
-                        //@ts-ignore
-                        this.popupButtons[button].classList.add("hidden");
-                        //@ts-ignore
-                        this.popupButtons[button].disabled = false;
-                    }
-                    if (this.collection[cardID]) {
-                        // card is in selection, so it's selectable
-                        if (this.selection.includes(cardID)) {
-                            this.popupButtons.deckTo.classList.remove("hidden");
-                            this.popupButtons.selectionFrom.classList.remove("hidden");
-                        }
-                        else if (this.deck.includes(cardID)) {
-                            this.popupButtons.deckFrom.classList.remove("hidden");
-                            this.popupButtons.selectionTo.classList.remove("hidden");
-                        }
-                        else {
-                            this.popupButtons.deckTo.classList.remove("hidden");
-                            this.popupButtons.selectionTo.classList.remove("hidden");
-                        }
-                        if (this.deck.length >= this.maxDeckSize) {
-                            this.popupButtons.deckTo.disabled = true;
-                        }
-                        if (this.selection.length >= this.maxSelectedSize) {
-                            this.popupButtons.selectionTo.disabled = true;
-                        }
-                    }
-                };
-                visual.htmlElement.addEventListener("pointerdown", openPopup);
+                visual.htmlElement.addEventListener("click", this.openPopup);
+                visual.htmlElement.dataset.card = cardID;
             }
             this.updateVisuals();
         }
+        openPopup = (_event) => {
+            let cardID = _event.currentTarget.dataset.card;
+            if (!cardID)
+                return;
+            // TODO change this to not create a popup
+            // if (!this.collection[cardID]) return;
+            if (!this.collection[cardID]) {
+                this.addCardToCollection(cardID, 1);
+                this.updateVisuals();
+                return;
+            }
+            let visual = this.cardVisuals.get(cardID);
+            if (!visual)
+                return;
+            this.popupElement.classList.remove("hidden");
+            let cardElement = visual.htmlElement.cloneNode(true);
+            cardElement.classList.remove("locked", "selected");
+            this.popupElement.querySelector("#card-popup-card").replaceChildren(cardElement);
+            this.selectedCard = cardID;
+            // hide/show correct buttons
+            for (let button in this.popupButtons) {
+                //@ts-ignore
+                this.popupButtons[button].classList.add("hidden");
+                //@ts-ignore
+                this.popupButtons[button].disabled = false;
+            }
+            if (this.collection[cardID]) {
+                // card is in selection, so it's selectable
+                if (this.selection.includes(cardID)) {
+                    this.popupButtons.deckTo.classList.remove("hidden");
+                    this.popupButtons.selectionFrom.classList.remove("hidden");
+                }
+                else if (this.deck.includes(cardID)) {
+                    this.popupButtons.deckFrom.classList.remove("hidden");
+                    this.popupButtons.selectionTo.classList.remove("hidden");
+                }
+                else {
+                    this.popupButtons.deckTo.classList.remove("hidden");
+                    this.popupButtons.selectionTo.classList.remove("hidden");
+                }
+                if (this.deck.length >= this.maxDeckSize) {
+                    this.popupButtons.deckTo.disabled = true;
+                }
+                if (this.selection.length >= this.maxSelectedSize) {
+                    this.popupButtons.selectionTo.disabled = true;
+                }
+            }
+        };
         addCardToCollection(_name, _amount) {
             if (!this.collection[_name]) {
                 this.collection[_name] = { amount: 0, lvl: 0 };
@@ -1115,15 +1129,21 @@ var Script;
             this.popupButtons.selectionFrom.addEventListener("click", () => { this.removeCardFromSelection(this.selectedCard); this.hidePopup(); });
             this.popupButtons.deckTo.addEventListener("click", () => { this.addCardToDeck(this.selectedCard); this.hidePopup(); });
             this.popupButtons.deckFrom.addEventListener("click", () => { this.removeCardFromDeck(this.selectedCard); this.hidePopup(); });
+            this.popupElement.addEventListener("click", (_e) => {
+                if (_e.target === this.popupElement)
+                    this.hidePopup();
+            });
         }
         updateVisuals() {
             // collection
             let allCardsForCollection = [];
-            for (let cardID in this.collection) {
+            let collectionEntires = Object.keys(this.collection).sort(this.compareRarity);
+            for (let cardID of collectionEntires) {
                 let visual = this.cardVisuals.get(cardID);
                 if (!visual)
                     continue;
                 allCardsForCollection.push(visual.htmlElement);
+                visual.htmlElement.classList.remove("locked", "selected");
             }
             for (let cardID in Script.cards) {
                 if (this.collection[cardID])
@@ -1138,27 +1158,26 @@ var Script;
             this.fillWithPlaceholders(allCardsForCollection, 100);
             this.collectionElement.replaceChildren(...allCardsForCollection);
             // selection
-            let cardsInSelection = [];
-            for (let card of this.selection) {
-                let visual = this.cardVisuals.get(card);
-                if (!visual)
-                    continue;
-                cardsInSelection.push(visual.htmlElement);
-            }
-            this.fillWithPlaceholders(cardsInSelection, this.maxSelectedSize);
-            this.selectionElement.replaceChildren(...cardsInSelection);
+            this.putCardsInDeck(this.selection, this.selectionElement, this.maxSelectedSize);
             // deck
-            let cardsInDeck = [];
-            for (let card of this.deck) {
-                let visual = this.cardVisuals.get(card);
-                if (!visual)
-                    continue;
-                cardsInDeck.push(visual.htmlElement);
-            }
-            this.fillWithPlaceholders(cardsInDeck, this.maxDeckSize);
-            this.deckElement.replaceChildren(...cardsInDeck);
+            this.putCardsInDeck(this.deck, this.deckElement, this.maxDeckSize);
             // number
             this.deckSelectionSizeElement.innerText = `${this.deck.length + this.selection.length}/${this.maxDeckSize + this.maxSelectedSize}`;
+        }
+        putCardsInDeck(_selection, _parent, _maxSize) {
+            let cards = [];
+            for (let card of _selection) {
+                let visual = this.cardVisuals.get(card);
+                if (!visual)
+                    continue;
+                let clone = visual.htmlElement.cloneNode(true);
+                clone.classList.remove("selected", "locked");
+                clone.addEventListener("click", this.openPopup);
+                cards.push(clone);
+                visual.htmlElement.classList.add("selected");
+            }
+            this.fillWithPlaceholders(cards, _maxSize);
+            _parent.replaceChildren(...cards);
         }
         fillWithPlaceholders(_array, _maxAmount) {
             for (let i = _array.length; i < _maxAmount; i++) {
@@ -1169,6 +1188,26 @@ var Script;
             let elem = document.createElement("div");
             elem.classList.add("card", "placeholder");
             return elem;
+        }
+        compareRarity = (a, b) => {
+            let cardA = Script.cards[a];
+            let cardB = Script.cards[b];
+            if (!cardA)
+                return -1;
+            if (!cardB)
+                return 1;
+            return this.getRarityNumber(cardA.rarity) - this.getRarityNumber(cardB.rarity);
+        };
+        getRarityNumber(_rarity) {
+            if (_rarity === Script.CardRarity.UNCOMMON)
+                return 1;
+            if (_rarity === Script.CardRarity.RARE)
+                return 2;
+            if (_rarity === Script.CardRarity.EPIC)
+                return 3;
+            if (_rarity === Script.CardRarity.LEGENDARY)
+                return 4;
+            return 0;
         }
     }
     Script.CardCollection = CardCollection;
@@ -1457,10 +1496,10 @@ var Script;
             name: "Tape Measure",
             levels: []
         },
-        "....": {
-            image: "",
+        "LegalWig": {
+            image: "LegalWig.png",
             rarity: Script.CardRarity.UNCOMMON,
-            name: "no name looool",
+            name: "Legal Wig",
             levels: []
         },
         "Toolbelt": {
@@ -1517,10 +1556,10 @@ var Script;
             name: "Magnifying Glas",
             levels: []
         },
-        "Tatoo Ink": {
+        "Tattoo Ink": {
             image: "TatooInk.png",
             rarity: Script.CardRarity.RARE,
-            name: "Tatoo Ink",
+            name: "Tattoo Ink",
             levels: []
         },
         "Calculator": {
@@ -1582,7 +1621,97 @@ var Script;
             rarity: Script.CardRarity.RARE,
             name: "Riot Shields",
             levels: []
-        }
+        },
+        "Piercing Gun": {
+            image: "PiercingGun.png",
+            rarity: Script.CardRarity.EPIC,
+            name: "Piercing Gun",
+            levels: []
+        },
+        "Stopwatch": {
+            image: "Stopwatch.png",
+            rarity: Script.CardRarity.EPIC,
+            name: "Stopwatch",
+            levels: []
+        },
+        "Rake": {
+            image: "Rake.png",
+            rarity: Script.CardRarity.EPIC,
+            name: "Rake",
+            levels: []
+        },
+        "Jumper Cable": {
+            image: "Jumper Cable.png",
+            rarity: Script.CardRarity.EPIC,
+            name: "Jumper Cable",
+            levels: []
+        },
+        "Shredder": {
+            image: "Shredder.png",
+            rarity: Script.CardRarity.EPIC,
+            name: "Shredder",
+            levels: []
+        },
+        "Whiteboard": {
+            image: "Whiteboard.png",
+            rarity: Script.CardRarity.EPIC,
+            name: "Whiteboard",
+            levels: []
+        },
+        "Drawing Table": {
+            image: "Drawingtable.png",
+            rarity: Script.CardRarity.EPIC,
+            name: "DrawingTable",
+            levels: []
+        },
+        "Press Vest": {
+            image: "PressVest.png",
+            rarity: Script.CardRarity.EPIC,
+            name: "Press Vest",
+            levels: []
+        },
+        "Tong": {
+            image: "Tong.png",
+            rarity: Script.CardRarity.EPIC,
+            name: "Tong",
+            levels: []
+        },
+        "High-Vis West": {
+            image: "HighVisWest.png",
+            rarity: Script.CardRarity.EPIC,
+            name: "High-Vis West",
+            levels: []
+        },
+        "Apprenticeship": {
+            image: "Apprenticeship.png",
+            rarity: Script.CardRarity.LEGENDARY,
+            name: "Apprenticeship",
+            levels: []
+        },
+        "Diploma": {
+            image: "Diploma.png",
+            rarity: Script.CardRarity.LEGENDARY,
+            name: "Diploma",
+            levels: []
+        },
+        "Internship": {
+            image: "Internship.png",
+            rarity: Script.CardRarity.LEGENDARY,
+            name: "Internship",
+            levels: []
+        },
+        "Certification": {
+            image: "Certification.png",
+            rarity: Script.CardRarity.LEGENDARY,
+            name: "Certification",
+            levels: []
+        },
+        "Training": {
+            image: "Training.png",
+            rarity: Script.CardRarity.LEGENDARY,
+            name: "Training",
+            levels: []
+        },
     };
 })(Script || (Script = {}));
 var Script;

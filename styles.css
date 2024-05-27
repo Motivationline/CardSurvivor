@@ -125,7 +125,7 @@ progress[value]::-moz-progress-bar {
   /* border: 1px solid red; */
 }
 
-#collection-wrapper {
+#collection-outer-wrapper {
   width: 100%;
   height: 66vh;
   overflow-y: auto;
@@ -139,7 +139,7 @@ progress[value]::-moz-progress-bar {
   transition: height 0.2s;
 }
 
-#largeDeck:checked~#collection-wrapper {
+#largeDeck:checked~#collection-outer-wrapper {
   height: 33vh;
 }
 
@@ -158,7 +158,7 @@ progress[value]::-moz-progress-bar {
   flex-wrap: wrap;
   gap: var(--gap);
   padding: var(--padding);
-  justify-content: space-between;
+  justify-content: left;
 }
 
 #deck-selection {
@@ -227,10 +227,10 @@ progress[value]::-moz-progress-bar {
 
   --name-text-color: white;
 
-  --name-text-outline: #623600;
-  --name-text-dropshadow: #512400;
+  --name-text-outline: #616161;
+  --name-text-dropshadow: #545454;
 
-  --text-text-color: #ffdfa2;
+  --text-text-color: #efefef;
   --text-text-dropshadow: rgba(0, 0, 0, 0.25);
 
   background-image: url("Assets/Cards/PlainCards/Common.png");
@@ -239,18 +239,32 @@ progress[value]::-moz-progress-bar {
 
 .card.uncommon {
   background-image: url("Assets/Cards/PlainCards/Uncommon.png");
+  --text-text-color: #d5fee6;
+  --name-text-outline: #0a6200;
+  --name-text-dropshadow: #005117;
+  
 }
 
 .card.rare {
   background-image: url("Assets/Cards/PlainCards/Rare.png");
+  --text-text-color: #d5f6fe;
+  --name-text-outline: #002662;
+  --name-text-dropshadow: #000f51;
 }
 
 .card.epic {
   background-image: url("Assets/Cards/PlainCards/Epic.png");
+  --text-text-color: #f1d5fe;
+  --name-text-outline: #3e0062;
+  --name-text-dropshadow: #480051;
 }
 
 .card.legendary {
   background-image: url("Assets/Cards/PlainCards/Legendary.png");
+  --name-text-outline: #623600;
+  --name-text-dropshadow: #512400;
+  --text-text-color: #ffdfa2;
+
 }
 
 .card.placeholder {
@@ -297,8 +311,30 @@ progress[value]::-moz-progress-bar {
   max-width: 100%;
 }
 
+.card.selected {
+  opacity: 0.5;
+}
+
 .card.locked {
-  filter: grayscale(1);
+  cursor: default;
+  filter: saturate(0);
+}
+.card.locked .card-name,
+.card.locked .card-text {
+  opacity: 0;
+}
+.card.locked .card-image {
+  filter: brightness(0);
+}
+
+#hideLocked:checked ~ #collection-outer-wrapper .card.locked {
+  display: none;
+}
+#collection-outer-wrapper label[for="hideLocked"]::before {
+  content: "Hide";
+}
+#hideLocked:checked ~ #collection-outer-wrapper label[for="hideLocked"]::before {
+  content: "Show";
 }
 
 /* touch stuff */
@@ -356,7 +392,7 @@ progress[value]::-moz-progress-bar {
 @media screen and (min-width: 500px) {
 
   #deck-outer-wrapper,
-  #collection-wrapper {
+  #collection-outer-wrapper {
     height: 100% !important;
   }
   
@@ -364,7 +400,7 @@ progress[value]::-moz-progress-bar {
     max-width: calc((var(--card-size) * 15 / 21) * 5 + (var(--gap) * 5) + (var(--padding) * 2));
     border-left: 2px solid var(--ui-color-foreground);
   }
-  #collection-wrapper {
+  #collection-outer-wrapper {
     --card-size: 12vw;
   }
 

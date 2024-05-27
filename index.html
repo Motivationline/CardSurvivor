@@ -72,7 +72,13 @@
     </div>
     <div class="overlay" id="collection-overlay">
         <input type="checkbox" name="largeDeck" id="largeDeck" hidden>
-        <div id="collection-wrapper" class="contains-cards"></div>
+        <input type="checkbox" name="hideLocked" id="hideLocked" checked hidden>
+        <div id="collection-outer-wrapper">
+            <div id="collection-controls">
+                <label for="hideLocked">&nbsp;locked cards</label>
+            </div>
+            <div id="collection-wrapper" class="contains-cards"></div>
+        </div>
         <div id="deck-outer-wrapper">
             <label for="largeDeck">
                 <div id="deck-selection">
