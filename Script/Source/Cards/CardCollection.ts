@@ -66,7 +66,7 @@ namespace Script {
 
                 visual.htmlElement.dataset.card = cardID;
             }
-            this.updateVisuals();
+            this.updateVisuals(true);
 
         }
 
@@ -77,7 +77,6 @@ namespace Script {
             // if (!this.collection[cardID]) return;
             if (!this.collection[cardID]) {
                 this.addCardToCollection(cardID, 1);
-                this.updateVisuals();
                 return;
             }
             let visual = this.cardVisuals.get(cardID);
@@ -123,6 +122,7 @@ namespace Script {
                 this.collection[_name] = { amount: 0, lvl: 0 };
             }
             this.collection[_name].amount += _amount;
+            this.updateVisuals(true);
         }
 
         getCardLevel(_name: string) {
@@ -185,7 +185,7 @@ namespace Script {
             })
         }
 
-        private updateVisuals() {
+        private updateVisuals(_fullReset: boolean = false) {
             // collection
             let allCardsForCollection: HTMLElement[] = [];
             let collectionEntires: string[] = Object.keys(this.collection).sort(this.compareRarity);
@@ -200,18 +200,28 @@ namespace Script {
                 let visual = this.cardVisuals.get(cardID);
                 if (!visual) continue;
                 allCardsForCollection.push(visual.htmlElement);
-                visual.htmlElement.classList.add("locked");
+                if(!_fullReset){
+                    visual.htmlElement.classList.add("locked");
+                }
             }
             // for debugging we're adding a bunch of empty stuff to fill up to 100.
-            this.fillWithPlaceholders(allCardsForCollection, 100);
+            // this.fillWithPlaceholders(allCardsForCollection, 100);
 
-            this.collectionElement.replaceChildren(...allCardsForCollection);
+            if (_fullReset) {
+                this.collectionElement.replaceChildren(...allCardsForCollection);
 
-            // selection
-            this.putCardsInDeck(this.selection, this.selectionElement, this.maxSelectedSize);
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        this.updateVisuals();
+                    });
+                });
+            } else {
+                // selection
+                this.putCardsInDeck(this.selection, this.selectionElement, this.maxSelectedSize);
 
-            // deck
-            this.putCardsInDeck(this.deck, this.deckElement, this.maxDeckSize);
+                // deck
+                this.putCardsInDeck(this.deck, this.deckElement, this.maxDeckSize);
+            }
 
             // number
             this.deckSelectionSizeElement.innerText = `${this.deck.length + this.selection.length}/${this.maxDeckSize + this.maxSelectedSize}`;
@@ -247,16 +257,16 @@ namespace Script {
         private compareRarity = (a: string, b: string): number => {
             let cardA = cards[a];
             let cardB = cards[b];
-            if(!cardA) return -1;
-            if(!cardB) return 1;
+            if (!cardA) return -1;
+            if (!cardB) return 1;
             return this.getRarityNumber(cardA.rarity) - this.getRarityNumber(cardB.rarity);
         }
 
         private getRarityNumber(_rarity: CardRarity): number {
-            if(_rarity === CardRarity.UNCOMMON) return 1;
-            if(_rarity === CardRarity.RARE) return 2;
-            if(_rarity === CardRarity.EPIC) return 3;
-            if(_rarity === CardRarity.LEGENDARY) return 4;
+            if (_rarity === CardRarity.UNCOMMON) return 1;
+            if (_rarity === CardRarity.RARE) return 2;
+            if (_rarity === CardRarity.EPIC) return 3;
+            if (_rarity === CardRarity.LEGENDARY) return 4;
             return 0;
         }
     }

@@ -1026,7 +1026,7 @@ var Script;
                 visual.htmlElement.addEventListener("click", this.openPopup);
                 visual.htmlElement.dataset.card = cardID;
             }
-            this.updateVisuals();
+            this.updateVisuals(true);
         }
         openPopup = (_event) => {
             let cardID = _event.currentTarget.dataset.card;
@@ -1036,7 +1036,6 @@ var Script;
             // if (!this.collection[cardID]) return;
             if (!this.collection[cardID]) {
                 this.addCardToCollection(cardID, 1);
-                this.updateVisuals();
                 return;
             }
             let visual = this.cardVisuals.get(cardID);
@@ -1081,6 +1080,7 @@ var Script;
                 this.collection[_name] = { amount: 0, lvl: 0 };
             }
             this.collection[_name].amount += _amount;
+            this.updateVisuals(true);
         }
         getCardLevel(_name) {
             return this.collection[_name]?.lvl ?? 0;
@@ -1135,7 +1135,7 @@ var Script;
                     this.hidePopup();
             });
         }
-        updateVisuals() {
+        updateVisuals(_fullReset = false) {
             // collection
             let allCardsForCollection = [];
             let collectionEntires = Object.keys(this.collection).sort(this.compareRarity);
@@ -1153,15 +1153,26 @@ var Script;
                 if (!visual)
                     continue;
                 allCardsForCollection.push(visual.htmlElement);
-                visual.htmlElement.classList.add("locked");
+                if (!_fullReset) {
+                    visual.htmlElement.classList.add("locked");
+                }
             }
             // for debugging we're adding a bunch of empty stuff to fill up to 100.
-            this.fillWithPlaceholders(allCardsForCollection, 100);
-            this.collectionElement.replaceChildren(...allCardsForCollection);
-            // selection
-            this.putCardsInDeck(this.selection, this.selectionElement, this.maxSelectedSize);
-            // deck
-            this.putCardsInDeck(this.deck, this.deckElement, this.maxDeckSize);
+            // this.fillWithPlaceholders(allCardsForCollection, 100);
+            if (_fullReset) {
+                this.collectionElement.replaceChildren(...allCardsForCollection);
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        this.updateVisuals();
+                    });
+                });
+            }
+            else {
+                // selection
+                this.putCardsInDeck(this.selection, this.selectionElement, this.maxSelectedSize);
+                // deck
+                this.putCardsInDeck(this.deck, this.deckElement, this.maxDeckSize);
+            }
             // number
             this.deckSelectionSizeElement.innerText = `${this.deck.length + this.selection.length}/${this.maxDeckSize + this.maxSelectedSize}`;
         }

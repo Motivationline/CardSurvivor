@@ -6,6 +6,7 @@ namespace Script {
         #image: string;
         #text: string;
         #htmlElement: HTMLElement;
+
         constructor(_card: iCard, _parent: HTMLElement, _nameFallback: string = "unknown") {
             this.#name = _card.name ?? _nameFallback;
             this.#text = _card.description ?? i18next.t(`card.${this.#name}.description`);

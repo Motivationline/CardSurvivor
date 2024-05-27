@@ -188,10 +188,15 @@ progress[value]::-moz-progress-bar {
 #selection {
   border-bottom: 1px dashed var(--ui-color-foreground);
   padding-top: 3px;
+  justify-content: space-evenly;
 }
 
 #selection .card {
   outline: 2px solid var(--ui-color-foreground);
+}
+
+#deck {
+  justify-content: space-evenly;
 }
 
 /* popup */
@@ -517,7 +522,7 @@ progress[value]::-moz-progress-bar {
   }
 
   #deck-outer-wrapper {
-    max-width: calc((var(--card-size) * 15 / 21) * 5 + (var(--gap) * 5) + (var(--padding) * 2));
+    max-width: calc((var(--card-size) * 15 / 21) * 5 + (var(--gap) * 5) + (var(--padding) * 3));
     border-left: 2px solid var(--ui-color-foreground);
   }
 
