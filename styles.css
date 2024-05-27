@@ -209,7 +209,7 @@ progress[value]::-moz-progress-bar {
   
 }
 
-#card-popup-card .card-image{
+#card-popup-card .card.uncommon .card-image{
   animation: wiggle 4s ease-in-out infinite;
 }
 
