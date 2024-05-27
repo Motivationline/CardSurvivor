@@ -206,12 +206,19 @@ progress[value]::-moz-progress-bar {
 #card-popup-card {
   --card-size: min(75vh, calc(100vw * 21 / 15));
   height: var(--card-size);
+  
+}
+
+#card-popup-card .card-image{
+  animation: wiggle 4s ease-in-out infinite;
 }
 
 #card-popup-selection-wrapper {
   display: flex;
   
 }
+
+
 
 /* cards */
 .card {
@@ -235,6 +242,7 @@ progress[value]::-moz-progress-bar {
 
   background-image: url("Assets/Cards/PlainCards/Common.png");
   background-size: 100% 100%;
+
 }
 
 .card.uncommon {
@@ -271,6 +279,7 @@ progress[value]::-moz-progress-bar {
   background-image: none;
   border: 1px solid var(--ui-color-foreground);
   cursor: default;
+
 }
 
 .card-name {
@@ -285,6 +294,7 @@ progress[value]::-moz-progress-bar {
   color: var(--name-text-color);
   transform: translate(0, calc(var(--card-size) * 0.1));
   margin-top: -0.5em;
+  
 }
 
 .card-text {
@@ -370,6 +380,12 @@ progress[value]::-moz-progress-bar {
   touch-action: all;
   pointer-events: all;
 }
+
+@keyframes wiggle {
+  0% {  transform: rotate(-0deg) ;}
+  50% {  transform: rotate(-3deg);}
+  100% {  transform: rotate(-0deg);}
+  }
 
 /* pointer: coarse aka we're on a mobile device with touch input */
 @media (pointer: coarse) {

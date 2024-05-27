@@ -1427,7 +1427,7 @@ var Script;
         "Discus": {
             image: "Discus.png",
             rarity: Script.CardRarity.COMMON,
-            name: "Solar Panel",
+            name: "Discus",
             levels: []
         },
         "Civil Code": {

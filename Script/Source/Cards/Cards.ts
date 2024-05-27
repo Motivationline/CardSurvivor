@@ -146,7 +146,7 @@ namespace Script {
         "Discus": {
             image: "Discus.png",
             rarity: CardRarity.COMMON,
-            name: "Solar Panel",
+            name: "Discus",
             levels: []
         },
         "Civil Code": {
