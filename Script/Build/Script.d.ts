@@ -141,6 +141,7 @@ declare namespace Script {
     export interface CardLevel {
         passiveEffects?: PassiveCardEffectObject;
         activeEffects?: ActiveEffect[];
+        detailDescription?: string;
     }
     export type ActiveEffect = CardEffectProjectile | CardEffectAOE;
     interface ActiveCardEffectBase {
