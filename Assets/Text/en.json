@@ -1,0 +1,15 @@
+{
+    "card": {
+        "Drone": {
+            "name": "Drone",
+            "description": "Shoot projectiles in the direction that you move. Lorem ipsum dolor sit amet",
+            "levels": {
+                "1": "",
+                "2": "",
+                "3": "",
+                "4": "",
+                "5": ""
+            }
+        }
+    }
+}

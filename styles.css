@@ -201,21 +201,26 @@ progress[value]::-moz-progress-bar {
   display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: 10;
 }
 
 #card-popup-card {
   --card-size: min(75vh, calc(100vw * 21 / 15));
   height: var(--card-size);
-  
+
 }
 
-#card-popup-card .card.uncommon .card-image{
+#card-popup-card .card:not(.common) .card-image {
   animation: wiggle 4s ease-in-out infinite;
+}
+
+#card-popup-card .card.legendary .card-rays {
+  /* animation: rotate 10s linear infinite; */
 }
 
 #card-popup-selection-wrapper {
   display: flex;
-  
+
 }
 
 
@@ -232,6 +237,8 @@ progress[value]::-moz-progress-bar {
   grid-template-rows: 20% 65% 15%;
   font-family: 'Luckiest Guy', cursive;
 
+  --delay: 0s;
+
   --name-text-color: white;
 
   --name-text-outline: #616161;
@@ -240,39 +247,90 @@ progress[value]::-moz-progress-bar {
   --text-text-color: #efefef;
   --text-text-dropshadow: rgba(0, 0, 0, 0.25);
 
-  background-image: url("Assets/Cards/PlainCards/Common.png");
+  background-image: url("Assets/Cards/PlainCards/Common_Card.png");
   background-size: 100% 100%;
 
+  --background-image-glow: url("Assets/Cards/PlainCards/Common_Glow.png");
+  --background-image-rays: url("Assets/Cards/PlainCards/Common_Rays.png");
+}
+
+.card:not(.placeholder)::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: var(--background-image-glow);
+  background-size: 100% 100%;
+  z-index: 4;
+  animation: fade 1.5s infinite alternate-reverse ease-in-out;
+  animation-delay: var(--delay);
+}
+
+.card.locked::before {
+  animation: none;
+}
+
+.card-rays-outer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 363 488"><path class="cls-1" d="M7.53,40.64c-2.28,30.63-1.21,82.49,2.15,102.86.51,3.12,1.04,35.45,2.1,100.09.88,54.01.37,68.18.47,86.86.12,22.34.23,44.79-2.92,66.9l338.58-9.91c1.74-23.61,4.48-54.23,3.98-82.57-.42-23.81-2.67-23.57-3.12-53.7-.27-18.38,1.04-36.73,1.88-55.09,2.74-60.42.2-120.94-2.35-181.37-.12-2.97-.39-6.26-2.54-8.31-2.82-2.69-7.24-2.25-8.35-2.17-12.48.94-111.78,4.89-179.12,1.3h0c-6.5-1.2-30.28.51-68.34,1-42.84.56-45.82.45-60.3-1-3.29-.33-15.42-1.86-20.28,4.61-9.31,8.84-1.27,23.09-1.83,30.51Z"/></svg>') bottom no-repeat;
+  z-index: 3;
+}
+
+.card-rays {
+  width: 100%;
+  height: 100%;
+  background-image: var(--background-image-rays);
+  background-size: 100% 100%;
+  /* -webkit-clip-path: url(#cardClip);
+  clip-path: url(#cardClip); */
+  transform-origin: 55.7% 45.2%;
+}
+
+.card:not(.locked) .card-rays{
+  animation: wiggle-large 4s ease-in-out infinite;
+  animation-delay: var(--delay);
 }
 
 .card.uncommon {
-  background-image: url("Assets/Cards/PlainCards/Uncommon.png");
+  background-image: url("Assets/Cards/PlainCards/Uncommon_Card.png");
   --text-text-color: #d5fee6;
   --name-text-outline: #0a6200;
   --name-text-dropshadow: #005117;
-  
+  --background-image-glow: url("Assets/Cards/PlainCards/Uncommon_Glow.png");
+  --background-image-rays: url("Assets/Cards/PlainCards/Uncommon_Rays.png");
 }
 
 .card.rare {
-  background-image: url("Assets/Cards/PlainCards/Rare.png");
+  background-image: url("Assets/Cards/PlainCards/Rare_Card.png");
   --text-text-color: #d5f6fe;
   --name-text-outline: #002662;
   --name-text-dropshadow: #000f51;
+  --background-image-glow: url("Assets/Cards/PlainCards/Rare_Glow.png");
+  --background-image-rays: url("Assets/Cards/PlainCards/Rare_Rays.png");
 }
 
 .card.epic {
-  background-image: url("Assets/Cards/PlainCards/Epic.png");
+  background-image: url("Assets/Cards/PlainCards/Epic_Card.png");
   --text-text-color: #f1d5fe;
   --name-text-outline: #3e0062;
   --name-text-dropshadow: #480051;
+  --background-image-glow: url("Assets/Cards/PlainCards/Epic_Glow.png");
+  --background-image-rays: url("Assets/Cards/PlainCards/Epic_Rays.png");
 }
 
 .card.legendary {
-  background-image: url("Assets/Cards/PlainCards/Legendary.png");
+  background-image: url("Assets/Cards/PlainCards/Legendary_Card.png");
   --name-text-outline: #623600;
   --name-text-dropshadow: #512400;
   --text-text-color: #ffdfa2;
-
+  --background-image-glow: url("Assets/Cards/PlainCards/Legendary_Glow.png");
+  --background-image-rays: url("Assets/Cards/PlainCards/Legendary_Rays.png");
 }
 
 .card.placeholder {
@@ -294,7 +352,7 @@ progress[value]::-moz-progress-bar {
   color: var(--name-text-color);
   transform: translate(0, calc(var(--card-size) * 0.1));
   margin-top: -0.5em;
-  
+  z-index: 6;
 }
 
 .card-text {
@@ -309,11 +367,13 @@ progress[value]::-moz-progress-bar {
   transform: rotate(-3deg) translate(2em, -0.5em);
   width: 80%;
   height: 100%;
+  z-index: 6;
 }
 
 .card-image {
   display: grid;
   place-items: center;
+  z-index: 5;
 }
 
 .card-image>img {
@@ -329,21 +389,25 @@ progress[value]::-moz-progress-bar {
   cursor: default;
   filter: saturate(0);
 }
+
 .card.locked .card-name,
 .card.locked .card-text {
   opacity: 0;
 }
+
 .card.locked .card-image {
   filter: brightness(0);
 }
 
-#hideLocked:checked ~ #collection-outer-wrapper .card.locked {
+#hideLocked:checked~#collection-outer-wrapper .card.locked {
   display: none;
 }
+
 #collection-outer-wrapper label[for="hideLocked"]::before {
   content: "Hide";
 }
-#hideLocked:checked ~ #collection-outer-wrapper label[for="hideLocked"]::before {
+
+#hideLocked:checked~#collection-outer-wrapper label[for="hideLocked"]::before {
   content: "Show";
 }
 
@@ -382,10 +446,50 @@ progress[value]::-moz-progress-bar {
 }
 
 @keyframes wiggle {
-  0% {  transform: rotate(-0deg) ;}
-  50% {  transform: rotate(-3deg);}
-  100% {  transform: rotate(-0deg);}
+  0% {
+    transform: rotate(-0deg);
   }
+
+  50% {
+    transform: rotate(-3deg);
+  }
+
+  100% {
+    transform: rotate(-0deg);
+  }
+}
+@keyframes wiggle-large {
+  0% {
+    transform: rotate(2deg);
+  }
+
+  50% {
+    transform: rotate(-2deg);
+  }
+
+  100% {
+    transform: rotate(2deg);
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.6;
+  }
+}
 
 /* pointer: coarse aka we're on a mobile device with touch input */
 @media (pointer: coarse) {
@@ -411,11 +515,12 @@ progress[value]::-moz-progress-bar {
   #collection-outer-wrapper {
     height: 100% !important;
   }
-  
+
   #deck-outer-wrapper {
     max-width: calc((var(--card-size) * 15 / 21) * 5 + (var(--gap) * 5) + (var(--padding) * 2));
     border-left: 2px solid var(--ui-color-foreground);
   }
+
   #collection-outer-wrapper {
     --card-size: 12vw;
   }

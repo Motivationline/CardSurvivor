@@ -112,25 +112,30 @@
             <div id="card-popup-close"><button>Close</button></div>
         </div>
     </div>
+
+    <template id="card">
+        <div class="card">
+            <div class="card-name"></div>
+            <div class="card-image">
+                <img src="" alt="">
+            </div>
+            <div class="card-text">
+            </div>
+            <div class="card-rays-outer">
+                <div class="card-rays"></div>
+            </div>
+        </div>
+    </template>
+    <script>
+        function showGame() {
+            document.getElementById("main-menu-overlay").classList.add("hidden");
+        }
+        function showDeck() {
+            document.getElementById("main-menu-overlay").classList.add("hidden");
+            document.getElementById("collection-overlay").classList.remove("hidden");
+        }
+    </script>
+
 </body>
 
-<template id="card">
-    <div class="card">
-        <div class="card-name"></div>
-        <div class="card-image">
-            <img src="" alt="">
-        </div>
-        <div class="card-text">
-        </div>
-    </div>
-</template>
-<script>
-    function showGame(){
-        document.getElementById("main-menu-overlay").classList.add("hidden");
-    }
-    function showDeck() {
-        document.getElementById("main-menu-overlay").classList.add("hidden");
-        document.getElementById("collection-overlay").classList.remove("hidden");
-    }
-</script>
 </html>

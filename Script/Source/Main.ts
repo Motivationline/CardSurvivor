@@ -21,6 +21,8 @@ namespace Script {
 
   async function preStart() {
     if (ƒ.Project.mode === ƒ.MODE.EDITOR) return;
+    await initI18n("en");
+
     provider
       .add(Config)
       .add(InputManager)

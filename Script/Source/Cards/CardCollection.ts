@@ -59,7 +59,7 @@ namespace Script {
 
             for (let cardID in cards) {
                 let card = cards[cardID];
-                let visual = new CardVisual(card, this.collectionElement);
+                let visual = new CardVisual(card, this.collectionElement, cardID);
                 this.cardVisuals.set(cardID, visual);
 
                 visual.htmlElement.addEventListener("click", this.openPopup);

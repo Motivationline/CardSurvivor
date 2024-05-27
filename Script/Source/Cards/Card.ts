@@ -11,8 +11,8 @@ namespace Script {
         #charm: CharacterManager;
 
         constructor(_init: iCard, _level: number = 0, _nameFallback: string = "unknown") {
-            this.name = _init.name ?? `cards.${_nameFallback}.name`;
-            this.description = _init.description ?? i18next.t(`cards.${_nameFallback}.text`);
+            this.name = _init.name ?? `card.${_nameFallback}.name`;
+            this.description = _init.description ?? i18next.t(`card.${_nameFallback}.description`);
             this.image = _init.image;
             this.rarity = _init.rarity;
             this.levels = _init.levels;

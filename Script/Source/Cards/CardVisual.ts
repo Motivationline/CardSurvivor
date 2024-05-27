@@ -6,10 +6,12 @@ namespace Script {
         #image: string;
         #text: string;
         #htmlElement: HTMLElement;
-        constructor(_card: iCard, _parent: HTMLElement) {
-            this.#name = _card.name ?? "no name";
-            this.#text = _card.description ?? "no description";
+        constructor(_card: iCard, _parent: HTMLElement, _nameFallback: string = "unknown") {
+            this.#name = _card.name ?? _nameFallback;
+            this.#text = _card.description ?? i18next.t(`card.${this.#name}.description`);
             this.#image = _card.image;
+
+            this.#name = i18next.t(`card.${this.#name}.name`).toLocaleUpperCase();
 
             this.#htmlElement = <HTMLElement>CardVisual.template.content.cloneNode(true).childNodes[1];
 
@@ -27,18 +29,19 @@ namespace Script {
             let factor = cardWidth / currentTextWidth;
             fontSize *= factor;
 
-            fontSize = Math.min(22, fontSize);
+            fontSize = Math.min(15, fontSize);
             let nameElement = <HTMLElement>this.#htmlElement.querySelector(".card-name");
             nameElement.style.fontSize = `calc(var(--card-size) / 100 * ${fontSize})`;
 
             // fill card with data
-            nameElement.innerHTML = this.#name.toLocaleUpperCase();
+            nameElement.innerHTML = this.#name;
             requestAnimationFrame(() => {
                 // turn into circle
                 new CircleType(nameElement).radius(cardWidth * 2);
             });
             (<HTMLElement>this.#htmlElement.querySelector(".card-text")).innerText = this.#text;
             (<HTMLImageElement>this.#htmlElement.querySelector(".card-image img")).src = "Assets/Cards/Items/" + this.#image;
+            this.#htmlElement.style.setProperty("--delay", `${Math.random() * -10}s`);
             this.#htmlElement.classList.add(_card.rarity);
         }
 
