@@ -1,6 +1,5 @@
 {
   "card": {
-    //---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---
     "Hammer": {
       "name": "Hammer",
       "description": "Throw piercing hammers at nearby enemies.",
@@ -221,7 +220,6 @@
         "5": "+50% field of view."
       }
     },
-    //---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---
     "Pills": {
       "name": "Pills",
       "description": "",
@@ -387,7 +385,6 @@
         "5": ""
       }
     },
-    //---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE
     "Magnifying Glass": {
       "name": "Magnifying Glass",
       "description": "",
@@ -520,7 +517,6 @@
         "5": ""
       }
     },
-    //---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---
     "Piercing Gun": {
       "name": "Piercing Gun",
       "description": "",
@@ -631,7 +627,6 @@
         "5": ""
       }
     },
-    //---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---
     "Apprenticeship": {
       "name": "Apprenticeship",
       "description": "",
