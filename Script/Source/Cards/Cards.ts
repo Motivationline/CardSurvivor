@@ -402,7 +402,63 @@ namespace Script {
                     passiveEffects: {
                         absolute: {
                             damage: 0 //5 Base Damage
-                            
+                            //TODO: Add bounces - 2
+                        }
+                    }
+                },
+                { //Tier 2
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "discusPlayer",
+                        amount: 1,
+                        cooldown: 3,
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 3 //5 Base Damage
+                            //TODO: Add bounces - 2
+                        }
+                    }
+                },
+                { //Tier 3
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "discusPlayer",
+                        amount: 1,
+                        cooldown: 2,
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 3 //5 Base Damage
+                            //TODO: Add bounces - 2
+                        }
+                    }
+                },
+                { //Tier 4
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "discusPlayer",
+                        amount: 1,
+                        cooldown: 2,
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 5 //5 Base Damage
+                            //TODO: Add bounces - 3
+                        }
+                    }
+                },
+                { //Tier 5
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "discusPlayer",
+                        amount: 2,
+                        cooldown: 2,
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 5 //5 Base Damage
+                            //TODO: Add bounces - 4
                         }
                     }
                 },
@@ -412,25 +468,299 @@ namespace Script {
             image: "CivilCode.png",
             rarity: CardRarity.COMMON,
             name: "Civil Code",
-            levels: []
+            levels: [
+                { //Tier 1
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "civilCodePlayer",
+                        amount: 1,
+                        cooldown: 3,
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 0 //3-30 Base Damage
+                            //TODO: More damage depending on distance
+                        }
+                    }
+                },
+                { //Tier 2
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "civilCodePlayer",
+                        amount: 1,
+                        cooldown: 3,
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 0 //4-40 Base Damage
+                            //TODO: More damage depending on distance
+                        }
+                    }
+                },
+                { //Tier 3
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "civilCodePlayer",
+                        amount: 1,
+                        cooldown: 2.5,
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 0 //5-50 Base Damage
+                            //TODO: More damage depending on distance
+                        }
+                    }
+                },
+                { //Tier 4
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "civilCodePlayer",
+                        amount: 1,
+                        cooldown: 2,
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 0 //6-60 Base Damage
+                            //TODO: More damage depending on distance
+                        }
+                    }
+                },
+                { //Tier 5
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "civilCodePlayer",
+                        amount: 2,
+                        cooldown: 2,
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 0 //8-80 Base Damage
+                            //TODO: More damage depending on distance
+                        }
+                    }
+                },
+            ]
         },
         "Divider": {
             image: "Divider.png",
             rarity: CardRarity.COMMON,
             name: "Divider",
-            levels: []
+            levels: [
+                { //Tier 1
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "dividerPlayer",
+                        amount: 1,
+                        cooldown: 2,
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 0, //5 Base Damage
+                            projectilePiercing: 3
+                        }
+                    }
+                },
+                { //Tier 2
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "dividerPlayer",
+                        amount: 1,
+                        cooldown: 2,
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 2, //5 Base Damage
+                            projectilePiercing: 3
+                        }
+                    }
+                },
+                { //Tier 3
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "dividerPlayer",
+                        amount: 2,
+                        cooldown: 2,
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 2, //5 Base Damage
+                            projectilePiercing: 3
+                        }
+                    }
+                },
+                { //Tier 4
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "dividerPlayer",
+                        amount: 2,
+                        cooldown: 2,
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 3, //5 Base Damage
+                            projectilePiercing: 4
+                        }
+                    }
+                },
+                { //Tier 5
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "dividerPlayer",
+                        amount: 2,
+                        cooldown: 2,
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 5, //5 Base Damage
+                            projectilePiercing: 6
+                        }
+                    }
+                },
+            ]
         },
         "Needles": {
             image: "Needles.png",
             rarity: CardRarity.COMMON,
             name: "Needles",
-            levels: []
+            levels: [
+                { //Tier 1
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "needlePlayer",
+                        amount: 1,
+                        cooldown: 5, //TODO: Leave a projectile every 5 units moved
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 0, //5 Base Damage
+                        }
+                    }
+                },
+                { //Tier 2
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "needlePlayer",
+                        amount: 1,
+                        cooldown: 4, //TODO: Leave a projectile every 4 units moved
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 1, //5 Base Damage
+                        }
+                    }
+                },
+                { //Tier 3
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "needlePlayer",
+                        amount: 1,
+                        cooldown: 4, //TODO: Leave a projectile every 4 units moved
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 3, //5 Base Damage
+                        }
+                    }
+                },
+                { //Tier 4
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "needlePlayer",
+                        amount: 1,
+                        cooldown: 3, //TODO: Leave a projectile every 3 units moved
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 3, //5 Base Damage
+                        }
+                    }
+                },
+                { //Tier 5
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "needlePlayer",
+                        amount: 1,
+                        cooldown: 2, //TODO: Leave a projectile every 2 units moved
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 5, //5 Base Damage
+                        }
+                    }
+                },
+            ]
         },
         "Chisel": {
             image: "Chisel.png",
             rarity: CardRarity.COMMON,
             name: "Chisel",
-            levels: []
+            levels: [
+                { //Tier 1
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "chiselPlayer",
+                        amount: 1,
+                        cooldown: 2
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 0, //15 Base Damage
+                        }
+                    }
+                },
+                { //Tier 2
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "chiselPlayer",
+                        amount: 1,
+                        cooldown: 2
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 10, //15 Base Damage
+                        }
+                    }
+                },
+                { //Tier 3
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "chiselPlayer",
+                        amount: 2,
+                        cooldown: 2
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 10, //15 Base Damage
+                        }
+                    }
+                },
+                { //Tier 4
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "chiselPlayer",
+                        amount: 2,
+                        cooldown: 2
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 20, //15 Base Damage
+                        }
+                    }
+                },
+                { //Tier 5
+                    activeEffects: [{
+                        type: "projectile",
+                        projectile: "chiselPlayer",
+                        amount: 2,
+                        cooldown: 1.5
+                    }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 25, //15 Base Damage
+                        }
+                    }
+                },
+            ]
         },
         "Helmet": {
             image: "Helmet.png",
