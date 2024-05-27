@@ -549,20 +549,6 @@ declare namespace Script {
     }
 }
 declare namespace Script {
-    class CardManager {
-        private currentlyActiveCards;
-        private cumulativeEffects;
-        constructor();
-        private update;
-        getEffectAbsolute(_effect: PassiveCardEffect, _modifier?: PassiveCardEffectObject): number;
-        getEffectMultiplier(_effect: PassiveCardEffect, _modifier?: PassiveCardEffectObject): number;
-        modifyValuePlayer(_value: number, _effect: PassiveCardEffect, _localModifiers?: PassiveCardEffectObject): number;
-        modifyValue(_value: number, _effect: PassiveCardEffect, _modifier: PassiveCardEffectObject): number;
-        updateEffects(): void;
-        combineEffects(..._effects: PassiveCardEffectObject[]): PassiveCardEffectObject;
-    }
-}
-declare namespace Script {
     class Config {
         private animations;
         constructor();
@@ -642,5 +628,19 @@ declare namespace Script {
         createProjectile(_options: Partial<Projectile>, _position: ƒ.Vector3, _modifiers: PassiveCardEffectObject, _parent?: ƒ.Node): Promise<void>;
         createAOE(_options: Partial<AreaOfEffect>, _position: ƒ.Vector3, _modifiers: PassiveCardEffectObject, _parent?: ƒ.Node): Promise<void>;
         createHitZone(_position: ƒ.Vector3, _size?: number, _parent?: ƒ.Node): Promise<HitZoneGraphInstance>;
+    }
+}
+declare namespace Script {
+    class CardManager {
+        private currentlyActiveCards;
+        private cumulativeEffects;
+        constructor();
+        private update;
+        getEffectAbsolute(_effect: PassiveCardEffect, _modifier?: PassiveCardEffectObject): number;
+        getEffectMultiplier(_effect: PassiveCardEffect, _modifier?: PassiveCardEffectObject): number;
+        modifyValuePlayer(_value: number, _effect: PassiveCardEffect, _localModifiers?: PassiveCardEffectObject): number;
+        modifyValue(_value: number, _effect: PassiveCardEffect, _modifier: PassiveCardEffectObject): number;
+        updateEffects(): void;
+        combineEffects(..._effects: PassiveCardEffectObject[]): PassiveCardEffectObject;
     }
 }

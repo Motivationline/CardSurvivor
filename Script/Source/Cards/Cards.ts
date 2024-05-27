@@ -1,29 +1,7 @@
 /// <reference path="../Types.ts" />
 namespace Script {
     export const cards: Cards = {
-        "testSize": {
-            image: "Pen.png",
-            rarity: CardRarity.RARE,
-            levels: [
-                {
-                    passiveEffects: {
-                        multiplier: {
-                            projectileSize: 1.5
-                        }
-                    }
-                },
-                {
-                    passiveEffects: {
-                        multiplier: {
-                            projectileSize: 2,
-                        },
-                        absolute: {
-                            cooldownReduction: 2
-                        }
-                    }
-                }
-            ]
-        },
+        // ---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---COMMON---
         "Hammer": {
             image: "Hammer.png",
             rarity: CardRarity.COMMON,
@@ -766,62 +744,423 @@ namespace Script {
             image: "Helmet.png",
             rarity: CardRarity.COMMON,
             name: "Helmet",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        multiplier: {
+                            damageReduction: 0.9 //TODO: Less Damage from projectiles
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        multiplier: {
+                            damageReduction: 0.8 //TODO: Less Damage from projectiles
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        multiplier: {
+                            damageReduction: 0.7 //TODO: Less Damage from projectiles
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        multiplier: {
+                            damageReduction: 0.6 //TODO: Less Damage from projectiles
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        multiplier: {
+                            damageReduction: 0.4 //TODO: Less Damage from projectiles
+                        }
+                    }
+                },
+            ]
         },
         "Safety Boots": {
             image: "SafetyBoots.png",
             rarity: CardRarity.COMMON,
             name: "Safety Boots",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        multiplier: {
+                            damageReduction: 0.9 //TODO: More resistant against ground effects
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        multiplier: {
+                            damageReduction: 0.8 //TODO: More resistant against ground effects
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        multiplier: {
+                            damageReduction: 0.7 //TODO: More resistant against ground effects
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        multiplier: {
+                            damageReduction: 0.6 //TODO: More resistant against ground effects
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        multiplier: {
+                            damageReduction: 0.4 //TODO: More resistant against ground effects
+                        }
+                    }
+                },
+            ]
         },
         "Microphone": {
             image: "Microphone.png",
             rarity: CardRarity.COMMON,
             name: "Microphone",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        multiplier: {
+                            projectileRange: 1.15
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        multiplier: {
+                            projectileRange: 1.3
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        multiplier: {
+                            projectileRange: 1.5
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        multiplier: {
+                            projectileRange: 1.7
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        multiplier: {
+                            projectileRange: 2
+                        }
+                    }
+                },
+            ]
         },
         "Gavel": {
             image: "Gavel.png",
             rarity: CardRarity.COMMON,
             name: "Gavel",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        absolute: {
+                            damage: 1,
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        absolute: {
+                            damage: 2,
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        absolute: {
+                            damage: 3,
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        absolute: {
+                            damage: 5,
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        absolute: {
+                            damage: 8,
+                        }
+                    }
+                },
+            ]
         },
         
         "First Aid Kit": {
             image: "FirstAidKit.png",
             rarity: CardRarity.COMMON,
             name: "First Aid Kit",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        absolute: {
+                            health: 10,
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        absolute: {
+                            health: 20,
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        absolute: {
+                            health: 35,
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        absolute: {
+                            health: 50,
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        absolute: {
+                            health: 75,
+                        }
+                    }
+                },
+            ]
         },
         "Running Shoes": {
             image: "RunningShoes.png",
             rarity: CardRarity.COMMON,
             name: "Running Shoes",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        multiplier: {
+                            movementSpeed: 1.05,
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        multiplier: {
+                            movementSpeed: 1.15,
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        multiplier: {
+                            movementSpeed: 1.3,
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        multiplier: {
+                            movementSpeed: 1.5,
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        multiplier: {
+                            movementSpeed: 1.75,
+                        }
+                    }
+                },
+            ]
         },
         "Disposable Gloves": {
             image: "",
             rarity: CardRarity.COMMON,
             name: "Disposable Gloves",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        absolute: {
+                            damageReduction: 1
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        absolute: {
+                            damageReduction: 2
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        absolute: {
+                            damageReduction: 4
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        absolute: {
+                            damageReduction: 6
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        absolute: {
+                            damageReduction: 10
+                        }
+                    }
+                },
+            ]
         },
         "Printer": {
             image: "Printer.png",
             rarity: CardRarity.COMMON,
             name: "Printer",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +5% increased XP
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +10% increased XP
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +25% increased XP
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +40% increased XP
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +60% increased XP
+                        }
+                    }
+                },
+            ]
         }, "Solar Panel": {
             image: "SolarPanel.png",
             rarity: CardRarity.COMMON,
             name: "Solar Panel",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        absolute: {
+                            regeneration: 0.5,
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        absolute: {
+                            regeneration: 1,
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        absolute: {
+                            regeneration: 2,
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        absolute: {
+                            regeneration: 4,
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        absolute: {
+                            regeneration: 7,
+                        }
+                    }
+                },
+            ]
         },
         "Drone": {
             image: "Drone.png",
             rarity: CardRarity.COMMON,
             name: "Drone",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +5% increased field of view (camera zoom)
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +10% increased field of view (camera zoom)
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +20% increased field of view (camera zoom)
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +35% increased field of view (camera zoom)
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +50% increased field of view (camera zoom)
+                        }
+                    }
+                },
+            ]
         },
+        // ---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---UNCOMMON---
         "Pills": {
             image: "Pills.png",
             rarity: CardRarity.UNCOMMON,
@@ -918,6 +1257,7 @@ namespace Script {
             name: "Apple",
             levels: []
         },
+        // ---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---
         "Magnifying Glas": {
             image: "MagnifyingGlas.png",
             rarity: CardRarity.RARE,
@@ -990,6 +1330,7 @@ namespace Script {
             name: "Riot Shields",
             levels: []
         },
+        // ---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---
         "Piercing Gun": {
             image: "PiercingGun.png",
             rarity: CardRarity.EPIC,
@@ -1050,6 +1391,7 @@ namespace Script {
             name: "High-Vis West",
             levels: []
         },
+        // ---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---
         "Apprenticeship": {
             image: "Apprenticeship.png",
             rarity: CardRarity.LEGENDARY,
