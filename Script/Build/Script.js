@@ -1282,28 +1282,6 @@ var Script;
 /// <reference path="../Types.ts" />
 (function (Script) {
     Script.cards = {
-        "test": {
-            image: "Pen.png",
-            rarity: Script.CardRarity.COMMON,
-            levels: [
-                {
-                    activeEffects: [{
-                            type: "projectile",
-                            projectile: "toastPlayer",
-                            amount: 1,
-                            cooldown: 5,
-                        }]
-                },
-                {
-                    activeEffects: [{
-                            type: "projectile",
-                            projectile: "toastPlayer",
-                            amount: 2,
-                            cooldown: 5,
-                        }]
-                }
-            ]
-        },
         "testSize": {
             image: "Pen.png",
             rarity: Script.CardRarity.RARE,
@@ -1327,42 +1305,423 @@ var Script;
                 }
             ]
         },
-        "hammer": {
+        "Hammer": {
             image: "Hammer.png",
             rarity: Script.CardRarity.COMMON,
-            name: "hammer",
-            levels: []
-        },
-        "anvil": {
-            image: "Anvil.png",
-            rarity: Script.CardRarity.COMMON,
-            name: "anvil",
-            levels: [{
+            name: "Hammer",
+            levels: [
+                {
                     activeEffects: [{
                             type: "projectile",
+                            projectile: "hammerPlayer",
                             amount: 1,
-                            projectile: "anvil",
+                            cooldown: 2
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 0,
+                            projectilePiercing: 2
+                        }
+                    }
+                },
+                {
+                    activeEffects: [{
+                            type: "projectile",
+                            projectile: "hammerPlayer",
+                            amount: 1,
+                            cooldown: 2,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 4,
+                            projectilePiercing: 2
+                        }
+                    }
+                },
+                {
+                    activeEffects: [{
+                            type: "projectile",
+                            projectile: "hammerPlayer",
+                            amount: 2,
+                            cooldown: 2,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 4,
+                            projectilePiercing: 2
+                        }
+                    }
+                },
+                {
+                    activeEffects: [{
+                            type: "projectile",
+                            projectile: "hammerPlayer",
+                            amount: 2,
+                            cooldown: 2,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 7,
+                            projectilePiercing: 3
+                        }
+                    }
+                },
+                {
+                    activeEffects: [{
+                            type: "projectile",
+                            projectile: "hammerPlayer",
+                            amount: 2,
+                            cooldown: 1.5,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 7,
+                            projectilePiercing: 4
+                        }
+                    }
+                },
+            ]
+        },
+        "Anvil": {
+            image: "Anvil.png",
+            rarity: Script.CardRarity.COMMON,
+            name: "Anvil",
+            levels: [
+                {
+                    activeEffects: [{
+                            type: "projectile",
+                            projectile: "anvilPlayer",
+                            amount: 1,
                             cooldown: 3,
-                            currentCooldown: 3,
-                        }]
-                }]
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 0 //10 Base Damage
+                        }
+                    }
+                },
+                {
+                    activeEffects: [{
+                            type: "projectile",
+                            projectile: "anvilPlayer",
+                            amount: 1,
+                            cooldown: 3,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 4 //10 Base Damage
+                        }
+                    }
+                },
+                {
+                    activeEffects: [{
+                            type: "projectile",
+                            projectile: "anvilPlayer",
+                            amount: 2,
+                            cooldown: 3,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 4 //10 Base Damage
+                        }
+                    }
+                },
+                {
+                    activeEffects: [{
+                            type: "projectile",
+                            projectile: "anvilPlayer",
+                            amount: 2,
+                            cooldown: 3,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 10 //10 Base Damage
+                        }
+                    }
+                },
+                {
+                    activeEffects: [{
+                            type: "projectile",
+                            projectile: "anvilPlayer",
+                            amount: 3,
+                            cooldown: 2,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 10 //10 Base Damage
+                        }
+                    }
+                },
+            ]
         },
         "Pen": {
             image: "Pen.png",
             rarity: Script.CardRarity.COMMON,
-            name: "pen",
+            name: "Pen",
+            levels: [
+                {
+                    activeEffects: [{
+                            type: "projectile",
+                            projectile: "penPlayer",
+                            amount: 1,
+                            cooldown: 0.5,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 0 //2 Base Damage
+                        }
+                    }
+                },
+                {
+                    activeEffects: [{
+                            type: "projectile",
+                            projectile: "penPlayer",
+                            amount: 1,
+                            cooldown: 0.5,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 2 //2 Base Damage
+                        }
+                    }
+                },
+                {
+                    activeEffects: [{
+                            type: "projectile",
+                            projectile: "penPlayer",
+                            amount: 2,
+                            cooldown: 0.5,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 2 //2 Base Damage
+                        }
+                    }
+                },
+                {
+                    activeEffects: [{
+                            type: "projectile",
+                            projectile: "penPlayer",
+                            amount: 2,
+                            cooldown: 0.5,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 4 //2 Base Damage
+                        }
+                    }
+                },
+                {
+                    activeEffects: [{
+                            type: "projectile",
+                            projectile: "penPlayer",
+                            amount: 3,
+                            cooldown: 0.4,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 4 //2 Base Damage
+                        }
+                    }
+                },
+            ]
+        },
+        "Lightbulb": {
+            image: "Bulb.png",
+            rarity: Script.CardRarity.COMMON,
+            name: "Lightbulb",
+            levels: [
+                {
+                    activeEffects: [{
+                            type: "aoe",
+                            aoe: "lightbulbPlayer",
+                            cooldown: 5,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 0,
+                            effectDuration: 0 //1 Base Duration
+                        }
+                    }
+                },
+                {
+                    activeEffects: [{
+                            type: "aoe",
+                            aoe: "lightbulbPlayer",
+                            cooldown: 5,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 1,
+                            effectDuration: 0 //1 Base Duration
+                        }
+                    }
+                },
+                {
+                    activeEffects: [{
+                            type: "aoe",
+                            aoe: "lightbulbPlayer",
+                            cooldown: 5,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 1,
+                            effectDuration: 0.5 //1 Base Duration
+                        }
+                    }
+                },
+                {
+                    activeEffects: [{
+                            type: "aoe",
+                            aoe: "lightbulbPlayer",
+                            cooldown: 4,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 1,
+                            effectDuration: 0.5 //1 Base Duration
+                        }
+                    }
+                },
+                {
+                    activeEffects: [{
+                            type: "aoe",
+                            aoe: "lightbulbPlayer",
+                            cooldown: 4,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 3,
+                            effectDuration: 1 //1 Base Duration
+                        }
+                    }
+                },
+            ]
+        },
+        "Smoke Mask": {
+            image: "SmokeMask.png",
+            rarity: Script.CardRarity.COMMON,
+            name: "Smoke Mask",
+            levels: [
+                {
+                    activeEffects: [{
+                            type: "aoe",
+                            aoe: "smokeMaskPlayer",
+                            cooldown: 2,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 0 //2 Base Damage
+                        }
+                    }
+                },
+                {
+                    activeEffects: [{
+                            type: "aoe",
+                            aoe: "smokeMaskPlayer",
+                            cooldown: 2,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 1 //2 Base Damage
+                        }
+                    }
+                },
+                {
+                    activeEffects: [{
+                            type: "aoe",
+                            aoe: "smokeMaskPlayer",
+                            cooldown: 1.5,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 1 //2 Base Damage
+                        }
+                    }
+                },
+                {
+                    activeEffects: [{
+                            type: "aoe",
+                            aoe: "smokeMaskPlayer",
+                            cooldown: 1,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 2 //2 Base Damage
+                        }
+                    }
+                },
+                {
+                    activeEffects: [{
+                            type: "aoe",
+                            aoe: "smokeMaskPlayer",
+                            cooldown: 1,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 3, //2 Base Damage
+                        },
+                        multiplier: {
+                            projectileSize: 1.5
+                        }
+                    }
+                },
+            ]
+        },
+        "Discus": {
+            image: "Discus.png",
+            rarity: Script.CardRarity.COMMON,
+            name: "Discus",
+            levels: [
+                {
+                    activeEffects: [{
+                            type: "projectile",
+                            projectile: "discusPlayer",
+                            amount: 1,
+                            cooldown: 3,
+                        }],
+                    passiveEffects: {
+                        absolute: {
+                            damage: 0 //5 Base Damage
+                        }
+                    }
+                },
+            ]
+        },
+        "Civil Code": {
+            image: "CivilCode.png",
+            rarity: Script.CardRarity.COMMON,
+            name: "Civil Code",
+            levels: []
+        },
+        "Divider": {
+            image: "Divider.png",
+            rarity: Script.CardRarity.COMMON,
+            name: "Divider",
+            levels: []
+        },
+        "Needles": {
+            image: "Needles.png",
+            rarity: Script.CardRarity.COMMON,
+            name: "Needles",
+            levels: []
+        },
+        "Chisel": {
+            image: "Chisel.png",
+            rarity: Script.CardRarity.COMMON,
+            name: "Chisel",
             levels: []
         },
         "Helmet": {
             image: "Helmet.png",
             rarity: Script.CardRarity.COMMON,
-            name: "helmet",
+            name: "Helmet",
             levels: []
         },
         "Safety Boots": {
             image: "SafetyBoots.png",
             rarity: Script.CardRarity.COMMON,
-            name: "safety boots",
+            name: "Safety Boots",
             levels: []
         },
         "Microphone": {
@@ -1375,12 +1734,6 @@ var Script;
             image: "Gavel.png",
             rarity: Script.CardRarity.COMMON,
             name: "Gavel",
-            levels: []
-        },
-        "Lightbulb": {
-            image: "Bulb.png",
-            rarity: Script.CardRarity.COMMON,
-            name: "Lightbulb",
             levels: []
         },
         "First Aid Kit": {
@@ -1416,42 +1769,6 @@ var Script;
             image: "Drone.png",
             rarity: Script.CardRarity.COMMON,
             name: "Drone",
-            levels: []
-        },
-        "Smoke Mask": {
-            image: "SmokeMask.png",
-            rarity: Script.CardRarity.COMMON,
-            name: "Smoke Mask",
-            levels: []
-        },
-        "Discus": {
-            image: "Discus.png",
-            rarity: Script.CardRarity.COMMON,
-            name: "Discus",
-            levels: []
-        },
-        "Civil Code": {
-            image: "CivilCode.png",
-            rarity: Script.CardRarity.COMMON,
-            name: "Civil Code",
-            levels: []
-        },
-        "Divider": {
-            image: "Divider.png",
-            rarity: Script.CardRarity.COMMON,
-            name: "Divider",
-            levels: []
-        },
-        "Needles": {
-            image: "Needles.png",
-            rarity: Script.CardRarity.COMMON,
-            name: "Needles",
-            levels: []
-        },
-        "Basic": {
-            image: "Basic.png",
-            rarity: Script.CardRarity.COMMON,
-            name: "Basic",
             levels: []
         },
         "Pills": {
@@ -1707,7 +2024,7 @@ var Script;
             levels: []
         },
         "Training": {
-            image: "Training.png",
+            image: "Training.gif",
             rarity: Script.CardRarity.LEGENDARY,
             name: "Training",
             levels: []
