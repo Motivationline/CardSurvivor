@@ -5,8 +5,8 @@ namespace Script {
 
         constructor() {
             this.currentlyActiveCards.push(
-                new Card(cards["anvil"], 0),
-                new Card(cards["testSize"], 1),
+                // new Card(cards["anvil"], 0),
+                // new Card(cards["testSize"], 1),
             );
             this.updateEffects();
             ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
