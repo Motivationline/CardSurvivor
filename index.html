@@ -63,12 +63,29 @@
         <!-- debug -->
         <span id="timer">0:00</span>
         <span style="margin-left: 1rem;">V - next wave, B - end room, N - next room, K - kill 5 enemies</span>
+        <div id="game-overlay-pause">
+            <span></span><span></span>
+        </div>
     </div>
     <div class="overlay hidden" id="pause-overlay">
+        <h2>Paused</h2>
+        <button id="pause-quit">Quit Run</button>
+        <button id="pause-resume">Resume</button>
+    </div>
+    <div id="end-confirm" class="overlay hidden">
+        <h2>Are you sure you want to quit?</h2>
+        <h3>All unsaved progress will be lost.</h3>
+        <button id="end-abort">No, Cancel</button>
+        <button id="end-quit">Yes, Quit</button>
+    </div>
+    <div class="overlay hidden" id="settings-overlay">
+        <h2>Settings</h2>
+        <button id="settings-menu">Menu</button>
     </div>
     <div class="overlay" id="main-menu-overlay">
-        <button onclick="showDeck()">Deck</button>
-        <button onclick="showGame()">Game</button>
+        <h1>Card Survivor</h1>
+        <button id="main-menu-deck">Deck</button>
+        <button id="main-menu-game">Game</button>
     </div>
     <div class="overlay" id="collection-overlay">
         <input type="checkbox" name="largeDeck" id="largeDeck" hidden>
@@ -126,15 +143,6 @@
             </div>
         </div>
     </template>
-    <script>
-        function showGame() {
-            document.getElementById("main-menu-overlay").classList.add("hidden");
-        }
-        function showDeck() {
-            document.getElementById("main-menu-overlay").classList.add("hidden");
-            document.getElementById("collection-overlay").classList.remove("hidden");
-        }
-    </script>
 
 </body>
 

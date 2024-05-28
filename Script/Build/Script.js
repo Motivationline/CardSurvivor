@@ -467,7 +467,8 @@ var Script;
             .add(Script.AnimationManager)
             .add(Script.CardManager)
             .add(Script.DataManager)
-            .add(Script.CardCollection);
+            .add(Script.CardCollection)
+            .add(Script.MenuManager);
         const dataManager = Script.provider.get(Script.DataManager);
         await dataManager.load();
         const config = Script.provider.get(Script.Config);
@@ -482,6 +483,8 @@ var Script;
         cardManager.updateEffects();
         const cardCollector = Script.provider.get(Script.CardCollection);
         cardCollector.setup();
+        const menuManager = Script.provider.get(Script.MenuManager);
+        menuManager.setup();
     }
     function start(_event) {
         viewport = _event.detail;
@@ -915,6 +918,72 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
+    class Card {
+        name;
+        description;
+        image;
+        rarity;
+        levels;
+        #level;
+        #cm;
+        #pm;
+        #charm;
+        constructor(_init, _level = 0, _nameFallback = "unknown") {
+            this.name = _init.name ?? `card.${_nameFallback}.name`;
+            this.description = _init.description ?? i18next.t(`card.${_nameFallback}.description`);
+            this.image = _init.image;
+            this.rarity = _init.rarity;
+            this.levels = _init.levels;
+            this.level = _level;
+            this.#cm = Script.provider.get(Script.CardManager);
+            this.#pm = Script.provider.get(Script.ProjectileManager);
+            this.#charm = Script.provider.get(Script.CharacterManager);
+        }
+        get level() {
+            return this.#level;
+        }
+        set level(_level) {
+            this.#level = Math.max(0, Math.min(this.levels.length, _level));
+        }
+        get effects() {
+            return structuredClone(this.levels[this.level].passiveEffects);
+        }
+        update(_time, _cumulatedEffects) {
+            if (!this.levels[this.level].activeEffects || !this.levels[this.level].activeEffects.length)
+                return;
+            for (let effect of this.levels[this.level].activeEffects) {
+                if (isNaN(effect.currentCooldown))
+                    effect.currentCooldown = 0;
+                effect.currentCooldown -= _time;
+                if (effect.currentCooldown <= 0) {
+                    effect.currentCooldown = this.#cm.modifyValuePlayer(effect.cooldown, Script.PassiveCardEffect.COOLDOWN_REDUCTION, effect.modifiers);
+                    switch (effect.type) {
+                        case "projectile":
+                            for (let i = 0; i < (effect.amount ?? 1); i++) {
+                                setTimeout(() => {
+                                    let pos = this.#charm.character.node.mtxWorld.translation.clone;
+                                    if (effect.offset) {
+                                        if (typeof effect.offset === "string") {
+                                            pos.add(eval(effect.offset));
+                                        }
+                                        else {
+                                            pos.add(effect.offset);
+                                        }
+                                    }
+                                    let projectile = Script.projectiles[effect.projectile];
+                                    this.#pm.createProjectile(projectile, pos, _cumulatedEffects, projectile.lockedToEntity ? this.#charm.character.node : undefined);
+                                }, i * (effect.delay ?? 0));
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+    }
+    Script.Card = Card;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
     class CardCollection {
         collection;
         deck;
@@ -1057,8 +1126,7 @@ var Script;
             document.getElementById("card-popup-close").querySelector("button").addEventListener("click", () => { this.hidePopup(); });
             document.getElementById("deck-back-button").querySelector("button").addEventListener("click", () => {
                 this.hidePopup();
-                document.getElementById("main-menu-overlay").classList.remove("hidden");
-                document.getElementById("collection-overlay").classList.add("hidden");
+                Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.MAIN);
             });
             this.popupButtons.selectionTo.addEventListener("click", () => { this.addCardToSelection(this.selectedCard); this.hidePopup(); });
             this.popupButtons.selectionFrom.addEventListener("click", () => { this.removeCardFromSelection(this.selectedCard); this.hidePopup(); });
@@ -1245,7 +1313,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 0,
+                            damage: 0, //8 Base Damage
                             projectilePiercing: 2
                         }
                     }
@@ -1259,7 +1327,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 4,
+                            damage: 4, //8 Base Damage
                             projectilePiercing: 2
                         }
                     }
@@ -1273,7 +1341,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 4,
+                            damage: 4, //8 Base Damage
                             projectilePiercing: 2
                         }
                     }
@@ -1287,7 +1355,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 7,
+                            damage: 7, //8 Base Damage
                             projectilePiercing: 3
                         }
                     }
@@ -1301,7 +1369,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 7,
+                            damage: 7, //8 Base Damage
                             projectilePiercing: 4
                         }
                     }
@@ -1465,7 +1533,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 0,
+                            damage: 0, //5 Base Damage
                             effectDuration: 0 //1 Base Duration
                         }
                     }
@@ -1478,7 +1546,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 1,
+                            damage: 1, //5 Base Damage
                             effectDuration: 0 //1 Base Duration
                         }
                     }
@@ -1491,7 +1559,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 1,
+                            damage: 1, //5 Base Damage
                             effectDuration: 0.5 //1 Base Duration
                         }
                     }
@@ -1504,7 +1572,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 1,
+                            damage: 1, //5 Base Damage
                             effectDuration: 0.5 //1 Base Duration
                         }
                     }
@@ -1517,7 +1585,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 3,
+                            damage: 3, //5 Base Damage
                             effectDuration: 1 //1 Base Duration
                         }
                     }
@@ -1762,7 +1830,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 0,
+                            damage: 0, //5 Base Damage
                             projectilePiercing: 3
                         }
                     }
@@ -1776,7 +1844,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 2,
+                            damage: 2, //5 Base Damage
                             projectilePiercing: 3
                         }
                     }
@@ -1790,7 +1858,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 2,
+                            damage: 2, //5 Base Damage
                             projectilePiercing: 3
                         }
                     }
@@ -1804,7 +1872,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 3,
+                            damage: 3, //5 Base Damage
                             projectilePiercing: 4
                         }
                     }
@@ -1818,7 +1886,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 5,
+                            damage: 5, //5 Base Damage
                             projectilePiercing: 6
                         }
                     }
@@ -3127,6 +3195,72 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
+    class CardManager {
+        currentlyActiveCards = [];
+        cumulativeEffects = { absolute: {}, multiplier: {} };
+        constructor() {
+            this.currentlyActiveCards.push(
+            // new Card(cards["anvil"], 0),
+            // new Card(cards["testSize"], 1),
+            );
+            this.updateEffects();
+            Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
+        }
+        update = () => {
+            if (Script.gameState !== Script.GAMESTATE.PLAYING)
+                return;
+            let time = Script.ƒ.Loop.timeFrameGame / 1000;
+            for (let card of this.currentlyActiveCards) {
+                card.update(time, this.combineEffects(this.cumulativeEffects, card.effects));
+            }
+        };
+        getEffectAbsolute(_effect, _modifier = this.cumulativeEffects) {
+            return _modifier.absolute?.[_effect] ?? 0;
+        }
+        getEffectMultiplier(_effect, _modifier = this.cumulativeEffects) {
+            return _modifier.multiplier?.[_effect] ?? 1;
+        }
+        modifyValuePlayer(_value, _effect, _localModifiers) {
+            if (_localModifiers) {
+                _value = (_value + this.getEffectAbsolute(_effect, _localModifiers)) * this.getEffectMultiplier(_effect, _localModifiers);
+            }
+            return (_value + this.getEffectAbsolute(_effect)) * this.getEffectMultiplier(_effect);
+        }
+        modifyValue(_value, _effect, _modifier) {
+            if (!_modifier)
+                return _value;
+            return (_value + this.getEffectAbsolute(_effect, _modifier)) * this.getEffectMultiplier(_effect, _modifier);
+        }
+        updateEffects() {
+            let cardEffects = [];
+            for (let card of this.currentlyActiveCards) {
+                let effects = card.effects;
+                if (!effects)
+                    continue;
+                cardEffects.push(effects);
+            }
+            this.cumulativeEffects = this.combineEffects(...cardEffects);
+        }
+        combineEffects(..._effects) {
+            let combined = { absolute: {}, multiplier: {} };
+            for (let effectObj of _effects) {
+                if (!effectObj)
+                    continue;
+                let effect;
+                for (effect in effectObj.absolute) {
+                    combined.absolute[effect] = (combined.absolute[effect] ?? 0) + effectObj.absolute[effect];
+                }
+                for (effect in effectObj.multiplier) {
+                    combined.multiplier[effect] = (combined.multiplier[effect] ?? 1) * effectObj.multiplier[effect];
+                }
+            }
+            return combined;
+        }
+    }
+    Script.CardManager = CardManager;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
     class Config {
         animations;
         constructor() {
@@ -3618,7 +3752,57 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
+    let MenuType;
+    (function (MenuType) {
+        MenuType[MenuType["NONE"] = 0] = "NONE";
+        MenuType[MenuType["MAIN"] = 1] = "MAIN";
+        MenuType[MenuType["COLLECTION"] = 2] = "COLLECTION";
+        MenuType[MenuType["SETTINGS"] = 3] = "SETTINGS";
+        MenuType[MenuType["PAUSE"] = 4] = "PAUSE";
+        MenuType[MenuType["END_CONFIRM"] = 5] = "END_CONFIRM";
+    })(MenuType = Script.MenuType || (Script.MenuType = {}));
     class MenuManager {
+        menus = new Map();
+        prevGameState = Script.GAMESTATE.PLAYING;
+        setup() {
+            let main = document.getElementById("main-menu-overlay");
+            this.menus.set(MenuType.MAIN, main);
+            this.menus.set(MenuType.COLLECTION, document.getElementById("collection-overlay"));
+            this.menus.set(MenuType.SETTINGS, document.getElementById("settings-overlay"));
+            this.menus.set(MenuType.PAUSE, document.getElementById("pause-overlay"));
+            this.menus.set(MenuType.END_CONFIRM, document.getElementById("end-confirm"));
+            main.querySelector("#main-menu-deck").addEventListener("click", () => { this.openMenu(MenuType.COLLECTION); });
+            main.querySelector("#main-menu-game").addEventListener("click", () => {
+                this.openMenu(MenuType.NONE);
+                Script.gameState = Script.GAMESTATE.PLAYING;
+            });
+            document.getElementById("game-overlay-pause").addEventListener("click", () => {
+                this.openMenu(MenuType.PAUSE);
+                if (Script.gameState !== Script.GAMESTATE.PAUSED)
+                    this.prevGameState = Script.gameState;
+                Script.gameState = Script.GAMESTATE.PAUSED;
+            });
+            document.getElementById("pause-resume").addEventListener("click", () => {
+                this.openMenu(MenuType.NONE);
+                Script.gameState = this.prevGameState;
+            });
+            document.getElementById("pause-quit").addEventListener("click", () => { this.openMenu(MenuType.END_CONFIRM); });
+            document.getElementById("end-abort").addEventListener("click", () => { this.openMenu(MenuType.PAUSE); });
+            document.getElementById("end-quit").addEventListener("click", () => {
+                this.openMenu(MenuType.MAIN);
+                //TODO handle game abort.
+            });
+        }
+        openMenu(_menu) {
+            for (let menu of this.menus.entries()) {
+                if (menu[0] === _menu) {
+                    menu[1].classList.remove("hidden");
+                }
+                else {
+                    menu[1].classList.add("hidden");
+                }
+            }
+        }
     }
     Script.MenuManager = MenuManager;
 })(Script || (Script = {}));
@@ -3722,137 +3906,5 @@ var Script;
         }
     }
     Script.ProjectileManager = ProjectileManager;
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
-    class CardManager {
-        currentlyActiveCards = [];
-        cumulativeEffects = { absolute: {}, multiplier: {} };
-        constructor() {
-            this.currentlyActiveCards.push(
-            // new Card(cards["anvil"], 0),
-            // new Card(cards["testSize"], 1),
-            );
-            this.updateEffects();
-            Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
-        }
-        update = () => {
-            if (Script.gameState !== Script.GAMESTATE.PLAYING)
-                return;
-            let time = Script.ƒ.Loop.timeFrameGame / 1000;
-            for (let card of this.currentlyActiveCards) {
-                card.update(time, this.combineEffects(this.cumulativeEffects, card.effects));
-            }
-        };
-        getEffectAbsolute(_effect, _modifier = this.cumulativeEffects) {
-            return _modifier.absolute?.[_effect] ?? 0;
-        }
-        getEffectMultiplier(_effect, _modifier = this.cumulativeEffects) {
-            return _modifier.multiplier?.[_effect] ?? 1;
-        }
-        modifyValuePlayer(_value, _effect, _localModifiers) {
-            if (_localModifiers) {
-                _value = (_value + this.getEffectAbsolute(_effect, _localModifiers)) * this.getEffectMultiplier(_effect, _localModifiers);
-            }
-            return (_value + this.getEffectAbsolute(_effect)) * this.getEffectMultiplier(_effect);
-        }
-        modifyValue(_value, _effect, _modifier) {
-            if (!_modifier)
-                return _value;
-            return (_value + this.getEffectAbsolute(_effect, _modifier)) * this.getEffectMultiplier(_effect, _modifier);
-        }
-        updateEffects() {
-            let cardEffects = [];
-            for (let card of this.currentlyActiveCards) {
-                let effects = card.effects;
-                if (!effects)
-                    continue;
-                cardEffects.push(effects);
-            }
-            this.cumulativeEffects = this.combineEffects(...cardEffects);
-        }
-        combineEffects(..._effects) {
-            let combined = { absolute: {}, multiplier: {} };
-            for (let effectObj of _effects) {
-                if (!effectObj)
-                    continue;
-                let effect;
-                for (effect in effectObj.absolute) {
-                    combined.absolute[effect] = (combined.absolute[effect] ?? 0) + effectObj.absolute[effect];
-                }
-                for (effect in effectObj.multiplier) {
-                    combined.multiplier[effect] = (combined.multiplier[effect] ?? 1) * effectObj.multiplier[effect];
-                }
-            }
-            return combined;
-        }
-    }
-    Script.CardManager = CardManager;
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
-    class Card {
-        name;
-        description;
-        image;
-        rarity;
-        levels;
-        #level;
-        #cm;
-        #pm;
-        #charm;
-        constructor(_init, _level = 0, _nameFallback = "unknown") {
-            this.name = _init.name ?? `card.${_nameFallback}.name`;
-            this.description = _init.description ?? i18next.t(`card.${_nameFallback}.description`);
-            this.image = _init.image;
-            this.rarity = _init.rarity;
-            this.levels = _init.levels;
-            this.level = _level;
-            this.#cm = Script.provider.get(Script.CardManager);
-            this.#pm = Script.provider.get(Script.ProjectileManager);
-            this.#charm = Script.provider.get(Script.CharacterManager);
-        }
-        get level() {
-            return this.#level;
-        }
-        set level(_level) {
-            this.#level = Math.max(0, Math.min(this.levels.length, _level));
-        }
-        get effects() {
-            return structuredClone(this.levels[this.level].passiveEffects);
-        }
-        update(_time, _cumulatedEffects) {
-            if (!this.levels[this.level].activeEffects || !this.levels[this.level].activeEffects.length)
-                return;
-            for (let effect of this.levels[this.level].activeEffects) {
-                if (isNaN(effect.currentCooldown))
-                    effect.currentCooldown = 0;
-                effect.currentCooldown -= _time;
-                if (effect.currentCooldown <= 0) {
-                    effect.currentCooldown = this.#cm.modifyValuePlayer(effect.cooldown, Script.PassiveCardEffect.COOLDOWN_REDUCTION, effect.modifiers);
-                    switch (effect.type) {
-                        case "projectile":
-                            for (let i = 0; i < (effect.amount ?? 1); i++) {
-                                setTimeout(() => {
-                                    let pos = this.#charm.character.node.mtxWorld.translation.clone;
-                                    if (effect.offset) {
-                                        if (typeof effect.offset === "string") {
-                                            pos.add(eval(effect.offset));
-                                        }
-                                        else {
-                                            pos.add(effect.offset);
-                                        }
-                                    }
-                                    let projectile = Script.projectiles[effect.projectile];
-                                    this.#pm.createProjectile(projectile, pos, _cumulatedEffects, projectile.lockedToEntity ? this.#charm.character.node : undefined);
-                                }, i * (effect.delay ?? 0));
-                            }
-                            break;
-                    }
-                }
-            }
-        }
-    }
-    Script.Card = Card;
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map
