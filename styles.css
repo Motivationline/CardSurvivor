@@ -443,6 +443,7 @@ progress[value]::-moz-progress-bar {
   display: none;
   pointer-events: all;
   z-index: 1000;
+  background-color: transparent;
 }
 
 .touch-circle {
