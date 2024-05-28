@@ -915,6 +915,72 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
+    class Card {
+        name;
+        description;
+        image;
+        rarity;
+        levels;
+        #level;
+        #cm;
+        #pm;
+        #charm;
+        constructor(_init, _level = 0, _nameFallback = "unknown") {
+            this.name = _init.name ?? `card.${_nameFallback}.name`;
+            this.description = _init.description ?? i18next.t(`card.${_nameFallback}.description`);
+            this.image = _init.image;
+            this.rarity = _init.rarity;
+            this.levels = _init.levels;
+            this.level = _level;
+            this.#cm = Script.provider.get(Script.CardManager);
+            this.#pm = Script.provider.get(Script.ProjectileManager);
+            this.#charm = Script.provider.get(Script.CharacterManager);
+        }
+        get level() {
+            return this.#level;
+        }
+        set level(_level) {
+            this.#level = Math.max(0, Math.min(this.levels.length, _level));
+        }
+        get effects() {
+            return structuredClone(this.levels[this.level].passiveEffects);
+        }
+        update(_time, _cumulatedEffects) {
+            if (!this.levels[this.level].activeEffects || !this.levels[this.level].activeEffects.length)
+                return;
+            for (let effect of this.levels[this.level].activeEffects) {
+                if (isNaN(effect.currentCooldown))
+                    effect.currentCooldown = 0;
+                effect.currentCooldown -= _time;
+                if (effect.currentCooldown <= 0) {
+                    effect.currentCooldown = this.#cm.modifyValuePlayer(effect.cooldown, Script.PassiveCardEffect.COOLDOWN_REDUCTION, effect.modifiers);
+                    switch (effect.type) {
+                        case "projectile":
+                            for (let i = 0; i < (effect.amount ?? 1); i++) {
+                                setTimeout(() => {
+                                    let pos = this.#charm.character.node.mtxWorld.translation.clone;
+                                    if (effect.offset) {
+                                        if (typeof effect.offset === "string") {
+                                            pos.add(eval(effect.offset));
+                                        }
+                                        else {
+                                            pos.add(effect.offset);
+                                        }
+                                    }
+                                    let projectile = Script.projectiles[effect.projectile];
+                                    this.#pm.createProjectile(projectile, pos, _cumulatedEffects, projectile.lockedToEntity ? this.#charm.character.node : undefined);
+                                }, i * (effect.delay ?? 0));
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+    }
+    Script.Card = Card;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
     class CardCollection {
         collection;
         deck;
@@ -2186,36 +2252,36 @@ var Script;
             levels: [
                 {
                     passiveEffects: {
-                        multiplier: {
-                            movementSpeed: 1.05,
+                        absolute: {
+                            movementSpeed: 0.5,
                         }
                     }
                 },
                 {
                     passiveEffects: {
-                        multiplier: {
-                            movementSpeed: 1.15,
+                        absolute: {
+                            movementSpeed: 1,
                         }
                     }
                 },
                 {
                     passiveEffects: {
-                        multiplier: {
-                            movementSpeed: 1.3,
+                        absolute: {
+                            movementSpeed: 2,
                         }
                     }
                 },
                 {
                     passiveEffects: {
-                        multiplier: {
-                            movementSpeed: 1.5,
+                        absolute: {
+                            movementSpeed: 3,
                         }
                     }
                 },
                 {
                     passiveEffects: {
-                        multiplier: {
-                            movementSpeed: 1.75,
+                        absolute: {
+                            movementSpeed: 5,
                         }
                     }
                 },
@@ -2393,91 +2459,643 @@ var Script;
             image: "Pills.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Pills",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            effectDuration: 1.2
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            effectDuration: 1.3
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            effectDuration: 1.5
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            effectDuration: 1.7
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            effectDuration: 2
+                        }
+                    }
+                },
+            ]
         },
         "Fire Hose": {
             image: "FireHose.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Fire Hose",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            knockback: 1.1
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            knockback: 1.15
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            knockback: 1.25
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            knockback: 1.4
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            knockback: 1.6
+                        }
+                    }
+                },
+            ]
         },
         "Syringe": {
             image: "Syrringe.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Syringe",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            regeneration: 1.01 //TODO: Double check if this actually works correctly xD
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            regeneration: 1.02 //TODO: Double check if this actually works correctly xD
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            regeneration: 1.03 //TODO: Double check if this actually works correctly xD
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            regeneration: 1.05 //TODO: Double check if this actually works correctly xD
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            regeneration: 1.1 //TODO: Double check if this actually works correctly xD
+                        }
+                    }
+                },
+            ]
         },
         "Sketchbook": {
             image: "Sketchbook.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Sketchbook",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +5% increased effect radius
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +10% increased effect radius
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +20% increased effect radius
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +30% increased effect radius
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +50% increased effect radius
+                        }
+                    }
+                },
+            ]
         },
         "Plow": {
             image: "Plow.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Plow",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -2% enemy speed
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -5% enemy speed
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -10% enemy speed
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -15% enemy speed
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -25% enemy speed
+                        }
+                    }
+                },
+            ]
         },
         "Jump Rope": {
             image: "JumpRope.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Jump Rope",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +5% dodge chance
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +10% dodge chance
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +20% dodge chance
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +30% dodge chance
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +50% dodge chance
+                        }
+                    }
+                },
+            ]
         },
         "Tape Measure": {
             image: "TapeMeasure.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Tape Measure",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -5% enemy projectile speed
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -10% enemy projectile speed
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -20% enemy projectile speed
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -30% enemy projectile speed
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -50% enemy projectile speed
+                        }
+                    }
+                },
+            ]
         },
         "LegalWig": {
             image: "LegalWig.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Legal Wig",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -5% enemies, +5% enemy stats
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -10% enemies, +10% enemy stats
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -20% enemies, +20% enemy stats
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -30% enemies, +30% enemy stats
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -50% enemies, +50% enemy stats
+                        }
+                    }
+                },
+            ]
         },
         "Toolbelt": {
             image: "Toolbelt.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Toolbelt",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +1% damage for every weapon equipped
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +2% damage for every weapon equipped
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +5% damage for every weapon equipped
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +10% damage for every weapon equipped
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +20% damage for every weapon equipped
+                        }
+                    }
+                },
+            ]
         },
         "Razor": {
             image: "Razor.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Razor",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +1% attack speed every time you take damage (resets each room).
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +2% attack speed every time you take damage (resets each room).
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +3% attack speed every time you take damage (resets each room).
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +5% attack speed every time you take damage (resets each room).
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +1% permanent attack speed every time you take damage.
+                        }
+                    }
+                },
+            ]
         },
         "Binder": {
             image: "Binder.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Binder",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            damage: 1.05
+                            //TODO: only increased damage against bosses and elites
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            damage: 1.1
+                            //TODO: only increased damage against bosses and elites
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            damage: 1.2
+                            //TODO: only increased damage against bosses and elites
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            damage: 1.4
+                            //TODO: only increased damage against bosses and elites
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            damage: 1.75
+                            //TODO: only increased damage against bosses and elites
+                        }
+                    }
+                },
+            ]
         },
         "Flashlight": {
             image: "Flashlight.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Flashlight",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        absolute: {
+                            health: 20
+                            //TODO: start the room with 90% health
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        absolute: {
+                            health: 40
+                            //TODO: start the room with 75% health
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        absolute: {
+                            health: 75
+                            //TODO: start the room with 50% health
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        absolute: {
+                            health: 100
+                            //TODO: start the room with 25% health
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        absolute: {
+                            health: 150
+                            //TODO: start the room with 25% health
+                        }
+                    }
+                },
+            ]
         },
         "Hard Drive": {
             image: "HardDrive.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Hard Drive",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: 2% more enemies
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: 5% more enemies
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: 10% more enemies
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: 15% more enemies
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: 25% more enemies
+                        }
+                    }
+                },
+            ]
         },
         "Stethoscope": {
             image: "Stethoscope.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Stethoscope",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +1% damage every time you heal (resets each room).
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +2% damage every time you heal (resets each room).
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +3% damage every time you heal (resets each room).
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +5% damage every time you heal (resets each room).
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +1% permanent damage every time you heal.
+                        }
+                    }
+                },
+            ]
         },
         "Apple": {
             image: "Apple.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Apple",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        absolute: {
+                        //TODO: +0.5 health for every enemy that spawns.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        absolute: {
+                        //TODO: +1 health for every enemy that spawns.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        absolute: {
+                        //TODO: +2 health for every enemy that spawns.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        absolute: {
+                            health: 100
+                            //TODO: +3 health for every enemy that spawns.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        absolute: {
+                            health: 150
+                            //TODO: +5 health for every enemy that spawns.
+                        }
+                    }
+                },
+            ]
         },
         // ---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---
         "Magnifying Glass": {
@@ -3127,6 +3745,72 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
+    class CardManager {
+        currentlyActiveCards = [];
+        cumulativeEffects = { absolute: {}, multiplier: {} };
+        constructor() {
+            this.currentlyActiveCards.push(
+            // new Card(cards["anvil"], 0),
+            // new Card(cards["testSize"], 1),
+            );
+            this.updateEffects();
+            Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
+        }
+        update = () => {
+            if (Script.gameState !== Script.GAMESTATE.PLAYING)
+                return;
+            let time = Script.ƒ.Loop.timeFrameGame / 1000;
+            for (let card of this.currentlyActiveCards) {
+                card.update(time, this.combineEffects(this.cumulativeEffects, card.effects));
+            }
+        };
+        getEffectAbsolute(_effect, _modifier = this.cumulativeEffects) {
+            return _modifier.absolute?.[_effect] ?? 0;
+        }
+        getEffectMultiplier(_effect, _modifier = this.cumulativeEffects) {
+            return _modifier.multiplier?.[_effect] ?? 1;
+        }
+        modifyValuePlayer(_value, _effect, _localModifiers) {
+            if (_localModifiers) {
+                _value = (_value + this.getEffectAbsolute(_effect, _localModifiers)) * this.getEffectMultiplier(_effect, _localModifiers);
+            }
+            return (_value + this.getEffectAbsolute(_effect)) * this.getEffectMultiplier(_effect);
+        }
+        modifyValue(_value, _effect, _modifier) {
+            if (!_modifier)
+                return _value;
+            return (_value + this.getEffectAbsolute(_effect, _modifier)) * this.getEffectMultiplier(_effect, _modifier);
+        }
+        updateEffects() {
+            let cardEffects = [];
+            for (let card of this.currentlyActiveCards) {
+                let effects = card.effects;
+                if (!effects)
+                    continue;
+                cardEffects.push(effects);
+            }
+            this.cumulativeEffects = this.combineEffects(...cardEffects);
+        }
+        combineEffects(..._effects) {
+            let combined = { absolute: {}, multiplier: {} };
+            for (let effectObj of _effects) {
+                if (!effectObj)
+                    continue;
+                let effect;
+                for (effect in effectObj.absolute) {
+                    combined.absolute[effect] = (combined.absolute[effect] ?? 0) + effectObj.absolute[effect];
+                }
+                for (effect in effectObj.multiplier) {
+                    combined.multiplier[effect] = (combined.multiplier[effect] ?? 1) * effectObj.multiplier[effect];
+                }
+            }
+            return combined;
+        }
+    }
+    Script.CardManager = CardManager;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
     class Config {
         animations;
         constructor() {
@@ -3722,137 +4406,5 @@ var Script;
         }
     }
     Script.ProjectileManager = ProjectileManager;
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
-    class CardManager {
-        currentlyActiveCards = [];
-        cumulativeEffects = { absolute: {}, multiplier: {} };
-        constructor() {
-            this.currentlyActiveCards.push(
-            // new Card(cards["anvil"], 0),
-            // new Card(cards["testSize"], 1),
-            );
-            this.updateEffects();
-            Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
-        }
-        update = () => {
-            if (Script.gameState !== Script.GAMESTATE.PLAYING)
-                return;
-            let time = Script.ƒ.Loop.timeFrameGame / 1000;
-            for (let card of this.currentlyActiveCards) {
-                card.update(time, this.combineEffects(this.cumulativeEffects, card.effects));
-            }
-        };
-        getEffectAbsolute(_effect, _modifier = this.cumulativeEffects) {
-            return _modifier.absolute?.[_effect] ?? 0;
-        }
-        getEffectMultiplier(_effect, _modifier = this.cumulativeEffects) {
-            return _modifier.multiplier?.[_effect] ?? 1;
-        }
-        modifyValuePlayer(_value, _effect, _localModifiers) {
-            if (_localModifiers) {
-                _value = (_value + this.getEffectAbsolute(_effect, _localModifiers)) * this.getEffectMultiplier(_effect, _localModifiers);
-            }
-            return (_value + this.getEffectAbsolute(_effect)) * this.getEffectMultiplier(_effect);
-        }
-        modifyValue(_value, _effect, _modifier) {
-            if (!_modifier)
-                return _value;
-            return (_value + this.getEffectAbsolute(_effect, _modifier)) * this.getEffectMultiplier(_effect, _modifier);
-        }
-        updateEffects() {
-            let cardEffects = [];
-            for (let card of this.currentlyActiveCards) {
-                let effects = card.effects;
-                if (!effects)
-                    continue;
-                cardEffects.push(effects);
-            }
-            this.cumulativeEffects = this.combineEffects(...cardEffects);
-        }
-        combineEffects(..._effects) {
-            let combined = { absolute: {}, multiplier: {} };
-            for (let effectObj of _effects) {
-                if (!effectObj)
-                    continue;
-                let effect;
-                for (effect in effectObj.absolute) {
-                    combined.absolute[effect] = (combined.absolute[effect] ?? 0) + effectObj.absolute[effect];
-                }
-                for (effect in effectObj.multiplier) {
-                    combined.multiplier[effect] = (combined.multiplier[effect] ?? 1) * effectObj.multiplier[effect];
-                }
-            }
-            return combined;
-        }
-    }
-    Script.CardManager = CardManager;
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
-    class Card {
-        name;
-        description;
-        image;
-        rarity;
-        levels;
-        #level;
-        #cm;
-        #pm;
-        #charm;
-        constructor(_init, _level = 0, _nameFallback = "unknown") {
-            this.name = _init.name ?? `card.${_nameFallback}.name`;
-            this.description = _init.description ?? i18next.t(`card.${_nameFallback}.description`);
-            this.image = _init.image;
-            this.rarity = _init.rarity;
-            this.levels = _init.levels;
-            this.level = _level;
-            this.#cm = Script.provider.get(Script.CardManager);
-            this.#pm = Script.provider.get(Script.ProjectileManager);
-            this.#charm = Script.provider.get(Script.CharacterManager);
-        }
-        get level() {
-            return this.#level;
-        }
-        set level(_level) {
-            this.#level = Math.max(0, Math.min(this.levels.length, _level));
-        }
-        get effects() {
-            return structuredClone(this.levels[this.level].passiveEffects);
-        }
-        update(_time, _cumulatedEffects) {
-            if (!this.levels[this.level].activeEffects || !this.levels[this.level].activeEffects.length)
-                return;
-            for (let effect of this.levels[this.level].activeEffects) {
-                if (isNaN(effect.currentCooldown))
-                    effect.currentCooldown = 0;
-                effect.currentCooldown -= _time;
-                if (effect.currentCooldown <= 0) {
-                    effect.currentCooldown = this.#cm.modifyValuePlayer(effect.cooldown, Script.PassiveCardEffect.COOLDOWN_REDUCTION, effect.modifiers);
-                    switch (effect.type) {
-                        case "projectile":
-                            for (let i = 0; i < (effect.amount ?? 1); i++) {
-                                setTimeout(() => {
-                                    let pos = this.#charm.character.node.mtxWorld.translation.clone;
-                                    if (effect.offset) {
-                                        if (typeof effect.offset === "string") {
-                                            pos.add(eval(effect.offset));
-                                        }
-                                        else {
-                                            pos.add(effect.offset);
-                                        }
-                                    }
-                                    let projectile = Script.projectiles[effect.projectile];
-                                    this.#pm.createProjectile(projectile, pos, _cumulatedEffects, projectile.lockedToEntity ? this.#charm.character.node : undefined);
-                                }, i * (effect.delay ?? 0));
-                            }
-                            break;
-                    }
-                }
-            }
-        }
-    }
-    Script.Card = Card;
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map
