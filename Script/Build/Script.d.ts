@@ -618,7 +618,19 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    enum MenuType {
+        NONE = 0,
+        MAIN = 1,
+        COLLECTION = 2,
+        SETTINGS = 3,
+        PAUSE = 4,
+        END_CONFIRM = 5
+    }
     class MenuManager {
+        private menus;
+        private prevGameState;
+        setup(): void;
+        openMenu(_menu: MenuType): void;
     }
 }
 declare namespace Script {

@@ -33,6 +33,7 @@ namespace Script {
       .add(CardManager)
       .add(DataManager)
       .add(CardCollection)
+      .add(MenuManager)
 
     const dataManager = provider.get(DataManager);
     await dataManager.load();
@@ -48,6 +49,8 @@ namespace Script {
     cardManager.updateEffects();
     const cardCollector = provider.get(CardCollection);
     cardCollector.setup();
+    const menuManager = provider.get(MenuManager);
+    menuManager.setup();
   }
 
   function start(_event: CustomEvent): void {

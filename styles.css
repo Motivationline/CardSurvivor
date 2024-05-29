@@ -39,7 +39,8 @@ canvas.fullscreen {
   left: 0;
   width: 100vw;
   height: 100vh;
-  color: white;
+  /* color: white; */
+  background-color: white;
 }
 
 .hidden {
@@ -92,6 +93,8 @@ button:disabled {
 /* Game Overlay */
 #game-overlay {
   pointer-events: none;
+  background-color: transparent;
+  color: white;
 }
 
 #healthbar {
@@ -107,6 +110,25 @@ button:disabled {
 progress[value]::-webkit-progress-value,
 progress[value]::-moz-progress-bar {
   background-color: green;
+}
+
+#game-overlay-pause {
+  pointer-events: all;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  padding: 1rem;
+  gap: 1em;
+  cursor: pointer;
+}
+
+#game-overlay-pause span{
+  display: block;
+  background-color: white;
+  height: 3em;
+  width: 1em;
 }
 
 /* collection & deck */
@@ -297,7 +319,7 @@ progress[value]::-moz-progress-bar {
   transform-origin: 55.7% 45.2%;
 }
 
-.card:not(.locked) .card-rays{
+.card:not(.locked) .card-rays {
   animation: wiggle-large 4s ease-in-out infinite;
   animation-delay: var(--delay);
 }
@@ -421,6 +443,7 @@ progress[value]::-moz-progress-bar {
   display: none;
   pointer-events: all;
   z-index: 1000;
+  background-color: transparent;
 }
 
 .touch-circle {
@@ -463,6 +486,7 @@ progress[value]::-moz-progress-bar {
     transform: rotate(-0deg);
   }
 }
+
 @keyframes wiggle-large {
   0% {
     transform: rotate(2deg);
@@ -486,6 +510,7 @@ progress[value]::-moz-progress-bar {
     transform: rotate(360deg);
   }
 }
+
 @keyframes fade {
   from {
     opacity: 1;

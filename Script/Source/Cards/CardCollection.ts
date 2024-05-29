@@ -171,8 +171,7 @@ namespace Script {
             document.getElementById("card-popup-close").querySelector("button").addEventListener("click", () => { this.hidePopup(); })
             document.getElementById("deck-back-button").querySelector("button").addEventListener("click", () => {
                 this.hidePopup();
-                document.getElementById("main-menu-overlay").classList.remove("hidden");
-                document.getElementById("collection-overlay").classList.add("hidden");
+                provider.get(MenuManager).openMenu(MenuType.MAIN);
             })
 
             this.popupButtons.selectionTo.addEventListener("click", () => { this.addCardToSelection(this.selectedCard); this.hidePopup(); })

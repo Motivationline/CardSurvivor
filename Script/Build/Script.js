@@ -467,7 +467,8 @@ var Script;
             .add(Script.AnimationManager)
             .add(Script.CardManager)
             .add(Script.DataManager)
-            .add(Script.CardCollection);
+            .add(Script.CardCollection)
+            .add(Script.MenuManager);
         const dataManager = Script.provider.get(Script.DataManager);
         await dataManager.load();
         const config = Script.provider.get(Script.Config);
@@ -482,6 +483,8 @@ var Script;
         cardManager.updateEffects();
         const cardCollector = Script.provider.get(Script.CardCollection);
         cardCollector.setup();
+        const menuManager = Script.provider.get(Script.MenuManager);
+        menuManager.setup();
     }
     function start(_event) {
         viewport = _event.detail;
@@ -1123,8 +1126,7 @@ var Script;
             document.getElementById("card-popup-close").querySelector("button").addEventListener("click", () => { this.hidePopup(); });
             document.getElementById("deck-back-button").querySelector("button").addEventListener("click", () => {
                 this.hidePopup();
-                document.getElementById("main-menu-overlay").classList.remove("hidden");
-                document.getElementById("collection-overlay").classList.add("hidden");
+                Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.MAIN);
             });
             this.popupButtons.selectionTo.addEventListener("click", () => { this.addCardToSelection(this.selectedCard); this.hidePopup(); });
             this.popupButtons.selectionFrom.addEventListener("click", () => { this.removeCardFromSelection(this.selectedCard); this.hidePopup(); });
@@ -1311,7 +1313,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 0,
+                            damage: 0, //8 Base Damage
                             projectilePiercing: 2
                         }
                     }
@@ -1325,7 +1327,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 4,
+                            damage: 4, //8 Base Damage
                             projectilePiercing: 2
                         }
                     }
@@ -1339,7 +1341,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 4,
+                            damage: 4, //8 Base Damage
                             projectilePiercing: 2
                         }
                     }
@@ -1353,7 +1355,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 7,
+                            damage: 7, //8 Base Damage
                             projectilePiercing: 3
                         }
                     }
@@ -1367,7 +1369,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 7,
+                            damage: 7, //8 Base Damage
                             projectilePiercing: 4
                         }
                     }
@@ -1531,7 +1533,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 0,
+                            damage: 0, //5 Base Damage
                             effectDuration: 0 //1 Base Duration
                         }
                     }
@@ -1544,7 +1546,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 1,
+                            damage: 1, //5 Base Damage
                             effectDuration: 0 //1 Base Duration
                         }
                     }
@@ -1557,7 +1559,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 1,
+                            damage: 1, //5 Base Damage
                             effectDuration: 0.5 //1 Base Duration
                         }
                     }
@@ -1570,7 +1572,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 1,
+                            damage: 1, //5 Base Damage
                             effectDuration: 0.5 //1 Base Duration
                         }
                     }
@@ -1583,7 +1585,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 3,
+                            damage: 3, //5 Base Damage
                             effectDuration: 1 //1 Base Duration
                         }
                     }
@@ -1828,7 +1830,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 0,
+                            damage: 0, //5 Base Damage
                             projectilePiercing: 3
                         }
                     }
@@ -1842,7 +1844,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 2,
+                            damage: 2, //5 Base Damage
                             projectilePiercing: 3
                         }
                     }
@@ -1856,7 +1858,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 2,
+                            damage: 2, //5 Base Damage
                             projectilePiercing: 3
                         }
                     }
@@ -1870,7 +1872,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 3,
+                            damage: 3, //5 Base Damage
                             projectilePiercing: 4
                         }
                     }
@@ -1884,7 +1886,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 5,
+                            damage: 5, //5 Base Damage
                             projectilePiercing: 6
                         }
                     }
@@ -4302,7 +4304,57 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
+    let MenuType;
+    (function (MenuType) {
+        MenuType[MenuType["NONE"] = 0] = "NONE";
+        MenuType[MenuType["MAIN"] = 1] = "MAIN";
+        MenuType[MenuType["COLLECTION"] = 2] = "COLLECTION";
+        MenuType[MenuType["SETTINGS"] = 3] = "SETTINGS";
+        MenuType[MenuType["PAUSE"] = 4] = "PAUSE";
+        MenuType[MenuType["END_CONFIRM"] = 5] = "END_CONFIRM";
+    })(MenuType = Script.MenuType || (Script.MenuType = {}));
     class MenuManager {
+        menus = new Map();
+        prevGameState = Script.GAMESTATE.PLAYING;
+        setup() {
+            let main = document.getElementById("main-menu-overlay");
+            this.menus.set(MenuType.MAIN, main);
+            this.menus.set(MenuType.COLLECTION, document.getElementById("collection-overlay"));
+            this.menus.set(MenuType.SETTINGS, document.getElementById("settings-overlay"));
+            this.menus.set(MenuType.PAUSE, document.getElementById("pause-overlay"));
+            this.menus.set(MenuType.END_CONFIRM, document.getElementById("end-confirm"));
+            main.querySelector("#main-menu-deck").addEventListener("click", () => { this.openMenu(MenuType.COLLECTION); });
+            main.querySelector("#main-menu-game").addEventListener("click", () => {
+                this.openMenu(MenuType.NONE);
+                Script.gameState = Script.GAMESTATE.PLAYING;
+            });
+            document.getElementById("game-overlay-pause").addEventListener("click", () => {
+                this.openMenu(MenuType.PAUSE);
+                if (Script.gameState !== Script.GAMESTATE.PAUSED)
+                    this.prevGameState = Script.gameState;
+                Script.gameState = Script.GAMESTATE.PAUSED;
+            });
+            document.getElementById("pause-resume").addEventListener("click", () => {
+                this.openMenu(MenuType.NONE);
+                Script.gameState = this.prevGameState;
+            });
+            document.getElementById("pause-quit").addEventListener("click", () => { this.openMenu(MenuType.END_CONFIRM); });
+            document.getElementById("end-abort").addEventListener("click", () => { this.openMenu(MenuType.PAUSE); });
+            document.getElementById("end-quit").addEventListener("click", () => {
+                this.openMenu(MenuType.MAIN);
+                //TODO handle game abort.
+            });
+        }
+        openMenu(_menu) {
+            for (let menu of this.menus.entries()) {
+                if (menu[0] === _menu) {
+                    menu[1].classList.remove("hidden");
+                }
+                else {
+                    menu[1].classList.add("hidden");
+                }
+            }
+        }
     }
     Script.MenuManager = MenuManager;
 })(Script || (Script = {}));
