@@ -497,7 +497,7 @@
                           "pivot": {
                             "translation": "[0, 0]",
                             "rotation": 0,
-                            "scaling": "[10, 7.5]"
+                            "scaling": "[2.499999523162842, 1.5]"
                           },
                           "Component": {
                             "active": true
@@ -511,9 +511,9 @@
                         "ƒ.ComponentMesh": {
                           "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
                           "pivot": {
-                            "translation": "[0, 0, -0.10000001639127731]",
+                            "translation": "[0, 0, -0.5]",
                             "rotation": "[0, 0, 0]",
-                            "scaling": "[100, 75, 1]"
+                            "scaling": "[25, 15, 1]"
                           },
                           "Component": {
                             "active": true
@@ -535,7 +535,7 @@
                         "ƒ.ComponentMesh": {
                           "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
                           "pivot": {
-                            "translation": "[0, 0, -0.20000000298023224]",
+                            "translation": "[0, 0, -0.6000000238418579]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[120, 100, 1]"
                           },
@@ -850,7 +850,7 @@
           {
             "ƒ.ComponentTransform": {
               "local": {
-                "translation": "[0, 30, 0]",
+                "translation": "[0, 0, 0]",
                 "rotation": "[0, 0, 0]",
                 "scaling": "[1, 1, 1]"
               },
@@ -1262,7 +1262,7 @@
                     "aspect": 1.91991341991342,
                     "pivot": {
                       "translation": "[0, 0, 10]",
-                      "rotation": "[0, 180, 0]",
+                      "rotation": "[0.49999991059303284, 180, 0]",
                       "scaling": "[1, 1, 1]"
                     },
                     "Component": {
@@ -1386,6 +1386,13 @@
               "Component": {
                 "active": true
               }
+            }
+          }
+        ],
+        "ComponentFaceCamera": [
+          {
+            "ƒ.ComponentFaceCamera": {
+              "active": true
             }
           }
         ]
