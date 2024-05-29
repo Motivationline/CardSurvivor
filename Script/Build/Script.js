@@ -1740,9 +1740,9 @@ var Script;
             ]
         },
         "Civil Code": {
-            image: "CivilCode.png",
+            image: "CodeCivil.png",
             rarity: Script.CardRarity.COMMON,
-            name: "Civil Code",
+            name: "Code Civil",
             levels: [
                 {
                     activeEffects: [{
@@ -2640,7 +2640,7 @@ var Script;
             levels: []
         },
         "Jumper Cable": {
-            image: "Jumper Cable.png",
+            image: "JumperCable.png",
             rarity: Script.CardRarity.EPIC,
             name: "Jumper Cable",
             levels: []

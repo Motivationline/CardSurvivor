@@ -443,9 +443,9 @@ namespace Script {
             ]
         },
         "Civil Code": {
-            image: "CivilCode.png",
+            image: "CodeCivil.png",
             rarity: CardRarity.COMMON,
-            name: "Civil Code",
+            name: "Code Civil",
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -1344,7 +1344,7 @@ namespace Script {
             levels: []
         },
         "Jumper Cable": {
-            image: "Jumper Cable.png",
+            image: "JumperCable.png",
             rarity: CardRarity.EPIC,
             name: "Jumper Cable",
             levels: []
