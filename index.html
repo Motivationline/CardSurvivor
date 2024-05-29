@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
     <title>CardSurvivor</title>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles.css" />
 
     <!--Editor settings of this project-->
@@ -88,13 +87,14 @@
         <button id="main-menu-game">Game</button>
     </div>
     <div class="overlay" id="collection-overlay">
-        <input type="checkbox" name="largeDeck" id="largeDeck" hidden>
-        <input type="checkbox" name="hideLocked" id="hideLocked" checked hidden>
+        <input type="checkbox" name="largeDeck" id="largeDeck" hidden="" />
+        <input type="checkbox" name="hideLocked" id="hideLocked" checked="" hidden="" />
         <div id="collection-outer-wrapper">
             <div id="collection-controls">
-                <label for="hideLocked">&nbsp;locked cards</label>
+                <label for="hideLocked"> locked cards</label>
             </div>
-            <div id="collection-wrapper" class="contains-cards"></div>
+            <div id="collection-wrapper" class="contains-cards">
+            </div>
         </div>
         <div id="deck-outer-wrapper">
             <label for="largeDeck">
@@ -107,15 +107,18 @@
                 </div>
             </label>
             <div id="deck-wrapper">
-                <div id="selection" class="contains-cards"></div>
-                <div id="deck" class="contains-cards"></div>
+                <div id="selection" class="contains-cards">
+                </div>
+                <div id="deck" class="contains-cards">
+                </div>
             </div>
             <div id="deck-back-button" class="center-center">
-                <button>Save & Exit</button>
+                <button>Save &amp; Exit</button>
             </div>
         </div>
         <div id="card-popup" class="overlay hidden">
-            <div id="card-popup-card"></div>
+            <div id="card-popup-card">
+            </div>
             <div id="card-popup-selection-wrapper">
                 <div id="card-popup-selection">
                     <button id="card-popup-selection-to">To Selection</button>
@@ -126,24 +129,27 @@
                     <button id="card-popup-deck-from">From Deck</button>
                 </div>
             </div>
-            <div id="card-popup-close"><button>Close</button></div>
+            <div id="card-popup-close">
+                <button>Close</button>
+            </div>
         </div>
     </div>
 
     <template id="card">
         <div class="card">
-            <div class="card-name"></div>
+            <div class="card-name">
+            </div>
             <div class="card-image">
-                <img src="" alt="">
+                <img src="" alt="" />
             </div>
             <div class="card-text">
             </div>
             <div class="card-rays-outer">
-                <div class="card-rays"></div>
+                <div class="card-rays">
+                </div>
             </div>
         </div>
     </template>
-
 </body>
 
 </html>
