@@ -18,9 +18,12 @@ namespace Script {
   document.addEventListener("DOMContentLoaded", preStart);
 
   export let gameState: GAMESTATE = GAMESTATE.IDLE;
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   async function preStart() {
     if (ƒ.Project.mode === ƒ.MODE.EDITOR) return;
+    document.documentElement.addEventListener("click", startViewport);
+
     await initI18n("en");
 
     provider
@@ -55,11 +58,40 @@ namespace Script {
 
   function start(_event: CustomEvent): void {
     viewport = _event.detail;
-    viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
+    // viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     gameState = GAMESTATE.PLAYING;
+  }
+
+  async function startViewport() {
+    document.documentElement.removeEventListener("click", startViewport);
+    if (isMobile)
+      document.documentElement.requestFullscreen();
+    await ƒ.Project.loadResourcesFromHTML();
+    let graphId = document.head.querySelector("meta[autoView]").getAttribute("autoView");
+    let graph: ƒ.Graph = <ƒ.Graph>ƒ.Project.resources[graphId];
+    let canvas = document.querySelector("canvas");
+    let viewport = new ƒ.Viewport();
+    let camera = findFirstCameraInGraph(graph);
+
+    viewport.initialize("GameViewport", graph, camera, canvas);
+
+    canvas.dispatchEvent(new CustomEvent("interactiveViewportStarted", { bubbles: true, detail: viewport }));
+
+    //TODO: init/add audio listener?
+
+  }
+
+  function findFirstCameraInGraph(_graph: ƒ.Node): ƒ.ComponentCamera {
+    let cam = _graph.getComponent(ƒ.ComponentCamera);
+    if (cam) return cam;
+    for (let child of _graph.getChildren()) {
+      cam = findFirstCameraInGraph(child);
+      if (cam) return cam;
+    }
+    return undefined;
   }
 
   function update(_event: Event): void {

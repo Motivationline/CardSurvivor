@@ -213,7 +213,7 @@ namespace Script {
             }
 
             // update timer
-            this.timeElement.innerText = `room ${this.currentRoom} ends in: ${this.currentRoomEnd - currentTime}ms - wave ${this.currentWave} ends in: ${this.currentWaveEnd - currentTime}ms`;
+            this.timeElement.innerText = `room ${this.currentRoom} ends in: ${Math.floor(this.currentRoomEnd - currentTime)}ms - wave ${this.currentWave} ends in: ${Math.floor(this.currentWaveEnd - currentTime)}ms`;
 
         }
 

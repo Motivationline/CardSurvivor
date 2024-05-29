@@ -23,7 +23,7 @@ namespace Script {
         modifiers?: PassiveCardEffectObject,
     }
 
-    interface CardEffectProjectile extends ActiveCardEffectBase {
+    export interface CardEffectProjectile extends ActiveCardEffectBase {
         type: "projectile",
         projectile: string,
         amount: number,
@@ -32,7 +32,7 @@ namespace Script {
         offset?: ƒ.Vector3 | string;
     }
 
-    interface CardEffectAOE extends ActiveCardEffectBase {
+    export interface CardEffectAOE extends ActiveCardEffectBase {
         type: "aoe",
         aoe: string,
     }

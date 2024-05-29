@@ -454,9 +454,11 @@ var Script;
     Script.provider = new Script.Provider();
     document.addEventListener("DOMContentLoaded", preStart);
     Script.gameState = GAMESTATE.IDLE;
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     async function preStart() {
         if (Script.ƒ.Project.mode === Script.ƒ.MODE.EDITOR)
             return;
+        document.documentElement.addEventListener("click", startViewport);
         await Script.initI18n("en");
         Script.provider
             .add(Script.Config)
@@ -488,10 +490,35 @@ var Script;
     }
     function start(_event) {
         viewport = _event.detail;
-        viewport.physicsDebugMode = Script.ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
+        // viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
         Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         Script.ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
         Script.gameState = GAMESTATE.PLAYING;
+    }
+    async function startViewport() {
+        document.documentElement.removeEventListener("click", startViewport);
+        if (isMobile)
+            document.documentElement.requestFullscreen();
+        await Script.ƒ.Project.loadResourcesFromHTML();
+        let graphId = document.head.querySelector("meta[autoView]").getAttribute("autoView");
+        let graph = Script.ƒ.Project.resources[graphId];
+        let canvas = document.querySelector("canvas");
+        let viewport = new Script.ƒ.Viewport();
+        let camera = findFirstCameraInGraph(graph);
+        viewport.initialize("GameViewport", graph, camera, canvas);
+        canvas.dispatchEvent(new CustomEvent("interactiveViewportStarted", { bubbles: true, detail: viewport }));
+        //TODO: init/add audio listener?
+    }
+    function findFirstCameraInGraph(_graph) {
+        let cam = _graph.getComponent(Script.ƒ.ComponentCamera);
+        if (cam)
+            return cam;
+        for (let child of _graph.getChildren()) {
+            cam = findFirstCameraInGraph(child);
+            if (cam)
+                return cam;
+        }
+        return undefined;
     }
     function update(_event) {
         Script.ƒ.Physics.simulate(); // if physics is included and used
@@ -1313,7 +1340,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 0,
+                            damage: 0, //8 Base Damage
                             projectilePiercing: 2
                         }
                     }
@@ -1327,7 +1354,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 4,
+                            damage: 4, //8 Base Damage
                             projectilePiercing: 2
                         }
                     }
@@ -1341,7 +1368,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 4,
+                            damage: 4, //8 Base Damage
                             projectilePiercing: 2
                         }
                     }
@@ -1355,7 +1382,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 7,
+                            damage: 7, //8 Base Damage
                             projectilePiercing: 3
                         }
                     }
@@ -1369,7 +1396,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 7,
+                            damage: 7, //8 Base Damage
                             projectilePiercing: 4
                         }
                     }
@@ -1533,7 +1560,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 0,
+                            damage: 0, //5 Base Damage
                             effectDuration: 0 //1 Base Duration
                         }
                     }
@@ -1546,7 +1573,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 1,
+                            damage: 1, //5 Base Damage
                             effectDuration: 0 //1 Base Duration
                         }
                     }
@@ -1559,7 +1586,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 1,
+                            damage: 1, //5 Base Damage
                             effectDuration: 0.5 //1 Base Duration
                         }
                     }
@@ -1572,7 +1599,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 1,
+                            damage: 1, //5 Base Damage
                             effectDuration: 0.5 //1 Base Duration
                         }
                     }
@@ -1585,7 +1612,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 3,
+                            damage: 3, //5 Base Damage
                             effectDuration: 1 //1 Base Duration
                         }
                     }
@@ -1830,7 +1857,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 0,
+                            damage: 0, //5 Base Damage
                             projectilePiercing: 3
                         }
                     }
@@ -1844,7 +1871,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 2,
+                            damage: 2, //5 Base Damage
                             projectilePiercing: 3
                         }
                     }
@@ -1858,7 +1885,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 2,
+                            damage: 2, //5 Base Damage
                             projectilePiercing: 3
                         }
                     }
@@ -1872,7 +1899,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 3,
+                            damage: 3, //5 Base Damage
                             projectilePiercing: 4
                         }
                     }
@@ -1886,7 +1913,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 5,
+                            damage: 5, //5 Base Damage
                             projectilePiercing: 6
                         }
                     }
@@ -4120,6 +4147,7 @@ var Script;
         rigidbody;
         cardManager;
         speed = 1;
+        visualChildren = [];
         constructor() {
             super();
             if (ƒ.Project.mode === ƒ.MODE.EDITOR)
@@ -4128,14 +4156,15 @@ var Script;
                 this.node.addEventListener("graphInstantiated" /* ƒ.EVENT.GRAPH_INSTANTIATED */, () => {
                     Script.provider.get(Script.CharacterManager).character = this;
                     this.init();
+                    this.setupAnimator();
                 }, true);
-                this.setupAnimator();
             });
         }
         init() {
             this.#healthElement = document.getElementById("healthbar");
             this.rigidbody = this.node.getComponent(ƒ.ComponentRigidbody);
             this.cardManager = Script.provider.get(Script.CardManager);
+            this.visualChildren = this.node.getChildrenByName("visuals")[0].getChildren();
         }
         move(_direction, _time) {
             //TODO: update this to use physics
@@ -4186,7 +4215,7 @@ var Script;
             return 0;
         }
         changeVisualDirection(_rot = 0) {
-            for (let child of this.node.getChildren()) {
+            for (let child of this.visualChildren) {
                 let mesh = child.getComponent(ƒ.ComponentMesh);
                 if (mesh)
                     mesh.mtxPivot.rotation = new ƒ.Vector3(0, _rot, 0);
@@ -4214,7 +4243,7 @@ var Script;
         }
         setupAnimator = () => {
             this.#animator = new Script.SpriteAnimator(this.#idleSprite);
-            for (let child of this.node.getChildren()) {
+            for (let child of this.visualChildren) {
                 child.getComponent(ƒ.ComponentMaterial).mtxPivot = this.#animator.matrix;
                 this.#layers.push(child.getComponent(Script.CharacterLayer));
             }
@@ -4910,7 +4939,7 @@ var Script;
                 this.endRoom();
             }
             // update timer
-            this.timeElement.innerText = `room ${this.currentRoom} ends in: ${this.currentRoomEnd - currentTime}ms - wave ${this.currentWave} ends in: ${this.currentWaveEnd - currentTime}ms`;
+            this.timeElement.innerText = `room ${this.currentRoom} ends in: ${Math.floor(this.currentRoomEnd - currentTime)}ms - wave ${this.currentWave} ends in: ${Math.floor(this.currentWaveEnd - currentTime)}ms`;
         }
         endRoom() {
             while (this.enemyScripts.length > 0) {

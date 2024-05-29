@@ -149,14 +149,14 @@ declare namespace Script {
         currentCooldown?: number;
         modifiers?: PassiveCardEffectObject;
     }
-    interface CardEffectProjectile extends ActiveCardEffectBase {
+    export interface CardEffectProjectile extends ActiveCardEffectBase {
         type: "projectile";
         projectile: string;
         amount: number;
         delay?: number;
         offset?: ƒ.Vector3 | string;
     }
-    interface CardEffectAOE extends ActiveCardEffectBase {
+    export interface CardEffectAOE extends ActiveCardEffectBase {
         type: "aoe";
         aoe: string;
     }
@@ -436,6 +436,7 @@ declare namespace Script {
         private rigidbody;
         private cardManager;
         speed: number;
+        private visualChildren;
         constructor();
         private init;
         move(_direction: ƒ.Vector2, _time: number): void;

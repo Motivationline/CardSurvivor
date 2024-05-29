@@ -29,6 +29,7 @@ namespace Script {
         private rigidbody: ƒ.ComponentRigidbody;
         private cardManager: CardManager;
         speed: number = 1;
+        private visualChildren: ƒ.Node[] = [];
 
         constructor() {
             super();
@@ -37,8 +38,8 @@ namespace Script {
                 this.node.addEventListener(ƒ.EVENT.GRAPH_INSTANTIATED, () => {
                     provider.get(CharacterManager).character = this;
                     this.init();
+                    this.setupAnimator();
                 }, true);
-                this.setupAnimator();
             });
         }
 
@@ -46,6 +47,8 @@ namespace Script {
             this.#healthElement = <HTMLProgressElement>document.getElementById("healthbar");
             this.rigidbody = this.node.getComponent(ƒ.ComponentRigidbody);
             this.cardManager = provider.get(CardManager);
+
+            this.visualChildren = this.node.getChildrenByName("visuals")[0].getChildren();
         }
 
         move(_direction: ƒ.Vector2, _time: number) {
@@ -100,7 +103,7 @@ namespace Script {
         }
 
         private changeVisualDirection(_rot: number = 0) {
-            for (let child of this.node.getChildren()) {
+            for (let child of this.visualChildren) {
                 let mesh = child.getComponent(ƒ.ComponentMesh);
                 if (mesh) mesh.mtxPivot.rotation = new ƒ.Vector3(0, _rot, 0);
             }
@@ -129,7 +132,7 @@ namespace Script {
         }
         private setupAnimator = () => {
             this.#animator = new SpriteAnimator(this.#idleSprite);
-            for (let child of this.node.getChildren()) {
+            for (let child of this.visualChildren) {
                 child.getComponent(ƒ.ComponentMaterial).mtxPivot = this.#animator.matrix;
                 this.#layers.push(child.getComponent(CharacterLayer));
             }
