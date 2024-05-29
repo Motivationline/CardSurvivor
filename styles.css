@@ -377,6 +377,7 @@ progress[value]::-moz-progress-bar {
     -0.05em -0.05em var(--name-text-outline);
   filter: drop-shadow(0 0.12em 0 var(--name-text-dropshadow));
   color: var(--name-text-color);
+  /* transform: translate(calc(var(--card-size) * -0.015), calc(var(--card-size) * 0.1)) rotate(-2deg); */
   transform: translate(0, calc(var(--card-size) * 0.1));
   margin-top: -0.5em;
   z-index: 6;
@@ -398,8 +399,11 @@ progress[value]::-moz-progress-bar {
 }
 
 .card-image {
-  display: grid;
-  place-items: center;
+  /* Doesn't work in Chrome. Bug? */
+  /* display: grid;
+  place-items: center; */
+  display: flex;
+  justify-content: center;
   z-index: 5;
 }
 
