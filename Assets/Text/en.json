@@ -114,33 +114,33 @@
       "name": "Helmet",
       "description": "Take less damage from projectiles.",
       "levels": {
-        "1": "10% less damage from projectiles.",
-        "2": "20% less damage from projectiles.",
-        "3": "30% less damage from projectiles.",
-        "4": "40% less damage from projectiles.",
-        "5": "60% less damage from projectiles."
+        "1": "-10% damage taken from projectiles.",
+        "2": "-20% damage taken from projectiles.",
+        "3": "-30% damage taken from projectiles.",
+        "4": "-40% damage taken from projectiles.",
+        "5": "-60% damage taken from projectiles."
       }
     },
     "Safety Boots": {
       "name": "Safety Boots",
       "description": "More resistant against ground effects.",
       "levels": {
-        "1": "10% more resistant against ground effects.",
-        "2": "20% more resistant against ground effects.",
-        "3": "30% more resistant against ground effects.",
-        "4": "40% more resistant against ground effects.",
-        "5": "60% more resistant against ground effects."
+        "1": "+10% resistance against ground effects.",
+        "2": "+20% resistance against ground effects.",
+        "3": "+30% resistance against ground effects.",
+        "4": "+40% resistance against ground effects.",
+        "5": "+60% resistance against ground effects."
       }
     },
     "Microphone": {
       "name": "Microphone",
       "description": "Increases your projectile range.",
       "levels": {
-        "1": "15% increased projectile range.",
-        "2": "30% increased projectile range.",
-        "3": "50% increased projectile range.",
-        "4": "70% increased projectile range.",
-        "5": "100% increased projectile range."
+        "1": "+15% projectile range.",
+        "2": "+30% projectile range.",
+        "3": "+50% projectile range.",
+        "4": "+70% projectile range.",
+        "5": "+100% projectile range."
       }
     },
     "Gavel": {
@@ -169,11 +169,11 @@
       "name": "Running Shoes",
       "description": "Increases your movement speed.",
       "levels": {
-        "1": "+5% movement speed.",
-        "2": "+15% movement speed.",
-        "3": "+30% movement speed.",
-        "4": "+50% movement speed.",
-        "5": "+75% movement speed."
+        "1": "+0.5 movement speed.",
+        "2": "+1 movement speed.",
+        "3": "+2 movement speed.",
+        "4": "+3 movement speed.",
+        "5": "+5 movement speed."
       }
     },
     "Disposable Gloves": {
@@ -222,464 +222,444 @@
     },
     "Pills": {
       "name": "Pills",
-      "description": "",
+      "description": "Increases your effect duration.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+20% effect duration.",
+        "2": "+30% effect duration.",
+        "3": "+50% effect duration.",
+        "4": "+70% effect duration.",
+        "5": "+100% effect duration."
       }
     },
     "Fire Hose": {
       "name": "Fire Hose",
-      "description": "",
+      "description": "Increases your knockback.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+10% knockback.",
+        "2": "+15% knockback.",
+        "3": "+25% knockback.",
+        "4": "+40% knockback.",
+        "5": "+60% knockback."
       }
     },
     "Syringe": {
       "name": "Syringe",
-      "description": "",
+      "description": "Drastically regenerates your health passively.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "Heal 1% of your maximum health every 2 seconds.",
+        "2": "Heal 2% of your maximum health every 2 seconds.",
+        "3": "Heal 3% of your maximum health every 2 seconds.",
+        "4": "Heal 5% of your maximum health every 2 seconds.",
+        "5": "Heal 5% of your maximum health every 1 second."
       }
     },
     "Sketchbook": {
       "name": "Sketchbook",
-      "description": "",
+      "description": "Increases your effect radius.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+5% effect radius.",
+        "2": "+10% effect radius.",
+        "3": "+20% effect radius.",
+        "4": "+30% effect radius.",
+        "5": "+50% effect radius."
       }
     },
     "Plow": {
       "name": "Plow",
-      "description": "",
+      "description": "Slows down enemies.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "-2% enemy speed.",
+        "2": "-5% enemy speed.",
+        "3": "-10% enemy speed.",
+        "4": "-15% enemy speed.",
+        "5": "-25% enemy speed."
       }
     },
     "Jump Rope": {
       "name": "Jump Rope",
-      "description": "",
+      "description": "Increases your chance to dodge.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+5% dodge chance.",
+        "2": "+10% dodge chance.",
+        "3": "+20% dodge chance.",
+        "4": "+30% dodge chance.",
+        "5": "+50% dodge chance."
       }
     },
     "Tape Measure": {
       "name": "Tape Measure",
-      "description": "",
+      "description": "Slows down enemy projectiles.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "-5% enemy projectile speed.",
+        "2": "-10% enemy projectile speed.",
+        "3": "-20% enemy projectile speed.",
+        "4": "-30% enemy projectile speed.",
+        "5": "-50% enemy projectile speed."
       }
     },
     "Legal Wig": {
       "name": "Legal Wig",
-      "description": "",
+      "description": "Less, but stronger enemies.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "-5% enemies, +5% enemy stats.",
+        "2": "-10% enemies, +10% enemy stats.",
+        "3": "-20% enemies, +20% enemy stats.",
+        "4": "-30% enemies, +30% enemy stats.",
+        "5": "-50% enemies, +50% enemy stats."
       }
     },
     "Toolbelt": {
       "name": "Toolbelt",
-      "description": "",
+      "description": "Every equipped weapon increases your damage.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+1% damage for every weapon equipped.",
+        "2": "+2% damage for every weapon equipped.",
+        "3": "+5% damage for every weapon equipped.",
+        "4": "+10% damage for every weapon equipped.",
+        "5": "+20% damage for every weapon equipped."
       }
     },
     "Razor": {
       "name": "Razor",
-      "description": "",
+      "description": "Taking damage increases your attack speed for that room (permanent at level 5).",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+1% attack speed every time you take damage (resets each room).",
+        "2": "+2% attack speed every time you take damage (resets each room).",
+        "3": "+3% attack speed every time you take damage (resets each room).",
+        "4": "+5% attack speed every time you take damage (resets each room).",
+        "5": "+1% permanent attack speed every time you take damage."
       }
     },
     "Binder": {
       "name": "Binder",
-      "description": "",
+      "description": "Increases damage to bosses and elites.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+5% damage to bosses and elites.",
+        "2": "+10% damage to bosses and elites.",
+        "3": "+20% damage to bosses and elites.",
+        "4": "+40% damage to bosses and elites.",
+        "5": "+75% damage to bosses and elites."
       }
     },
     "Flashlight": {
       "name": "Flashlight",
-      "description": "",
+      "description": "Drastically increases maximum health but start each room injured.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+20 maximum health but start each room with 90% health.",
+        "2": "+40 maximum health but start each room with 75% health.",
+        "3": "+75 maximum health but start each room with 50% health.",
+        "4": "+100 maximum health but start each room with 25% health.",
+        "5": "+150 maximum health but start each room with 25% health."
       }
     },
     "Hard Drive": {
       "name": "Hard Drive",
-      "description": "",
+      "description": "More enemies spawn.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+2% more enemies.",
+        "2": "+5% more enemies.",
+        "3": "+10% more enemies.",
+        "4": "+15% more enemies.",
+        "5": "+25% more enemies."
       }
     },
     "Stethoscope": {
       "name": "Stethoscope",
-      "description": "",
+      "description": "Healing increases your damage for that room (permanent at level 5).",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+1% damage every time you heal (resets each room).",
+        "2": "+2% damage every time you heal (resets each room).",
+        "3": "+3% damage every time you heal (resets each room).",
+        "4": "+5% damage every time you heal (resets each room).",
+        "5": "+1% permanent damage every time you heal."
       }
     },
     "Apple": {
       "name": "Apple",
-      "description": "",
+      "description": "Regenerates your health everytime an enemy spawns.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+0.5 health for every enemy that spawns.",
+        "2": "+1 health for every enemy that spawns.",
+        "3": "+2 health for every enemy that spawns.",
+        "4": "+3 health for every enemy that spawns.",
+        "5": "+5 health for every enemy that spawns."
       }
     },
     "Magnifying Glass": {
       "name": "Magnifying Glass",
-      "description": "",
+      "description": "Increases your crit chance.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+5% crit chance.",
+        "2": "+10% crit chance.",
+        "3": "+20% crit chance.",
+        "4": "+35% crit chance.",
+        "5": "+60% crit chance."
       }
     },
     "Tattoo Ink": {
       "name": "Tattoo Ink",
-      "description": "",
+      "description": "Increases your projectile speed.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+15% projectile speed.",
+        "2": "+30% projectile speed.",
+        "3": "+50% projectile speed.",
+        "4": "+70% projectile speed.",
+        "5": "+100% projectile speed."
       }
     },
     "Calculator": {
       "name": "Calculator",
-      "description": "",
+      "description": "Drastically increases your damage.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+5% damage.",
+        "2": "+10% damage.",
+        "3": "+20% damage.",
+        "4": "+35% damage.",
+        "5": "+60% damage."
       }
     },
     "Bandages": {
       "name": "Bandages",
-      "description": "",
+      "description": "Drastically increases your maximum health.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+5% maximum health.",
+        "2": "+10% maximum health.",
+        "3": "+20% maximum health.",
+        "4": "+30% maximum health.",
+        "5": "+50% maximum health."
       }
     },
     "Face Shield": {
       "name": "Face Shield",
-      "description": "",
+      "description": "Drastically reduces your incoming damage.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "-5% damage taken.",
+        "2": "-10% damage taken.",
+        "3": "-20% damage taken.",
+        "4": "-30% damage taken.",
+        "5": "-50% damage taken."
       }
     },
     "3D Printer": {
       "name": "3D Printer",
-      "description": "",
+      "description": "Chance to copy another random card effect every room.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "10% chance to copy another random card effect (resets each room).",
+        "2": "25% chance to copy another random card effect (resets each room).",
+        "3": "40% chance to copy another random card effect (resets each room).",
+        "4": "60% chance to copy another random card effect (resets each room).",
+        "5": "100% chance to copy another random card effect (resets each room)."
       }
     },
     "Ear Protection": {
       "name": "Ear Protection",
-      "description": "",
+      "description": "Increases your duration of invincibility after taking damage.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+25% duration of invincibility after taking damage.",
+        "2": "+50% duration of invincibility after taking damage.",
+        "3": "+75% duration of invincibility after taking damage.",
+        "4": "+100% duration of invincibility after taking damage.",
+        "5": "+150% duration of invincibility after taking damage."
       }
     },
     "Athletic Tape": {
       "name": "Athletic Tape",
-      "description": "",
+      "description": "Drastically increases your healing effects.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+5% healing effects.",
+        "2": "+10% healing effects.",
+        "3": "+15% healing effects.",
+        "4": "+30% healing effects.",
+        "5": "+50% healing effects."
       }
     },
     "Newspaper": {
       "name": "Newspaper",
-      "description": "",
+      "description": "Drastically increases your movement speed, but decreases your damage while standing still.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+5% movement speed, -5% damage while standing still.",
+        "2": "+10% movement speed, -10% damage while standing still.",
+        "3": "+15% movement speed, -15% damage while standing still.",
+        "4": "+25% movement speed, -25% damage while standing still.",
+        "5": "+50% movement speed, -25% damage while standing still."
       }
     },
     "Screwdriver": {
       "name": "Screwdriver",
-      "description": "",
+      "description": "Killing an enemy increases your attack speed for that room (permanent at level 5).",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+1% attack speed every time you kill an enemy (resets each room).",
+        "2": "+2% attack speed every time you kill an enemy (resets each room).",
+        "3": "+3% attack speed every time you kill an enemy (resets each room).",
+        "4": "+5% attack speed every time you kill an enemy (resets each room).",
+        "5": "+1% permanent attack speed every time you kill an enemy."
       }
     },
     "Bucket": {
       "name": "Bucket",
-      "description": "",
+      "description": "Negates the first damage taken per room.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "Negates the first 1 instance of damage per room.",
+        "2": "Negates the first 2 instances of damage per room.",
+        "3": "Negates the first 3 instances of damage per room.",
+        "4": "Negates the first 4 instances of damage per room.",
+        "5": "Negates the next 4 instances of damage every new room (stays inbetween rooms)."
       }
     },
     "Riot Shield": {
       "name": "Riot Shield",
-      "description": "",
+      "description": "Chance to shoot projectiles back when hit.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+10% chance to reflect projectiles.",
+        "2": "+15% chance to reflect projectiles.",
+        "3": "+25% chance to reflect projectiles.",
+        "4": "+35% chance to reflect projectiles.",
+        "5": "+50% chance to reflect projectiles."
       }
     },
     "Piercing Gun": {
       "name": "Piercing Gun",
-      "description": "",
+      "description": "Increases your piercing effect of projectiles.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+1 piercing.",
+        "2": "+2 piercing.",
+        "3": "+3 piercing.",
+        "4": "+4 piercing.",
+        "5": "+6 piercing."
       }
     },
     "Stopwatch": {
       "name": "Stopwatch",
-      "description": "",
+      "description": "Stuns random enemies when taking damage.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "Stuns 1 random enemy for 1 second everytime you take damage.",
+        "2": "Stuns 2 random enemies for 1 second everytime you take damage.",
+        "3": "Stuns 3 random enemies for 1.5 seconds everytime you take damage.",
+        "4": "Stuns 4 random enemies for 1.5 seconds everytime you take damage.",
+        "5": "Stuns 5 random enemies for 2 seconds everytime you take damage."
       }
     },
     "Rake": {
       "name": "Rake",
-      "description": "",
+      "description": "Increases the room size.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+10% map size.",
+        "2": "+15% map size.",
+        "3": "+25% map size.",
+        "4": "+35% map size.",
+        "5": "+50% map size."
       }
     },
     "Jumper Cable": {
       "name": "Jumper Cable",
-      "description": "",
+      "description": "Regenerates health when dealing damage.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "Heal 1% of the damage you deal.",
+        "2": "Heal 2% of the damage you deal.",
+        "3": "Heal 5% of the damage you deal.",
+        "4": "Heal 15% of the damage you deal.",
+        "5": "Heal 30% of the damage you deal."
       }
     },
     "Shredder": {
       "name": "Shredder",
-      "description": "",
+      "description": "Deal and receive drastically more damage.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+10% more damage dealt and taken.",
+        "2": "+25% more damage dealt and taken.",
+        "3": "+40% more damage dealt and taken.",
+        "4": "+60% more damage dealt and taken.",
+        "5": "+100% more damage dealt and taken."
       }
     },
     "Whiteboard": {
       "name": "Whiteboard",
-      "description": "",
+      "description": "Reduces your stats, but increases them per level on your equipped cards.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "-30% all stats, +1% all stats per level on your equipped cards.",
+        "2": "-20% all stats, +1% all stats per level on your equipped cards.",
+        "3": "-60% all stats, +2% all stats per level on your equipped cards.",
+        "4": "-40% all stats, +2% all stats per level on your equipped cards.",
+        "5": "-90% all stats, +3% all stats per level on your equipped cards."
       }
     },
     "Drawing Tablet": {
       "name": "Drawing Tablet",
-      "description": "",
+      "description": "Increases the amount of your projectiles.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+1 projectile amount.",
+        "2": "+2 projectile amount.",
+        "3": "+3 projectile amount.",
+        "4": "+4 projectile amount.",
+        "5": "+6 projectile amount."
       }
     },
     "Press Vest": {
       "name": "Press Vest",
-      "description": "",
+      "description": "Increases your damage resistance the faster you are.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+1% Damage resistance per current movement speed (maximum 60%).",
+        "2": "+2% Damage resistance per current movement speed (maximum 65%).",
+        "3": "+3% Damage resistance per current movement speed (maximum 70%).",
+        "4": "+5% Damage resistance per current movement speed (maximum 75%).",
+        "5": "+8% Damage resistance per current movement speed (maximum 90%)."
       }
     },
     "Tong": {
       "name": "Tong",
-      "description": "",
+      "description": "Drastically increase your attack speed while standing still.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+20% attack speed while standing still.",
+        "2": "+30% attack speed while standing still.",
+        "3": "+40% attack speed while standing still.",
+        "4": "+60% attack speed while standing still.",
+        "5": "+100% attack speed while standing still."
       }
     },
     "High-Vis West": {
       "name": "High-Vis West",
-      "description": "",
+      "description": "Chance to deal received damage back to enemies.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "20% chance to deal received damage back to enemies.",
+        "2": "30% chance to deal received damage back to enemies.",
+        "3": "40% chance to deal received damage back to enemies.",
+        "4": "60% chance to deal received damage back to enemies.",
+        "5": "100% chance to deal received damage back to enemies."
       }
     },
     "Apprenticeship": {
       "name": "Apprenticeship",
-      "description": "",
+      "description": "Drastically increases all your stats.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+25% all stats."
       }
     },
     "Diploma": {
       "name": "Diploma",
-      "description": "",
+      "description": "Drastically decreases your stats, but boosterpacks drop randomly.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "-50% on all stats, but every cleared room has a 10% chance to drop a booster pack (+10% per cleared room)."
       }
     },
     "Internship": {
       "name": "Internship",
-      "description": "",
+      "description": "Counts one towards every job set.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "Every job gets +1 for their set."
       }
     },
     "Certification": {
       "name": "Certification",
-      "description": "",
+      "description": "Drastically increases your luck.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "Rerolls every outcome twice and takes the better option."
       }
     },
     "Training": {
       "name": "Training",
-      "description": "",
+      "description": "Drastically increases your maximum health.",
       "levels": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
+        "1": "+100% maximum health."
       }
     }
   }

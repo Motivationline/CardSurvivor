@@ -958,36 +958,36 @@ namespace Script {
             levels: [
                 { //Tier 1
                     passiveEffects: {
-                        multiplier: {
-                            movementSpeed: 1.05,
+                        absolute: {
+                            movementSpeed: 0.5,
                         }
                     }
                 },
                 { //Tier 2
                     passiveEffects: {
-                        multiplier: {
-                            movementSpeed: 1.15,
+                        absolute: {
+                            movementSpeed: 1,
                         }
                     }
                 },
                 { //Tier 3
                     passiveEffects: {
-                        multiplier: {
-                            movementSpeed: 1.3,
+                        absolute: {
+                            movementSpeed: 2,
                         }
                     }
                 },
                 { //Tier 4
                     passiveEffects: {
-                        multiplier: {
-                            movementSpeed: 1.5,
+                        absolute: {
+                            movementSpeed: 3,
                         }
                     }
                 },
                 { //Tier 5
                     passiveEffects: {
-                        multiplier: {
-                            movementSpeed: 1.75,
+                        absolute: {
+                            movementSpeed: 5,
                         }
                     }
                 },
@@ -1165,91 +1165,643 @@ namespace Script {
             image: "Pills.png",
             rarity: CardRarity.UNCOMMON,
             name: "Pills",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        multiplier: {
+                            effectDuration: 1.2
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        multiplier: {
+                            effectDuration: 1.3
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        multiplier: {
+                            effectDuration: 1.5
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        multiplier: {
+                            effectDuration: 1.7
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        multiplier: {
+                            effectDuration: 2
+                        }
+                    }
+                },
+            ]
         },
         "Fire Hose": {
             image: "FireHose.png",
             rarity: CardRarity.UNCOMMON,
             name: "Fire Hose",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        multiplier: {
+                            knockback: 1.1
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        multiplier: {
+                            knockback: 1.15
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        multiplier: {
+                            knockback: 1.25
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        multiplier: {
+                            knockback: 1.4
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        multiplier: {
+                            knockback: 1.6
+                        }
+                    }
+                },
+            ]
         },
         "Syringe": {
             image: "Syrringe.png",
             rarity: CardRarity.UNCOMMON,
             name: "Syringe",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        multiplier: {
+                            regeneration: 1.01 //TODO: Double check if this actually works correctly xD
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        multiplier: {
+                            regeneration: 1.02 //TODO: Double check if this actually works correctly xD
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        multiplier: {
+                            regeneration: 1.03 //TODO: Double check if this actually works correctly xD
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        multiplier: {
+                            regeneration: 1.05 //TODO: Double check if this actually works correctly xD
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        multiplier: {
+                            regeneration: 1.1 //TODO: Double check if this actually works correctly xD
+                        }
+                    }
+                },
+            ]
         },
         "Sketchbook": {
             image: "Sketchbook.png",
             rarity: CardRarity.UNCOMMON,
             name: "Sketchbook",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +5% increased effect radius
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +10% increased effect radius
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +20% increased effect radius
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +30% increased effect radius
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +50% increased effect radius
+                        }
+                    }
+                },
+            ]
         },
         "Plow": {
             image: "Plow.png",
             rarity: CardRarity.UNCOMMON,
             name: "Plow",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: -2% enemy speed
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: -5% enemy speed
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: -10% enemy speed
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: -15% enemy speed
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: -25% enemy speed
+                        }
+                    }
+                },
+            ]
         },
         "Jump Rope": {
             image: "JumpRope.png",
             rarity: CardRarity.UNCOMMON,
             name: "Jump Rope",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +5% dodge chance
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +10% dodge chance
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +20% dodge chance
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +30% dodge chance
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +50% dodge chance
+                        }
+                    }
+                },
+            ]
         },
         "Tape Measure": {
             image: "TapeMeasure.png",
             rarity: CardRarity.UNCOMMON,
             name: "Tape Measure",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: -5% enemy projectile speed
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: -10% enemy projectile speed
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: -20% enemy projectile speed
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: -30% enemy projectile speed
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: -50% enemy projectile speed
+                        }
+                    }
+                },
+            ]
         },
         "LegalWig": {
             image: "LegalWig.png",
             rarity: CardRarity.UNCOMMON,
             name: "Legal Wig",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: -5% enemies, +5% enemy stats
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: -10% enemies, +10% enemy stats
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: -20% enemies, +20% enemy stats
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: -30% enemies, +30% enemy stats
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: -50% enemies, +50% enemy stats
+                        }
+                    }
+                },
+            ]
         },
         "Toolbelt": {
             image: "Toolbelt.png",
             rarity: CardRarity.UNCOMMON,
             name: "Toolbelt",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +1% damage for every weapon equipped
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +2% damage for every weapon equipped
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +5% damage for every weapon equipped
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +10% damage for every weapon equipped
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +20% damage for every weapon equipped
+                        }
+                    }
+                },
+            ]
         },
         "Razor": {
             image: "Razor.png",
             rarity: CardRarity.UNCOMMON,
             name: "Razor",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +1% attack speed every time you take damage (resets each room).
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +2% attack speed every time you take damage (resets each room).
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +3% attack speed every time you take damage (resets each room).
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +5% attack speed every time you take damage (resets each room).
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +1% permanent attack speed every time you take damage.
+                        }
+                    }
+                },
+            ]
         },
         "Binder": {
             image: "Binder.png",
             rarity: CardRarity.UNCOMMON,
             name: "Binder",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        multiplier: {
+                            damage: 1.05
+                            //TODO: only increased damage against bosses and elites
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        multiplier: {
+                            damage: 1.1
+                            //TODO: only increased damage against bosses and elites
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        multiplier: {
+                            damage: 1.2
+                            //TODO: only increased damage against bosses and elites
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        multiplier: {
+                            damage: 1.4
+                            //TODO: only increased damage against bosses and elites
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        multiplier: {
+                            damage: 1.75
+                            //TODO: only increased damage against bosses and elites
+                        }
+                    }
+                },
+            ]
         },
         "Flashlight": {
             image: "Flashlight.png",
             rarity: CardRarity.UNCOMMON,
             name: "Flashlight",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        absolute: {
+                            health: 20
+                            //TODO: start the room with 90% health
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        absolute: {
+                            health: 40
+                            //TODO: start the room with 75% health
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        absolute: {
+                            health: 75
+                            //TODO: start the room with 50% health
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        absolute: {
+                            health: 100
+                            //TODO: start the room with 25% health
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        absolute: {
+                            health: 150
+                            //TODO: start the room with 25% health
+                        }
+                    }
+                },
+            ]
         },
         "Hard Drive": {
             image: "HardDrive.png",
             rarity: CardRarity.UNCOMMON,
             name: "Hard Drive",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: 2% more enemies
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: 5% more enemies
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: 10% more enemies
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: 15% more enemies
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: 25% more enemies
+                        }
+                    }
+                },
+            ]
         },
         "Stethoscope": {
             image: "Stethoscope.png",
             rarity: CardRarity.UNCOMMON,
             name: "Stethoscope",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +1% damage every time you heal (resets each room).
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +2% damage every time you heal (resets each room).
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +3% damage every time you heal (resets each room).
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +5% damage every time you heal (resets each room).
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        multiplier: {
+                            //TODO: +1% permanent damage every time you heal.
+                        }
+                    }
+                },
+            ]
         },
         "Apple": {
             image: "Apple.png",
             rarity: CardRarity.UNCOMMON,
             name: "Apple",
-            levels: []
+            levels: [
+                { //Tier 1
+                    passiveEffects: {
+                        absolute: {
+                            //TODO: +0.5 health for every enemy that spawns.
+                        }
+                    }
+                },
+                { //Tier 2
+                    passiveEffects: {
+                        absolute: {
+                            //TODO: +1 health for every enemy that spawns.
+                        }
+                    }
+                },
+                { //Tier 3
+                    passiveEffects: {
+                        absolute: {
+                            //TODO: +2 health for every enemy that spawns.
+                        }
+                    }
+                },
+                { //Tier 4
+                    passiveEffects: {
+                        absolute: {
+                            health: 100
+                            //TODO: +3 health for every enemy that spawns.
+                        }
+                    }
+                },
+                { //Tier 5
+                    passiveEffects: {
+                        absolute: {
+                            health: 150
+                            //TODO: +5 health for every enemy that spawns.
+                        }
+                    }
+                },
+            ]
         },
         // ---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---RARE---
         "Magnifying Glass": {
