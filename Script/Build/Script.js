@@ -1313,7 +1313,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 0, //8 Base Damage
+                            damage: 0,
                             projectilePiercing: 2
                         }
                     }
@@ -1327,7 +1327,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 4, //8 Base Damage
+                            damage: 4,
                             projectilePiercing: 2
                         }
                     }
@@ -1341,7 +1341,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 4, //8 Base Damage
+                            damage: 4,
                             projectilePiercing: 2
                         }
                     }
@@ -1355,7 +1355,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 7, //8 Base Damage
+                            damage: 7,
                             projectilePiercing: 3
                         }
                     }
@@ -1369,7 +1369,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 7, //8 Base Damage
+                            damage: 7,
                             projectilePiercing: 4
                         }
                     }
@@ -1533,7 +1533,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 0, //5 Base Damage
+                            damage: 0,
                             effectDuration: 0 //1 Base Duration
                         }
                     }
@@ -1546,7 +1546,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 1, //5 Base Damage
+                            damage: 1,
                             effectDuration: 0 //1 Base Duration
                         }
                     }
@@ -1559,7 +1559,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 1, //5 Base Damage
+                            damage: 1,
                             effectDuration: 0.5 //1 Base Duration
                         }
                     }
@@ -1572,7 +1572,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 1, //5 Base Damage
+                            damage: 1,
                             effectDuration: 0.5 //1 Base Duration
                         }
                     }
@@ -1585,7 +1585,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 3, //5 Base Damage
+                            damage: 3,
                             effectDuration: 1 //1 Base Duration
                         }
                     }
@@ -1739,7 +1739,7 @@ var Script;
                 },
             ]
         },
-        "Civil Code": {
+        "Code Civil": {
             image: "CodeCivil.png",
             rarity: Script.CardRarity.COMMON,
             name: "Code Civil",
@@ -1747,7 +1747,7 @@ var Script;
                 {
                     activeEffects: [{
                             type: "projectile",
-                            projectile: "civilCodePlayer",
+                            projectile: "codeCivilPlayer",
                             amount: 1,
                             cooldown: 3,
                         }],
@@ -1761,7 +1761,7 @@ var Script;
                 {
                     activeEffects: [{
                             type: "projectile",
-                            projectile: "civilCodePlayer",
+                            projectile: "codeCivilPlayer",
                             amount: 1,
                             cooldown: 3,
                         }],
@@ -1775,7 +1775,7 @@ var Script;
                 {
                     activeEffects: [{
                             type: "projectile",
-                            projectile: "civilCodePlayer",
+                            projectile: "codeCivilPlayer",
                             amount: 1,
                             cooldown: 2.5,
                         }],
@@ -1789,7 +1789,7 @@ var Script;
                 {
                     activeEffects: [{
                             type: "projectile",
-                            projectile: "civilCodePlayer",
+                            projectile: "codeCivilPlayer",
                             amount: 1,
                             cooldown: 2,
                         }],
@@ -1803,7 +1803,7 @@ var Script;
                 {
                     activeEffects: [{
                             type: "projectile",
-                            projectile: "civilCodePlayer",
+                            projectile: "codeCivilPlayer",
                             amount: 2,
                             cooldown: 2,
                         }],
@@ -1830,7 +1830,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 0, //5 Base Damage
+                            damage: 0,
                             projectilePiercing: 3
                         }
                     }
@@ -1844,7 +1844,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 2, //5 Base Damage
+                            damage: 2,
                             projectilePiercing: 3
                         }
                     }
@@ -1858,7 +1858,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 2, //5 Base Damage
+                            damage: 2,
                             projectilePiercing: 3
                         }
                     }
@@ -1872,7 +1872,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 3, //5 Base Damage
+                            damage: 3,
                             projectilePiercing: 4
                         }
                     }
@@ -1886,7 +1886,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 5, //5 Base Damage
+                            damage: 5,
                             projectilePiercing: 6
                         }
                     }
@@ -3143,7 +3143,7 @@ var Script;
             levels: []
         },
         "Athletic Tape": {
-            image: "Athletic.png",
+            image: "AthleticTape.png",
             rarity: Script.CardRarity.RARE,
             name: "Athletic Tape",
             levels: []
@@ -3167,7 +3167,7 @@ var Script;
             levels: []
         },
         "Riot Shield": {
-            image: "RiotShields.png",
+            image: "RiotShield.png",
             rarity: Script.CardRarity.RARE,
             name: "Riot Shield",
             levels: []

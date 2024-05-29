@@ -442,7 +442,7 @@ namespace Script {
                 },
             ]
         },
-        "Civil Code": {
+        "Code Civil": {
             image: "CodeCivil.png",
             rarity: CardRarity.COMMON,
             name: "Code Civil",
@@ -450,7 +450,7 @@ namespace Script {
                 { //Tier 1
                     activeEffects: [{
                         type: "projectile",
-                        projectile: "civilCodePlayer",
+                        projectile: "codeCivilPlayer",
                         amount: 1,
                         cooldown: 3,
                     }],
@@ -464,7 +464,7 @@ namespace Script {
                 { //Tier 2
                     activeEffects: [{
                         type: "projectile",
-                        projectile: "civilCodePlayer",
+                        projectile: "codeCivilPlayer",
                         amount: 1,
                         cooldown: 3,
                     }],
@@ -478,7 +478,7 @@ namespace Script {
                 { //Tier 3
                     activeEffects: [{
                         type: "projectile",
-                        projectile: "civilCodePlayer",
+                        projectile: "codeCivilPlayer",
                         amount: 1,
                         cooldown: 2.5,
                     }],
@@ -492,7 +492,7 @@ namespace Script {
                 { //Tier 4
                     activeEffects: [{
                         type: "projectile",
-                        projectile: "civilCodePlayer",
+                        projectile: "codeCivilPlayer",
                         amount: 1,
                         cooldown: 2,
                     }],
@@ -506,7 +506,7 @@ namespace Script {
                 { //Tier 5
                     activeEffects: [{
                         type: "projectile",
-                        projectile: "civilCodePlayer",
+                        projectile: "codeCivilPlayer",
                         amount: 2,
                         cooldown: 2,
                     }],
@@ -1847,7 +1847,7 @@ namespace Script {
             levels: []
         },
         "Athletic Tape": {
-            image: "Athletic.png",
+            image: "AthleticTape.png",
             rarity: CardRarity.RARE,
             name: "Athletic Tape",
             levels: []
@@ -1871,7 +1871,7 @@ namespace Script {
             levels: []
         },
         "Riot Shield": {
-            image: "RiotShields.png",
+            image: "RiotShield.png",
             rarity: CardRarity.RARE,
             name: "Riot Shield",
             levels: []
