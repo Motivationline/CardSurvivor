@@ -1,11 +1,11 @@
 @font-face {
   font-family: "Luckiest Guy";
-  src: url(../../Assets/Font/LuckiestGuy.ttf);
+  src: url(Assets/Font/LuckiestGuy.ttf);
 }
 
 @font-face {
   font-family: "Urbanist";
-  src: url(../../Assets/Font/Urbanist-Bold.ttf);
+  src: url(Assets/Font/Urbanist-Bold.ttf);
 }
 
 * {
