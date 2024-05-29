@@ -3104,165 +3104,987 @@ var Script;
             image: "MagnifyingGlas.png",
             rarity: Script.CardRarity.RARE,
             name: "Magnifying Glass",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            criticalHitChance: 1.05
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            criticalHitChance: 1.1
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            criticalHitChance: 1.2
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            criticalHitChance: 1.35
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            criticalHitChance: 1.6
+                        }
+                    }
+                },
+            ]
         },
         "Tattoo Ink": {
             image: "TatooInk.png",
             rarity: Script.CardRarity.RARE,
             name: "Tattoo Ink",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            projectileSpeed: 1.15
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            projectileSpeed: 1.3
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            projectileSpeed: 1.5
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            projectileSpeed: 1.7
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            projectileSpeed: 2
+                        }
+                    }
+                },
+            ]
         },
         "Calculator": {
             image: "Calculator.png",
             rarity: Script.CardRarity.RARE,
             name: "Calculator",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            damage: 1.05
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            damage: 1.1
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            damage: 1.2
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            damage: 1.35
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            damage: 1.6
+                        }
+                    }
+                },
+            ]
         },
         "Bandages": {
             image: "Bandages.png",
             rarity: Script.CardRarity.RARE,
             name: "Bandages",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            health: 1.05
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            health: 1.1
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            health: 1.2
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            health: 1.3
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            health: 1.5
+                        }
+                    }
+                },
+            ]
         },
         "Face Shield": {
             image: "FaceShield.png",
             rarity: Script.CardRarity.RARE,
             name: "Face Shield",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            damageReduction: 0.95
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            damageReduction: 0.9
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            damageReduction: 0.8
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            damageReduction: 0.7
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            damageReduction: 0.5
+                        }
+                    }
+                },
+            ]
         },
         "3D Printer": {
             image: "3DPrinter.png",
             rarity: Script.CardRarity.RARE,
             name: "3D Printer",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: 10% chance to copy another random card effect (resets each room).
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: 25% chance to copy another random card effect (resets each room).
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: 40% chance to copy another random card effect (resets each room).
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: 60% chance to copy another random card effect (resets each room).
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: 100% chance to copy another random card effect (resets each room).
+                        }
+                    }
+                },
+            ]
         },
         "Ear Protection": {
             image: "EarProtection.png",
             rarity: Script.CardRarity.RARE,
             name: "Ear Protection",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +25% duration of invincibility after taking damage.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +50% duration of invincibility after taking damage.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +75% duration of invincibility after taking damage.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +100% duration of invincibility after taking damage.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +150% duration of invincibility after taking damage.
+                        }
+                    }
+                },
+            ]
         },
         "Athletic Tape": {
             image: "AthleticTape.png",
             rarity: Script.CardRarity.RARE,
             name: "Athletic Tape",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +5% healing effects.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +10% healing effects.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +15% healing effects.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +30% healing effects.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +50% healing effects.
+                        }
+                    }
+                },
+            ]
         },
         "Newspaper": {
             image: "Newspaper.png",
             rarity: Script.CardRarity.RARE,
             name: "Newspaper",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            movementSpeed: 1.05
+                            //TODO: -5% damage while standing still.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            movementSpeed: 1.1
+                            //TODO: -10% damage while standing still.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            movementSpeed: 1.15
+                            //TODO: -15% damage while standing still.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            movementSpeed: 1.25
+                            //TODO: -25% damage while standing still.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            movementSpeed: 1.5
+                            //TODO: -25% damage while standing still.
+                        }
+                    }
+                },
+            ]
         },
         "Screwdriver": {
             image: "Screwdriver.png",
             rarity: Script.CardRarity.RARE,
             name: "Screwdriver",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +1% attack speed every time you kill an enemy (resets each room).
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +2% attack speed every time you kill an enemy (resets each room).
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +3% attack speed every time you kill an enemy (resets each room).
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +5% attack speed every time you kill an enemy (resets each room).
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +1% permanent attack speed every time you kill an enemy.
+                        }
+                    }
+                },
+            ]
         },
         "Bucket": {
             image: "Bucket.png",
             rarity: Script.CardRarity.RARE,
             name: "Bucket",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                    //TODO: Negates the first 1 instance of damage per room.
+                    }
+                },
+                {
+                    passiveEffects: {
+                    //TODO: Negates the first 2 instances of damage per room.
+                    }
+                },
+                {
+                    passiveEffects: {
+                    //TODO: Negates the first 3 instances of damage per room.
+                    }
+                },
+                {
+                    passiveEffects: {
+                    //TODO: Negates the first 4 instances of damage per room.
+                    }
+                },
+                {
+                    passiveEffects: {
+                    //TODO: Negates the next 4 instances of damage every new room (stays inbetween rooms).
+                    }
+                },
+            ]
         },
         "Riot Shield": {
             image: "RiotShield.png",
             rarity: Script.CardRarity.RARE,
             name: "Riot Shield",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +10% chance to reflect projectiles.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +15% chance to reflect projectiles.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +25% chance to reflect projectiles.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +35% chance to reflect projectiles.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +50% chance to reflect projectiles.
+                        }
+                    }
+                },
+            ]
         },
         // ---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---EPIC---
         "Piercing Gun": {
             image: "PiercingGun.png",
             rarity: Script.CardRarity.EPIC,
             name: "Piercing Gun",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        absolute: {
+                            projectilePiercing: 1
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        absolute: {
+                            projectilePiercing: 2
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        absolute: {
+                            projectilePiercing: 3
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        absolute: {
+                            projectilePiercing: 4
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        absolute: {
+                            projectilePiercing: 6
+                        }
+                    }
+                },
+            ]
         },
         "Stopwatch": {
             image: "Stopwatch.png",
             rarity: Script.CardRarity.EPIC,
             name: "Stopwatch",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                    //TODO: Stuns 1 random enemy for 1 second everytime you take damage.
+                    }
+                },
+                {
+                    passiveEffects: {
+                    //TODO: Stuns 2 random enemies for 1 second everytime you take damage.
+                    }
+                },
+                {
+                    passiveEffects: {
+                    //TODO: Stuns 3 random enemies for 1.5 seconds everytime you take damage.
+                    }
+                },
+                {
+                    passiveEffects: {
+                    //TODO: Stuns 4 random enemies for 1.5 seconds everytime you take damage.
+                    }
+                },
+                {
+                    passiveEffects: {
+                    //TODO: Stuns 5 random enemies for 2 seconds everytime you take damage.
+                    }
+                },
+            ]
         },
         "Rake": {
             image: "Rake.png",
             rarity: Script.CardRarity.EPIC,
             name: "Rake",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +10% map size.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +15% map size.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +25% map size.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +35% map size.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +50% map size.
+                        }
+                    }
+                },
+            ]
         },
         "Jumper Cable": {
             image: "JumperCable.png",
             rarity: Script.CardRarity.EPIC,
             name: "Jumper Cable",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: Heal 1% of the damage you deal.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: Heal 2% of the damage you deal.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: Heal 5% of the damage you deal.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: Heal 15% of the damage you deal.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: Heal 30% of the damage you deal.
+                        }
+                    }
+                },
+            ]
         },
         "Shredder": {
             image: "Shredder.png",
             rarity: Script.CardRarity.EPIC,
             name: "Shredder",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            damage: 1.1,
+                            damageReduction: 1.1
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            damage: 1.25,
+                            damageReduction: 1.25
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            damage: 1.4,
+                            damageReduction: 1.4
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            damage: 1.6,
+                            damageReduction: 1.6
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            damage: 2,
+                            damageReduction: 2
+                        }
+                    }
+                },
+            ]
         },
         "Whiteboard": {
             image: "Whiteboard.png",
             rarity: Script.CardRarity.EPIC,
             name: "Whiteboard",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -30% all stats, +1% all stats per level on your equipped cards.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -20% all stats, +1% all stats per level on your equipped cards.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -60% all stats, +2% all stats per level on your equipped cards.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -40% all stats, +2% all stats per level on your equipped cards.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -90% all stats, +3% all stats per level on your equipped cards.
+                        }
+                    }
+                },
+            ]
         },
         "Drawing Tablet": {
             image: "DrawingTablet.png",
             rarity: Script.CardRarity.EPIC,
             name: "DrawingTablet",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        absolute: {
+                            projectileAmount: 1
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        absolute: {
+                            projectileAmount: 2
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        absolute: {
+                            projectileAmount: 3
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        absolute: {
+                            projectileAmount: 4
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        absolute: {
+                            projectileAmount: 6
+                        }
+                    }
+                },
+            ]
         },
         "Press Vest": {
             image: "PressVest.png",
             rarity: Script.CardRarity.EPIC,
             name: "Press Vest",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +1% Damage resistance per current movement speed (maximum 60%).
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +2% Damage resistance per current movement speed (maximum 65%).
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +3% Damage resistance per current movement speed (maximum 70%).
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +5% Damage resistance per current movement speed (maximum 75%).
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +8% Damage resistance per current movement speed (maximum 90%).
+                        }
+                    }
+                },
+            ]
         },
         "Tong": {
             image: "Tong.png",
             rarity: Script.CardRarity.EPIC,
             name: "Tong",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +20% attack speed while standing still.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +30% attack speed while standing still.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +40% attack speed while standing still.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +60% attack speed while standing still.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +100% attack speed while standing still.
+                        }
+                    }
+                },
+            ]
         },
         "High-Vis West": {
             image: "HighVisWest.png",
             rarity: Script.CardRarity.EPIC,
             name: "High-Vis West",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: 20% chance to deal received damage back to enemies.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: 30% chance to deal received damage back to enemies.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: 40% chance to deal received damage back to enemies.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: 60% chance to deal received damage back to enemies.
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: 100% chance to deal received damage back to enemies.
+                        }
+                    }
+                },
+            ]
         },
         // ---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---LEGENDARY---
         "Apprenticeship": {
             image: "Apprenticeship.gif",
             rarity: Script.CardRarity.LEGENDARY,
             name: "Apprenticeship",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: +25% all stats.
+                        }
+                    }
+                },
+            ]
         },
         "Diploma": {
             image: "Diploma.gif",
             rarity: Script.CardRarity.LEGENDARY,
             name: "Diploma",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: -50% on all stats, but every cleared room has a 10% chance to drop a booster pack (+10% per cleared room).
+                        }
+                    }
+                },
+            ]
         },
         "Internship": {
             image: "Internship.gif",
             rarity: Script.CardRarity.LEGENDARY,
             name: "Internship",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: Every job gets +1 for their set.
+                        }
+                    }
+                },
+            ]
         },
         "Certification": {
             image: "Certification.gif",
             rarity: Script.CardRarity.LEGENDARY,
             name: "Certification",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                        //TODO: Rerolls every outcome twice and takes the better option.
+                        }
+                    }
+                },
+            ]
         },
         "Training": {
             image: "Training.gif",
             rarity: Script.CardRarity.LEGENDARY,
             name: "Training",
-            levels: []
+            levels: [
+                {
+                    passiveEffects: {
+                        multiplier: {
+                            health: 2
+                        }
+                    }
+                },
+            ]
         },
     };
 })(Script || (Script = {}));

@@ -66,8 +66,8 @@
         "5": "Throws 2 discs every 2 seconds dealing 10 damage. They bounce 4 times."
       }
     },
-    "Civil Code": {
-      "name": "Civil Code",
+    "Code Civil": {
+      "name": "Code Civil",
       "description": "Throw books that deal more damage the further they travel.",
       "levels": {
         "1": "Throws 1 book every 3 seconds dealing 3-30 damage, depending on the distance.",
