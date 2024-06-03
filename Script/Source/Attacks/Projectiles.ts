@@ -40,6 +40,34 @@ namespace Script {
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.NONE
         },
+        "discus": {
+            damage: 1,
+            speed: 20,
+            sprite: ["projectile", "discus_projectile"],
+            target: ProjectileTarget.ENEMY,
+            targetMode: ProjectileTargetMode.CLOSEST
+        },
+        "pen": {
+            damage: 1,
+            speed: 20,
+            sprite: ["projectile", "pen_projectile"],
+            target: ProjectileTarget.ENEMY,
+            targetMode: ProjectileTargetMode.CLOSEST
+        },
+        "codecivil": {
+            damage: 1,
+            speed: 20,
+            sprite: ["projectile", "codecivil_projectile"],
+            target: ProjectileTarget.ENEMY,
+            targetMode: ProjectileTargetMode.CLOSEST
+        },
+        "divider": {
+            damage: 1,
+            speed: 20,
+            sprite: ["projectile", "divider_projectile"],
+            target: ProjectileTarget.ENEMY,
+            targetMode: ProjectileTargetMode.CLOSEST
+        },
         "chisel": {
             damage: 1,
             speed: 20,
