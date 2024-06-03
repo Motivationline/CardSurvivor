@@ -41,8 +41,8 @@ namespace Script {
         public reset(_as: AnimationSprite, _time: number = ƒ.Time.game.get()) {
             this.sprite = _as;
             this.startTime = _time;
-            this.totalTime = Math.floor((_as.frames / _as.fps) * 1000);
-            this.frameTime = Math.floor((1 / _as.fps) * 1000);
+            this.totalTime = (_as.frames / _as.fps) * 1000;
+            this.frameTime = (1 / _as.fps) * 1000;
 
             this.frameWidth = _as.width / _as.totalWidth;
             this.frameHeight = _as.height / _as.totalHeight;
