@@ -32,6 +32,20 @@ namespace Script {
                     this.direction = ƒ.Vector3.Y(-1);
                 }
             }
+        },
+        "hammer": {
+            damage: 1,
+            speed: 20,
+            sprite: ["projectile", "hammer_projectile"],
+            target: ProjectileTarget.ENEMY,
+            targetMode: ProjectileTargetMode.NONE
+        },
+        "chisel": {
+            damage: 1,
+            speed: 20,
+            sprite: ["projectile", "chisel_projectile"],
+            target: ProjectileTarget.ENEMY,
+            targetMode: ProjectileTargetMode.CLOSEST
         }
     }
     
