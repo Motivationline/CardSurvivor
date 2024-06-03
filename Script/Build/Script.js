@@ -540,13 +540,7 @@ var Script;
         prevFrame = -1;
         constructor(_as, _startTime = ƒ.Time.game.get(), _mtx = new ƒ.Matrix3x3()) {
             this.mtx = _mtx;
-            this.sprite = _as;
-            this.startTime = _startTime;
-            this.totalTime = (_as.frames / _as.fps) * 1000;
-            this.frameTime = (1 / _as.fps) * 1000;
-            this.frameWidth = _as.width / _as.totalWidth;
-            this.frameHeight = _as.height / _as.totalHeight;
-            this.mtx.scaling = new ƒ.Vector2(this.frameWidth, this.frameHeight);
+            this.reset(_as, _startTime);
         }
         get matrix() {
             return this.mtx;

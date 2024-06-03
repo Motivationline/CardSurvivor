@@ -12,14 +12,7 @@ namespace Script {
 
         constructor(_as: AnimationSprite, _startTime: number = ƒ.Time.game.get(), _mtx: ƒ.Matrix3x3 = new ƒ.Matrix3x3()) {
             this.mtx = _mtx;
-            this.sprite = _as;
-            this.startTime = _startTime;
-            this.totalTime = (_as.frames / _as.fps) * 1000;
-            this.frameTime = (1 / _as.fps) * 1000;
-
-            this.frameWidth = _as.width / _as.totalWidth;
-            this.frameHeight = _as.height / _as.totalHeight;
-            this.mtx.scaling = new ƒ.Vector2(this.frameWidth, this.frameHeight);
+            this.reset(_as, _startTime);
         }
 
         get matrix(): ƒ.Matrix3x3 {
