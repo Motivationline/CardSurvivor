@@ -55,6 +55,7 @@ namespace Script {
         COLLECTION_RADIUS = "collectionRadius",
         DAMAGE_REDUCTION = "damageReduction",
         CARD_SLOTS = "cardSlots",
+        CARD_UPGRADE_SLOTS = "cardUpgradeSlots",
         MOVEMENT_SPEED = "movementSpeed",
     }
 

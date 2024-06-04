@@ -28,6 +28,38 @@ namespace Script {
 
             this.#character.update(this.movementVector);
         }
+
+        public upgradeCards(){
+            let defaultCardsToChooseFromAmount: number = 3;
+            let cm = provider.get(CardManager);
+            let cards = cm.getCardsToChooseFrom(cm.modifyValuePlayer(defaultCardsToChooseFromAmount, PassiveCardEffect.CARD_UPGRADE_SLOTS));
+            let elementsToShow: HTMLElement[] = [];
+            let parent: HTMLElement = document.getElementById("card-upgrade-popup");
+            if(!cards || cards.length === 0) {
+                //TODO add other bonus, like health or something
+                let element = document.createElement("div");
+                element.classList.add("card");
+                elementsToShow.push(element);
+                element.addEventListener("click", ()=>{
+                    provider.get(MenuManager).openMenu(MenuType.NONE);
+                });
+
+            } else {
+                // we have cards we can upgrade
+                for(let card of cards){
+                    let cv = new CardVisual(card, parent, card.id, card.level + 1);
+                    elementsToShow.push(cv.htmlElement);
+                    cv.htmlElement.addEventListener("click", selectCard);
+                    function selectCard(){
+                        card.level++;
+                        provider.get(MenuManager).openMenu(MenuType.NONE);
+                    }
+                }
+            }
+            parent.replaceChildren(...elementsToShow);
+            provider.get(MenuManager).openMenu(MenuType.CARD_UPGRADE);
+
+        }
     }
 
 

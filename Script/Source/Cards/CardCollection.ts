@@ -34,12 +34,6 @@ namespace Script {
             this.collection = dm.savedCollectionRaw;
             this.deck = dm.savedDeckRaw;
             this.selection = dm.savedSelectionRaw;
-
-            //TODO remove this
-            for (let cardID in cards) {
-                // if (!this.collection[cardID])
-                // this.addCardToCollection(cardID, 1);
-            }
         }
 
         setup() {

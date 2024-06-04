@@ -337,6 +337,9 @@ namespace Script {
                 case "k":
                     this.debugRemoveEnemies();
                     break;
+                case "l":
+                    this.characterManager.upgradeCards();
+                    break;
             }
         }
 

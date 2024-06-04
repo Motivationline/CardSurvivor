@@ -305,6 +305,36 @@ var Script;
                 return;
             this.#character.update(this.movementVector);
         };
+        upgradeCards() {
+            let defaultCardsToChooseFromAmount = 3;
+            let cm = Script.provider.get(Script.CardManager);
+            let cards = cm.getCardsToChooseFrom(cm.modifyValuePlayer(defaultCardsToChooseFromAmount, Script.PassiveCardEffect.CARD_UPGRADE_SLOTS));
+            let elementsToShow = [];
+            let parent = document.getElementById("card-upgrade-popup");
+            if (!cards || cards.length === 0) {
+                //TODO add other bonus, like health or something
+                let element = document.createElement("div");
+                element.classList.add("card");
+                elementsToShow.push(element);
+                element.addEventListener("click", () => {
+                    Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.NONE);
+                });
+            }
+            else {
+                // we have cards we can upgrade
+                for (let card of cards) {
+                    let cv = new Script.CardVisual(card, parent, card.id, card.level + 1);
+                    elementsToShow.push(cv.htmlElement);
+                    cv.htmlElement.addEventListener("click", selectCard);
+                    function selectCard() {
+                        card.level++;
+                        Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.NONE);
+                    }
+                }
+            }
+            parent.replaceChildren(...elementsToShow);
+            Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.CARD_UPGRADE);
+        }
     }
     Script.CharacterManager = CharacterManager;
 })(Script || (Script = {}));
@@ -605,6 +635,7 @@ var Script;
         PassiveCardEffect["COLLECTION_RADIUS"] = "collectionRadius";
         PassiveCardEffect["DAMAGE_REDUCTION"] = "damageReduction";
         PassiveCardEffect["CARD_SLOTS"] = "cardSlots";
+        PassiveCardEffect["CARD_UPGRADE_SLOTS"] = "cardUpgradeSlots";
         PassiveCardEffect["MOVEMENT_SPEED"] = "movementSpeed";
     })(PassiveCardEffect = Script.PassiveCardEffect || (Script.PassiveCardEffect = {}));
     let CardRarity;
@@ -825,8 +856,8 @@ var Script;
             dir.normalize(Math.min(1, _frameTimeInSeconds) * this.speed);
             this.node.mtxLocal.translate(dir);
             //TODO check if flew past target position (due to lag?) and still explode
-            let distanceToTarget = Script.ƒ.Vector3.DIFFERENCE(this.targetPosition, this.node.mtxWorld.translation).magnitudeSquared;
-            if (this.targetPosition && (this.node.mtxWorld.translation.equals(this.targetPosition, 0.5) || distanceToTarget > this.prevDistance)) {
+            // let distanceToTarget = ƒ.Vector3.DIFFERENCE(this.targetPosition, this.node.mtxWorld.translation).magnitudeSquared;
+            if (this.targetPosition && (this.node.mtxWorld.translation.equals(this.targetPosition, 0.5) /*|| distanceToTarget > this.prevDistance*/)) {
                 if (this.artillery && this.tracking.startTrackingAfter > 0)
                     return;
                 // target position reached
@@ -850,7 +881,7 @@ var Script;
                 }
                 Script.provider.get(Script.ProjectileManager).removeProjectile(this);
             }
-            this.prevDistance = distanceToTarget;
+            // this.prevDistance = distanceToTarget;
             //TODO remove projectile if too far off screen, don't forget hitzone
         }
         onTriggerEnter = (_event) => {
@@ -877,7 +908,7 @@ var Script;
 /// <reference path="../Types.ts" />
 (function (Script) {
     Script.projectiles = {
-        "toast": {
+        "toastEnemy": {
             damage: 1,
             speed: 20,
             artillery: true,
@@ -888,14 +919,14 @@ var Script;
             sprite: ["projectile", "toast"],
             target: Script.ProjectileTarget.PLAYER,
         },
-        "anvil": {
+        "anvilPlayer": {
             damage: 20,
             speed: 20,
             impact: [{
                     type: "aoe",
                     aoe: "anvilImpact"
                 }],
-            sprite: ["projectile", "toast"],
+            sprite: ["projectile", "anvil"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.RANDOM,
             afterSetup: function () {
@@ -906,6 +937,48 @@ var Script;
                     this.direction = Script.ƒ.Vector3.Y(-1);
                 }
             }
+        },
+        "hammer": {
+            damage: 1,
+            speed: 20,
+            sprite: ["projectile", "hammer_projectile"],
+            target: Script.ProjectileTarget.ENEMY,
+            targetMode: Script.ProjectileTargetMode.NONE
+        },
+        "discus": {
+            damage: 1,
+            speed: 20,
+            sprite: ["projectile", "discus_projectile"],
+            target: Script.ProjectileTarget.ENEMY,
+            targetMode: Script.ProjectileTargetMode.CLOSEST
+        },
+        "pen": {
+            damage: 1,
+            speed: 20,
+            sprite: ["projectile", "pen_projectile"],
+            target: Script.ProjectileTarget.ENEMY,
+            targetMode: Script.ProjectileTargetMode.CLOSEST
+        },
+        "codecivil": {
+            damage: 1,
+            speed: 20,
+            sprite: ["projectile", "codecivil_projectile"],
+            target: Script.ProjectileTarget.ENEMY,
+            targetMode: Script.ProjectileTargetMode.CLOSEST
+        },
+        "divider": {
+            damage: 1,
+            speed: 20,
+            sprite: ["projectile", "divider_projectile"],
+            target: Script.ProjectileTarget.ENEMY,
+            targetMode: Script.ProjectileTargetMode.CLOSEST
+        },
+        "chisel": {
+            damage: 1,
+            speed: 20,
+            sprite: ["projectile", "chisel_projectile"],
+            target: Script.ProjectileTarget.ENEMY,
+            targetMode: Script.ProjectileTargetMode.CLOSEST
         }
     };
     Script.areasOfEffect = {
@@ -937,7 +1010,9 @@ var Script;
         }
     };
 })(Script || (Script = {}));
+/// <reference path="../Attacks/Projectiles.ts" />
 var Script;
+/// <reference path="../Attacks/Projectiles.ts" />
 (function (Script) {
     class Card {
         name;
@@ -945,17 +1020,19 @@ var Script;
         image;
         rarity;
         levels;
+        id;
         #level;
         #cm;
         #pm;
         #charm;
-        constructor(_init, _level = 0, _nameFallback = "unknown") {
-            this.name = _init.name ?? `card.${_nameFallback}.name`;
-            this.description = _init.description ?? i18next.t(`card.${_nameFallback}.description`);
+        constructor(_init, _id, _level = 0) {
+            this.name = _init.name ?? `card.${_id}.name`;
+            this.description = _init.description ?? `card.${_id}.description`;
             this.image = _init.image;
             this.rarity = _init.rarity;
             this.levels = _init.levels;
             this.level = _level;
+            this.id = _id;
             this.#cm = Script.provider.get(Script.CardManager);
             this.#pm = Script.provider.get(Script.ProjectileManager);
             this.#charm = Script.provider.get(Script.CharacterManager);
@@ -974,7 +1051,7 @@ var Script;
                 return;
             for (let effect of this.levels[this.level].activeEffects) {
                 if (isNaN(effect.currentCooldown))
-                    effect.currentCooldown = 0;
+                    effect.currentCooldown = effect.cooldown;
                 effect.currentCooldown -= _time;
                 if (effect.currentCooldown <= 0) {
                     effect.currentCooldown = this.#cm.modifyValuePlayer(effect.cooldown, Script.PassiveCardEffect.COOLDOWN_REDUCTION, effect.modifiers);
@@ -1024,11 +1101,6 @@ var Script;
             this.collection = dm.savedCollectionRaw;
             this.deck = dm.savedDeckRaw;
             this.selection = dm.savedSelectionRaw;
-            //TODO remove this
-            for (let cardID in Script.cards) {
-                // if (!this.collection[cardID])
-                // this.addCardToCollection(cardID, 1);
-            }
         }
         setup() {
             this.selectionElement = document.getElementById("selection");
@@ -1256,9 +1328,9 @@ var Script;
         #image;
         #text;
         #htmlElement;
-        constructor(_card, _parent, _nameFallback = "unknown") {
+        constructor(_card, _parent, _nameFallback = "unknown", _level = 0) {
             this.#name = _card.name ?? _nameFallback;
-            this.#text = _card.description ?? i18next.t(`card.${this.#name}.description`);
+            this.#text = this.getFirstTranslatableText(_card.description ?? "unknown", _card.description, `card.${this.#name}.description`);
             this.#image = _card.image;
             this.#name = i18next.t(`card.${this.#name}.name`).toLocaleUpperCase();
             this.#htmlElement = CardVisual.template.content.cloneNode(true).childNodes[1];
@@ -1287,6 +1359,7 @@ var Script;
             this.#htmlElement.querySelector(".card-image img").src = "Assets/Cards/Items/" + this.#image;
             this.#htmlElement.style.setProperty("--delay", `${Math.random() * -10}s`);
             this.#htmlElement.classList.add(_card.rarity);
+            this.#htmlElement.classList.add(`level-${_level}`);
         }
         get htmlElement() {
             return this.#htmlElement;
@@ -1303,6 +1376,17 @@ var Script;
             const fontSize = this.getCssStyle(el, 'font-size') || '10vh';
             const fontFamily = this.getCssStyle(el, 'font-family') || 'Luckiest Guy';
             return `${fontWeight} ${fontSize} ${fontFamily}`;
+        }
+        getFirstTranslatableText(_fallback, ..._texts) {
+            for (let text of _texts) {
+                if (!text)
+                    continue;
+                let translatedText = i18next.t(text);
+                if (translatedText !== text) {
+                    return translatedText;
+                }
+            }
+            return "";
         }
         getCssStyle(element, prop) {
             return window.getComputedStyle(element, null).getPropertyValue(prop);
@@ -4594,14 +4678,16 @@ var Script;
 (function (Script) {
     class CardManager {
         currentlyActiveCards = [];
+        deckCards = [];
         cumulativeEffects = { absolute: {}, multiplier: {} };
+        defaultMaxActiveCardAmount = 10;
+        currentMaxActiveCardAmount = 10;
         constructor() {
-            this.currentlyActiveCards.push(
-            // new Card(cards["anvil"], 0),
-            // new Card(cards["testSize"], 1),
-            );
             this.updateEffects();
             Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
+        }
+        get activeCards() {
+            return this.currentlyActiveCards;
         }
         update = () => {
             if (Script.gameState !== Script.GAMESTATE.PLAYING)
@@ -4637,6 +4723,7 @@ var Script;
                 cardEffects.push(effects);
             }
             this.cumulativeEffects = this.combineEffects(...cardEffects);
+            this.currentMaxActiveCardAmount = this.modifyValuePlayer(this.defaultMaxActiveCardAmount, Script.PassiveCardEffect.CARD_SLOTS);
         }
         combineEffects(..._effects) {
             let combined = { absolute: {}, multiplier: {} };
@@ -4652,6 +4739,55 @@ var Script;
                 }
             }
             return combined;
+        }
+        setCards(_selection, _deck) {
+            this.currentlyActiveCards = [];
+            this.deckCards = [];
+            for (let cardId of _selection) {
+                this.currentlyActiveCards.push(new Script.Card(Script.cards[cardId], cardId, 0));
+            }
+            for (let cardId of _deck) {
+                this.deckCards.push(new Script.Card(Script.cards[cardId], cardId, 0));
+            }
+            this.updateEffects();
+        }
+        getCardsToChooseFrom(_maxAmt) {
+            let possibleCards = [...this.currentlyActiveCards];
+            if (this.currentlyActiveCards.length < this.currentMaxActiveCardAmount) {
+                possibleCards.push(...this.deckCards);
+            }
+            for (let i = 0; i < possibleCards.length; i++) {
+                let card = possibleCards[i];
+                if (card.level < card.levels.length - 1)
+                    continue;
+                possibleCards.splice(i, 1);
+                i--;
+            }
+            // shuffle options
+            possibleCards = possibleCards
+                .map(value => ({ value, sort: Math.random() }))
+                .sort((a, b) => a.sort - b.sort)
+                .map(({ value }) => value);
+            possibleCards.length = Math.min(Math.floor(_maxAmt), possibleCards.length);
+            return possibleCards;
+        }
+        updateCardOrAdd(_cardId) {
+            let card = this.currentlyActiveCards.find((card) => card.id === _cardId);
+            if (card) {
+                // update
+                card.level = Math.min(card.level + 1, card.levels.length - 1);
+                return this.updateEffects();
+            }
+            ;
+            // add
+            for (let i = 0; i < this.deckCards.length; i++) {
+                let deckCard = this.deckCards[i];
+                if (deckCard.id === _cardId) {
+                    this.currentlyActiveCards.push(deckCard);
+                    this.deckCards.splice(i, 1);
+                    return this.updateEffects();
+                }
+            }
         }
     }
     Script.CardManager = CardManager;
@@ -5045,6 +5181,9 @@ var Script;
                 case "k":
                     this.debugRemoveEnemies();
                     break;
+                case "l":
+                    this.characterManager.upgradeCards();
+                    break;
             }
         };
         debugButtons = (_event) => {
@@ -5156,7 +5295,8 @@ var Script;
         MenuType[MenuType["COLLECTION"] = 2] = "COLLECTION";
         MenuType[MenuType["SETTINGS"] = 3] = "SETTINGS";
         MenuType[MenuType["PAUSE"] = 4] = "PAUSE";
-        MenuType[MenuType["END_CONFIRM"] = 5] = "END_CONFIRM";
+        MenuType[MenuType["CARD_UPGRADE"] = 5] = "CARD_UPGRADE";
+        MenuType[MenuType["END_CONFIRM"] = 6] = "END_CONFIRM";
     })(MenuType = Script.MenuType || (Script.MenuType = {}));
     class MenuManager {
         menus = new Map();
@@ -5167,14 +5307,14 @@ var Script;
             this.menus.set(MenuType.COLLECTION, document.getElementById("collection-overlay"));
             this.menus.set(MenuType.SETTINGS, document.getElementById("settings-overlay"));
             this.menus.set(MenuType.PAUSE, document.getElementById("pause-overlay"));
+            this.menus.set(MenuType.CARD_UPGRADE, document.getElementById("card-upgrade-popup"));
             this.menus.set(MenuType.END_CONFIRM, document.getElementById("end-confirm"));
             main.querySelector("#main-menu-deck").addEventListener("click", () => { this.openMenu(MenuType.COLLECTION); });
             main.querySelector("#main-menu-game").addEventListener("click", () => {
-                this.openMenu(MenuType.NONE);
-                Script.gameState = Script.GAMESTATE.PLAYING;
+                this.startGame();
             });
             document.getElementById("game-overlay-pause").addEventListener("click", () => {
-                this.openMenu(MenuType.PAUSE);
+                this.openPauseMenu();
                 if (Script.gameState !== Script.GAMESTATE.PAUSED)
                     this.prevGameState = Script.gameState;
                 Script.gameState = Script.GAMESTATE.PAUSED;
@@ -5184,7 +5324,7 @@ var Script;
                 Script.gameState = this.prevGameState;
             });
             document.getElementById("pause-quit").addEventListener("click", () => { this.openMenu(MenuType.END_CONFIRM); });
-            document.getElementById("end-abort").addEventListener("click", () => { this.openMenu(MenuType.PAUSE); });
+            document.getElementById("end-abort").addEventListener("click", () => { this.openPauseMenu(); });
             document.getElementById("end-quit").addEventListener("click", () => {
                 this.openMenu(MenuType.MAIN);
                 //TODO handle game abort.
@@ -5200,6 +5340,27 @@ var Script;
                 }
             }
         }
+        startGame() {
+            this.openMenu(MenuType.NONE);
+            Script.gameState = Script.GAMESTATE.PLAYING;
+            let dataManager = Script.provider.get(Script.DataManager);
+            let cardManager = Script.provider.get(Script.CardManager);
+            cardManager.setCards(dataManager.savedSelectionRaw, dataManager.savedDeckRaw);
+        }
+        openPauseMenu() {
+            this.openMenu(MenuType.PAUSE);
+            let cardsForPauseMenu = [];
+            let cm = Script.provider.get(Script.CardManager);
+            let element = document.getElementById("pause-overlay-cards");
+            for (let card of cm.activeCards) {
+                let cv = new Script.CardVisual(card, element, card.id);
+                cardsForPauseMenu.push(cv.htmlElement);
+                cv.htmlElement.addEventListener("click", this.openPauseCardPopup);
+            }
+            element.replaceChildren(...cardsForPauseMenu);
+        }
+        openPauseCardPopup = (_event) => {
+        };
     }
     Script.MenuManager = MenuManager;
 })(Script || (Script = {}));

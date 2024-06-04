@@ -1,3 +1,5 @@
+/// <reference path="../Attacks/Projectiles.ts" />
+
 namespace Script {
     export class Card implements iCard {
         name: string;
@@ -5,18 +7,20 @@ namespace Script {
         image: string;
         rarity: CardRarity;
         levels: CardLevel[];
+        id: string;
         #level: number;
         #cm: CardManager;
         #pm: ProjectileManager;
         #charm: CharacterManager;
 
-        constructor(_init: iCard, _level: number = 0, _nameFallback: string = "unknown") {
-            this.name = _init.name ?? `card.${_nameFallback}.name`;
-            this.description = _init.description ?? i18next.t(`card.${_nameFallback}.description`);
+        constructor(_init: iCard, _id: string, _level: number = 0) {
+            this.name = _init.name ?? `card.${_id}.name`;
+            this.description = _init.description ?? `card.${_id}.description`;
             this.image = _init.image;
             this.rarity = _init.rarity;
             this.levels = _init.levels;
             this.level = _level;
+            this.id = _id;
 
             this.#cm = provider.get(CardManager);
             this.#pm = provider.get(ProjectileManager);
@@ -38,7 +42,7 @@ namespace Script {
         public update(_time: number, _cumulatedEffects: PassiveCardEffectObject) {
             if (!this.levels[this.level].activeEffects || !this.levels[this.level].activeEffects.length) return;
             for (let effect of this.levels[this.level].activeEffects) {
-                if (isNaN(effect.currentCooldown)) effect.currentCooldown = 0;
+                if (isNaN(effect.currentCooldown)) effect.currentCooldown = effect.cooldown;
                 effect.currentCooldown -= _time;
                 if (effect.currentCooldown <= 0) {
                     effect.currentCooldown = this.#cm.modifyValuePlayer(effect.cooldown, PassiveCardEffect.COOLDOWN_REDUCTION, effect.modifiers);

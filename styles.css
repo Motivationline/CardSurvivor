@@ -132,10 +132,26 @@ progress[value]::-moz-progress-bar {
   width: 1em;
 }
 
+#card-upgrade-popup {
+  pointer-events: all;
+  --card-size: min(20vw, 80vh);
+  display: flex;
+}
+
 /* pause and settings */
 #pause-overlay {
   z-index: 1002;
 }
+
+#pause-overlay-cards {
+  --card-size: 100px;
+  display: flex;
+}
+#pause-overlay-cards .card {
+  cursor: default;
+}
+
+
 #end-confirm {
   z-index: 1003;
 }

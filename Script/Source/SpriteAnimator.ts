@@ -3,7 +3,7 @@ namespace Script {
     export class SpriteAnimator {
         private mtx: ƒ.Matrix3x3;
         private sprite: AnimationSprite;
-        private startTime;
+        private startTime: number;
         private totalTime: number;
         private frameTime: number;
         private frameWidth: number;

@@ -884,7 +884,8 @@
               }
             }
           }
-        ]
+        ],
+        "ComponentFaceCamera": []
       },
       "children": [
         {
@@ -1259,10 +1260,10 @@
                     "direction": "diagonal",
                     "near": 1,
                     "far": 2000,
-                    "aspect": 1.91991341991342,
+                    "aspect": 1.956386292834891,
                     "pivot": {
-                      "translation": "[0, 0, 10]",
-                      "rotation": "[0.49999991059303284, 180, 0]",
+                      "translation": "[0, 0, 15]",
+                      "rotation": "[0, 180, 0]",
                       "scaling": "[1, 1, 1]"
                     },
                     "Component": {
@@ -1389,13 +1390,7 @@
             }
           }
         ],
-        "ComponentFaceCamera": [
-          {
-            "ƒ.ComponentFaceCamera": {
-              "active": true
-            }
-          }
-        ]
+        "ComponentFaceCamera": []
       },
       "children": [],
       "idResource": "Graph|2024-05-03T09:17:54.314Z|34670",

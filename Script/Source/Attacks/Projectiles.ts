@@ -3,7 +3,7 @@
 namespace Script {
 
     export const projectiles: Projectiles = {
-        "toast": {
+        "toastEnemy": {
             damage: 1,
             speed: 20,
             artillery: true,
@@ -14,14 +14,14 @@ namespace Script {
             sprite: ["projectile", "toast"],
             target: ProjectileTarget.PLAYER,
         },
-        "anvil": {
+        "anvilPlayer": {
             damage: 20,
             speed: 20,
             impact: [{
                 type: "aoe",
                 aoe: "anvilImpact"
             }],
-            sprite: ["projectile", "toast"],
+            sprite: ["projectile", "anvil"],
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.RANDOM,
             afterSetup: function() {

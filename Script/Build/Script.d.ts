@@ -72,6 +72,7 @@ declare namespace Script {
         set character(_char: Character);
         setMovement(_direction: ƒ.Vector2): void;
         private update;
+        upgradeCards(): void;
     }
 }
 declare namespace Script {
@@ -178,6 +179,7 @@ declare namespace Script {
         COLLECTION_RADIUS = "collectionRadius",
         DAMAGE_REDUCTION = "damageReduction",
         CARD_SLOTS = "cardSlots",
+        CARD_UPGRADE_SLOTS = "cardUpgradeSlots",
         MOVEMENT_SPEED = "movementSpeed"
     }
     export enum CardRarity {
@@ -361,7 +363,8 @@ declare namespace Script {
         image: string;
         rarity: CardRarity;
         levels: CardLevel[];
-        constructor(_init: iCard, _level?: number, _nameFallback?: string);
+        id: string;
+        constructor(_init: iCard, _id: string, _level?: number);
         get level(): number;
         set level(_level: number);
         get effects(): PassiveCardEffectObject;
@@ -415,10 +418,11 @@ declare namespace Script {
         #private;
         static template: HTMLTemplateElement;
         private static canvas;
-        constructor(_card: iCard, _parent: HTMLElement, _nameFallback?: string);
+        constructor(_card: iCard, _parent: HTMLElement, _nameFallback?: string, _level?: number);
         get htmlElement(): HTMLElement;
         private getTextWidth;
         private getCanvasFont;
+        private getFirstTranslatableText;
         private getCssStyle;
     }
 }
@@ -552,8 +556,12 @@ declare namespace Script {
 declare namespace Script {
     class CardManager {
         private currentlyActiveCards;
+        private deckCards;
         private cumulativeEffects;
+        private defaultMaxActiveCardAmount;
+        private currentMaxActiveCardAmount;
         constructor();
+        get activeCards(): Card[];
         private update;
         getEffectAbsolute(_effect: PassiveCardEffect, _modifier?: PassiveCardEffectObject): number;
         getEffectMultiplier(_effect: PassiveCardEffect, _modifier?: PassiveCardEffectObject): number;
@@ -561,6 +569,9 @@ declare namespace Script {
         modifyValue(_value: number, _effect: PassiveCardEffect, _modifier: PassiveCardEffectObject): number;
         updateEffects(): void;
         combineEffects(..._effects: PassiveCardEffectObject[]): PassiveCardEffectObject;
+        setCards(_selection: string[], _deck: string[]): void;
+        getCardsToChooseFrom(_maxAmt: number): Card[];
+        updateCardOrAdd(_cardId: string): void;
     }
 }
 declare namespace Script {
@@ -625,13 +636,17 @@ declare namespace Script {
         COLLECTION = 2,
         SETTINGS = 3,
         PAUSE = 4,
-        END_CONFIRM = 5
+        CARD_UPGRADE = 5,
+        END_CONFIRM = 6
     }
     class MenuManager {
         private menus;
         private prevGameState;
         setup(): void;
         openMenu(_menu: MenuType): void;
+        private startGame;
+        private openPauseMenu;
+        private openPauseCardPopup;
     }
 }
 declare namespace Script {

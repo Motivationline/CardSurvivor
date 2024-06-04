@@ -7,9 +7,9 @@ namespace Script {
         #text: string;
         #htmlElement: HTMLElement;
 
-        constructor(_card: iCard, _parent: HTMLElement, _nameFallback: string = "unknown") {
+        constructor(_card: iCard, _parent: HTMLElement, _nameFallback: string = "unknown", _level: number = 0) {
             this.#name = _card.name ?? _nameFallback;
-            this.#text = _card.description ?? i18next.t(`card.${this.#name}.description`);
+            this.#text = this.getFirstTranslatableText(_card.description ?? "unknown", _card.description, `card.${this.#name}.description`);
             this.#image = _card.image;
 
             this.#name = i18next.t(`card.${this.#name}.name`).toLocaleUpperCase();
@@ -44,6 +44,7 @@ namespace Script {
             (<HTMLImageElement>this.#htmlElement.querySelector(".card-image img")).src = "Assets/Cards/Items/" + this.#image;
             this.#htmlElement.style.setProperty("--delay", `${Math.random() * -10}s`);
             this.#htmlElement.classList.add(_card.rarity);
+            this.#htmlElement.classList.add(`level-${_level}`);
         }
 
         get htmlElement(): HTMLElement {
@@ -64,6 +65,17 @@ namespace Script {
             const fontFamily = this.getCssStyle(el, 'font-family') || 'Luckiest Guy';
 
             return `${fontWeight} ${fontSize} ${fontFamily}`;
+        }
+
+        private getFirstTranslatableText(_fallback: string, ..._texts: string[]): string {
+            for(let text of _texts){
+                if(!text) continue;
+                let translatedText = i18next.t(text);
+                if(translatedText !== text) {
+                    return translatedText;
+                }
+            }
+            return "";
         }
 
 
