@@ -147,7 +147,7 @@ namespace Script {
             this.characterManager = provider.get(CharacterManager);
             this.config = provider.get(Config);
 
-            document.addEventListener("keypress", this.debugEvents);
+            document.addEventListener("keydown", this.debugEvents);
             document.getElementById("debug-next-wave").addEventListener("touchstart", this.debugButtons);
             document.getElementById("debug-end-room").addEventListener("touchstart", this.debugButtons);
             document.getElementById("debug-next-room").addEventListener("touchstart", this.debugButtons);
@@ -339,6 +339,10 @@ namespace Script {
                     break;
                 case "l":
                     this.characterManager.upgradeCards();
+                    break;
+                case "Escape":
+                    if (gameState === GAMESTATE.PLAYING || gameState === GAMESTATE.ROOM_CLEAR)
+                        this.provider.get(MenuManager).openPauseMenu();
                     break;
             }
         }

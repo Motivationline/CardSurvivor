@@ -645,7 +645,7 @@ declare namespace Script {
         setup(): void;
         openMenu(_menu: MenuType): void;
         private startGame;
-        private openPauseMenu;
+        openPauseMenu(): void;
         private openPauseCardPopup;
     }
 }

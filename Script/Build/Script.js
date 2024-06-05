@@ -5017,7 +5017,7 @@ var Script;
             Script.ƒ.Project.addEventListener("resourcesLoaded" /* ƒ.EVENT.RESOURCES_LOADED */, this.loaded);
             this.characterManager = provider.get(Script.CharacterManager);
             this.config = provider.get(Script.Config);
-            document.addEventListener("keypress", this.debugEvents);
+            document.addEventListener("keydown", this.debugEvents);
             document.getElementById("debug-next-wave").addEventListener("touchstart", this.debugButtons);
             document.getElementById("debug-end-room").addEventListener("touchstart", this.debugButtons);
             document.getElementById("debug-next-room").addEventListener("touchstart", this.debugButtons);
@@ -5191,6 +5191,10 @@ var Script;
                     break;
                 case "l":
                     this.characterManager.upgradeCards();
+                    break;
+                case "Escape":
+                    if (Script.gameState === Script.GAMESTATE.PLAYING || Script.gameState === Script.GAMESTATE.ROOM_CLEAR)
+                        this.provider.get(Script.MenuManager).openPauseMenu();
                     break;
             }
         };

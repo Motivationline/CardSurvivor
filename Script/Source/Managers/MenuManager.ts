@@ -63,7 +63,7 @@ namespace Script {
             cardManager.setCards(dataManager.savedSelectionRaw, dataManager.savedDeckRaw);
         }
 
-        private openPauseMenu() {
+        public openPauseMenu() {
             this.openMenu(MenuType.PAUSE);
 
             let cardsForPauseMenu: HTMLElement[] = [];
