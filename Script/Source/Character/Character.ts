@@ -28,7 +28,7 @@ namespace Script {
         maxHealth: number = 100;
         private rigidbody: ƒ.ComponentRigidbody;
         private cardManager: CardManager;
-        speed: number = 1.6;
+        speed: number = 3.5;
         private visualChildren: ƒ.Node[] = [];
 
         constructor() {
