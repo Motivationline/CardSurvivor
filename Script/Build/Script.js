@@ -4224,7 +4224,7 @@ var Script;
         maxHealth = 100;
         rigidbody;
         cardManager;
-        speed = 1.6;
+        speed = 3.5;
         visualChildren = [];
         constructor() {
             super();

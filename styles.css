@@ -125,7 +125,7 @@ progress[value]::-moz-progress-bar {
   cursor: pointer;
 }
 
-#game-overlay-pause span{
+#game-overlay-pause span {
   display: block;
   background-color: white;
   height: 3em;
@@ -147,6 +147,7 @@ progress[value]::-moz-progress-bar {
   --card-size: 100px;
   display: flex;
 }
+
 #pause-overlay-cards .card {
   cursor: default;
 }
@@ -290,7 +291,7 @@ progress[value]::-moz-progress-bar {
   height: var(--card-size);
   aspect-ratio: 15 / 21;
   display: grid;
-  grid-template-rows: 20% 65% 15%;
+  grid-template-rows: 20% 65% 0 15%;
   font-family: 'Luckiest Guy', cursive;
 
   --delay: 0s;
@@ -410,6 +411,93 @@ progress[value]::-moz-progress-bar {
   transform: translate(0, calc(var(--card-size) * 0.1));
   margin-top: -0.5em;
   z-index: 6;
+}
+
+.card-level {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  --star-size: calc(var(--card-size) / 13);
+  margin-top: calc(-1.2 * var(--star-size));
+  z-index: 5;
+  transform: rotate(-2deg);
+}
+
+.card-level-star {
+  background-size: 100% 100%;
+  --shadow-size: calc(var(--star-size) / 20);
+  filter: drop-shadow(0 calc((var(--shadow-size) / 5) * 1) 0 var(--name-text-dropshadow))
+  drop-shadow(0 calc((var(--shadow-size) / 5) * 2) 0 var(--name-text-dropshadow)) 
+  drop-shadow(0 calc((var(--shadow-size) / 5) * 3) 0 var(--name-text-dropshadow)) 
+  drop-shadow(0 calc((var(--shadow-size) / 5) * 4) 0 var(--name-text-dropshadow)) 
+  drop-shadow(0 calc((var(--shadow-size) / 5) * 5) 0 var(--name-text-dropshadow)); 
+}
+.card-level-star > svg {
+  height: var(--star-size);
+  width: var(--star-size);
+  fill: var(--text-text-color);
+  stroke: var(--name-text-outline);
+  stroke-width: 4px;
+  stroke-linecap: round;
+}
+
+#card-level-star-1 {
+  --scale: 0.8;
+  transform: scale(var(--scale)) rotate(-3deg);
+  margin-right: calc((1 - var(--scale)) * var(--star-size) * -1);
+}
+#card-level-star-2 {
+  --scale: 0.9;
+  transform: scale(var(--scale)) rotate(-5deg);
+  margin-right: calc((1 - var(--scale)) * var(--star-size) * -1);
+}
+
+#card-level-star-3 {
+  --scale: 1;
+  transform: scale(var(--scale)) rotate(3deg);
+  margin-right: calc((1 - var(--scale)) * var(--star-size) * -1);
+}
+
+#card-level-star-4 {
+  --scale: 1.1;
+  transform: scale(var(--scale)) rotate(1deg);
+  margin-right: calc((1 - var(--scale)) * var(--star-size) * -1);
+}
+
+#card-level-star-5 {
+  --scale: 1.2;
+  transform: scale(var(--scale)) rotate(0deg);
+  margin-right: calc((1 - var(--scale)) * var(--star-size) * -1);
+}
+
+.card.level-0 #card-level-star-2 > svg,
+.card.level-0 #card-level-star-3 > svg,
+.card.level-1 #card-level-star-3 > svg,
+.card.level-0 #card-level-star-4 > svg,
+.card.level-1 #card-level-star-4 > svg,
+.card.level-2 #card-level-star-4 > svg,
+.card.level-0 #card-level-star-5 > svg,
+.card.level-1 #card-level-star-5 > svg,
+.card.level-2 #card-level-star-5 > svg,
+.card.level-3 #card-level-star-5 > svg {
+  fill: rgba(255, 255, 255, 0.25);
+  stroke-dasharray: 3,8;
+}
+.card.level-0 #card-level-star-2,
+.card.level-0 #card-level-star-3,
+.card.level-1 #card-level-star-3,
+.card.level-0 #card-level-star-4,
+.card.level-1 #card-level-star-4,
+.card.level-2 #card-level-star-4,
+.card.level-0 #card-level-star-5,
+.card.level-1 #card-level-star-5,
+.card.level-2 #card-level-star-5,
+.card.level-3 #card-level-star-5 {
+  filter: none;
+}
+
+.card.legendary .card-level {
+  display: none;
 }
 
 .card-text {
