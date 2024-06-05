@@ -68,10 +68,10 @@ namespace Script {
         }
 
         private getFirstTranslatableText(_fallback: string, ..._texts: string[]): string {
-            for(let text of _texts){
-                if(!text) continue;
+            for (let text of _texts) {
+                if (!text) continue;
                 let translatedText = i18next.t(text);
-                if(translatedText !== text) {
+                if (translatedText !== text) {
                     return translatedText;
                 }
             }

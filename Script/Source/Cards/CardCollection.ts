@@ -20,8 +20,10 @@ namespace Script {
         private popupButtons: {
             selectionTo: HTMLButtonElement;
             selectionFrom: HTMLButtonElement;
+            selectionToFrom: HTMLButtonElement;
             deckTo: HTMLButtonElement;
             deckFrom: HTMLButtonElement;
+            deckToFrom: HTMLButtonElement;
         }
         private deckSelectionSizeElement: HTMLElement;
 
@@ -44,8 +46,10 @@ namespace Script {
             this.deckSelectionSizeElement = document.getElementById("deck-selection-size");
             this.popupButtons = {
                 deckFrom: <HTMLButtonElement>document.getElementById("card-popup-deck-from"),
+                deckToFrom: <HTMLButtonElement>document.getElementById("card-popup-deck-to-from"),
                 deckTo: <HTMLButtonElement>document.getElementById("card-popup-deck-to"),
                 selectionFrom: <HTMLButtonElement>document.getElementById("card-popup-selection-from"),
+                selectionToFrom: <HTMLButtonElement>document.getElementById("card-popup-selection-to-from"),
                 selectionTo: <HTMLButtonElement>document.getElementById("card-popup-selection-to"),
             }
 
@@ -92,12 +96,12 @@ namespace Script {
             if (this.collection[cardID]) {
                 // card is in selection, so it's selectable
                 if (this.selection.includes(cardID)) {
-                    this.popupButtons.deckTo.classList.remove("hidden");
+                    this.popupButtons.deckToFrom.classList.remove("hidden");
                     this.popupButtons.selectionFrom.classList.remove("hidden");
                 }
                 else if (this.deck.includes(cardID)) {
                     this.popupButtons.deckFrom.classList.remove("hidden");
-                    this.popupButtons.selectionTo.classList.remove("hidden");
+                    this.popupButtons.selectionToFrom.classList.remove("hidden");
                 } else {
                     this.popupButtons.deckTo.classList.remove("hidden");
                     this.popupButtons.selectionTo.classList.remove("hidden");
@@ -162,15 +166,17 @@ namespace Script {
         }
 
         private installListeners() {
-            document.getElementById("card-popup-close").querySelector("button").addEventListener("click", () => { this.hidePopup(); })
+            document.getElementById("card-popup-close").querySelector("img").addEventListener("click", () => { this.hidePopup(); })
             document.getElementById("deck-back-button").querySelector("button").addEventListener("click", () => {
                 this.hidePopup();
                 provider.get(MenuManager).openMenu(MenuType.MAIN);
             })
 
             this.popupButtons.selectionTo.addEventListener("click", () => { this.addCardToSelection(this.selectedCard); this.hidePopup(); })
+            this.popupButtons.selectionToFrom.addEventListener("click", () => { this.addCardToSelection(this.selectedCard); this.hidePopup(); })
             this.popupButtons.selectionFrom.addEventListener("click", () => { this.removeCardFromSelection(this.selectedCard); this.hidePopup(); })
             this.popupButtons.deckTo.addEventListener("click", () => { this.addCardToDeck(this.selectedCard); this.hidePopup(); })
+            this.popupButtons.deckToFrom.addEventListener("click", () => { this.addCardToDeck(this.selectedCard); this.hidePopup(); })
             this.popupButtons.deckFrom.addEventListener("click", () => { this.removeCardFromDeck(this.selectedCard); this.hidePopup(); })
 
             this.popupElement.addEventListener("click", (_e) => {

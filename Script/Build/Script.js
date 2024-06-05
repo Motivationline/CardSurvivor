@@ -321,13 +321,17 @@ var Script;
                 });
             }
             else {
-                // we have cards we can upgrade
+                // we have cards we can upgrade / add
                 for (let card of cards) {
-                    let cv = new Script.CardVisual(card, parent, card.id, card.level + 1);
+                    let cv = new Script.CardVisual(card, parent, card.id, card.level);
                     elementsToShow.push(cv.htmlElement);
                     cv.htmlElement.addEventListener("click", selectCard);
+                    if (cm.activeCards.includes(card))
+                        cv.htmlElement.classList.add("upgrade");
+                    else
+                        cv.htmlElement.classList.add("unlock");
                     function selectCard() {
-                        card.level++;
+                        cm.updateCardOrAdd(card.id);
                         Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.NONE);
                     }
                 }
@@ -1110,8 +1114,10 @@ var Script;
             this.deckSelectionSizeElement = document.getElementById("deck-selection-size");
             this.popupButtons = {
                 deckFrom: document.getElementById("card-popup-deck-from"),
+                deckToFrom: document.getElementById("card-popup-deck-to-from"),
                 deckTo: document.getElementById("card-popup-deck-to"),
                 selectionFrom: document.getElementById("card-popup-selection-from"),
+                selectionToFrom: document.getElementById("card-popup-selection-to-from"),
                 selectionTo: document.getElementById("card-popup-selection-to"),
             };
             this.installListeners();
@@ -1152,12 +1158,12 @@ var Script;
             if (this.collection[cardID]) {
                 // card is in selection, so it's selectable
                 if (this.selection.includes(cardID)) {
-                    this.popupButtons.deckTo.classList.remove("hidden");
+                    this.popupButtons.deckToFrom.classList.remove("hidden");
                     this.popupButtons.selectionFrom.classList.remove("hidden");
                 }
                 else if (this.deck.includes(cardID)) {
                     this.popupButtons.deckFrom.classList.remove("hidden");
-                    this.popupButtons.selectionTo.classList.remove("hidden");
+                    this.popupButtons.selectionToFrom.classList.remove("hidden");
                 }
                 else {
                     this.popupButtons.deckTo.classList.remove("hidden");
@@ -1216,14 +1222,16 @@ var Script;
             _array.push(_element);
         }
         installListeners() {
-            document.getElementById("card-popup-close").querySelector("button").addEventListener("click", () => { this.hidePopup(); });
+            document.getElementById("card-popup-close").querySelector("img").addEventListener("click", () => { this.hidePopup(); });
             document.getElementById("deck-back-button").querySelector("button").addEventListener("click", () => {
                 this.hidePopup();
                 Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.MAIN);
             });
             this.popupButtons.selectionTo.addEventListener("click", () => { this.addCardToSelection(this.selectedCard); this.hidePopup(); });
+            this.popupButtons.selectionToFrom.addEventListener("click", () => { this.addCardToSelection(this.selectedCard); this.hidePopup(); });
             this.popupButtons.selectionFrom.addEventListener("click", () => { this.removeCardFromSelection(this.selectedCard); this.hidePopup(); });
             this.popupButtons.deckTo.addEventListener("click", () => { this.addCardToDeck(this.selectedCard); this.hidePopup(); });
+            this.popupButtons.deckToFrom.addEventListener("click", () => { this.addCardToDeck(this.selectedCard); this.hidePopup(); });
             this.popupButtons.deckFrom.addEventListener("click", () => { this.removeCardFromDeck(this.selectedCard); this.hidePopup(); });
             this.popupElement.addEventListener("click", (_e) => {
                 if (_e.target === this.popupElement)
@@ -5353,7 +5361,7 @@ var Script;
             let cm = Script.provider.get(Script.CardManager);
             let element = document.getElementById("pause-overlay-cards");
             for (let card of cm.activeCards) {
-                let cv = new Script.CardVisual(card, element, card.id);
+                let cv = new Script.CardVisual(card, element, card.id, card.level);
                 cardsForPauseMenu.push(cv.htmlElement);
                 cv.htmlElement.addEventListener("click", this.openPauseCardPopup);
             }

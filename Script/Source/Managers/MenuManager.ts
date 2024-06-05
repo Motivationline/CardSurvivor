@@ -70,7 +70,7 @@ namespace Script {
             let cm = provider.get(CardManager);
             let element = document.getElementById("pause-overlay-cards");
             for (let card of cm.activeCards) {
-                let cv = new CardVisual(card, element, card.id);
+                let cv = new CardVisual(card, element, card.id, card.level);
                 cardsForPauseMenu.push(cv.htmlElement);
                 cv.htmlElement.addEventListener("click", this.openPauseCardPopup);
             }
