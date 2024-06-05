@@ -1323,7 +1323,7 @@
               "local": {
                 "translation": "[0, 0, 0]",
                 "rotation": "[0, 0, 0]",
-                "scaling": "[1, 1, 1]"
+                "scaling": "[0.6999999284744263, 0.6999999284744263, 1]"
               },
               "Component": {
                 "active": true
