@@ -154,7 +154,69 @@
                 "totalWidth": 256,
                 "wrapAfter": 1,
                 "materialString": "Material|2024-05-07T12:39:47.128Z|21510"
+            },
+            "chisel": {
+                "fps": 24,
+                "frames": 6,
+                "height": 256,
+                "width": 256,
+                "totalHeight": 768,
+                "totalWidth": 768,
+                "wrapAfter": 3,
+                "materialString": "Material|2024-06-05T09:24:46.085Z|65597"
+            },
+            "codecivil": {
+                "fps": 24,
+                "frames": 1,
+                "height": 256,
+                "width": 256,
+                "totalHeight": 256,
+                "totalWidth": 256,
+                "wrapAfter": 1,
+                "materialString": "Material|2024-06-05T09:25:09.432Z|30694"
+            },
+            "discus": {
+                "fps": 24,
+                "frames": 1,
+                "height": 256,
+                "width": 256,
+                "totalHeight": 256,
+                "totalWidth": 256,
+                "wrapAfter": 1,
+                "materialString": "Material|2024-06-05T09:25:49.781Z|49644"
+            },
+            "hammer": {
+                "fps": 24,
+                "frames": 8,
+                "height": 256,
+                "width": 256,
+                "totalHeight": 768,
+                "totalWidth": 768,
+                "wrapAfter": 3,
+                "materialString": "Material|2024-06-05T09:26:24.226Z|03765"
+            },
+            "lightbulb": {
+                "fps": 24,
+                "frames": 16,
+                "height": 256,
+                "width": 256,
+                "totalHeight": 1280,
+                "totalWidth": 1280,
+                "wrapAfter": 5,
+                "materialString": "Material|2024-06-05T09:26:47.343Z|19986"
+            },
+            "pen": {
+                "fps": 24,
+                "frames": 1,
+                "height": 256,
+                "width": 256,
+                "totalHeight": 256,
+                "totalWidth": 256,
+                "wrapAfter": 1,
+                "materialString": "Material|2024-06-05T09:27:12.422Z|10846"
             }
+
+            
         }
     }
 }

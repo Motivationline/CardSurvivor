@@ -238,10 +238,81 @@
             "name": "textures",
             "entries": [
               {
-                "idResource": "Material|2024-05-07T12:39:47.128Z|21510"
+                "name": "Toast",
+                "entries": [
+                  {
+                    "idResource": "Material|2024-05-07T12:39:47.128Z|21510"
+                  },
+                  {
+                    "idResource": "TextureImage|2024-05-07T12:40:08.563Z|41614"
+                  }
+                ]
               },
               {
-                "idResource": "TextureImage|2024-05-07T12:40:08.563Z|41614"
+                "name": "Chisel",
+                "entries": [
+                  {
+                    "idResource": "TextureImage|2024-06-05T09:24:42.109Z|73976"
+                  },
+                  {
+                    "idResource": "Material|2024-06-05T09:24:46.085Z|65597"
+                  }
+                ]
+              },
+              {
+                "name": "CodeCivil",
+                "entries": [
+                  {
+                    "idResource": "TextureImage|2024-06-05T09:25:03.153Z|86199"
+                  },
+                  {
+                    "idResource": "Material|2024-06-05T09:25:09.432Z|30694"
+                  }
+                ]
+              },
+              {
+                "name": "Discus",
+                "entries": [
+                  {
+                    "idResource": "TextureImage|2024-06-05T09:25:44.355Z|74244"
+                  },
+                  {
+                    "idResource": "Material|2024-06-05T09:25:49.781Z|49644"
+                  }
+                ]
+              },
+              {
+                "name": "Hammer",
+                "entries": [
+                  {
+                    "idResource": "TextureImage|2024-06-05T09:26:20.635Z|76617"
+                  },
+                  {
+                    "idResource": "Material|2024-06-05T09:26:24.226Z|03765"
+                  }
+                ]
+              },
+              {
+                "name": "Lightbulb",
+                "entries": [
+                  {
+                    "idResource": "TextureImage|2024-06-05T09:26:42.202Z|47041"
+                  },
+                  {
+                    "idResource": "Material|2024-06-05T09:26:47.343Z|19986"
+                  }
+                ]
+              },
+              {
+                "name": "Pen",
+                "entries": [
+                  {
+                    "idResource": "TextureImage|2024-06-05T09:27:08.321Z|50853"
+                  },
+                  {
+                    "idResource": "Material|2024-06-05T09:27:12.422Z|10846"
+                  }
+                ]
               }
             ]
           },

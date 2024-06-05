@@ -884,8 +884,7 @@
               }
             }
           }
-        ],
-        "ComponentFaceCamera": []
+        ]
       },
       "children": [
         {
@@ -1389,8 +1388,7 @@
               }
             }
           }
-        ],
-        "ComponentFaceCamera": []
+        ]
       },
       "children": [],
       "idResource": "Graph|2024-05-03T09:17:54.314Z|34670",
@@ -1920,6 +1918,156 @@
         "name": "Assets\\Enemies\\Ventilator\\Ventilator_walk_01.png",
         "mipmap": "CRISP",
         "wrap": "REPEAT"
+      }
+    }
+  },
+  "TextureImage|2024-06-05T09:24:42.109Z|73976": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Projectiles\\chisel_projectile.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-06-05T09:24:42.109Z|73976",
+        "name": "Assets\\Projectiles\\chisel_projectile.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-06-05T09:24:46.085Z|65597": {
+    "ƒ.Material": {
+      "name": "ChiselMat",
+      "idResource": "Material|2024-06-05T09:24:46.085Z|65597",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-06-05T09:24:42.109Z|73976"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-06-05T09:25:03.153Z|86199": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Projectiles\\codecivil_projectile.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-06-05T09:25:03.153Z|86199",
+        "name": "Assets\\Projectiles\\codecivil_projectile.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-06-05T09:25:09.432Z|30694": {
+    "ƒ.Material": {
+      "name": "CodeCivilMat",
+      "idResource": "Material|2024-06-05T09:25:09.432Z|30694",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-06-05T09:25:03.153Z|86199"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-06-05T09:25:44.355Z|74244": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Projectiles\\discus_projectile.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-06-05T09:25:44.355Z|74244",
+        "name": "Assets\\Projectiles\\discus_projectile.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-06-05T09:25:49.781Z|49644": {
+    "ƒ.Material": {
+      "name": "DiscusMat",
+      "idResource": "Material|2024-06-05T09:25:49.781Z|49644",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-06-05T09:25:44.355Z|74244"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-06-05T09:26:20.635Z|76617": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Projectiles\\hammer_projectile.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-06-05T09:26:20.635Z|76617",
+        "name": "Assets\\Projectiles\\hammer_projectile.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-06-05T09:26:24.226Z|03765": {
+    "ƒ.Material": {
+      "name": "HammerMat",
+      "idResource": "Material|2024-06-05T09:26:24.226Z|03765",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-06-05T09:26:20.635Z|76617"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-06-05T09:26:42.202Z|47041": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Projectiles\\lightbulb_projectile.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-06-05T09:26:42.202Z|47041",
+        "name": "Assets\\Projectiles\\lightbulb_projectile.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-06-05T09:26:47.343Z|19986": {
+    "ƒ.Material": {
+      "name": "MatLightbulb",
+      "idResource": "Material|2024-06-05T09:26:47.343Z|19986",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-06-05T09:26:42.202Z|47041"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-06-05T09:27:08.321Z|50853": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Projectiles\\pen_projectile.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-06-05T09:27:08.321Z|50853",
+        "name": "Assets\\Projectiles\\pen_projectile.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-06-05T09:27:12.422Z|10846": {
+    "ƒ.Material": {
+      "name": "PenMat",
+      "idResource": "Material|2024-06-05T09:27:12.422Z|10846",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-06-05T09:27:08.321Z|50853"
+        }
       }
     }
   }
