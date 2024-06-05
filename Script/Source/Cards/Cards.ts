@@ -2554,7 +2554,7 @@ namespace Script {
         "Drawing Tablet": {
             image: "DrawingTablet.png",
             rarity: CardRarity.EPIC,
-            name: "DrawingTablet",
+            name: "Drawing Tablet",
             levels: [
                 { //Tier 1
                     passiveEffects: {
