@@ -860,8 +860,9 @@ var Script;
             dir.normalize(Math.min(1, _frameTimeInSeconds) * this.speed);
             this.node.mtxLocal.translate(dir);
             //TODO check if flew past target position (due to lag?) and still explode
-            // let distanceToTarget = ƒ.Vector3.DIFFERENCE(this.targetPosition, this.node.mtxWorld.translation).magnitudeSquared;
-            if (this.targetPosition && (this.node.mtxWorld.translation.equals(this.targetPosition, 0.5) /*|| distanceToTarget > this.prevDistance*/)) {
+            let distanceToTarget = Script.ƒ.Vector3.DIFFERENCE(this.targetPosition, this.node.mtxWorld.translation).magnitudeSquared;
+            if (this.targetPosition && (this.node.mtxWorld.translation.equals(this.targetPosition, 0.5) || distanceToTarget > this.prevDistance)) {
+                this.prevDistance = distanceToTarget;
                 if (this.artillery && this.tracking.startTrackingAfter > 0)
                     return;
                 // target position reached
@@ -885,7 +886,6 @@ var Script;
                 }
                 Script.provider.get(Script.ProjectileManager).removeProjectile(this);
             }
-            // this.prevDistance = distanceToTarget;
             //TODO remove projectile if too far off screen, don't forget hitzone
         }
         onTriggerEnter = (_event) => {
@@ -1426,7 +1426,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 0,
+                            damage: 0, //8 Base Damage
                             projectilePiercing: 2
                         }
                     }
@@ -1440,7 +1440,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 4,
+                            damage: 4, //8 Base Damage
                             projectilePiercing: 2
                         }
                     }
@@ -1454,7 +1454,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 4,
+                            damage: 4, //8 Base Damage
                             projectilePiercing: 2
                         }
                     }
@@ -1468,7 +1468,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 7,
+                            damage: 7, //8 Base Damage
                             projectilePiercing: 3
                         }
                     }
@@ -1482,7 +1482,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 7,
+                            damage: 7, //8 Base Damage
                             projectilePiercing: 4
                         }
                     }
@@ -1646,7 +1646,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 0,
+                            damage: 0, //5 Base Damage
                             effectDuration: 0 //1 Base Duration
                         }
                     }
@@ -1659,7 +1659,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 1,
+                            damage: 1, //5 Base Damage
                             effectDuration: 0 //1 Base Duration
                         }
                     }
@@ -1672,7 +1672,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 1,
+                            damage: 1, //5 Base Damage
                             effectDuration: 0.5 //1 Base Duration
                         }
                     }
@@ -1685,7 +1685,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 1,
+                            damage: 1, //5 Base Damage
                             effectDuration: 0.5 //1 Base Duration
                         }
                     }
@@ -1698,7 +1698,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 3,
+                            damage: 3, //5 Base Damage
                             effectDuration: 1 //1 Base Duration
                         }
                     }
@@ -1943,7 +1943,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 0,
+                            damage: 0, //5 Base Damage
                             projectilePiercing: 3
                         }
                     }
@@ -1957,7 +1957,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 2,
+                            damage: 2, //5 Base Damage
                             projectilePiercing: 3
                         }
                     }
@@ -1971,7 +1971,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 2,
+                            damage: 2, //5 Base Damage
                             projectilePiercing: 3
                         }
                     }
@@ -1985,7 +1985,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 3,
+                            damage: 3, //5 Base Damage
                             projectilePiercing: 4
                         }
                     }
@@ -1999,7 +1999,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 5,
+                            damage: 5, //5 Base Damage
                             projectilePiercing: 6
                         }
                     }
@@ -4400,7 +4400,7 @@ var Script;
                     movement: () => { },
                     events: {
                         fire: function () {
-                            Script.provider.get(Script.ProjectileManager).createProjectile(Script.projectiles["toast"], Script.ƒ.Vector3.SUM(this.node.mtxWorld.translation, Script.ƒ.Vector3.Y(0.3)), undefined);
+                            Script.provider.get(Script.ProjectileManager).createProjectile(Script.projectiles["toastEnemy"], Script.ƒ.Vector3.SUM(this.node.mtxWorld.translation, Script.ƒ.Vector3.Y(0.3)), undefined);
                         }
                     }
                 }
