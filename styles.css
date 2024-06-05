@@ -21,6 +21,7 @@ body {
   overflow: hidden;
 
   --ui-color-background: whitesmoke;
+  --ui-text-button: whitesmoke;
   --ui-color-foreground: gray;
 }
 
@@ -53,12 +54,14 @@ canvas.fullscreen {
 }
 
 button {
-  background-color: var(--ui-color-foreground);
-  border: 1px solid var(--ui-color-foreground);
-  color: var(--ui-color-background);
-  border-radius: 0.25rem;
+  padding: 0.5em;
+  color: var(--ui-text-button);
+  border-radius: 0;
   font-size: inherit;
   cursor: pointer;
+  border-image-source: url("Assets/UI/Deck/EmptyButton.png");
+  border-image-width: 10;
+  border-image-slice: 25 fill;
 }
 
 button.inverted {
@@ -125,11 +128,8 @@ progress[value]::-moz-progress-bar {
   cursor: pointer;
 }
 
-#game-overlay-pause span {
-  display: block;
-  background-color: white;
+#game-overlay-pause img {
   height: 3em;
-  width: 1em;
 }
 
 #card-upgrade-popup {
@@ -222,15 +222,10 @@ progress[value]::-moz-progress-bar {
   align-items: baseline;
 }
 
-#deck-selection button {
+#deck-selection img {
   /* padding: 0 1em; */
   width: 1.5em;
   height: 1.5em;
-}
-
-#deck-selection button.active {
-  background-color: var(--ui-color-foreground);
-  color: var(--ui-color-background);
 }
 
 #deck-back-button {
