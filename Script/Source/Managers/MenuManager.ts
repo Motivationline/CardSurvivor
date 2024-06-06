@@ -28,13 +28,11 @@ namespace Script {
 
             document.getElementById("game-overlay-pause").addEventListener("click", () => {
                 this.openPauseMenu();
-                if (gameState !== GAMESTATE.PAUSED)
-                    this.prevGameState = gameState;
-                gameState = GAMESTATE.PAUSED;
             });
             document.getElementById("pause-resume").addEventListener("click", () => {
                 this.openMenu(MenuType.NONE);
                 gameState = this.prevGameState;
+                ƒ.Time.game.setScale(1);
             });
             document.getElementById("pause-quit").addEventListener("click", () => { this.openMenu(MenuType.END_CONFIRM) });
             document.getElementById("end-abort").addEventListener("click", () => { this.openPauseMenu() });
@@ -57,6 +55,7 @@ namespace Script {
         private async startGame() {
             this.openMenu(MenuType.NONE);
             gameState = GAMESTATE.ROOM_CLEAR;
+            ƒ.Time.game.setScale(1);
 
             let dataManager = provider.get(DataManager);
             let cardManager = provider.get(CardManager);
@@ -66,6 +65,11 @@ namespace Script {
         }
 
         public openPauseMenu() {
+            if (gameState !== GAMESTATE.PAUSED)
+                this.prevGameState = gameState;
+            gameState = GAMESTATE.PAUSED;
+            ƒ.Time.game.setScale(0);
+
             this.openMenu(MenuType.PAUSE);
 
             let cardsForPauseMenu: HTMLElement[] = [];
