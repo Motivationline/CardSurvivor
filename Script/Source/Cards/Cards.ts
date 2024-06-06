@@ -12,14 +12,14 @@ namespace Script {
                         type: "projectile",
                         projectile: "hammerPlayer",
                         amount: 1,
-                        cooldown: 2
-                    }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 0, //8 Base Damage
-                            projectilePiercing: 2
+                        cooldown: 2,
+                        modifiers: {
+                            absolute: {
+                                damage: 0, //8 Base Damage
+                                projectilePiercing: 2
+                            }
                         }
-                    }
+                    }]
                 },
                 { //Tier 2
                     activeEffects: [{

@@ -24,51 +24,61 @@ namespace Script {
             sprite: ["projectile", "anvil"],
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.RANDOM,
-            afterSetup: function() {
-                if(this.targetPosition){
-                    let target: ƒ.Vector3 = this.targetPosition.clone;
-                    this.node.mtxLocal.translation = target;
-                    this.node.mtxLocal.translate(ƒ.Vector3.Y(10));
-                    this.direction = ƒ.Vector3.Y(-1);
+            methods: {
+                afterSetup: function() {
+                    if(this.targetPosition){
+                        let target: ƒ.Vector3 = this.targetPosition.clone;
+                        this.node.mtxLocal.translation = target;
+                        this.node.mtxLocal.translate(ƒ.Vector3.Y(10));
+                        this.direction = ƒ.Vector3.Y(-1);
+                    }
                 }
             }
         },
-        "hammer": {
+        "hammerPlayer": {
             damage: 1,
-            speed: 20,
+            speed: 10,
             sprite: ["projectile", "hammer"],
             target: ProjectileTarget.ENEMY,
-            targetMode: ProjectileTargetMode.NONE
+            targetMode: ProjectileTargetMode.NONE,
+            methods: {
+                afterSetup: function() {
+                    this.direction = new ƒ.Vector3(0.5 - Math.random() * 1, 1, 0);
+                },
+                preMove: function(_fts: number) {
+                    this.direction.y = Math.max(-1, this.direction.y - (_fts * (10 / this.speed)));
+                } 
+            }
         },
-        "discus": {
+        "discusPlayer": {
             damage: 1,
             speed: 20,
             sprite: ["projectile", "discus"],
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.CLOSEST
         },
-        "pen": {
+        "penPlayer": {
             damage: 1,
             speed: 20,
             sprite: ["projectile", "pen"],
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.CLOSEST
         },
-        "codecivil": {
+        "codecivilPlayer": {
             damage: 1,
             speed: 20,
             sprite: ["projectile", "codecivil"],
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.CLOSEST
         },
-        "divider": {
+        "dividerPlayer": {
             damage: 1,
             speed: 20,
             sprite: ["projectile", "divider"],
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.CLOSEST
         },
-        "chisel": {
+        "chiselPlayer": {
             damage: 1,
             speed: 20,
             sprite: ["projectile", "chisel"],

@@ -92,7 +92,15 @@ namespace Script {
         impact?: ActiveEffect[],
         artillery?: boolean,
         sprite: AnimationSprite | [string, string],
+        methods?: ProjectileFunctions,
+    }
+
+    export interface ProjectileFunctions {
         afterSetup?: () => void,
+        preUpdate?: (_charPosition: ƒ.Vector3, _frameTimeInSeconds: number) => void,
+        postUpdate?: (_charPosition: ƒ.Vector3, _frameTimeInSeconds: number) => void;
+        preMove?: (_frameTimeInSeconds: number) => void;
+        postMove?: (_frameTimeInSeconds: number) => void;
     }
     export enum ProjectileTargetMode {
         NONE,

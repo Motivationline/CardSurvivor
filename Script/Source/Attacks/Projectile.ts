@@ -21,6 +21,7 @@ namespace Script {
         sprite: AnimationSprite;
         private hazardZone: HitZoneGraphInstance;
         private prevDistance: number;
+        private functions: ProjectileFunctions = {};
 
         protected static defaults: Projectile = {
             targetPosition: undefined,
@@ -38,6 +39,7 @@ namespace Script {
             impact: undefined,
             artillery: false,
             sprite: ["projectile", "toast"],
+            methods: {}
         }
 
         constructor() {
@@ -73,6 +75,7 @@ namespace Script {
             this.impact = _options.impact;
             this.targetMode = _options.targetMode;
             this.lockedToEntity = _options.lockedToEntity;
+            this.functions = _options.methods;
             this.sprite = this.getSprite(_options.sprite);
             this.setCentralAnimator(this.sprite);
 
@@ -80,6 +83,7 @@ namespace Script {
 
             this.hazardZone = undefined;
             this.prevDistance = Infinity;
+
             //TODO rotate projectile towards flight direction
 
             if (this.artillery) {
@@ -109,13 +113,17 @@ namespace Script {
                 this.tracking = { ...{ stopTrackingAfter: Infinity, stopTrackingInRadius: 0, strength: 1, startTrackingAfter: 0 }, ...this.tracking }
             }
 
-            if (_options.afterSetup) {
-                _options.afterSetup.call(this);
+            if (this.functions.afterSetup) {
+                this.functions.afterSetup.call(this);
             }
         }
 
         update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number) {
+            if (this.functions.preUpdate) this.functions.preUpdate.call(this, _charPosition, _frameTimeInSeconds);
+            if (this.functions.preMove) this.functions.preMove.call(this, _frameTimeInSeconds);
             this.move(_frameTimeInSeconds);
+            if (this.functions.postMove) this.functions.postMove.call(this, _frameTimeInSeconds);
+            if (this.functions.postUpdate) this.functions.postUpdate.call(this, _charPosition, _frameTimeInSeconds);
         }
 
         protected move(_frameTimeInSeconds: number) {
@@ -137,37 +145,43 @@ namespace Script {
                 }
             }
             let dir = this.direction.clone;
-            dir.normalize(Math.min(1, _frameTimeInSeconds) * this.speed);
+            if (dir.magnitudeSquared > 0)
+                dir.normalize(Math.min(1, _frameTimeInSeconds) * this.speed);
             this.node.mtxLocal.translate(dir);
 
             //TODO check if flew past target position (due to lag?) and still explode
-            let distanceToTarget = ƒ.Vector3.DIFFERENCE(this.targetPosition, this.node.mtxWorld.translation).magnitudeSquared;
-            if (this.targetPosition && (this.node.mtxWorld.translation.equals(this.targetPosition, 0.5) || distanceToTarget > this.prevDistance)) {
-                this.prevDistance = distanceToTarget;
-                if (this.artillery && this.tracking.startTrackingAfter > 0) return;
-                // target position reached
-                if (this.hazardZone) {
-                    ƒ.Recycler.store(this.hazardZone);
-                    this.hazardZone.getParent().removeChild(this.hazardZone);
-                    this.hazardZone = undefined;
-                }
+            if (this.targetPosition) {
+                let distanceToTarget = ƒ.Vector3.DIFFERENCE(this.targetPosition, this.node.mtxWorld.translation).magnitudeSquared;
+                if (this.targetPosition && (this.node.mtxWorld.translation.equals(this.targetPosition, 0.5) || distanceToTarget > this.prevDistance)) {
+                    this.prevDistance = distanceToTarget;
+                    if (this.artillery && this.tracking.startTrackingAfter > 0) return;
+                    // target position reached
+                    if (this.hazardZone) {
+                        ƒ.Recycler.store(this.hazardZone);
+                        this.hazardZone.getParent().removeChild(this.hazardZone);
+                        this.hazardZone = undefined;
+                    }
 
-                if (this.impact && this.impact.length) {
-                    for (let impact of this.impact) {
-                        //TODO implement impacts
-                        switch (impact.type) {
-                            case "projectile":
-                                provider.get(ProjectileManager).createProjectile(projectiles[impact.projectile], this.targetPosition, impact.modifiers)
-                                break;
-                            case "aoe":
-                                provider.get(ProjectileManager).createAOE(areasOfEffect[impact.aoe], this.targetPosition, impact.modifiers);
-                                break;
+                    if (this.impact && this.impact.length) {
+                        for (let impact of this.impact) {
+                            //TODO implement impacts
+                            switch (impact.type) {
+                                case "projectile":
+                                    provider.get(ProjectileManager).createProjectile(projectiles[impact.projectile], this.targetPosition, impact.modifiers)
+                                    break;
+                                case "aoe":
+                                    provider.get(ProjectileManager).createAOE(areasOfEffect[impact.aoe], this.targetPosition, impact.modifiers);
+                                    break;
+                            }
                         }
                     }
+                    this.remove();
                 }
-                provider.get(ProjectileManager).removeProjectile(this);
             }
-            //TODO remove projectile if too far off screen, don't forget hitzone
+            // remove projectile if outside of room
+            if (this.node.cmpTransform.mtxLocal.translation.magnitudeSquared > 850 /* 15 width, 25 height playarea => max magnSqr = 850 */) {
+                this.remove();
+            }
         }
 
         protected onTriggerEnter = (_event: ƒ.EventPhysics) => {
@@ -183,7 +197,13 @@ namespace Script {
         }
 
         protected hit(_hittable: Hittable) {
-            // _hittable.hit({damage: this.damage});
+            _hittable.hit({ damage: this.damage });
+            this.piercing--;
+            if (this.piercing < 0) this.remove();
+        }
+
+        private remove() {
+            provider.get(ProjectileManager).removeProjectile(this);
         }
     }
 

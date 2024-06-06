@@ -19,7 +19,7 @@ namespace Script {
             if (gameState !== GAMESTATE.PLAYING) return;
             let time: number = ƒ.Loop.timeFrameGame / 1000;
             for (let card of this.currentlyActiveCards) {
-                card.update(time, this.combineEffects(this.cumulativeEffects, card.effects));
+                card.update(time, this.cumulativeEffects);
             }
         }
 
