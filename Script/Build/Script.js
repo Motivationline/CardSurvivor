@@ -4939,10 +4939,10 @@ var Script;
 (function (Script) {
     const pools = {
         "electronics": [
-            ["microwave"],
-            ["toaster", "chair"],
-            ["ventilator"],
+            ["microwave", "chair"],
+            ["toaster", "closet"],
             ["motor"],
+            ["ventilator"],
             ["chair"],
         ]
     };
@@ -5392,13 +5392,11 @@ var Script;
             });
             document.getElementById("game-overlay-pause").addEventListener("click", () => {
                 this.openPauseMenu();
-                if (Script.gameState !== Script.GAMESTATE.PAUSED)
-                    this.prevGameState = Script.gameState;
-                Script.gameState = Script.GAMESTATE.PAUSED;
             });
             document.getElementById("pause-resume").addEventListener("click", () => {
                 this.openMenu(MenuType.NONE);
                 Script.gameState = this.prevGameState;
+                Script.ƒ.Time.game.setScale(1);
             });
             document.getElementById("pause-quit").addEventListener("click", () => { this.openMenu(MenuType.END_CONFIRM); });
             document.getElementById("end-abort").addEventListener("click", () => { this.openPauseMenu(); });
@@ -5420,6 +5418,7 @@ var Script;
         async startGame() {
             this.openMenu(MenuType.NONE);
             Script.gameState = Script.GAMESTATE.ROOM_CLEAR;
+            Script.ƒ.Time.game.setScale(1);
             let dataManager = Script.provider.get(Script.DataManager);
             let cardManager = Script.provider.get(Script.CardManager);
             cardManager.setCards([], dataManager.savedDeckRaw);
@@ -5427,6 +5426,10 @@ var Script;
             Script.provider.get(Script.EnemyManager).nextRoom();
         }
         openPauseMenu() {
+            if (Script.gameState !== Script.GAMESTATE.PAUSED)
+                this.prevGameState = Script.gameState;
+            Script.gameState = Script.GAMESTATE.PAUSED;
+            Script.ƒ.Time.game.setScale(0);
             this.openMenu(MenuType.PAUSE);
             let cardsForPauseMenu = [];
             let cm = Script.provider.get(Script.CardManager);
