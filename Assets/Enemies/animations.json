@@ -214,6 +214,16 @@
                 "totalWidth": 256,
                 "wrapAfter": 1,
                 "materialString": "Material|2024-06-05T09:27:12.422Z|10846"
+            },
+            "divider": {
+                "fps": 24,
+                "frames": 1,
+                "height": 256,
+                "width": 256,
+                "totalHeight": 256,
+                "totalWidth": 256,
+                "wrapAfter": 1,
+                "materialString": "Material|2024-06-06T08:33:28.980Z|38435"
             }
 
             
