@@ -1,232 +1,272 @@
 {
-    "toaster": {
-        "animations": {
-            "move": {
-                "fps": 24,
-                "frames": 22,
-                "height": 256,
-                "width": 256,
-                "totalHeight": 1280,
-                "totalWidth": 1280,
-                "wrapAfter": 5,
-                "materialString": "Material|2024-05-06T13:30:03.916Z|15502"
-            },
-            "attack": {
-                "fps": 24,
-                "frames": 22,
-                "height": 256,
-                "width": 256,
-                "totalHeight": 1280,
-                "totalWidth": 1280,
-                "wrapAfter": 5,
-                "materialString": "Material|2024-05-06T13:30:28.224Z|93961",
-                "events": [
-                    {
-                        "frame": 6,
-                        "event": "fire"
-                    }
-                ]
-            },
-            "idle": {
-                "fps": 24,
-                "frames": 22,
-                "height": 256,
-                "width": 256,
-                "totalHeight": 1280,
-                "totalWidth": 1280,
-                "wrapAfter": 5,
-                "materialString": "Material|2024-05-07T11:00:47.573Z|73175"
-            }
-        }
-    },
-    "microwave": {
-        "animations": {
-            "move": {
-                "fps": 24,
-                "frames": 24,
-                "height": 256,
-                "width": 256,
-                "totalHeight": 1280,
-                "totalWidth": 1280,
-                "wrapAfter": 5,
-                "materialString": "Material|2024-05-06T13:29:52.414Z|09807"
-            }
-        }
-    },
-    "closet": {
-        "animations": {
-            "move": {
-                "fps": 24,
-                "frames": 41,
-                "height": 256,
-                "width": 256,
-                "totalHeight": 1792,
-                "totalWidth": 1792,
-                "wrapAfter": 7,
-                "materialString": "Material|2024-05-06T13:29:44.206Z|67199"
-            }
-        }
-    },
-    "chair": {
-        "animations": {
-            "move": {
-                "fps": 24,
-                "frames": 21,
-                "height": 256,
-                "width": 256,
-                "totalHeight": 1280,
-                "totalWidth": 1280,
-                "wrapAfter": 5,
-                "materialString": "Material|2024-05-06T13:29:21.308Z|14942"
-            }
-        }
-    },
-    "cardboard": {
-        "animations": {
-            "move": {
-                "fps": 24,
-                "frames": 24,
-                "height": 256,
-                "width": 256,
-                "totalHeight": 1280,
-                "totalWidth": 1280,
-                "wrapAfter": 5,
-                "materialString": "Material|2024-05-07T11:00:09.290Z|11123"
-            }
-        }
-    },
-    "motor": {
-        "animations": {
-            "move": {
-                "fps": 24,
-                "frames": 24,
-                "height": 256,
-                "width": 256,
-                "totalHeight": 1280,
-                "totalWidth": 1280,
-                "wrapAfter": 5,
-                "materialString": "Material|2024-05-07T11:33:30.222Z|47475"
-            }
-        }
-    },
-    "ventilator": {
-        "animations": {
-            "move": {
-                "fps": 24,
-                "frames": 24,
-                "height": 256,
-                "width": 256,
-                "totalHeight": 1280,
-                "totalWidth": 1280,
-                "wrapAfter": 5,
-                "materialString": "Material|2024-05-16T13:17:56.829Z|14508"
-            }
-        }
-    },
-    "aoe": {
-        "animations": {
-            "explosion": {
-                "fps": 21,
-                "frames": 21,
-                "height": 256,
-                "width": 256,
-                "totalHeight": 1280,
-                "totalWidth": 1280,
-                "wrapAfter": 5,
-                "materialString": "Material|2024-05-14T12:52:38.980Z|47111",
-                "events": [
-                    {
-                        "frame": 2,
-                        "event": "explode"
-                    }
-                ]
-            }
-        }
-    },
-    "projectile": {
-        "animations": {
-            "toast": {
-                "fps": 1,
-                "frames": 1,
-                "height": 256,
-                "width": 256,
-                "totalHeight": 256,
-                "totalWidth": 256,
-                "wrapAfter": 1,
-                "materialString": "Material|2024-05-07T12:39:47.128Z|21510"
-            },
-            "chisel": {
-                "fps": 24,
-                "frames": 6,
-                "height": 256,
-                "width": 256,
-                "totalHeight": 768,
-                "totalWidth": 768,
-                "wrapAfter": 3,
-                "materialString": "Material|2024-06-05T09:24:46.085Z|65597"
-            },
-            "codecivil": {
-                "fps": 24,
-                "frames": 1,
-                "height": 256,
-                "width": 256,
-                "totalHeight": 256,
-                "totalWidth": 256,
-                "wrapAfter": 1,
-                "materialString": "Material|2024-06-05T09:25:09.432Z|30694"
-            },
-            "discus": {
-                "fps": 24,
-                "frames": 1,
-                "height": 256,
-                "width": 256,
-                "totalHeight": 256,
-                "totalWidth": 256,
-                "wrapAfter": 1,
-                "materialString": "Material|2024-06-05T09:25:49.781Z|49644"
-            },
-            "hammer": {
-                "fps": 24,
-                "frames": 8,
-                "height": 256,
-                "width": 256,
-                "totalHeight": 768,
-                "totalWidth": 768,
-                "wrapAfter": 3,
-                "materialString": "Material|2024-06-05T09:26:24.226Z|03765"
-            },
-            "lightbulb": {
-                "fps": 24,
-                "frames": 16,
-                "height": 256,
-                "width": 256,
-                "totalHeight": 1280,
-                "totalWidth": 1280,
-                "wrapAfter": 5,
-                "materialString": "Material|2024-06-05T09:26:47.343Z|19986"
-            },
-            "pen": {
-                "fps": 24,
-                "frames": 1,
-                "height": 256,
-                "width": 256,
-                "totalHeight": 256,
-                "totalWidth": 256,
-                "wrapAfter": 1,
-                "materialString": "Material|2024-06-05T09:27:12.422Z|10846"
-            },
-            "divider": {
-                "fps": 24,
-                "frames": 1,
-                "height": 256,
-                "width": 256,
-                "totalHeight": 256,
-                "totalWidth": 256,
-                "wrapAfter": 1,
-                "materialString": "Material|2024-06-06T08:33:28.980Z|38435"
-            }
-
-            
-        }
+  "toaster": {
+    "animations": {
+      "move": {
+        "fps": 24,
+        "frames": 22,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 1280,
+        "totalWidth": 1280,
+        "wrapAfter": 5,
+        "materialString": "Material|2024-05-06T13:30:03.916Z|15502"
+      },
+      "attack": {
+        "fps": 24,
+        "frames": 22,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 1280,
+        "totalWidth": 1280,
+        "wrapAfter": 5,
+        "materialString": "Material|2024-05-06T13:30:28.224Z|93961",
+        "events": [
+          {
+            "frame": 6,
+            "event": "fire"
+          }
+        ]
+      },
+      "idle": {
+        "fps": 24,
+        "frames": 22,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 1280,
+        "totalWidth": 1280,
+        "wrapAfter": 5,
+        "materialString": "Material|2024-05-07T11:00:47.573Z|73175"
+      }
     }
+  },
+  "microwave": {
+    "animations": {
+      "move": {
+        "fps": 24,
+        "frames": 24,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 1280,
+        "totalWidth": 1280,
+        "wrapAfter": 5,
+        "materialString": "Material|2024-05-06T13:29:52.414Z|09807"
+      }
+    }
+  },
+  "closet": {
+    "animations": {
+      "move": {
+        "fps": 24,
+        "frames": 41,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 1792,
+        "totalWidth": 1792,
+        "wrapAfter": 7,
+        "materialString": "Material|2024-05-06T13:29:44.206Z|67199"
+      }
+    }
+  },
+  "chair": {
+    "animations": {
+      "move": {
+        "fps": 24,
+        "frames": 21,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 1280,
+        "totalWidth": 1280,
+        "wrapAfter": 5,
+        "materialString": "Material|2024-05-06T13:29:21.308Z|14942"
+      }
+    }
+  },
+  "cardboard": {
+    "animations": {
+      "move": {
+        "fps": 24,
+        "frames": 24,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 1280,
+        "totalWidth": 1280,
+        "wrapAfter": 5,
+        "materialString": "Material|2024-05-07T11:00:09.290Z|11123"
+      }
+    }
+  },
+  "motor": {
+    "animations": {
+      "move": {
+        "fps": 24,
+        "frames": 24,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 1280,
+        "totalWidth": 1280,
+        "wrapAfter": 5,
+        "materialString": "Material|2024-05-07T11:33:30.222Z|47475"
+      }
+    }
+  },
+  "ventilator": {
+    "animations": {
+      "move": {
+        "fps": 24,
+        "frames": 24,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 1280,
+        "totalWidth": 1280,
+        "wrapAfter": 5,
+        "materialString": "Material|2024-05-16T13:17:56.829Z|14508"
+      }
+    }
+  },
+  "mixer": {
+    "animations": {
+      "move": {
+        "fps": 24,
+        "frames": 24,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 1280,
+        "totalWidth": 1280,
+        "wrapAfter": 5,
+        "materialString": "Material|2024-05-16T13:17:56.829Z|14508"
+      },
+      "digup": {
+        "fps": 24,
+        "frames": 12,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 1024,
+        "totalWidth": 1024,
+        "wrapAfter": 4,
+        "materialString": "Material|2024-05-06T13:30:28.224Z|93961",
+        "events": [
+          {
+            "frame": 6,
+            "event": "fire"
+          }
+        ]
+      },
+      "idle": {
+        "fps": 24,
+        "frames": 24,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 1280,
+        "totalWidth": 1280,
+        "wrapAfter": 5,
+        "materialString": "Material|2024-05-07T11:00:47.573Z|73175"
+      }
+    }
+  },
+  "aoe": {
+    "animations": {
+      "explosion": {
+        "fps": 21,
+        "frames": 21,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 1280,
+        "totalWidth": 1280,
+        "wrapAfter": 5,
+        "materialString": "Material|2024-05-14T12:52:38.980Z|47111",
+        "events": [
+          {
+            "frame": 2,
+            "event": "explode"
+          }
+        ]
+      }
+    }
+  },
+  "projectile": {
+    "animations": {
+      "toast": {
+        "fps": 1,
+        "frames": 1,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 256,
+        "totalWidth": 256,
+        "wrapAfter": 1,
+        "materialString": "Material|2024-05-07T12:39:47.128Z|21510"
+      },
+      "chisel": {
+        "fps": 24,
+        "frames": 6,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 768,
+        "totalWidth": 768,
+        "wrapAfter": 3,
+        "materialString": "Material|2024-06-05T09:24:46.085Z|65597"
+      },
+      "codecivil": {
+        "fps": 24,
+        "frames": 1,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 256,
+        "totalWidth": 256,
+        "wrapAfter": 1,
+        "materialString": "Material|2024-06-05T09:25:09.432Z|30694"
+      },
+      "discus": {
+        "fps": 24,
+        "frames": 1,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 256,
+        "totalWidth": 256,
+        "wrapAfter": 1,
+        "materialString": "Material|2024-06-05T09:25:49.781Z|49644"
+      },
+      "hammer": {
+        "fps": 24,
+        "frames": 8,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 768,
+        "totalWidth": 768,
+        "wrapAfter": 3,
+        "materialString": "Material|2024-06-05T09:26:24.226Z|03765"
+      },
+      "lightbulb": {
+        "fps": 24,
+        "frames": 16,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 1280,
+        "totalWidth": 1280,
+        "wrapAfter": 5,
+        "materialString": "Material|2024-06-05T09:26:47.343Z|19986"
+      },
+      "pen": {
+        "fps": 24,
+        "frames": 1,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 256,
+        "totalWidth": 256,
+        "wrapAfter": 1,
+        "materialString": "Material|2024-06-05T09:27:12.422Z|10846"
+      },
+      "divider": {
+        "fps": 24,
+        "frames": 1,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 256,
+        "totalWidth": 256,
+        "wrapAfter": 1,
+        "materialString": "Material|2024-06-06T08:33:28.980Z|38435"
+      }
+
+
+    }
+  }
 }

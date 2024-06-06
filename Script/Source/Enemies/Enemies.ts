@@ -78,6 +78,24 @@ namespace Script {
             speed: 2,
             health: 4,
             dropXP: 0.5
-        }
+        },
+        mixer: {
+            moveSprite: ["mixer", "move"],
+            damage: 20,
+            desiredDistance: [2, 3],
+            health: 25,
+            speed: 1.5,
+            dropXP: 5,
+            attacks: [
+                {
+                    cooldown: 4,
+                    requiredDistance: [0, 0],
+                    attackSprite: ["mixer", "digup"],
+                    cooldownSprite: ["mixer", "idle"],
+                    windUp: 2,
+                    movement: () => { },
+                }
+            ]
+        },
     }
 }

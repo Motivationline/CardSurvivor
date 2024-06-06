@@ -329,38 +329,6 @@ declare namespace Script {
     }
 }
 declare namespace Script {
-    class ProjectileComponent extends Animateable implements Projectile {
-        tracking: ProjectileTracking;
-        direction: ƒ.Vector3;
-        targetPosition: ƒ.Vector3;
-        damage: number;
-        size: number;
-        speed: number;
-        range: number;
-        piercing: number;
-        target: ProjectileTarget;
-        diminishing: boolean;
-        artillery: boolean;
-        impact: ActiveEffect[];
-        targetMode: ProjectileTargetMode;
-        lockedToEntity: boolean;
-        sprite: AnimationSprite;
-        private hazardZone;
-        private prevDistance;
-        private functions;
-        protected static defaults: Projectile;
-        constructor();
-        protected init: () => void;
-        setup(_options: Partial<Projectile>, _modifier: PassiveCardEffectObject): Promise<void>;
-        update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
-        protected move(_frameTimeInSeconds: number): void;
-        protected onTriggerEnter: (_event: ƒ.EventPhysics) => void;
-        protected onTriggerExit: (_event: ƒ.EventPhysics) => void;
-        protected hit(_hittable: Hittable): void;
-        private remove;
-    }
-}
-declare namespace Script {
     const projectiles: Projectiles;
     const areasOfEffect: AreasOfEffect;
 }
@@ -378,45 +346,6 @@ declare namespace Script {
         set level(_level: number);
         get effects(): PassiveCardEffectObject;
         update(_time: number, _cumulatedEffects: PassiveCardEffectObject): void;
-    }
-}
-declare namespace Script {
-    interface iCardCollection {
-        [id: string]: {
-            lvl: number;
-            amount: number;
-        };
-    }
-    class CardCollection {
-        private collection;
-        private deck;
-        private maxDeckSize;
-        private maxSelectedSize;
-        private deckElement;
-        private collectionElement;
-        private popupElement;
-        private popupButtons;
-        private deckSelectionSizeElement;
-        private selectedCard;
-        private cardVisuals;
-        constructor(provider: Provider);
-        setup(): void;
-        private openPopup;
-        addCardToCollection(_name: string, _amount: number): void;
-        getCardLevel(_name: string): number;
-        addCardToDeck(_name: string): void;
-        removeCardFromDeck(_name: string, _updateVisuals?: boolean): void;
-        private hidePopup;
-        private removeFromArray;
-        private addToArray;
-        private installListeners;
-        private popupClickListener;
-        private updateVisuals;
-        private putCardsInDeck;
-        private fillWithPlaceholders;
-        private getCardPlaceholder;
-        private compareRarity;
-        private getRarityNumber;
     }
 }
 declare namespace Script {
@@ -677,5 +606,76 @@ declare namespace Script {
         createProjectile(_options: Partial<Projectile>, _position: ƒ.Vector3, _modifiers: PassiveCardEffectObject, _parent?: ƒ.Node): Promise<void>;
         createAOE(_options: Partial<AreaOfEffect>, _position: ƒ.Vector3, _modifiers: PassiveCardEffectObject, _parent?: ƒ.Node): Promise<void>;
         createHitZone(_position: ƒ.Vector3, _size?: number, _parent?: ƒ.Node): Promise<HitZoneGraphInstance>;
+    }
+}
+declare namespace Script {
+    interface iCardCollection {
+        [id: string]: {
+            lvl: number;
+            amount: number;
+        };
+    }
+    class CardCollection {
+        private collection;
+        private deck;
+        private maxDeckSize;
+        private maxSelectedSize;
+        private deckElement;
+        private collectionElement;
+        private popupElement;
+        private popupButtons;
+        private deckSelectionSizeElement;
+        private selectedCard;
+        private cardVisuals;
+        constructor(provider: Provider);
+        setup(): void;
+        private openPopup;
+        addCardToCollection(_name: string, _amount: number): void;
+        getCardLevel(_name: string): number;
+        addCardToDeck(_name: string): void;
+        removeCardFromDeck(_name: string, _updateVisuals?: boolean): void;
+        private hidePopup;
+        private removeFromArray;
+        private addToArray;
+        private installListeners;
+        private popupClickListener;
+        private updateVisuals;
+        private putCardsInDeck;
+        private fillWithPlaceholders;
+        private getCardPlaceholder;
+        private compareRarity;
+        private getRarityNumber;
+    }
+}
+declare namespace Script {
+    class ProjectileComponent extends Animateable implements Projectile {
+        tracking: ProjectileTracking;
+        direction: ƒ.Vector3;
+        targetPosition: ƒ.Vector3;
+        damage: number;
+        size: number;
+        speed: number;
+        range: number;
+        piercing: number;
+        target: ProjectileTarget;
+        diminishing: boolean;
+        artillery: boolean;
+        impact: ActiveEffect[];
+        targetMode: ProjectileTargetMode;
+        lockedToEntity: boolean;
+        sprite: AnimationSprite;
+        private hazardZone;
+        private prevDistance;
+        private functions;
+        protected static defaults: Projectile;
+        constructor();
+        protected init: () => void;
+        setup(_options: Partial<Projectile>, _modifier: PassiveCardEffectObject): Promise<void>;
+        update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
+        protected move(_frameTimeInSeconds: number): void;
+        protected onTriggerEnter: (_event: ƒ.EventPhysics) => void;
+        protected onTriggerExit: (_event: ƒ.EventPhysics) => void;
+        protected hit(_hittable: Hittable): void;
+        private remove;
     }
 }
