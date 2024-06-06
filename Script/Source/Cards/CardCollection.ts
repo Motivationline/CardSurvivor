@@ -8,22 +8,22 @@ namespace Script {
     export class CardCollection {
         private collection: iCardCollection;
         private deck: string[];
-        private selection: string[];
+        // private selection: string[];
 
-        private maxDeckSize: number = 15;
-        private maxSelectedSize: number = 5;
+        private maxDeckSize: number = 20;
+        private maxSelectedSize: number = 0;
 
         private deckElement: HTMLElement;
-        private selectionElement: HTMLElement;
+        // private selectionElement: HTMLElement;
         private collectionElement: HTMLElement;
         private popupElement: HTMLElement;
         private popupButtons: {
-            selectionTo: HTMLButtonElement;
-            selectionFrom: HTMLButtonElement;
-            selectionToFrom: HTMLButtonElement;
+            // selectionTo: HTMLButtonElement;
+            // selectionFrom: HTMLButtonElement;
+            // selectionToFrom: HTMLButtonElement;
             deckTo: HTMLButtonElement;
             deckFrom: HTMLButtonElement;
-            deckToFrom: HTMLButtonElement;
+            // deckToFrom: HTMLButtonElement;
         }
         private deckSelectionSizeElement: HTMLElement;
 
@@ -35,22 +35,22 @@ namespace Script {
             let dm = provider.get(DataManager);
             this.collection = dm.savedCollectionRaw;
             this.deck = dm.savedDeckRaw;
-            this.selection = dm.savedSelectionRaw;
+            // this.selection = dm.savedSelectionRaw;
         }
 
         setup() {
-            this.selectionElement = document.getElementById("selection");
+            // this.selectionElement = document.getElementById("selection");
             this.deckElement = document.getElementById("deck");
             this.collectionElement = document.getElementById("collection-wrapper");
             this.popupElement = document.getElementById("card-popup");
             this.deckSelectionSizeElement = document.getElementById("deck-selection-size");
             this.popupButtons = {
                 deckFrom: <HTMLButtonElement>document.getElementById("card-popup-deck-from"),
-                deckToFrom: <HTMLButtonElement>document.getElementById("card-popup-deck-to-from"),
+                // deckToFrom: <HTMLButtonElement>document.getElementById("card-popup-deck-to-from"),
                 deckTo: <HTMLButtonElement>document.getElementById("card-popup-deck-to"),
-                selectionFrom: <HTMLButtonElement>document.getElementById("card-popup-selection-from"),
-                selectionToFrom: <HTMLButtonElement>document.getElementById("card-popup-selection-to-from"),
-                selectionTo: <HTMLButtonElement>document.getElementById("card-popup-selection-to"),
+                // selectionFrom: <HTMLButtonElement>document.getElementById("card-popup-selection-from"),
+                // selectionToFrom: <HTMLButtonElement>document.getElementById("card-popup-selection-to-from"),
+                // selectionTo: <HTMLButtonElement>document.getElementById("card-popup-selection-to"),
             }
 
             this.installListeners();
@@ -95,25 +95,25 @@ namespace Script {
             }
             if (this.collection[cardID]) {
                 // card is in selection, so it's selectable
-                if (this.selection.includes(cardID)) {
-                    this.popupButtons.deckToFrom.classList.remove("hidden");
-                    this.popupButtons.selectionFrom.classList.remove("hidden");
-                }
-                else if (this.deck.includes(cardID)) {
+                // if (this.selection.includes(cardID)) {
+                    // this.popupButtons.deckToFrom.classList.remove("hidden");
+                    // this.popupButtons.selectionFrom.classList.remove("hidden");
+                // }
+                if (this.deck.includes(cardID)) {
                     this.popupButtons.deckFrom.classList.remove("hidden");
-                    this.popupButtons.selectionToFrom.classList.remove("hidden");
+                    // this.popupButtons.selectionToFrom.classList.remove("hidden");
                 } else {
                     this.popupButtons.deckTo.classList.remove("hidden");
-                    this.popupButtons.selectionTo.classList.remove("hidden");
+                    // this.popupButtons.selectionTo.classList.remove("hidden");
                 }
                 if (this.deck.length >= this.maxDeckSize) {
                     this.popupButtons.deckTo.classList.add("disabled");
-                    this.popupButtons.deckToFrom.classList.add("disabled");
+                    // this.popupButtons.deckToFrom.classList.add("disabled");
                 }
-                if (this.selection.length >= this.maxSelectedSize) {
-                    this.popupButtons.selectionTo.classList.add("disabled");
-                    this.popupButtons.selectionToFrom.classList.add("disabled");
-                }
+                // if (this.selection.length >= this.maxSelectedSize) {
+                //     this.popupButtons.selectionTo.classList.add("disabled");
+                //     this.popupButtons.selectionToFrom.classList.add("disabled");
+                // }
             }
         }
 
@@ -131,7 +131,7 @@ namespace Script {
 
         addCardToDeck(_name: string) {
             this.addToArray(_name, this.deck);
-            this.removeCardFromSelection(_name, false);
+            // this.removeCardFromSelection(_name, false);
             this.updateVisuals();
         }
 
@@ -140,16 +140,16 @@ namespace Script {
             if (_updateVisuals) this.updateVisuals();
         }
 
-        addCardToSelection(_name: string) {
-            this.addToArray(_name, this.selection);
-            this.removeCardFromDeck(_name, false);
-            this.updateVisuals();
-        }
+        // addCardToSelection(_name: string) {
+        //     this.addToArray(_name, this.selection);
+        //     this.removeCardFromDeck(_name, false);
+        //     this.updateVisuals();
+        // }
 
-        removeCardFromSelection(_name: string, _updateVisuals: boolean = true) {
-            this.removeFromArray(_name, this.selection);
-            if (_updateVisuals) this.updateVisuals();
-        }
+        // removeCardFromSelection(_name: string, _updateVisuals: boolean = true) {
+        //     this.removeFromArray(_name, this.selection);
+        //     if (_updateVisuals) this.updateVisuals();
+        // }
 
         private hidePopup() {
             this.popupElement.classList.add("hidden");
@@ -174,11 +174,11 @@ namespace Script {
                 provider.get(MenuManager).openMenu(MenuType.MAIN);
             })
 
-            this.popupButtons.selectionTo.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToSelection); })
-            this.popupButtons.selectionToFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToSelection); })
-            this.popupButtons.selectionFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.removeCardFromSelection); })
+            // this.popupButtons.selectionTo.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToSelection); })
+            // this.popupButtons.selectionToFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToSelection); })
+            // this.popupButtons.selectionFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.removeCardFromSelection); })
             this.popupButtons.deckTo.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToDeck); })
-            this.popupButtons.deckToFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToDeck); })
+            // this.popupButtons.deckToFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToDeck); })
             this.popupButtons.deckFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.removeCardFromDeck); })
 
             this.popupElement.addEventListener("click", (_e) => {
@@ -224,14 +224,14 @@ namespace Script {
                 });
             } else {
                 // selection
-                this.putCardsInDeck(this.selection, this.selectionElement, this.maxSelectedSize);
+                // this.putCardsInDeck(this.selection, this.selectionElement, this.maxSelectedSize);
 
                 // deck
                 this.putCardsInDeck(this.deck, this.deckElement, this.maxDeckSize);
             }
 
             // number
-            this.deckSelectionSizeElement.innerText = `${this.deck.length + this.selection.length}/${this.maxDeckSize + this.maxSelectedSize}`;
+            this.deckSelectionSizeElement.innerText = `${this.deck.length /* + this.selection.length */}/${this.maxDeckSize + this.maxSelectedSize}`;
         }
 
         private putCardsInDeck(_selection: string[], _parent: HTMLElement, _maxSize: number) {

@@ -227,7 +227,7 @@ namespace Script {
             gameState = GAMESTATE.ROOM_CLEAR;
         }
 
-        private nextRoom() {
+        public nextRoom() {
             this.currentRoom++;
             this.currentWave = -1;
             this.currentWaveEnd = 0;

@@ -305,39 +305,64 @@ var Script;
                 return;
             this.#character.update(this.movementVector);
         };
-        upgradeCards() {
-            let defaultCardsToChooseFromAmount = 3;
-            let cm = Script.provider.get(Script.CardManager);
-            let cards = cm.getCardsToChooseFrom(cm.modifyValuePlayer(defaultCardsToChooseFromAmount, Script.PassiveCardEffect.CARD_UPGRADE_SLOTS));
-            let elementsToShow = [];
-            let parent = document.getElementById("card-upgrade-popup");
-            if (!cards || cards.length === 0) {
-                //TODO add other bonus, like health or something
-                let element = document.createElement("div");
-                element.classList.add("card");
-                elementsToShow.push(element);
-                element.addEventListener("click", () => {
-                    Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.NONE);
-                });
-            }
-            else {
-                // we have cards we can upgrade / add
-                for (let card of cards) {
-                    let cv = new Script.CardVisual(card, parent, card.id, card.level);
-                    elementsToShow.push(cv.htmlElement);
-                    cv.htmlElement.addEventListener("click", selectCard);
-                    if (cm.activeCards.includes(card))
-                        cv.htmlElement.classList.add("upgrade");
-                    else
-                        cv.htmlElement.classList.add("unlock");
-                    function selectCard() {
-                        cm.updateCardOrAdd(card.id);
+        async upgradeCards(_amountOverride, _newCards = false, _rerolls = 0) {
+            return new Promise((resolve) => {
+                let rerollButton = document.getElementById("card-upgrade-popup-reroll");
+                const reroll = async () => {
+                    rerollButton.removeEventListener("click", reroll);
+                    if (_rerolls > 0) {
+                        await this.upgradeCards(_amountOverride, _newCards, _rerolls - 1);
+                    }
+                    resolve();
+                };
+                rerollButton.innerText = `Reroll (${_rerolls})`;
+                if (_rerolls > 0) {
+                    rerollButton.addEventListener("click", reroll);
+                    rerollButton.classList.remove("hidden");
+                }
+                else {
+                    rerollButton.classList.add("hidden");
+                }
+                let defaultCardsToChooseFromAmount = 3;
+                let cm = Script.provider.get(Script.CardManager);
+                let cardAmount = cm.modifyValuePlayer(defaultCardsToChooseFromAmount, Script.PassiveCardEffect.CARD_UPGRADE_SLOTS);
+                if (_amountOverride)
+                    cardAmount = _amountOverride;
+                let cards = cm.getCardsToChooseFrom(cardAmount, _newCards);
+                let elementsToShow = [];
+                let parent = document.getElementById("card-upgrade-popup-wrapper");
+                if (!cards || cards.length === 0) {
+                    //TODO add other bonus, like health or something
+                    let element = document.createElement("div");
+                    element.classList.add("card");
+                    elementsToShow.push(element);
+                    element.addEventListener("click", () => {
                         Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.NONE);
+                        rerollButton.removeEventListener("click", reroll);
+                        resolve();
+                    });
+                }
+                else {
+                    // we have cards we can upgrade / add
+                    for (let card of cards) {
+                        let cv = new Script.CardVisual(card, parent, card.id, card.level);
+                        elementsToShow.push(cv.htmlElement);
+                        cv.htmlElement.addEventListener("click", selectCard);
+                        if (cm.activeCards.includes(card))
+                            cv.htmlElement.classList.add("upgrade");
+                        else
+                            cv.htmlElement.classList.add("unlock");
+                        function selectCard() {
+                            cm.updateCardOrAdd(card.id);
+                            Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.NONE);
+                            rerollButton.removeEventListener("click", reroll);
+                            resolve();
+                        }
                     }
                 }
-            }
-            parent.replaceChildren(...elementsToShow);
-            Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.CARD_UPGRADE);
+                parent.replaceChildren(...elementsToShow);
+                Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.CARD_UPGRADE);
+            });
         }
     }
     Script.CharacterManager = CharacterManager;
@@ -1089,11 +1114,11 @@ var Script;
     class CardCollection {
         collection;
         deck;
-        selection;
-        maxDeckSize = 15;
-        maxSelectedSize = 5;
+        // private selection: string[];
+        maxDeckSize = 20;
+        maxSelectedSize = 0;
         deckElement;
-        selectionElement;
+        // private selectionElement: HTMLElement;
         collectionElement;
         popupElement;
         popupButtons;
@@ -1104,21 +1129,21 @@ var Script;
             let dm = provider.get(Script.DataManager);
             this.collection = dm.savedCollectionRaw;
             this.deck = dm.savedDeckRaw;
-            this.selection = dm.savedSelectionRaw;
+            // this.selection = dm.savedSelectionRaw;
         }
         setup() {
-            this.selectionElement = document.getElementById("selection");
+            // this.selectionElement = document.getElementById("selection");
             this.deckElement = document.getElementById("deck");
             this.collectionElement = document.getElementById("collection-wrapper");
             this.popupElement = document.getElementById("card-popup");
             this.deckSelectionSizeElement = document.getElementById("deck-selection-size");
             this.popupButtons = {
                 deckFrom: document.getElementById("card-popup-deck-from"),
-                deckToFrom: document.getElementById("card-popup-deck-to-from"),
+                // deckToFrom: <HTMLButtonElement>document.getElementById("card-popup-deck-to-from"),
                 deckTo: document.getElementById("card-popup-deck-to"),
-                selectionFrom: document.getElementById("card-popup-selection-from"),
-                selectionToFrom: document.getElementById("card-popup-selection-to-from"),
-                selectionTo: document.getElementById("card-popup-selection-to"),
+                // selectionFrom: <HTMLButtonElement>document.getElementById("card-popup-selection-from"),
+                // selectionToFrom: <HTMLButtonElement>document.getElementById("card-popup-selection-to-from"),
+                // selectionTo: <HTMLButtonElement>document.getElementById("card-popup-selection-to"),
             };
             this.installListeners();
             for (let cardID in Script.cards) {
@@ -1157,26 +1182,26 @@ var Script;
             }
             if (this.collection[cardID]) {
                 // card is in selection, so it's selectable
-                if (this.selection.includes(cardID)) {
-                    this.popupButtons.deckToFrom.classList.remove("hidden");
-                    this.popupButtons.selectionFrom.classList.remove("hidden");
-                }
-                else if (this.deck.includes(cardID)) {
+                // if (this.selection.includes(cardID)) {
+                // this.popupButtons.deckToFrom.classList.remove("hidden");
+                // this.popupButtons.selectionFrom.classList.remove("hidden");
+                // }
+                if (this.deck.includes(cardID)) {
                     this.popupButtons.deckFrom.classList.remove("hidden");
-                    this.popupButtons.selectionToFrom.classList.remove("hidden");
+                    // this.popupButtons.selectionToFrom.classList.remove("hidden");
                 }
                 else {
                     this.popupButtons.deckTo.classList.remove("hidden");
-                    this.popupButtons.selectionTo.classList.remove("hidden");
+                    // this.popupButtons.selectionTo.classList.remove("hidden");
                 }
                 if (this.deck.length >= this.maxDeckSize) {
                     this.popupButtons.deckTo.classList.add("disabled");
-                    this.popupButtons.deckToFrom.classList.add("disabled");
+                    // this.popupButtons.deckToFrom.classList.add("disabled");
                 }
-                if (this.selection.length >= this.maxSelectedSize) {
-                    this.popupButtons.selectionTo.classList.add("disabled");
-                    this.popupButtons.selectionToFrom.classList.add("disabled");
-                }
+                // if (this.selection.length >= this.maxSelectedSize) {
+                //     this.popupButtons.selectionTo.classList.add("disabled");
+                //     this.popupButtons.selectionToFrom.classList.add("disabled");
+                // }
             }
         };
         addCardToCollection(_name, _amount) {
@@ -1191,7 +1216,7 @@ var Script;
         }
         addCardToDeck(_name) {
             this.addToArray(_name, this.deck);
-            this.removeCardFromSelection(_name, false);
+            // this.removeCardFromSelection(_name, false);
             this.updateVisuals();
         }
         removeCardFromDeck(_name, _updateVisuals = true) {
@@ -1199,16 +1224,15 @@ var Script;
             if (_updateVisuals)
                 this.updateVisuals();
         }
-        addCardToSelection(_name) {
-            this.addToArray(_name, this.selection);
-            this.removeCardFromDeck(_name, false);
-            this.updateVisuals();
-        }
-        removeCardFromSelection(_name, _updateVisuals = true) {
-            this.removeFromArray(_name, this.selection);
-            if (_updateVisuals)
-                this.updateVisuals();
-        }
+        // addCardToSelection(_name: string) {
+        //     this.addToArray(_name, this.selection);
+        //     this.removeCardFromDeck(_name, false);
+        //     this.updateVisuals();
+        // }
+        // removeCardFromSelection(_name: string, _updateVisuals: boolean = true) {
+        //     this.removeFromArray(_name, this.selection);
+        //     if (_updateVisuals) this.updateVisuals();
+        // }
         hidePopup() {
             this.popupElement.classList.add("hidden");
         }
@@ -1229,11 +1253,11 @@ var Script;
                 this.hidePopup();
                 Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.MAIN);
             });
-            this.popupButtons.selectionTo.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToSelection); });
-            this.popupButtons.selectionToFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToSelection); });
-            this.popupButtons.selectionFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.removeCardFromSelection); });
+            // this.popupButtons.selectionTo.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToSelection); })
+            // this.popupButtons.selectionToFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToSelection); })
+            // this.popupButtons.selectionFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.removeCardFromSelection); })
             this.popupButtons.deckTo.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToDeck); });
-            this.popupButtons.deckToFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToDeck); });
+            // this.popupButtons.deckToFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToDeck); })
             this.popupButtons.deckFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.removeCardFromDeck); });
             this.popupElement.addEventListener("click", (_e) => {
                 if (_e.target === this.popupElement)
@@ -1280,12 +1304,12 @@ var Script;
             }
             else {
                 // selection
-                this.putCardsInDeck(this.selection, this.selectionElement, this.maxSelectedSize);
+                // this.putCardsInDeck(this.selection, this.selectionElement, this.maxSelectedSize);
                 // deck
                 this.putCardsInDeck(this.deck, this.deckElement, this.maxDeckSize);
             }
             // number
-            this.deckSelectionSizeElement.innerText = `${this.deck.length + this.selection.length}/${this.maxDeckSize + this.maxSelectedSize}`;
+            this.deckSelectionSizeElement.innerText = `${this.deck.length /* + this.selection.length */}/${this.maxDeckSize + this.maxSelectedSize}`;
         }
         putCardsInDeck(_selection, _parent, _maxSize) {
             let cards = [];
@@ -4785,9 +4809,11 @@ var Script;
             }
             return combined;
         }
+        prevChosenCards = [];
         setCards(_selection, _deck) {
             this.currentlyActiveCards = [];
             this.deckCards = [];
+            this.prevChosenCards = [];
             for (let cardId of _selection) {
                 this.currentlyActiveCards.push(new Script.Card(Script.cards[cardId], cardId, 0));
             }
@@ -4796,17 +4822,18 @@ var Script;
             }
             this.updateEffects();
         }
-        getCardsToChooseFrom(_maxAmt) {
+        getCardsToChooseFrom(_maxAmt, _newCards = false) {
             let possibleCards = [...this.currentlyActiveCards];
             if (this.currentlyActiveCards.length < this.currentMaxActiveCardAmount) {
                 possibleCards.push(...this.deckCards);
             }
             for (let i = 0; i < possibleCards.length; i++) {
                 let card = possibleCards[i];
-                if (card.level < card.levels.length - 1)
-                    continue;
-                possibleCards.splice(i, 1);
-                i--;
+                if ((_newCards && this.prevChosenCards.includes(card)) ||
+                    (card.level >= card.levels.length - 1 && this.activeCards.includes(card))) {
+                    possibleCards.splice(i, 1);
+                    i--;
+                }
             }
             // shuffle options
             possibleCards = possibleCards
@@ -4814,6 +4841,7 @@ var Script;
                 .sort((a, b) => a.sort - b.sort)
                 .map(({ value }) => value);
             possibleCards.length = Math.min(Math.floor(_maxAmt), possibleCards.length);
+            this.prevChosenCards = possibleCards;
             return possibleCards;
         }
         updateCardOrAdd(_cardId) {
@@ -5389,12 +5417,14 @@ var Script;
                 }
             }
         }
-        startGame() {
+        async startGame() {
             this.openMenu(MenuType.NONE);
-            Script.gameState = Script.GAMESTATE.PLAYING;
+            Script.gameState = Script.GAMESTATE.ROOM_CLEAR;
             let dataManager = Script.provider.get(Script.DataManager);
             let cardManager = Script.provider.get(Script.CardManager);
-            cardManager.setCards(dataManager.savedSelectionRaw, dataManager.savedDeckRaw);
+            cardManager.setCards([], dataManager.savedDeckRaw);
+            await Script.provider.get(Script.CharacterManager).upgradeCards(5, true, 1);
+            Script.provider.get(Script.EnemyManager).nextRoom();
         }
         openPauseMenu() {
             this.openMenu(MenuType.PAUSE);

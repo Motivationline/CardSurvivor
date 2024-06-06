@@ -72,7 +72,7 @@ declare namespace Script {
         set character(_char: Character);
         setMovement(_direction: ƒ.Vector2): void;
         private update;
-        upgradeCards(): void;
+        upgradeCards(_amountOverride?: number, _newCards?: boolean, _rerolls?: number): Promise<void>;
     }
 }
 declare namespace Script {
@@ -381,11 +381,9 @@ declare namespace Script {
     class CardCollection {
         private collection;
         private deck;
-        private selection;
         private maxDeckSize;
         private maxSelectedSize;
         private deckElement;
-        private selectionElement;
         private collectionElement;
         private popupElement;
         private popupButtons;
@@ -399,8 +397,6 @@ declare namespace Script {
         getCardLevel(_name: string): number;
         addCardToDeck(_name: string): void;
         removeCardFromDeck(_name: string, _updateVisuals?: boolean): void;
-        addCardToSelection(_name: string): void;
-        removeCardFromSelection(_name: string, _updateVisuals?: boolean): void;
         private hidePopup;
         private removeFromArray;
         private addToArray;
@@ -570,8 +566,9 @@ declare namespace Script {
         modifyValue(_value: number, _effect: PassiveCardEffect, _modifier: PassiveCardEffectObject): number;
         updateEffects(): void;
         combineEffects(..._effects: PassiveCardEffectObject[]): PassiveCardEffectObject;
+        private prevChosenCards;
         setCards(_selection: string[], _deck: string[]): void;
-        getCardsToChooseFrom(_maxAmt: number): Card[];
+        getCardsToChooseFrom(_maxAmt: number, _newCards?: boolean): Card[];
         updateCardOrAdd(_cardId: string): void;
     }
 }
@@ -616,7 +613,7 @@ declare namespace Script {
         nextWaveOverride: boolean;
         private roomManagement;
         private endRoom;
-        private nextRoom;
+        nextRoom(): void;
         private spawnWave;
         private getWave;
         private poolSelections;

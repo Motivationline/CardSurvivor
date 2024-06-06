@@ -54,13 +54,15 @@ namespace Script {
             }
         }
 
-        private startGame() {
+        private async startGame() {
             this.openMenu(MenuType.NONE);
-            gameState = GAMESTATE.PLAYING;
+            gameState = GAMESTATE.ROOM_CLEAR;
 
             let dataManager = provider.get(DataManager);
             let cardManager = provider.get(CardManager);
-            cardManager.setCards(dataManager.savedSelectionRaw, dataManager.savedDeckRaw);
+            cardManager.setCards([], dataManager.savedDeckRaw);
+            await provider.get(CharacterManager).upgradeCards(5, true, 1);
+            provider.get(EnemyManager).nextRoom();
         }
 
         public openPauseMenu() {
