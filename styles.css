@@ -135,11 +135,29 @@ progress[value]::-moz-progress-bar {
 
 #card-upgrade-popup {
   pointer-events: all;
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  flex-direction: column;
+  height: 100vh;
+  gap: 20px;
+  background-color: rgba(108, 108, 121, 0.817);
 }
 #card-upgrade-popup-wrapper {
   pointer-events: all;
   --card-size: min(20vw, 80vh);
   display: flex;
+}
+
+.card-upgrade-row{
+  display: flex;
+  justify-content: center;
+  gap:20px
+}
+
+#card-upgrade-button-container{
+  display: flex;
+  justify-content: center;
 }
 
 /* pause and settings */
