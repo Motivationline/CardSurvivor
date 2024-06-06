@@ -931,12 +931,12 @@ var Script;
             }
         }
         onTriggerEnter = (_event) => {
+            if (this.artillery || this.targetPosition)
+                return;
             if (_event.cmpRigidbody.node.name === "enemy" && this.target === Script.ProjectileTarget.ENEMY) {
                 this.hit(_event.cmpRigidbody.node.getComponent(Script.Enemy));
             }
             else if (_event.cmpRigidbody.node.name === "character" && this.target === Script.ProjectileTarget.PLAYER) {
-                if (this.artillery)
-                    return;
                 this.hit(_event.cmpRigidbody.node.getComponent(Script.Character));
             }
         };

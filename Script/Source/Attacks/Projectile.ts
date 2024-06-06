@@ -185,10 +185,10 @@ namespace Script {
         }
 
         protected onTriggerEnter = (_event: ƒ.EventPhysics) => {
+            if (this.artillery || this.targetPosition) return;
             if (_event.cmpRigidbody.node.name === "enemy" && this.target === ProjectileTarget.ENEMY) {
                 this.hit(_event.cmpRigidbody.node.getComponent(Enemy))
             } else if (_event.cmpRigidbody.node.name === "character" && this.target === ProjectileTarget.PLAYER) {
-                if (this.artillery) return;
                 this.hit(_event.cmpRigidbody.node.getComponent(Character))
             }
         }
