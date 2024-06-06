@@ -4,15 +4,27 @@ namespace Script {
             moveSprite: ["microwave", "move"],
             damage: 5,
             desiredDistance: [0, 0],
-            health: 10,
+            health: 15,
             speed: 0.8,
             knockbackMultiplier: 1,
-            dropXP: 1,
+            dropXP: 2,
+        },
+        chair: {
+            moveSprite: ["chair", "move"],
+            damage: 4,
+            desiredDistance: [0, 0],
+            health: 10,
+            speed: 1,
+            knockbackMultiplier: 1.2,
+            dropXP: 2,
         },
         toaster: {
             moveSprite: ["toaster", "move"],
-            speed: 0.5,
             desiredDistance: [3, 4],
+            health: 10,
+            speed: 0.5,
+            knockbackMultiplier: 1.2,
+            dropXP: 3,
             attacks: [
                 {
                     cooldown: 2,
@@ -35,22 +47,37 @@ namespace Script {
                 }
             ]
         },
+        closet: {
+            moveSprite: ["closet", "move"],
+            damage: 30,
+            desiredDistance: [0, 0],
+            health: 50,
+            speed: 0.2,
+            knockbackMultiplier: 0.2,
+            dropXP: 3,
+        },
         motor: {
             moveSprite: ["motor", "move"],
-            speed: 3,
+            damage: 10,
+            desiredDistance: [0, 0],
+            health: 25,
+            speed: 1.2,
+            dropXP: 4,
+            attacks: [
+                {
+                    cooldown: 2,
+                    requiredDistance: [0, 0],
+                    windUp: 1,
+                    movement: () => { },
+                }
+            ]
         },
         ventilator: {
             moveSprite: ["ventilator", "move"],
-            speed: 0.5,
-            desiredDistance: [0, 0],
-        },
-        chair: {
-            moveSprite: ["chair", "move"],
-            speed: 0.5,
-            desiredDistance: [0, 0],
-        },
-        closet: {
-            
+            damage: 2,
+            speed: 2,
+            health: 4,
+            dropXP: 0.5
         }
     }
 }
