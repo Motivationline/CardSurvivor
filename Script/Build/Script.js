@@ -945,42 +945,42 @@ var Script;
         "hammer": {
             damage: 1,
             speed: 20,
-            sprite: ["projectile", "hammer_projectile"],
+            sprite: ["projectile", "hammer"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.NONE
         },
         "discus": {
             damage: 1,
             speed: 20,
-            sprite: ["projectile", "discus_projectile"],
+            sprite: ["projectile", "discus"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.CLOSEST
         },
         "pen": {
             damage: 1,
             speed: 20,
-            sprite: ["projectile", "pen_projectile"],
+            sprite: ["projectile", "pen"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.CLOSEST
         },
         "codecivil": {
             damage: 1,
             speed: 20,
-            sprite: ["projectile", "codecivil_projectile"],
+            sprite: ["projectile", "codecivil"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.CLOSEST
         },
         "divider": {
             damage: 1,
             speed: 20,
-            sprite: ["projectile", "divider_projectile"],
+            sprite: ["projectile", "divider"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.CLOSEST
         },
         "chisel": {
             damage: 1,
             speed: 20,
-            sprite: ["projectile", "chisel_projectile"],
+            sprite: ["projectile", "chisel"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.CLOSEST
         }
@@ -1153,7 +1153,7 @@ var Script;
                 //@ts-ignore
                 this.popupButtons[button].classList.add("hidden");
                 //@ts-ignore
-                this.popupButtons[button].disabled = false;
+                this.popupButtons[button].classList.remove("disabled");
             }
             if (this.collection[cardID]) {
                 // card is in selection, so it's selectable
@@ -1170,10 +1170,12 @@ var Script;
                     this.popupButtons.selectionTo.classList.remove("hidden");
                 }
                 if (this.deck.length >= this.maxDeckSize) {
-                    this.popupButtons.deckTo.disabled = true;
+                    this.popupButtons.deckTo.classList.add("disabled");
+                    this.popupButtons.deckToFrom.classList.add("disabled");
                 }
                 if (this.selection.length >= this.maxSelectedSize) {
-                    this.popupButtons.selectionTo.disabled = true;
+                    this.popupButtons.selectionTo.classList.add("disabled");
+                    this.popupButtons.selectionToFrom.classList.add("disabled");
                 }
             }
         };
@@ -1227,16 +1229,22 @@ var Script;
                 this.hidePopup();
                 Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.MAIN);
             });
-            this.popupButtons.selectionTo.addEventListener("click", () => { this.addCardToSelection(this.selectedCard); this.hidePopup(); });
-            this.popupButtons.selectionToFrom.addEventListener("click", () => { this.addCardToSelection(this.selectedCard); this.hidePopup(); });
-            this.popupButtons.selectionFrom.addEventListener("click", () => { this.removeCardFromSelection(this.selectedCard); this.hidePopup(); });
-            this.popupButtons.deckTo.addEventListener("click", () => { this.addCardToDeck(this.selectedCard); this.hidePopup(); });
-            this.popupButtons.deckToFrom.addEventListener("click", () => { this.addCardToDeck(this.selectedCard); this.hidePopup(); });
-            this.popupButtons.deckFrom.addEventListener("click", () => { this.removeCardFromDeck(this.selectedCard); this.hidePopup(); });
+            this.popupButtons.selectionTo.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToSelection); });
+            this.popupButtons.selectionToFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToSelection); });
+            this.popupButtons.selectionFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.removeCardFromSelection); });
+            this.popupButtons.deckTo.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToDeck); });
+            this.popupButtons.deckToFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToDeck); });
+            this.popupButtons.deckFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.removeCardFromDeck); });
             this.popupElement.addEventListener("click", (_e) => {
                 if (_e.target === this.popupElement)
                     this.hidePopup();
             });
+        }
+        popupClickListener(_event, _func) {
+            if (_event.target.classList.contains("disabled"))
+                return;
+            _func.call(this, this.selectedCard);
+            this.hidePopup();
         }
         updateVisuals(_fullReset = false) {
             // collection

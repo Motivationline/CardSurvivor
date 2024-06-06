@@ -282,6 +282,11 @@ progress[value]::-moz-progress-bar {
   max-height: calc((100vh - var(--card-size)) / 2);
 }
 
+.popup-button.disabled {
+  filter: grayscale(1);
+  cursor: default;
+}
+
 
 
 /* cards */

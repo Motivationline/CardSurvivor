@@ -405,6 +405,7 @@ declare namespace Script {
         private removeFromArray;
         private addToArray;
         private installListeners;
+        private popupClickListener;
         private updateVisuals;
         private putCardsInDeck;
         private fillWithPlaceholders;

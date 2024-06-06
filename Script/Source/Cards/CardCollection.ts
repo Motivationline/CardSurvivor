@@ -91,7 +91,7 @@ namespace Script {
                 //@ts-ignore
                 this.popupButtons[button].classList.add("hidden");
                 //@ts-ignore
-                this.popupButtons[button].disabled = false;
+                this.popupButtons[button].classList.remove("disabled");
             }
             if (this.collection[cardID]) {
                 // card is in selection, so it's selectable
@@ -107,10 +107,12 @@ namespace Script {
                     this.popupButtons.selectionTo.classList.remove("hidden");
                 }
                 if (this.deck.length >= this.maxDeckSize) {
-                    this.popupButtons.deckTo.disabled = true;
+                    this.popupButtons.deckTo.classList.add("disabled");
+                    this.popupButtons.deckToFrom.classList.add("disabled");
                 }
                 if (this.selection.length >= this.maxSelectedSize) {
-                    this.popupButtons.selectionTo.disabled = true;
+                    this.popupButtons.selectionTo.classList.add("disabled");
+                    this.popupButtons.selectionToFrom.classList.add("disabled");
                 }
             }
         }
@@ -172,16 +174,22 @@ namespace Script {
                 provider.get(MenuManager).openMenu(MenuType.MAIN);
             })
 
-            this.popupButtons.selectionTo.addEventListener("click", () => { this.addCardToSelection(this.selectedCard); this.hidePopup(); })
-            this.popupButtons.selectionToFrom.addEventListener("click", () => { this.addCardToSelection(this.selectedCard); this.hidePopup(); })
-            this.popupButtons.selectionFrom.addEventListener("click", () => { this.removeCardFromSelection(this.selectedCard); this.hidePopup(); })
-            this.popupButtons.deckTo.addEventListener("click", () => { this.addCardToDeck(this.selectedCard); this.hidePopup(); })
-            this.popupButtons.deckToFrom.addEventListener("click", () => { this.addCardToDeck(this.selectedCard); this.hidePopup(); })
-            this.popupButtons.deckFrom.addEventListener("click", () => { this.removeCardFromDeck(this.selectedCard); this.hidePopup(); })
+            this.popupButtons.selectionTo.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToSelection); })
+            this.popupButtons.selectionToFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToSelection); })
+            this.popupButtons.selectionFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.removeCardFromSelection); })
+            this.popupButtons.deckTo.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToDeck); })
+            this.popupButtons.deckToFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToDeck); })
+            this.popupButtons.deckFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.removeCardFromDeck); })
 
             this.popupElement.addEventListener("click", (_e) => {
                 if (_e.target === this.popupElement) this.hidePopup();
             })
+        }
+
+        private popupClickListener(_event: MouseEvent, _func: Function) {
+            if ((<HTMLElement>_event.target).classList.contains("disabled")) return;
+            _func.call(this, this.selectedCard);
+            this.hidePopup();
         }
 
         private updateVisuals(_fullReset: boolean = false) {
@@ -199,7 +207,7 @@ namespace Script {
                 let visual = this.cardVisuals.get(cardID);
                 if (!visual) continue;
                 allCardsForCollection.push(visual.htmlElement);
-                if(!_fullReset){
+                if (!_fullReset) {
                     visual.htmlElement.classList.add("locked");
                 }
             }
