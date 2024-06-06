@@ -13,26 +13,26 @@ namespace Script {
         "electronics": [
             // room 1
             {
-                duration: 60,
+                duration: 20,
                 defaultWave: {
                     enemies: [{ pool: 0 }],
-                    amount: 15,
-                    duration: 10,
-                    minEnemiesOverride: 5,
+                    amount: 5,
+                    duration: 4,
+                    minEnemiesOverride: 2,
                 },
                 waveAmount: 6,
             },
             // room 2
             {
-                duration: 60,
+                duration: 30,
                 defaultWave: {
                     enemies: [
                         { pool: 0, weight: 6 },
                         { pool: 1, weight: 4 },
                     ],
-                    amount: 15,
-                    duration: 10,
-                    minEnemiesOverride: 5,
+                    amount: 6,
+                    duration: 5,
+                    minEnemiesOverride: 2,
                 },
                 waveAmount: 6,
                 waves: [
@@ -40,22 +40,22 @@ namespace Script {
                         enemies: [
                             { pool: 1 }
                         ],
-                        amount: 8,
+                        amount: 4,
                         duration: 10,
                     }
                 ]
             },
             // room 3
             {
-                duration: 60,
+                duration: 40,
                 defaultWave: {
                     enemies: [
                         { pool: 0, weight: 6 },
                         { pool: 1, weight: 4 },
                     ],
-                    amount: 15,
-                    duration: 10,
-                    minEnemiesOverride: 5,
+                    amount: 8,
+                    duration: 8,
+                    minEnemiesOverride: 2,
                 },
                 waveAmount: 6,
                 waves: [
@@ -65,7 +65,7 @@ namespace Script {
                             { pool: 1, weight: 4 },
                             { pool: 0, elite: true },
                         ],
-                        amount: 15,
+                        amount: 6,
                         duration: 10,
                     }
                 ],
@@ -77,16 +77,16 @@ namespace Script {
             },
             // room 4
             {
-                duration: 60,
+                duration: 50,
                 defaultWave: {
                     enemies: [
                         { pool: 0, weight: 55 },
                         { pool: 1, weight: 25 },
                         { pool: 2, weight: 20 },
                     ],
-                    amount: 15,
+                    amount: 10,
                     duration: 10,
-                    minEnemiesOverride: 5,
+                    minEnemiesOverride: 2,
                 },
                 waveAmount: 6,
                 waves: [
@@ -94,7 +94,7 @@ namespace Script {
                         enemies: [
                             { pool: 2 },
                         ],
-                        amount: 8,
+                        amount: 4,
                         duration: 10,
                     }
                 ],
