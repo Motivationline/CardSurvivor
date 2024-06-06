@@ -135,6 +135,9 @@ progress[value]::-moz-progress-bar {
 
 #card-upgrade-popup {
   pointer-events: all;
+}
+#card-upgrade-popup-wrapper {
+  pointer-events: all;
   --card-size: min(20vw, 80vh);
   display: flex;
 }

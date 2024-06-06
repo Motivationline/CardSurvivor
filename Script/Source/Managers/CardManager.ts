@@ -11,7 +11,7 @@ namespace Script {
             ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
         }
 
-        get activeCards(){
+        get activeCards() {
             return this.currentlyActiveCards;
         }
 
@@ -67,20 +67,22 @@ namespace Script {
             return combined;
         }
 
+        private prevChosenCards: Card[] = [];
         public setCards(_selection: string[], _deck: string[]) {
             this.currentlyActiveCards = [];
             this.deckCards = [];
-            for(let cardId of _selection){
+            this.prevChosenCards = [];
+            for (let cardId of _selection) {
                 this.currentlyActiveCards.push(new Card(cards[cardId], cardId, 0));
             }
-            for(let cardId of _deck){
+            for (let cardId of _deck) {
                 this.deckCards.push(new Card(cards[cardId], cardId, 0));
             }
 
             this.updateEffects();
         }
 
-        public getCardsToChooseFrom(_maxAmt: number): Card[] {
+        public getCardsToChooseFrom(_maxAmt: number, _newCards: boolean = false): Card[] {
             let possibleCards = [...this.currentlyActiveCards];
 
             if (this.currentlyActiveCards.length < this.currentMaxActiveCardAmount) {
@@ -89,9 +91,11 @@ namespace Script {
 
             for (let i: number = 0; i < possibleCards.length; i++) {
                 let card = possibleCards[i];
-                if (card.level < card.levels.length - 1) continue;
-                possibleCards.splice(i, 1);
-                i--;
+                if ((_newCards && this.prevChosenCards.includes(card)) ||
+                    (card.level >= card.levels.length - 1 && this.activeCards.includes(card))) {
+                    possibleCards.splice(i, 1);
+                    i--;
+                }
             }
 
             // shuffle options
@@ -102,6 +106,7 @@ namespace Script {
 
             possibleCards.length = Math.min(Math.floor(_maxAmt), possibleCards.length);
 
+            this.prevChosenCards = possibleCards;
             return possibleCards;
         }
 
@@ -115,7 +120,7 @@ namespace Script {
             // add
             for (let i: number = 0; i < this.deckCards.length; i++) {
                 let deckCard = this.deckCards[i];
-                if(deckCard.id === _cardId){
+                if (deckCard.id === _cardId) {
                     this.currentlyActiveCards.push(deckCard);
                     this.deckCards.splice(i, 1);
                     return this.updateEffects();
