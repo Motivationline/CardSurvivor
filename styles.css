@@ -57,12 +57,12 @@ canvas.fullscreen {
 button {
   padding: 2em;
   color: var(--ui-text-button);
-  border-radius: 0;
   font-size: inherit;
   cursor: pointer;
   border-image-source: url("Assets/UI/Deck/EmptyButton.png");
   border-image-width: 10;
   border-image-slice: 25 fill;
+  background-color: transparent;
 }
 
 button.inverted {
