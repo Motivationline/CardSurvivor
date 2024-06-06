@@ -1,10 +1,10 @@
 namespace Script {
     const pools: Pools = {
         "electronics": [
-            ["microwave"],
-            ["toaster", "chair"],
-            ["ventilator"],
+            ["microwave", "chair"],
+            ["toaster", "closet"],
             ["motor"],
+            ["ventilator"],
             ["chair"],
         ]
     }
