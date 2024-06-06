@@ -14,7 +14,7 @@ namespace Script {
             damage: 4,
             desiredDistance: [0, 0],
             health: 10,
-            speed: 1,
+            speed: 1.2,
             knockbackMultiplier: 1.2,
             dropXP: 2,
         },
@@ -59,15 +59,15 @@ namespace Script {
         motor: {
             moveSprite: ["motor", "move"],
             damage: 10,
-            desiredDistance: [0, 0],
+            desiredDistance: [0, 1],
             health: 25,
-            speed: 1.2,
+            speed: 2,
             dropXP: 4,
             attacks: [
                 {
                     cooldown: 2,
                     requiredDistance: [0, 0],
-                    windUp: 1,
+                    windUp: 2,
                     movement: () => { },
                 }
             ]
