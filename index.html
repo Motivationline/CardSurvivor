@@ -60,7 +60,9 @@
         <!-- debug -->
         <span id="timer">0:00</span>
         <span style="margin-left: 1rem;">V - next wave, B - end room, N - next room, K - kill 5 enemies</span>
-        <div id="game-overlay-pause"><img src="Assets/UI/Gameplay/Pause.png" alt="Pause"></div>
+        <div id="game-overlay-pause">
+<img src="Assets/UI/Gameplay/Pause.png" alt="Pause" />
+</div>
         <div id="card-upgrade-popup" class="overlay hidden">
 </div>
     </div>
@@ -99,16 +101,19 @@
         <div id="deck-outer-wrapper">
             <label for="largeDeck">
                 <div id="deck-selection">
-                    <img src="Assets/UI/Deck/DeckButton1_Active.png" alt="1">
-                    <img src="Assets/UI/Deck/DeckButton2.png" alt="2">
+                    <img src="Assets/UI/Deck/DeckButton1_Active.png" alt="1" />
+                    <img src="Assets/UI/Deck/DeckButton2.png" alt="2" />
                     <span id="deck-selection-size">12/20</span>
-                    <img src="Assets/UI/Deck/DeckButton3.png" alt="3">
-                    <img src="Assets/UI/Deck/DeckButton4.png" alt="4">
+                    <img src="Assets/UI/Deck/DeckButton3.png" alt="3" />
+                    <img src="Assets/UI/Deck/DeckButton4.png" alt="4" />
                 </div>
             </label>
             <div id="deck-wrapper">
+                <div class="deck-title"">Hand</div>
                 <div id="selection" class="contains-cards">
                 </div>
+                <div class="deck-title">Deck</div>
+
                 <div id="deck" class="contains-cards">
                 </div>
             </div>
@@ -121,18 +126,18 @@
             </div>
             <div id="card-popup-selection-wrapper">
                 <div id="card-popup-selection">
-                    <img class="popup-button" src="Assets/UI/Deck/HandAdd.png" alt="Add to Selection" id="card-popup-selection-to">
-                    <img class="popup-button" src="Assets/UI/Deck/HandMoveIn.png" alt="Add to Selection" id="card-popup-selection-to-from">
-                    <img class="popup-button" src="Assets/UI/Deck/HandRemove.png" alt="Remove from Selection" id="card-popup-selection-from">
+                    <img class="popup-button" src="Assets/UI/Deck/HandAdd.png" alt="Add to Selection" id="card-popup-selection-to" />
+                    <img class="popup-button" src="Assets/UI/Deck/HandMoveIn.png" alt="Add to Selection" id="card-popup-selection-to-from" />
+                    <img class="popup-button" src="Assets/UI/Deck/HandRemove.png" alt="Remove from Selection" id="card-popup-selection-from" />
                 </div>
                 <div id="card-popup-deck">
-                    <img class="popup-button" src="Assets/UI/Deck/DeckAdd.png" alt="Add to Deck" id="card-popup-deck-to">
-                    <img class="popup-button" src="Assets/UI/Deck/DeckMoveIn.png" alt="Add to Deck" id="card-popup-deck-to-from">
-                    <img class="popup-button" src="Assets/UI/Deck/DeckRemove.png" alt="Remove from Deck" id="card-popup-deck-from">
+                    <img class="popup-button" src="Assets/UI/Deck/DeckAdd.png" alt="Add to Deck" id="card-popup-deck-to" />
+                    <img class="popup-button" src="Assets/UI/Deck/DeckMoveIn.png" alt="Add to Deck" id="card-popup-deck-to-from" />
+                    <img class="popup-button" src="Assets/UI/Deck/DeckRemove.png" alt="Remove from Deck" id="card-popup-deck-from" />
                 </div>
             </div>
             <div id="card-popup-close">
-                <img class="popup-button" src="Assets/UI/Deck/Close.png" alt="Close">
+                <img class="popup-button" src="Assets/UI/Deck/Close.png" alt="Close" />
             </div>
         </div>
     </div>
@@ -145,11 +150,31 @@
                 <img src="" alt="" />
             </div>
             <div class="card-level">
-                <div class="card-level-star" id="card-level-star-1"><svg width="100%" viewBox="0 0 70 60"><path  d="M35,45l17.634,9.271l-3.368,-19.636l14.266,-13.906l-19.715,-2.864l-8.817,-17.865l-8.817,17.865l-19.715,2.864l14.266,13.906l-3.368,19.636l17.634,-9.271"/></svg></div>
-                <div class="card-level-star" id="card-level-star-2"><svg width="100%" viewBox="0 0 70 60"><path  d="M35,45l17.634,9.271l-3.368,-19.636l14.266,-13.906l-19.715,-2.864l-8.817,-17.865l-8.817,17.865l-19.715,2.864l14.266,13.906l-3.368,19.636l17.634,-9.271"/></svg></div>
-                <div class="card-level-star" id="card-level-star-3"><svg width="100%" viewBox="0 0 70 60"><path  d="M35,45l17.634,9.271l-3.368,-19.636l14.266,-13.906l-19.715,-2.864l-8.817,-17.865l-8.817,17.865l-19.715,2.864l14.266,13.906l-3.368,19.636l17.634,-9.271"/></svg></div>
-                <div class="card-level-star" id="card-level-star-4"><svg width="100%" viewBox="0 0 70 60"><path  d="M35,45l17.634,9.271l-3.368,-19.636l14.266,-13.906l-19.715,-2.864l-8.817,-17.865l-8.817,17.865l-19.715,2.864l14.266,13.906l-3.368,19.636l17.634,-9.271"/></svg></div>
-                <div class="card-level-star" id="card-level-star-5"><svg width="100%" viewBox="0 0 70 60"><path  d="M35,45l17.634,9.271l-3.368,-19.636l14.266,-13.906l-19.715,-2.864l-8.817,-17.865l-8.817,17.865l-19.715,2.864l14.266,13.906l-3.368,19.636l17.634,-9.271"/></svg></div>
+                <div class="card-level-star" id="card-level-star-1">
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 70 60">
+<path d="M35,45l17.634,9.271l-3.368,-19.636l14.266,-13.906l-19.715,-2.864l-8.817,-17.865l-8.817,17.865l-19.715,2.864l14.266,13.906l-3.368,19.636l17.634,-9.271"/>
+</svg>
+</div>
+                <div class="card-level-star" id="card-level-star-2">
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 70 60">
+<path d="M35,45l17.634,9.271l-3.368,-19.636l14.266,-13.906l-19.715,-2.864l-8.817,-17.865l-8.817,17.865l-19.715,2.864l14.266,13.906l-3.368,19.636l17.634,-9.271"/>
+</svg>
+</div>
+                <div class="card-level-star" id="card-level-star-3">
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 70 60">
+<path d="M35,45l17.634,9.271l-3.368,-19.636l14.266,-13.906l-19.715,-2.864l-8.817,-17.865l-8.817,17.865l-19.715,2.864l14.266,13.906l-3.368,19.636l17.634,-9.271"/>
+</svg>
+</div>
+                <div class="card-level-star" id="card-level-star-4">
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 70 60">
+<path d="M35,45l17.634,9.271l-3.368,-19.636l14.266,-13.906l-19.715,-2.864l-8.817,-17.865l-8.817,17.865l-19.715,2.864l14.266,13.906l-3.368,19.636l17.634,-9.271"/>
+</svg>
+</div>
+                <div class="card-level-star" id="card-level-star-5">
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 70 60">
+<path d="M35,45l17.634,9.271l-3.368,-19.636l14.266,-13.906l-19.715,-2.864l-8.817,-17.865l-8.817,17.865l-19.715,2.864l14.266,13.906l-3.368,19.636l17.634,-9.271"/>
+</svg>
+</div>
             </div>
             <div class="card-text">
             </div>

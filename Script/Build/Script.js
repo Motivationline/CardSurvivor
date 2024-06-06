@@ -860,8 +860,9 @@ var Script;
             dir.normalize(Math.min(1, _frameTimeInSeconds) * this.speed);
             this.node.mtxLocal.translate(dir);
             //TODO check if flew past target position (due to lag?) and still explode
-            // let distanceToTarget = ƒ.Vector3.DIFFERENCE(this.targetPosition, this.node.mtxWorld.translation).magnitudeSquared;
-            if (this.targetPosition && (this.node.mtxWorld.translation.equals(this.targetPosition, 0.5) /*|| distanceToTarget > this.prevDistance*/)) {
+            let distanceToTarget = Script.ƒ.Vector3.DIFFERENCE(this.targetPosition, this.node.mtxWorld.translation).magnitudeSquared;
+            if (this.targetPosition && (this.node.mtxWorld.translation.equals(this.targetPosition, 0.5) || distanceToTarget > this.prevDistance)) {
+                this.prevDistance = distanceToTarget;
                 if (this.artillery && this.tracking.startTrackingAfter > 0)
                     return;
                 // target position reached
@@ -885,7 +886,6 @@ var Script;
                 }
                 Script.provider.get(Script.ProjectileManager).removeProjectile(this);
             }
-            // this.prevDistance = distanceToTarget;
             //TODO remove projectile if too far off screen, don't forget hitzone
         }
         onTriggerEnter = (_event) => {
@@ -945,42 +945,42 @@ var Script;
         "hammer": {
             damage: 1,
             speed: 20,
-            sprite: ["projectile", "hammer_projectile"],
+            sprite: ["projectile", "hammer"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.NONE
         },
         "discus": {
             damage: 1,
             speed: 20,
-            sprite: ["projectile", "discus_projectile"],
+            sprite: ["projectile", "discus"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.CLOSEST
         },
         "pen": {
             damage: 1,
             speed: 20,
-            sprite: ["projectile", "pen_projectile"],
+            sprite: ["projectile", "pen"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.CLOSEST
         },
         "codecivil": {
             damage: 1,
             speed: 20,
-            sprite: ["projectile", "codecivil_projectile"],
+            sprite: ["projectile", "codecivil"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.CLOSEST
         },
         "divider": {
             damage: 1,
             speed: 20,
-            sprite: ["projectile", "divider_projectile"],
+            sprite: ["projectile", "divider"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.CLOSEST
         },
         "chisel": {
             damage: 1,
             speed: 20,
-            sprite: ["projectile", "chisel_projectile"],
+            sprite: ["projectile", "chisel"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.CLOSEST
         }
@@ -1153,7 +1153,7 @@ var Script;
                 //@ts-ignore
                 this.popupButtons[button].classList.add("hidden");
                 //@ts-ignore
-                this.popupButtons[button].disabled = false;
+                this.popupButtons[button].classList.remove("disabled");
             }
             if (this.collection[cardID]) {
                 // card is in selection, so it's selectable
@@ -1170,10 +1170,12 @@ var Script;
                     this.popupButtons.selectionTo.classList.remove("hidden");
                 }
                 if (this.deck.length >= this.maxDeckSize) {
-                    this.popupButtons.deckTo.disabled = true;
+                    this.popupButtons.deckTo.classList.add("disabled");
+                    this.popupButtons.deckToFrom.classList.add("disabled");
                 }
                 if (this.selection.length >= this.maxSelectedSize) {
-                    this.popupButtons.selectionTo.disabled = true;
+                    this.popupButtons.selectionTo.classList.add("disabled");
+                    this.popupButtons.selectionToFrom.classList.add("disabled");
                 }
             }
         };
@@ -1227,16 +1229,22 @@ var Script;
                 this.hidePopup();
                 Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.MAIN);
             });
-            this.popupButtons.selectionTo.addEventListener("click", () => { this.addCardToSelection(this.selectedCard); this.hidePopup(); });
-            this.popupButtons.selectionToFrom.addEventListener("click", () => { this.addCardToSelection(this.selectedCard); this.hidePopup(); });
-            this.popupButtons.selectionFrom.addEventListener("click", () => { this.removeCardFromSelection(this.selectedCard); this.hidePopup(); });
-            this.popupButtons.deckTo.addEventListener("click", () => { this.addCardToDeck(this.selectedCard); this.hidePopup(); });
-            this.popupButtons.deckToFrom.addEventListener("click", () => { this.addCardToDeck(this.selectedCard); this.hidePopup(); });
-            this.popupButtons.deckFrom.addEventListener("click", () => { this.removeCardFromDeck(this.selectedCard); this.hidePopup(); });
+            this.popupButtons.selectionTo.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToSelection); });
+            this.popupButtons.selectionToFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToSelection); });
+            this.popupButtons.selectionFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.removeCardFromSelection); });
+            this.popupButtons.deckTo.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToDeck); });
+            this.popupButtons.deckToFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToDeck); });
+            this.popupButtons.deckFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.removeCardFromDeck); });
             this.popupElement.addEventListener("click", (_e) => {
                 if (_e.target === this.popupElement)
                     this.hidePopup();
             });
+        }
+        popupClickListener(_event, _func) {
+            if (_event.target.classList.contains("disabled"))
+                return;
+            _func.call(this, this.selectedCard);
+            this.hidePopup();
         }
         updateVisuals(_fullReset = false) {
             // collection
@@ -1426,7 +1434,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 0,
+                            damage: 0, //8 Base Damage
                             projectilePiercing: 2
                         }
                     }
@@ -1440,7 +1448,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 4,
+                            damage: 4, //8 Base Damage
                             projectilePiercing: 2
                         }
                     }
@@ -1454,7 +1462,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 4,
+                            damage: 4, //8 Base Damage
                             projectilePiercing: 2
                         }
                     }
@@ -1468,7 +1476,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 7,
+                            damage: 7, //8 Base Damage
                             projectilePiercing: 3
                         }
                     }
@@ -1482,7 +1490,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 7,
+                            damage: 7, //8 Base Damage
                             projectilePiercing: 4
                         }
                     }
@@ -1646,7 +1654,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 0,
+                            damage: 0, //5 Base Damage
                             effectDuration: 0 //1 Base Duration
                         }
                     }
@@ -1659,7 +1667,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 1,
+                            damage: 1, //5 Base Damage
                             effectDuration: 0 //1 Base Duration
                         }
                     }
@@ -1672,7 +1680,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 1,
+                            damage: 1, //5 Base Damage
                             effectDuration: 0.5 //1 Base Duration
                         }
                     }
@@ -1685,7 +1693,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 1,
+                            damage: 1, //5 Base Damage
                             effectDuration: 0.5 //1 Base Duration
                         }
                     }
@@ -1698,7 +1706,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 3,
+                            damage: 3, //5 Base Damage
                             effectDuration: 1 //1 Base Duration
                         }
                     }
@@ -1943,7 +1951,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 0,
+                            damage: 0, //5 Base Damage
                             projectilePiercing: 3
                         }
                     }
@@ -1957,7 +1965,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 2,
+                            damage: 2, //5 Base Damage
                             projectilePiercing: 3
                         }
                     }
@@ -1971,7 +1979,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 2,
+                            damage: 2, //5 Base Damage
                             projectilePiercing: 3
                         }
                     }
@@ -1985,7 +1993,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 3,
+                            damage: 3, //5 Base Damage
                             projectilePiercing: 4
                         }
                     }
@@ -1999,7 +2007,7 @@ var Script;
                         }],
                     passiveEffects: {
                         absolute: {
-                            damage: 5,
+                            damage: 5, //5 Base Damage
                             projectilePiercing: 6
                         }
                     }
@@ -4412,7 +4420,7 @@ var Script;
                     movement: () => { },
                     events: {
                         fire: function () {
-                            Script.provider.get(Script.ProjectileManager).createProjectile(Script.projectiles["toast"], Script.ƒ.Vector3.SUM(this.node.mtxWorld.translation, Script.ƒ.Vector3.Y(0.3)), undefined);
+                            Script.provider.get(Script.ProjectileManager).createProjectile(Script.projectiles["toastEnemy"], Script.ƒ.Vector3.SUM(this.node.mtxWorld.translation, Script.ƒ.Vector3.Y(0.3)), undefined);
                         }
                     }
                 }

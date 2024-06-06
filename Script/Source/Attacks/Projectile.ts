@@ -141,8 +141,9 @@ namespace Script {
             this.node.mtxLocal.translate(dir);
 
             //TODO check if flew past target position (due to lag?) and still explode
-            // let distanceToTarget = ƒ.Vector3.DIFFERENCE(this.targetPosition, this.node.mtxWorld.translation).magnitudeSquared;
-            if (this.targetPosition && (this.node.mtxWorld.translation.equals(this.targetPosition, 0.5) /*|| distanceToTarget > this.prevDistance*/)) {
+            let distanceToTarget = ƒ.Vector3.DIFFERENCE(this.targetPosition, this.node.mtxWorld.translation).magnitudeSquared;
+            if (this.targetPosition && (this.node.mtxWorld.translation.equals(this.targetPosition, 0.5) || distanceToTarget > this.prevDistance)) {
+                this.prevDistance = distanceToTarget;
                 if (this.artillery && this.tracking.startTrackingAfter > 0) return;
                 // target position reached
                 if (this.hazardZone) {
@@ -166,7 +167,6 @@ namespace Script {
                 }
                 provider.get(ProjectileManager).removeProjectile(this);
             }
-            // this.prevDistance = distanceToTarget;
             //TODO remove projectile if too far off screen, don't forget hitzone
         }
 

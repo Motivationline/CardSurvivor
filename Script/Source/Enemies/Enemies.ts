@@ -35,7 +35,7 @@ namespace Script {
                     movement: () => { },
                     events: {
                         fire: function () {
-                            provider.get(ProjectileManager).createProjectile(projectiles["toast"],
+                            provider.get(ProjectileManager).createProjectile(projectiles["toastEnemy"],
                                 ƒ.Vector3.SUM(
                                     this.node.mtxWorld.translation,
                                     ƒ.Vector3.Y(0.3)
