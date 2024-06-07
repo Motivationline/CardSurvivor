@@ -1491,7 +1491,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 0, //8 Base Damage
+                                    damage: 0,
                                     projectilePiercing: 2
                                 }
                             }
@@ -1503,13 +1503,13 @@ var Script;
                             projectile: "hammerPlayer",
                             amount: 1,
                             cooldown: 2,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 4, //8 Base Damage
-                            projectilePiercing: 2
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 4,
+                                    projectilePiercing: 2
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -1517,13 +1517,13 @@ var Script;
                             projectile: "hammerPlayer",
                             amount: 2,
                             cooldown: 2,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 4, //8 Base Damage
-                            projectilePiercing: 2
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 4,
+                                    projectilePiercing: 2
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -1531,13 +1531,13 @@ var Script;
                             projectile: "hammerPlayer",
                             amount: 2,
                             cooldown: 2,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 7, //8 Base Damage
-                            projectilePiercing: 3
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 7,
+                                    projectilePiercing: 3
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -1545,13 +1545,13 @@ var Script;
                             projectile: "hammerPlayer",
                             amount: 2,
                             cooldown: 1.5,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 7, //8 Base Damage
-                            projectilePiercing: 4
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 7,
+                                    projectilePiercing: 4
+                                }
+                            }
+                        }]
                 },
             ]
         },
@@ -1566,12 +1566,12 @@ var Script;
                             projectile: "anvilPlayer",
                             amount: 1,
                             cooldown: 3,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 0 //10 Base Damage
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 0 //10 Base Damage
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -1579,12 +1579,12 @@ var Script;
                             projectile: "anvilPlayer",
                             amount: 1,
                             cooldown: 3,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 4 //10 Base Damage
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 4 //10 Base Damage
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -1592,12 +1592,12 @@ var Script;
                             projectile: "anvilPlayer",
                             amount: 2,
                             cooldown: 3,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 4 //10 Base Damage
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 4 //10 Base Damage
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -1605,12 +1605,12 @@ var Script;
                             projectile: "anvilPlayer",
                             amount: 2,
                             cooldown: 3,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 10 //10 Base Damage
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 10 //10 Base Damage
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -1618,12 +1618,12 @@ var Script;
                             projectile: "anvilPlayer",
                             amount: 3,
                             cooldown: 2,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 10 //10 Base Damage
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 10 //10 Base Damage
+                                }
+                            }
+                        }]
                 },
             ]
         },
@@ -1638,12 +1638,12 @@ var Script;
                             projectile: "penPlayer",
                             amount: 1,
                             cooldown: 0.5,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 0 //2 Base Damage
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 0 //2 Base Damage
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -1651,12 +1651,12 @@ var Script;
                             projectile: "penPlayer",
                             amount: 1,
                             cooldown: 0.5,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 2 //2 Base Damage
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 2 //2 Base Damage
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -1664,12 +1664,12 @@ var Script;
                             projectile: "penPlayer",
                             amount: 2,
                             cooldown: 0.5,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 2 //2 Base Damage
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 2 //2 Base Damage
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -1677,12 +1677,12 @@ var Script;
                             projectile: "penPlayer",
                             amount: 2,
                             cooldown: 0.5,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 4 //2 Base Damage
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 4 //2 Base Damage
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -1690,12 +1690,12 @@ var Script;
                             projectile: "penPlayer",
                             amount: 3,
                             cooldown: 0.4,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 4 //2 Base Damage
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 4 //2 Base Damage
+                                }
+                            }
+                        }]
                 },
             ]
         },
@@ -1709,65 +1709,65 @@ var Script;
                             type: "aoe",
                             aoe: "lightbulbPlayer",
                             cooldown: 5,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 0, //5 Base Damage
-                            effectDuration: 0 //1 Base Duration
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 0,
+                                    effectDuration: 0 //1 Base Duration
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
                             type: "aoe",
                             aoe: "lightbulbPlayer",
                             cooldown: 5,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 1, //5 Base Damage
-                            effectDuration: 0 //1 Base Duration
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 1,
+                                    effectDuration: 0 //1 Base Duration
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
                             type: "aoe",
                             aoe: "lightbulbPlayer",
                             cooldown: 5,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 1, //5 Base Damage
-                            effectDuration: 0.5 //1 Base Duration
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 1,
+                                    effectDuration: 0.5 //1 Base Duration
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
                             type: "aoe",
                             aoe: "lightbulbPlayer",
                             cooldown: 4,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 1, //5 Base Damage
-                            effectDuration: 0.5 //1 Base Duration
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 1,
+                                    effectDuration: 0.5 //1 Base Duration
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
                             type: "aoe",
                             aoe: "lightbulbPlayer",
                             cooldown: 4,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 3, //5 Base Damage
-                            effectDuration: 1 //1 Base Duration
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 3,
+                                    effectDuration: 1 //1 Base Duration
+                                }
+                            }
+                        }]
                 },
             ]
         },
@@ -1781,63 +1781,63 @@ var Script;
                             type: "aoe",
                             aoe: "smokeMaskPlayer",
                             cooldown: 2,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 0 //2 Base Damage
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 0 //2 Base Damage
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
                             type: "aoe",
                             aoe: "smokeMaskPlayer",
                             cooldown: 2,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 1 //2 Base Damage
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 1 //2 Base Damage
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
                             type: "aoe",
                             aoe: "smokeMaskPlayer",
                             cooldown: 1.5,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 1 //2 Base Damage
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 1 //2 Base Damage
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
                             type: "aoe",
                             aoe: "smokeMaskPlayer",
                             cooldown: 1,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 2 //2 Base Damage
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 2 //2 Base Damage
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
                             type: "aoe",
                             aoe: "smokeMaskPlayer",
                             cooldown: 1,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 3, //2 Base Damage
-                        },
-                        multiplier: {
-                            projectileSize: 1.5
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 3, //2 Base Damage
+                                },
+                                multiplier: {
+                                    projectileSize: 1.5
+                                }
+                            }
+                        }]
                 },
             ]
         },
@@ -1852,13 +1852,13 @@ var Script;
                             projectile: "discusPlayer",
                             amount: 1,
                             cooldown: 3,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 0 //5 Base Damage
-                            //TODO: Add bounces - 2
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 0 //5 Base Damage
+                                    //TODO: Add bounces - 2
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -1866,13 +1866,13 @@ var Script;
                             projectile: "discusPlayer",
                             amount: 1,
                             cooldown: 3,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 3 //5 Base Damage
-                            //TODO: Add bounces - 2
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 3 //5 Base Damage
+                                    //TODO: Add bounces - 2
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -1880,13 +1880,13 @@ var Script;
                             projectile: "discusPlayer",
                             amount: 1,
                             cooldown: 2,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 3 //5 Base Damage
-                            //TODO: Add bounces - 2
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 3 //5 Base Damage
+                                    //TODO: Add bounces - 2
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -1894,13 +1894,13 @@ var Script;
                             projectile: "discusPlayer",
                             amount: 1,
                             cooldown: 2,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 5 //5 Base Damage
-                            //TODO: Add bounces - 3
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 5 //5 Base Damage
+                                    //TODO: Add bounces - 3
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -1908,13 +1908,13 @@ var Script;
                             projectile: "discusPlayer",
                             amount: 2,
                             cooldown: 2,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 5 //5 Base Damage
-                            //TODO: Add bounces - 4
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 5 //5 Base Damage
+                                    //TODO: Add bounces - 4
+                                }
+                            }
+                        }]
                 },
             ]
         },
@@ -1929,13 +1929,13 @@ var Script;
                             projectile: "codeCivilPlayer",
                             amount: 1,
                             cooldown: 3,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 0 //3-30 Base Damage
-                            //TODO: More damage depending on distance
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 0 //3-30 Base Damage
+                                    //TODO: More damage depending on distance
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -1943,13 +1943,13 @@ var Script;
                             projectile: "codeCivilPlayer",
                             amount: 1,
                             cooldown: 3,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 0 //4-40 Base Damage
-                            //TODO: More damage depending on distance
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 0 //4-40 Base Damage
+                                    //TODO: More damage depending on distance
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -1957,13 +1957,13 @@ var Script;
                             projectile: "codeCivilPlayer",
                             amount: 1,
                             cooldown: 2.5,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 0 //5-50 Base Damage
-                            //TODO: More damage depending on distance
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 0 //5-50 Base Damage
+                                    //TODO: More damage depending on distance
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -1971,13 +1971,13 @@ var Script;
                             projectile: "codeCivilPlayer",
                             amount: 1,
                             cooldown: 2,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 0 //6-60 Base Damage
-                            //TODO: More damage depending on distance
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 0 //6-60 Base Damage
+                                    //TODO: More damage depending on distance
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -1985,13 +1985,13 @@ var Script;
                             projectile: "codeCivilPlayer",
                             amount: 2,
                             cooldown: 2,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 0 //8-80 Base Damage
-                            //TODO: More damage depending on distance
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 0 //8-80 Base Damage
+                                    //TODO: More damage depending on distance
+                                }
+                            }
+                        }]
                 },
             ]
         },
@@ -2006,13 +2006,13 @@ var Script;
                             projectile: "dividerPlayer",
                             amount: 1,
                             cooldown: 2,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 0, //5 Base Damage
-                            projectilePiercing: 3
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 0,
+                                    projectilePiercing: 3
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -2020,13 +2020,13 @@ var Script;
                             projectile: "dividerPlayer",
                             amount: 1,
                             cooldown: 2,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 2, //5 Base Damage
-                            projectilePiercing: 3
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 2,
+                                    projectilePiercing: 3
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -2034,13 +2034,13 @@ var Script;
                             projectile: "dividerPlayer",
                             amount: 2,
                             cooldown: 2,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 2, //5 Base Damage
-                            projectilePiercing: 3
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 2,
+                                    projectilePiercing: 3
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -2048,13 +2048,13 @@ var Script;
                             projectile: "dividerPlayer",
                             amount: 2,
                             cooldown: 2,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 3, //5 Base Damage
-                            projectilePiercing: 4
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 3,
+                                    projectilePiercing: 4
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
@@ -2062,13 +2062,13 @@ var Script;
                             projectile: "dividerPlayer",
                             amount: 2,
                             cooldown: 2,
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 5, //5 Base Damage
-                            projectilePiercing: 6
-                        }
-                    }
+                            modifiers: {
+                                absolute: {
+                                    damage: 5,
+                                    projectilePiercing: 6
+                                }
+                            }
+                        }]
                 },
             ]
         },
@@ -2082,65 +2082,65 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 5, //TODO: Leave a projectile every 5 units moved
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 0, //5 Base Damage
-                        }
-                    }
+                            cooldown: 5,
+                            modifiers: {
+                                absolute: {
+                                    damage: 0, //5 Base Damage
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 4, //TODO: Leave a projectile every 4 units moved
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 1, //5 Base Damage
-                        }
-                    }
+                            cooldown: 4,
+                            modifiers: {
+                                absolute: {
+                                    damage: 1, //5 Base Damage
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 4, //TODO: Leave a projectile every 4 units moved
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 3, //5 Base Damage
-                        }
-                    }
+                            cooldown: 4,
+                            modifiers: {
+                                absolute: {
+                                    damage: 3, //5 Base Damage
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 3, //TODO: Leave a projectile every 3 units moved
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 3, //5 Base Damage
-                        }
-                    }
+                            cooldown: 3,
+                            modifiers: {
+                                absolute: {
+                                    damage: 3, //5 Base Damage
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 2, //TODO: Leave a projectile every 2 units moved
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 5, //5 Base Damage
-                        }
-                    }
+                            cooldown: 2,
+                            modifiers: {
+                                absolute: {
+                                    damage: 5, //5 Base Damage
+                                }
+                            }
+                        }]
                 },
             ]
         },
@@ -2154,65 +2154,65 @@ var Script;
                             type: "projectile",
                             projectile: "chiselPlayer",
                             amount: 1,
-                            cooldown: 2
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 0, //15 Base Damage
-                        }
-                    }
+                            cooldown: 2,
+                            modifiers: {
+                                absolute: {
+                                    damage: 0, //15 Base Damage
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
                             type: "projectile",
                             projectile: "chiselPlayer",
                             amount: 1,
-                            cooldown: 2
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 10, //15 Base Damage
-                        }
-                    }
+                            cooldown: 2,
+                            modifiers: {
+                                absolute: {
+                                    damage: 10, //15 Base Damage
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
                             type: "projectile",
                             projectile: "chiselPlayer",
                             amount: 2,
-                            cooldown: 2
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 10, //15 Base Damage
-                        }
-                    }
+                            cooldown: 2,
+                            modifiers: {
+                                absolute: {
+                                    damage: 10, //15 Base Damage
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
                             type: "projectile",
                             projectile: "chiselPlayer",
                             amount: 2,
-                            cooldown: 2
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 20, //15 Base Damage
-                        }
-                    }
+                            cooldown: 2,
+                            modifiers: {
+                                absolute: {
+                                    damage: 20, //15 Base Damage
+                                }
+                            }
+                        }]
                 },
                 {
                     activeEffects: [{
                             type: "projectile",
                             projectile: "chiselPlayer",
                             amount: 2,
-                            cooldown: 1.5
-                        }],
-                    passiveEffects: {
-                        absolute: {
-                            damage: 25, //15 Base Damage
-                        }
-                    }
+                            cooldown: 1.5,
+                            modifiers: {
+                                absolute: {
+                                    damage: 25, //15 Base Damage
+                                }
+                            }
+                        }]
                 },
             ]
         },
