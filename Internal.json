@@ -1349,7 +1349,7 @@
         "ComponentMaterial": [
           {
             "ƒ.ComponentMaterial": {
-              "sortForAlpha": false,
+              "sortForAlpha": true,
               "clrPrimary": "[1, 1, 1, 1]",
               "clrSecondary": "[1, 1, 1, 1]",
               "pivot": {
@@ -1368,7 +1368,7 @@
           {
             "ƒ.ComponentRigidbody": {
               "initialization": "TO_PIVOT",
-              "friction": 1000,
+              "friction": 0,
               "restitution": 0,
               "mass": 0.1,
               "dampTranslation": 1,
@@ -1652,7 +1652,7 @@
         "ComponentMaterial": [
           {
             "ƒ.ComponentMaterial": {
-              "sortForAlpha": false,
+              "sortForAlpha": true,
               "clrPrimary": "[1, 1, 1, 1]",
               "clrSecondary": "[1, 1, 1, 1]",
               "pivot": {
