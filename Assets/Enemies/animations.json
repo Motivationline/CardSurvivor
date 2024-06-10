@@ -195,6 +195,16 @@
         "wrapAfter": 1,
         "materialString": "Material|2024-05-07T12:39:47.128Z|21510"
       },
+      "anvil": {
+        "fps": 1,
+        "frames": 1,
+        "height": 512,
+        "width": 512,
+        "totalHeight": 512,
+        "totalWidth": 512,
+        "wrapAfter": 1,
+        "materialString": "Material|2024-06-10T08:03:18.103Z|98876"
+      },
       "chisel": {
         "fps": 24,
         "frames": 6,

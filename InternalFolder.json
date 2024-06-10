@@ -313,6 +313,17 @@
                     "idResource": "Material|2024-06-05T09:27:12.422Z|10846"
                   }
                 ]
+              },
+              {
+                "name": "Anvil",
+                "entries": [
+                  {
+                    "idResource": "TextureImage|2024-06-10T09:12:26.588Z|30781"
+                  },
+                  {
+                    "idResource": "Material|2024-06-10T08:03:18.103Z|98876"
+                  }
+                ]
               }
             ]
           },

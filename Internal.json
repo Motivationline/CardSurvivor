@@ -2070,5 +2070,30 @@
         }
       }
     }
+  },
+  "Material|2024-06-10T08:03:18.103Z|98876": {
+    "ƒ.Material": {
+      "name": "MatAnvil",
+      "idResource": "Material|2024-06-10T08:03:18.103Z|98876",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-06-10T09:12:26.588Z|30781"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-06-10T09:12:26.588Z|30781": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Cards\\Items\\Anvil.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-06-10T09:12:26.588Z|30781",
+        "name": "Assets\\Cards\\Items\\Anvil.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
   }
 }
