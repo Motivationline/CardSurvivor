@@ -666,6 +666,12 @@ progress[value]::-moz-progress-bar {
   pointer-events: all;
 }
 
+.dmg-number {
+  position: absolute;
+  color: white;
+  animation: dmg 1s linear;
+}
+
 @keyframes wiggle {
   0% {
     transform: rotate(-0deg);
@@ -717,6 +723,18 @@ progress[value]::-moz-progress-bar {
 @keyframes upgrade {
   from {scale: 1;}
   to {scale: 1.3;}
+}
+
+@keyframes dmg {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-3em);
+    opacity: 0.5;
+  }
+  
 }
 
 /* pointer: coarse aka we're on a mobile device with touch input */

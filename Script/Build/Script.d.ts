@@ -108,6 +108,7 @@ declare namespace Script {
         PAUSED = 2,
         ROOM_CLEAR = 3
     }
+    let viewport: ƒ.Viewport;
     const provider: Provider;
     let gameState: GAMESTATE;
 }
@@ -647,6 +648,8 @@ declare namespace Script {
         private spawnEnemies;
         removeEnemy(_enemy: Enemy): void;
         getEnemy(_mode: ProjectileTargetMode, _maxDistance?: number): EnemyGraphInstance | undefined;
+        private dmgDisplayElements;
+        displayDamage(_amt: number, _pos: ƒ.Vector3): void;
         reset(): void;
     }
 }

@@ -11,7 +11,7 @@ namespace Script {
     ROOM_CLEAR,
   }
 
-  let viewport: ƒ.Viewport;
+  export let viewport: ƒ.Viewport;
   document.addEventListener("interactiveViewportStarted", <EventListener>start);
 
   export const provider = new Provider();

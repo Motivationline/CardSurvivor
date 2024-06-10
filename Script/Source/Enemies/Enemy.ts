@@ -230,7 +230,8 @@ namespace Script {
 
         public hit(_hit: Hit): number {
             this.health -= _hit.damage;
-            //TODO display damage numbers
+            //display damage numbers
+            this.enemyManager.displayDamage(_hit.damage, this.node.mtxWorld.translation);
             //TODO apply knockback
             if (_hit.stun) {
                 this.stun(_hit.stun);

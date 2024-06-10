@@ -178,6 +178,13 @@ namespace Script {
             for (let enemy of this.enemyScripts) {
                 enemy.update(character.node.mtxWorld.translation, time);
             }
+
+            // dmg numbers
+            for(let dmg of this.dmgDisplayElements){
+                let pos = viewport.pointWorldToClient(dmg[1]);
+                dmg[0].style.top = pos.y + "px";
+                dmg[0].style.left = pos.x + "px";
+            }
         }
         nextWaveOverride = false;
         private async roomManagement() {
@@ -447,7 +454,7 @@ namespace Script {
                     }
                 }
             } else if (_mode === ProjectileTargetMode.CLOSEST) {
-                for(let e of enemies){
+                for (let e of enemies) {
                     e.distanceToCharacter = ƒ.Vector3.DIFFERENCE(e.mtxWorld.translation, characterPos).magnitudeSquared;
                 }
                 enemies.sort((a, b) => a.distanceToCharacter - b.distanceToCharacter);
@@ -456,7 +463,24 @@ namespace Script {
             return undefined;
         }
 
-        public reset(){
+        private dmgDisplayElements: [HTMLElement, ƒ.Vector3][] = [];
+        public displayDamage(_amt: number, _pos: ƒ.Vector3) {
+            if(!isFinite(_amt)) return;
+            let dmgText = _amt.toPrecision(1);
+            let textElement = document.createElement("span");
+            textElement.classList.add(("dmg-number"));
+            textElement.innerText = dmgText;
+
+            document.documentElement.appendChild(textElement);
+            this.dmgDisplayElements.push([textElement, _pos.clone]);
+
+            setTimeout(() => {
+                document.documentElement.removeChild(textElement);
+                this.dmgDisplayElements.shift();
+            }, 1000);
+        }
+
+        public reset() {
             this.endRoom();
             this.currentWave = -1;
             this.currentRoom = -1;

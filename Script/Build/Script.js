@@ -509,7 +509,6 @@ var Script;
         GAMESTATE[GAMESTATE["PAUSED"] = 2] = "PAUSED";
         GAMESTATE[GAMESTATE["ROOM_CLEAR"] = 3] = "ROOM_CLEAR";
     })(GAMESTATE = Script.GAMESTATE || (Script.GAMESTATE = {}));
-    let viewport;
     document.addEventListener("interactiveViewportStarted", start);
     Script.provider = new Script.Provider();
     document.addEventListener("DOMContentLoaded", preStart);
@@ -549,7 +548,7 @@ var Script;
         menuManager.setup();
     }
     function start(_event) {
-        viewport = _event.detail;
+        Script.viewport = _event.detail;
         // viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
         // ƒ.Time.game.setScale(0.1);
         Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
@@ -583,7 +582,7 @@ var Script;
     }
     function update(_event) {
         Script.ƒ.Physics.simulate(); // if physics is included and used
-        viewport.draw();
+        Script.viewport.draw();
         // ƒ.AudioManager.default.update();
     }
 })(Script || (Script = {}));
@@ -4801,7 +4800,8 @@ var Script;
         };
         hit(_hit) {
             this.health -= _hit.damage;
-            //TODO display damage numbers
+            //display damage numbers
+            this.enemyManager.displayDamage(_hit.damage, this.node.mtxWorld.translation);
             //TODO apply knockback
             if (_hit.stun) {
                 this.stun(_hit.stun);
@@ -5236,6 +5236,12 @@ var Script;
             for (let enemy of this.enemyScripts) {
                 enemy.update(character.node.mtxWorld.translation, time);
             }
+            // dmg numbers
+            for (let dmg of this.dmgDisplayElements) {
+                let pos = Script.viewport.pointWorldToClient(dmg[1]);
+                dmg[0].style.top = pos.y + "px";
+                dmg[0].style.left = pos.x + "px";
+            }
         };
         nextWaveOverride = false;
         async roomManagement() {
@@ -5490,6 +5496,21 @@ var Script;
                 return (enemies[0]);
             }
             return undefined;
+        }
+        dmgDisplayElements = [];
+        displayDamage(_amt, _pos) {
+            if (!isFinite(_amt))
+                return;
+            let dmgText = _amt.toPrecision(1);
+            let textElement = document.createElement("span");
+            textElement.classList.add(("dmg-number"));
+            textElement.innerText = dmgText;
+            document.documentElement.appendChild(textElement);
+            this.dmgDisplayElements.push([textElement, _pos.clone]);
+            setTimeout(() => {
+                document.documentElement.removeChild(textElement);
+                this.dmgDisplayElements.shift();
+            }, 1000);
         }
         reset() {
             this.endRoom();
