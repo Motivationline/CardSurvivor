@@ -105,16 +105,21 @@ button:disabled {
 #healthbar {
   position: absolute;
   /* top: calc(50% - 6vh); */
-  bottom: 1px;
+  top: 1px;
   left: calc(50% - 5vw);
   width: 10vw;
   appearance: none;
   -webkit-appearance: none;
+  --bg-color: #202533;
+  background-color: var(--bg-color);
+  border: 2px solid var(--bg-color);
+  border-radius: 10px;
 }
 
 progress[value]::-webkit-progress-value,
 progress[value]::-moz-progress-bar {
-  background-color: green;
+  background-color: #c12417;
+  border-radius: 10px;
 }
 
 #game-overlay-pause {
