@@ -19,6 +19,8 @@ namespace Script {
         private rigidbody: ƒ.ComponentRigidbody;
         private touchingPlayer: boolean;
 
+        private stunned: number = 0;
+
         private static defaults: EnemyOptions = {
             attacks: [],
             damage: 1,
@@ -69,6 +71,7 @@ namespace Script {
             this.updateDesiredDistance(this.desiredDistance);
             this.moveSprite = this.getSprite(_options.moveSprite);
             this.setCentralAnimator(this.moveSprite);
+            this.stunned = 0;
         }
 
         private updateDesiredDistance(_distance: [number, number]) {
@@ -77,6 +80,13 @@ namespace Script {
         }
 
         public update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number) {
+            if (this.stunned > 0) {
+                this.stunned = Math.max(0, this.stunned - _frameTimeInSeconds);
+                if (this.stunned <= 0) {
+                    this.setCentralAnimator(this.moveSprite);
+                }
+                return;
+            }
 
             // check distance to player
             let diff = ƒ.Vector3.DIFFERENCE(_charPosition, this.node.mtxLocal.translation);
@@ -93,6 +103,23 @@ namespace Script {
 
             // if there is a currently active attack, execute it
             this.executeAttack(mgtSqrd, _frameTimeInSeconds);
+
+        }
+
+        public stun(_time: number): void {
+            if (this.stunned <= 0) {
+                this.removeAnimationEventListeners();
+                let am: AnimationManager = provider.get(AnimationManager);
+                if (this.uniqueAnimationId) {
+                    am.removeUniqueAnimationMtx(this.uniqueAnimationId);
+                    this.uniqueAnimationId = undefined;
+                }
+
+                let sa = new SpriteAnimator(this.moveSprite, 0);
+                this.material.mtxPivot = sa.matrix;
+            }
+            this.stunned += _time;
+            this.currentlyActiveAttack = undefined;
         }
 
         private move(_diff: ƒ.Vector3, _mgtSqrd: number, _frameTimeInSeconds: number) {
@@ -205,6 +232,9 @@ namespace Script {
             this.health -= _hit.damage;
             //TODO display damage numbers
             //TODO apply knockback
+            if (_hit.stun) {
+                this.stun(_hit.stun);
+            }
             if (this.health > 0) return _hit.damage;
 
             this.enemyManager.removeEnemy(this);

@@ -7,6 +7,7 @@ namespace Script {
         size: number;
         damage: number;
         sprite: AnimationSprite | [string, string];
+        stunDuration: number;
         variant: "aoe" | "explosion";
         target: ProjectileTarget;
         private rigidbody: ƒ.ComponentRigidbody;
@@ -18,6 +19,7 @@ namespace Script {
             duration: 1,
             variant: "explosion",
             target: ProjectileTarget.ENEMY,
+            stunDuration: 0,
         }
 
         setup(_options: Partial<AreaOfEffect>, _modifier: PassiveCardEffectObject) {
@@ -26,7 +28,8 @@ namespace Script {
             this.size = cm.modifyValue(_options.size, PassiveCardEffect.PROJECTILE_SIZE, _modifier);
             this.damage = cm.modifyValue(_options.damage, PassiveCardEffect.DAMAGE, _modifier);
             this.variant = _options.variant;
-            this.duration = cm.modifyValue(_options.duration, PassiveCardEffect.EFFECT_DURATION, _modifier);
+            this.stunDuration = cm.modifyValue(_options.stunDuration, PassiveCardEffect.EFFECT_DURATION, _modifier);
+            this.duration = this.variant === "explosion" ? _options.duration : cm.modifyValue(_options.duration, PassiveCardEffect.EFFECT_DURATION, _modifier);
             this.targetMode = _options.targetMode;
             this.target = _options.target;
 
@@ -48,10 +51,10 @@ namespace Script {
             if (this.variant !== "explosion") return;
             for (let collision of this.rigidbody.collisions) {
                 if (this.target === ProjectileTarget.ENEMY && collision.node.name === "enemy") {
-                    collision.node.getComponent(Enemy).hit({damage: this.damage});
+                    collision.node.getComponent(Enemy).hit({ damage: this.damage, stun: this.stunDuration });
                 } else if (this.target === ProjectileTarget.PLAYER && collision.node.name === "character") {
                     let char = provider.get(CharacterManager).character;
-                    char.hit({damage: this.damage});
+                    char.hit({ damage: this.damage });
                 }
 
             }

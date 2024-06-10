@@ -432,7 +432,7 @@ namespace Script {
             _enemy.node.getParent()?.removeChild(_enemy.node);
         }
 
-        public getEnemy(_mode: ProjectileTargetMode, _maxDistance: number = 20): EnemyGraphInstance {
+        public getEnemy(_mode: ProjectileTargetMode, _maxDistance: number = 20): EnemyGraphInstance | undefined {
             if (!this.enemies || this.enemies.length === 0) return undefined;
             _maxDistance *= _maxDistance;
             let characterPos = provider.get(CharacterManager).character.node.mtxWorld.translation;
@@ -446,8 +446,22 @@ namespace Script {
                         return enemy;
                     }
                 }
+            } else if (_mode === ProjectileTargetMode.CLOSEST) {
+                for(let e of enemies){
+                    e.distanceToCharacter = ƒ.Vector3.DIFFERENCE(e.mtxWorld.translation, characterPos).magnitudeSquared;
+                }
+                enemies.sort((a, b) => a.distanceToCharacter - b.distanceToCharacter);
+                return (enemies[0]);
             }
             return undefined;
+        }
+
+        public reset(){
+            this.endRoom();
+            this.currentWave = -1;
+            this.currentRoom = -1;
+            this.currentRoomEnd = 0;
+            this.currentWaveEnd = 0;
         }
     }
 }

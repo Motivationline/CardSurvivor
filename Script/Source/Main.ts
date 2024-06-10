@@ -59,6 +59,7 @@ namespace Script {
   function start(_event: CustomEvent): void {
     viewport = _event.detail;
     // viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
+    // ƒ.Time.game.setScale(0.1);
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a

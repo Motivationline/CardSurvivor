@@ -20,6 +20,6 @@ namespace Script {
 
     export class ProjectileGraphInstance extends InitializableGraphInstance {}
     export class HitZoneGraphInstance extends InitializableGraphInstance {}
-    export class EnemyGraphInstance extends InitializableGraphInstance {}
+    export class EnemyGraphInstance extends InitializableGraphInstance {distanceToCharacter: number;}
     export class AOEGraphInstance extends InitializableGraphInstance {}
 }

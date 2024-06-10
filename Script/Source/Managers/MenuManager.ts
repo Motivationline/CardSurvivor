@@ -39,6 +39,7 @@ namespace Script {
             document.getElementById("end-quit").addEventListener("click", () => {
                 this.openMenu(MenuType.MAIN);
                 //TODO handle game abort.
+                provider.get(EnemyManager).reset();
             });
         }
 
