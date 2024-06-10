@@ -36,9 +36,9 @@ namespace Script {
             }
         },
         "hammerPlayer": {
-            damage: 1,
-            speed: 10,
-            size: 2,
+            damage: 8,
+            speed: 7,
+            size: 0.6,
             sprite: ["projectile", "hammer"],
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.NONE,

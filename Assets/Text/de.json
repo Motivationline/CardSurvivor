@@ -1,0 +1,666 @@
+{
+  "card": {
+    "Hammer": {
+      "name": "Hammer",
+      "description": "Wirf durchdringende Hämmer auf nahe Gegner.",
+      "levels": {
+        "1": "Wirft alle 3 Sekunden 1 Hammer, der 8 Schaden verursacht. Durchdringung 2.",
+        "2": "Wirft alle 2 Sekunden 1 Hammer, der 12 Schaden verursacht. Durchdringung 2.",
+        "3": "Wirft alle 2 Sekunden 2 Hämmer, die 14 Schaden verursachen. Durchdringung 2.",
+        "4": "Wirft alle 2 Sekunden 2 Hämmer, die 15 Schaden verursachen. Durchdringung 3.",
+        "5": "Wirft alle 1,5 Sekunden 2 Hämmer, die 15 Schaden verursachen. Durchdringung 4."
+      }
+    },
+    "Anvil": {
+      "name": "Amboss",
+      "description": "Lass Ambosse auf zufällige Gegner fallen.",
+      "levels": {
+        "1": "Lässt alle 3 Sekunden 1 Amboss fallen, der 10 Schaden in einem Bereich verursacht.",
+        "2": "Lässt alle 3 Sekunden 1 Amboss fallen, der 14 Schaden in einem Bereich verursacht.",
+        "3": "Lässt alle 3 Sekunden 2 Ambosse fallen, die 14 Schaden in einem Bereich verursachen.",
+        "4": "Lässt alle 3 Sekunden 2 Ambosse fallen, die 20 Schaden in einem Bereich verursachen.",
+        "5": "Lässt alle 2 Sekunden 3 Ambosse fallen, die 20 Schaden in einem Bereich verursachen."
+      }
+    },
+    "Pen": {
+      "name": "Stift",
+      "description": "Wirf viele aber schwache Stifte auf nahe Gegner.",
+      "levels": {
+        "1": "Wirft alle 0,5 Sekunden 1 Stift, der 2 Schaden verursacht.",
+        "2": "Wirft alle 0,5 Sekunden 1 Stift, der 4 Schaden verursacht.",
+        "3": "Wirft alle 0,5 Sekunden 2 Stifte, die 4 Schaden verursachen.",
+        "4": "Wirft alle 0,5 Sekunden 2 Stifte, die 6 Schaden verursachen.",
+        "5": "Wirft alle 0,4 Sekunden 3 Stifte, die 6 Schaden verursachen."
+      }
+    },
+    "Lightbulb": {
+      "name": "Glühbirne",
+      "description": "Betäube Gegner in einem Bereich um dich herum.",
+      "levels": {
+        "1": "Leuchtet alle 5 Sekunden um dich herum, verursacht 5 Schaden und betäubt für 1 Sekunde.",
+        "2": "Leuchtet alle 5 Sekunden um dich herum, verursacht 6 Schaden und betäubt für 1 Sekunde.",
+        "3": "Leuchtet alle 5 Sekunden um dich herum, verursacht 6 Schaden und betäubt für 1,5 Sekunden.",
+        "4": "Leuchtet alle 4 Sekunden um dich herum, verursacht 6 Schaden und betäubt für 1,5 Sekunden.",
+        "5": "Leuchtet alle 4 Sekunden um dich herum, verursacht 8 Schaden und betäubt für 2 Sekunden."
+      }
+    },
+    "Smoke Mask": {
+      "name": "Gasmaske",
+      "description": "Füge kontinuierlichen Schaden in einem Bereich um dich herum zu.",
+      "levels": {
+        "1": "Hinterlässt alle 2 Sekunden Rauch um dich herum und verursacht 2 Schaden.",
+        "2": "Hinterlässt alle 2 Sekunden Rauch um dich herum und verursacht 3 Schaden.",
+        "3": "Hinterlässt alle 1,5 Sekunden Rauch um dich herum und verursacht 3 Schaden.",
+        "4": "Hinterlässt alle 1 Sekunde Rauch um dich herum und verursacht 4 Schaden.",
+        "5": "Hinterlässt alle 1 Sekunde Rauch um dich herum und verursacht 5 Schaden. Vergrößert den Bereich um 50%."
+      }
+    },
+    "Discus": {
+      "name": "Diskus",
+      "description": "Wirf Diskusse, die zwischen Gegnern hin und her springen.",
+      "levels": {
+        "1": "Wirft alle 3 Sekunden 1 Diskus, der 5 Schaden verursacht. Er springt 2 Mal.",
+        "2": "Wirft alle 3 Sekunden 1 Diskus, der 8 Schaden verursacht. Er springt 2 Mal.",
+        "3": "Wirft alle 2 Sekunden 1 Diskus, der 8 Schaden verursacht. Er springt 2 Mal.",
+        "4": "Wirft alle 2 Sekunden 1 Diskus, der 10 Schaden verursacht. Er springt 3 Mal.",
+        "5": "Wirft alle 2 Sekunden 2 Diskusse, die 10 Schaden verursachen. Sie springen 4 Mal."
+      }
+    },
+    "Code Civil": {
+      "name": "Gesetzbuch",
+      "description": "Wirf Bücher, die mehr Schaden verursachen, je weiter sie fliegen.",
+      "levels": {
+        "1": "Wirft alle 3 Sekunden 1 Buch, das je nach Entfernung 3-30 Schaden verursacht.",
+        "2": "Wirft alle 3 Sekunden 1 Buch, das je nach Entfernung 4-40 Schaden verursacht.",
+        "3": "Wirft alle 2,5 Sekunden 1 Buch, das je nach Entfernung 5-50 Schaden verursacht.",
+        "4": "Wirft alle 2 Sekunden 1 Buch, das je nach Entfernung 6-60 Schaden verursacht.",
+        "5": "Wirft alle 2 Sekunden 2 Bücher, die je nach Entfernung 8-80 Schaden verursachen."
+      }
+    },
+    "Divider": {
+      "name": "Zirkel",
+      "description": "Wirf durchdringende Zirkel, die zu dir zurückkehren.",
+      "levels": {
+        "1": "Wirft alle 2 Sekunden 1 Zirkel, der 5 Schaden verursacht. Durchdringung 3.",
+        "2": "Wirft alle 2 Sekunden 1 Zirkel, der 7 Schaden verursacht. Durchdringung 3.",
+        "3": "Wirft alle 2 Sekunden 2 Zirkel, die 7 Schaden verursachen. Durchdringung 3.",
+        "4": "Wirft alle 2 Sekunden 2 Zirkel, die 8 Schaden verursachen. Durchdringung 4.",
+        "5": "Wirft alle 2 Sekunden 2 Zirkel, die 10 Schaden verursachen. Durchdringung 6."
+      }
+    },
+    "Needles": {
+      "name": "Nadeln",
+      "description": "Hinterlasse eine Spur von Nadeln.",
+      "levels": {
+        "1": "Hinterlässt alle 5 Einheiten einen Bereich aus Nadeln, der 5 Schaden verursacht.",
+        "2": "Hinterlässt alle 4 Einheiten einen Bereich aus Nadeln, der 6 Schaden verursacht.",
+        "3": "Hinterlässt alle 4 Einheiten einen Bereich aus Nadeln, der 8 Schaden verursacht.",
+        "4": "Hinterlässt alle 3 Einheiten einen Bereich aus Nadeln, der 8 Schaden verursacht.",
+        "5": "Hinterlässt alle 2 Einheiten einen Bereich aus Nadeln, der 10 Schaden verursacht."
+      }
+    },
+    "Chisel": {
+      "name": "Meißel",
+      "description": "Wirf Meißel auf nahe Gegner.",
+      "levels": {
+        "1": "Wirft alle 2 Sekunden 1 Meißel, der 15 Schaden verursacht.",
+        "2": "Wirft alle 2 Sekunden 1 Meißel, der 25 Schaden verursacht.",
+        "3": "Wirft alle 2 Sekunden 2 Meißel, die 25 Schaden verursachen.",
+        "4": "Wirft alle 2 Sekunden 2 Meißel, die 35 Schaden verursachen.",
+        "5": "Wirft alle 1,5 Sekunden 2 Meißel, die 40 Schaden verursachen."
+      }
+    },
+    "Helmet": {
+      "name": "Helm",
+      "description": "Nimm weniger Schaden von Projektilen.",
+      "levels": {
+        "1": "-10% Schaden durch Projektile.",
+        "2": "-20% Schaden durch Projektile.",
+        "3": "-30% Schaden durch Projektile.",
+        "4": "-40% Schaden durch Projektile.",
+        "5": "-60% Schaden durch Projektile."
+      }
+    },
+    "Safety Boots": {
+      "name": "Sicherheitsschuhe",
+      "description": "Widerstandsfähiger gegen Bodeneffekte.",
+      "levels": {
+        "1": "+10% Widerstand gegen Bodeneffekte.",
+        "2": "+20% Widerstand gegen Bodeneffekte.",
+        "3": "+30% Widerstand gegen Bodeneffekte.",
+        "4": "+40% Widerstand gegen Bodeneffekte.",
+        "5": "+60% Widerstand gegen Bodeneffekte."
+      }
+    },
+    "Microphone": {
+      "name": "Mikrofon",
+      "description": "Erhöht deine Projektilreichweite.",
+      "levels": {
+        "1": "+15% Projektilreichweite.",
+        "2": "+30% Projektilreichweite.",
+        "3": "+50% Projektilreichweite.",
+        "4": "+70% Projektilreichweite.",
+        "5": "+100% Projektilreichweite."
+      }
+    },
+    "Gavel": {
+      "name": "Richterhammer",
+      "description": "Erhöht deinen Schaden.",
+      "levels": {
+        "1": "+1 Schaden.",
+        "2": "+2 Schaden.",
+        "3": "+3 Schaden.",
+        "4": "+5 Schaden.",
+        "5": "+8 Schaden."
+      }
+    },
+    "First Aid Kit": {
+      "name": "Erste-Hilfe-Kasten",
+      "description": "Erhöht dein maximales Leben.",
+      "levels": {
+        "1": "+10 maximales Leben.",
+        "2": "+20 maximales Leben.",
+        "3": "+35 maximales Leben.",
+        "4": "+50 maximales Leben.",
+        "5": "+75 maximales Leben."
+      }
+    },
+    "Running Shoes": {
+      "name": "Laufschuhe",
+      "description": "Erhöht deine Bewegungsgeschwindigkeit.",
+      "levels": {
+        "1": "+0,5 Bewegungsgeschwindigkeit.",
+        "2": "+1 Bewegungsgeschwindigkeit.",
+        "3": "+2 Bewegungsgeschwindigkeit.",
+        "4": "+3 Bewegungsgeschwindigkeit.",
+        "5": "+4,5 Bewegungsgeschwindigkeit."
+      }
+    },
+    "Disposable Gloves": {
+      "name": "Einweghandschuhe",
+      "description": "Reduziert deinen eingehenden Schaden.",
+      "levels": {
+        "1": "-1 Schaden (Minimum 1).",
+        "2": "-2 Schaden (Minimum 1).",
+        "3": "-4 Schaden (Minimum 1).",
+        "4": "-6 Schaden (Minimum 1).",
+        "5": "-10 Schaden (Minimum 1)."
+      }
+    },
+    "Printer": {
+      "name": "Drucker",
+      "description": "Erhalte mehr Erfahrungspunkte.",
+      "levels": {
+        "1": "+5% erhöhter Erfahrungsgewinn.",
+        "2": "+10% erhöhter Erfahrungsgewinn.",
+        "3": "+25% erhöhter Erfahrungsgewinn.",
+        "4": "+40% erhöhter Erfahrungsgewinn.",
+        "5": "+60% erhöhter Erfahrungsgewinn."
+      }
+    },
+    "Solar Panel": {
+      "name": "Solarzellen",
+      "description": "Regeneriert passiv deine Leben.",
+      "levels": {
+        "1": "+0,5 Leben jede Sekunde.",
+        "2": "+1 Leben jede Sekunde.",
+        "3": "+2 Leben jede Sekunde.",
+        "4": "+4 Leben jede Sekunde.",
+        "5": "+7 Leben jede Sekunde."
+      }
+    },
+    "Drone": {
+      "name": "Drohne",
+      "description": "Erhöht dein Sichtfeld.",
+      "levels": {
+        "1": "+5% Sichtfeld.",
+        "2": "+10% Sichtfeld.",
+        "3": "+20% Sichtfeld.",
+        "4": "+35% Sichtfeld.",
+        "5": "+50% Sichtfeld."
+      }
+    },
+    "Pills": {
+      "name": "Pillen",
+      "description": "Erhöht die Wirkungsdauer deiner Effekte.",
+      "levels": {
+        "1": "+20% Effektdauer.",
+        "2": "+30% Effektdauer.",
+        "3": "+50% Effektdauer.",
+        "4": "+70% Effektdauer.",
+        "5": "+100% Effektdauer."
+      }
+    },
+    "Fire Hose": {
+      "name": "Feuerwehrschlauch",
+      "description": "Erhöht deinen Rückstoß.",
+      "levels": {
+        "1": "+10% Rückstoß.",
+        "2": "+15% Rückstoß.",
+        "3": "+25% Rückstoß.",
+        "4": "+40% Rückstoß.",
+        "5": "+60% Rückstoß."
+      }
+    },
+    "Syringe": {
+      "name": "Spritze",
+      "description": "Regeneriert drastisch passiv deine Leben.",
+      "levels": {
+        "1": "Heilt 1% deines maximalen Leben alle 2 Sekunden.",
+        "2": "Heilt 2% deines maximalen Leben alle 2 Sekunden.",
+        "3": "Heilt 3% deines maximalen Leben alle 2 Sekunden.",
+        "4": "Heilt 5% deines maximalen Leben alle 2 Sekunden.",
+        "5": "Heilt 5% deines maximalen Leben jede Sekunde."
+      }
+    },
+    "Sketchbook": {
+      "name": "Skizzenbuch",
+      "description": "Erhöht den Wirkungsradius deiner Effekte.",
+      "levels": {
+        "1": "+5% Effektradius.",
+        "2": "+10% Effektradius.",
+        "3": "+20% Effektradius.",
+        "4": "+30% Effektradius.",
+        "5": "+50% Effektradius."
+      }
+    },
+    "Plow": {
+      "name": "Pflug",
+      "description": "Verlangsamt Gegner.",
+      "levels": {
+        "1": "-2% Gegnergeschwindigkeit.",
+        "2": "-5% Gegnergeschwindigkeit.",
+        "3": "-10% Gegnergeschwindigkeit.",
+        "4": "-15% Gegnergeschwindigkeit.",
+        "5": "-25% Gegnergeschwindigkeit."
+      }
+    },
+    "Jump Rope": {
+      "name": "Springseil",
+      "description": "Erhöht deine Ausweichchance.",
+      "levels": {
+        "1": "+5% Ausweichchance.",
+        "2": "+10% Ausweichchance.",
+        "3": "+20% Ausweichchance.",
+        "4": "+30% Ausweichchance.",
+        "5": "+50% Ausweichchance."
+      }
+    },
+    "Tape Measure": {
+      "name": "Maßband",
+      "description": "Verlangsamt gegnerische Projektile.",
+      "levels": {
+        "1": "-5% Gegnerprojektilgeschwindigkeit.",
+        "2": "-10% Gegnerprojektilgeschwindigkeit.",
+        "3": "-20% Gegnerprojektilgeschwindigkeit.",
+        "4": "-30% Gegnerprojektilgeschwindigkeit.",
+        "5": "-50% Gegnerprojektilgeschwindigkeit."
+      }
+    },
+    "Legal Wig": {
+      "name": "Richter-Perücke",
+      "description": "Weniger, aber stärkere Gegner.",
+      "levels": {
+        "1": "-5% Gegner, +5% stärkere Gegner.",
+        "2": "-10% Gegner, +10% stärkere Gegner.",
+        "3": "-20% Gegner, +20% stärkere Gegner.",
+        "4": "-30% Gegner, +30% stärkere Gegner.",
+        "5": "-50% Gegner, +50% stärkere Gegner."
+      }
+    },
+    "Toolbelt": {
+      "name": "Werkzeuggürtel",
+      "description": "Jede ausgerüstete Waffe erhöht deinen Schaden.",
+      "levels": {
+        "1": "+1% Schaden für jede ausgerüstete Waffe.",
+        "2": "+4% Schaden für jede ausgerüstete Waffe.",
+        "3": "+6% Schaden für jede ausgerüstete Waffe.",
+        "4": "+10% Schaden für jede ausgerüstete Waffe.",
+        "5": "+20% Schaden für jede ausgerüstete Waffe."
+      }
+    },
+    "Razor": {
+      "name": "Rasiermesser",
+      "description": "Schaden zu erleiden erhöht deine Angriffsgeschwindigkeit für diesen Raum (permanent auf Stufe 5).",
+      "levels": {
+        "1": "+2% Angriffsgeschwindigkeit jedes Mal, wenn du Schaden erleidest (wird jeden Raum zurückgesetzt).",
+        "2": "+4% Angriffsgeschwindigkeit jedes Mal, wenn du Schaden erleidest (wird jeden Raum zurückgesetzt).",
+        "3": "+8% Angriffsgeschwindigkeit jedes Mal, wenn du Schaden erleidest (wird jeden Raum zurückgesetzt).",
+        "4": "+15% Angriffsgeschwindigkeit jedes Mal, wenn du Schaden erleidest (wird jeden Raum zurückgesetzt).",
+        "5": "+1% permanente Angriffsgeschwindigkeit jedes Mal, wenn du Schaden erleidest."
+      }
+    },
+    "Binder": {
+      "name": "Ordner",
+      "description": "Erhöht den Schaden gegen Bosse und Eliten.",
+      "levels": {
+        "1": "+5% Schaden gegen Bosse und Eliten.",
+        "2": "+10% Schaden gegen Bosse und Eliten.",
+        "3": "+20% Schaden gegen Bosse und Eliten.",
+        "4": "+30% Schaden gegen Bosse und Eliten.",
+        "5": "+75% Schaden gegen Bosse und Eliten."
+      }
+    },
+    "Flashlight": {
+      "name": "Taschenlampe",
+      "description": "Erhöht drastisch deine maximalen Leben, aber du startest jeden Raum verletzt.",
+      "levels": {
+        "1": "+20 maximale Leben, aber du startest jeden Raum mit 90% Leben.",
+        "2": "+40 maximale Leben, aber du startest jeden Raum mit 75% Leben.",
+        "3": "+75 maximale Leben, aber du startest jeden Raum mit 50% Leben.",
+        "4": "+100 maximale Leben, aber du startest jeden Raum mit 25% Leben.",
+        "5": "+150 maximale Leben, aber du startest jeden Raum mit 25% Leben."
+      }
+    },
+    "Hard Drive": {
+      "name": "Festplatte",
+      "description": "Mehr Gegner erscheinen.",
+      "levels": {
+        "1": "+2% mehr Gegner.",
+        "2": "+5% mehr Gegner.",
+        "3": "+8% mehr Gegner.",
+        "4": "+15% mehr Gegner.",
+        "5": "+25% mehr Gegner."
+      }
+    },
+    "Stethoscope": {
+      "name": "Stethoskop",
+      "description": "Heilung erhöht deinen Schaden für diesen Raum (permanent auf Stufe 5).",
+      "levels": {
+        "1": "+1% Schaden jedes Mal, wenn du heilst (wird jeden Raum zurückgesetzt).",
+        "2": "+2% Schaden jedes Mal, wenn du heilst (wird jeden Raum zurückgesetzt).",
+        "3": "+3% Schaden jedes Mal, wenn du heilst (wird jeden Raum zurückgesetzt).",
+        "4": "+5% Schaden jedes Mal, wenn du heilst (wird jeden Raum zurückgesetzt).",
+        "5": "+1% permanenter Schaden jedes Mal, wenn du heilst."
+      }
+    },
+    "Apple": {
+      "name": "Apfel",
+      "description": "Regeneriert deine Leben jedes Mal, wenn ein Gegner erscheint.",
+      "levels": {
+        "1": "+0,5 Leben für jeden Gegner, der erscheint.",
+        "2": "+1 Leben für jeden Gegner, der erscheint.",
+        "3": "+2 Leben für jeden Gegner, der erscheint.",
+        "4": "+3 Leben für jeden Gegner, der erscheint.",
+        "5": "+5 Leben für jeden Gegner, der erscheint."
+      }
+    },
+    "Magnifying Glass": {
+      "name": "Lupe",
+      "description": "Erhöht deine Kritische-Treffer-Chance.",
+      "levels": {
+        "1": "+5% Kritische-Treffer-Chance.",
+        "2": "+10% Kritische-Treffer-Chance.",
+        "3": "+20% Kritische-Treffer-Chance.",
+        "4": "+35% Kritische-Treffer-Chance.",
+        "5": "+60% Kritische-Treffer-Chance."
+      }
+    },
+    "Tattoo Ink": {
+      "name": "Tätowiertinte",
+      "description": "Erhöht deine Projektilgeschwindigkeit.",
+      "levels": {
+        "1": "+15% Projektilgeschwindigkeit.",
+        "2": "+30% Projektilgeschwindigkeit.",
+        "3": "+50% Projektilgeschwindigkeit.",
+        "4": "+70% Projektilgeschwindigkeit.",
+        "5": "+100% Projektilgeschwindigkeit."
+      }
+    },
+    "Calculator": {
+      "name": "Taschenrechner",
+      "description": "Erhöht drastisch deinen Schaden.",
+      "levels": {
+        "1": "+5% Schaden.",
+        "2": "+10% Schaden.",
+        "3": "+20% Schaden.",
+        "4": "+35% Schaden.",
+        "5": "+60% Schaden."
+      }
+    },
+    "Bandages": {
+      "name": "Verbände",
+      "description": "Erhöht drastisch dein maximales Leben.",
+      "levels": {
+        "1": "+5% maximales Leben.",
+        "2": "+10% maximales Leben.",
+        "3": "+20% maximales Leben.",
+        "4": "+30% maximales Leben.",
+        "5": "+50% maximales Leben."
+      }
+    },
+    "Face Shield": {
+      "name": "Gesichtsschutz",
+      "description": "Reduziert drastisch deinen eingehenden Schaden.",
+      "levels": {
+        "1": "-5% Schaden.",
+        "2": "-10% Schaden.",
+        "3": "-20% Schaden.",
+        "4": "-30% Schaden.",
+        "5": "-50% Schaden."
+      }
+    },
+    "3D Printer": {
+      "name": "3D-Drucker",
+      "description": "Chance, für jeden Raum einen anderen zufälligen Karteneffekt zu kopieren.",
+      "levels": {
+        "1": "10% Chance, einen anderen zufälligen Karteneffekt zu kopieren (wird nach jedem Raum zurückgesetzt).",
+        "2": "25% Chance, einen anderen zufälligen Karteneffekt zu kopieren (wird nach jedem Raum zurückgesetzt).",
+        "3": "40% Chance, einen anderen zufälligen Karteneffekt zu kopieren (wird nach jedem Raum zurückgesetzt).",
+        "4": "60% Chance, einen anderen zufälligen Karteneffekt zu kopieren (wird nach jedem Raum zurückgesetzt).",
+        "5": "100% Chance, einen anderen zufälligen Karteneffekt zu kopieren (wird nach jedem Raum zurückgesetzt)."
+      }
+    },
+    "Ear Protection": {
+      "name": "Gehörschutz",
+      "description": "Erhöht die Dauer der Unverwundbarkeit nach erlittenem Schaden.",
+      "levels": {
+        "1": "+25% Dauer der Unverwundbarkeit nach erlittenem Schaden.",
+        "2": "+50% Dauer der Unverwundbarkeit nach erlittenem Schaden.",
+        "3": "+75% Dauer der Unverwundbarkeit nach erlittenem Schaden.",
+        "4": "+100% Dauer der Unverwundbarkeit nach erlittenem Schaden.",
+        "5": "+150% Dauer der Unverwundbarkeit nach erlittenem Schaden."
+      }
+    },
+    "Athletic Tape": {
+      "name": "Sporttape",
+      "description": "Erhöht drastisch deine Heilungseffekte.",
+      "levels": {
+        "1": "+5% Heilungseffekte.",
+        "2": "+10% Heilungseffekte.",
+        "3": "+15% Heilungseffekte.",
+        "4": "+30% Heilungseffekte.",
+        "5": "+50% Heilungseffekte."
+      }
+    },
+    "Newspaper": {
+      "name": "Zeitung",
+      "description": "Erhöht drastisch deine Bewegungsgeschwindigkeit, verringert jedoch deinen Schaden im Stillstand.",
+      "levels": {
+        "1": "+5% Bewegungsgeschwindigkeit, -5% Schaden im Stillstand.",
+        "2": "+10% Bewegungsgeschwindigkeit, -10% Schaden im Stillstand.",
+        "3": "+15% Bewegungsgeschwindigkeit, -15% Schaden im Stillstand.",
+        "4": "+25% Bewegungsgeschwindigkeit, -25% Schaden im Stillstand.",
+        "5": "+50% Bewegungsgeschwindigkeit, -25% Schaden im Stillstand."
+      }
+    },
+    "Screwdriver": {
+      "name": "Schraubendreher",
+      "description": "Das Töten eines Gegners erhöht deine Angriffsgeschwindigkeit für diesen Raum (permanent auf Stufe 5).",
+      "levels": {
+        "1": "+2% Angriffsgeschwindigkeit jedes Mal, wenn du einen Gegner tötest (wird nach jedem Raum zurückgesetzt).",
+        "2": "+4% Angriffsgeschwindigkeit jedes Mal, wenn du einen Gegner tötest (wird nach jedem Raum zurückgesetzt).",
+        "3": "+8% Angriffsgeschwindigkeit jedes Mal, wenn du einen Gegner tötest (wird nach jedem Raum zurückgesetzt).",
+        "4": "+15% Angriffsgeschwindigkeit jedes Mal, wenn du einen Gegner tötest (wird nach jedem Raum zurückgesetzt).",
+        "5": "+1% permanente Angriffsgeschwindigkeit jedes Mal, wenn du einen Gegner tötest."
+      }
+    },
+    "Bucket": {
+      "name": "Eimer",
+      "description": "Negiert den ersten erlittenen Schaden pro Raum.",
+      "levels": {
+        "1": "Negiert den ersten Schaden pro Raum.",
+        "2": "Negiert die ersten 2 Schäden pro Raum.",
+        "3": "Negiert die ersten 3 Schäden pro Raum.",
+        "4": "Negiert die ersten 4 Schäden pro Raum.",
+        "5": "Negiert die nächsten 4 Schäden jedes neuen Raums (bleibt zwischen den Räumen bestehen)."
+      }
+    },
+    "Riot Shield": {
+      "name": "Schutzschild",
+      "description": "Chance, Projektile zurückzuschießen, wenn getroffen.",
+      "levels": {
+        "1": "10% Chance, Projektile zurückzuschießen.",
+        "2": "15% Chance, Projektile zurückzuschießen.",
+        "3": "25% Chance, Projektile zurückzuschießen.",
+        "4": "35% Chance, Projektile zurückzuschießen.",
+        "5": "50% Chance, Projektile zurückzuschießen."
+      }
+    },
+    "Piercing Gun": {
+      "name": "Piercingpistole",
+      "description": "Erhöht den Durchdringungseffekt von Projektilen.",
+      "levels": {
+        "1": "+1 Durchdringung.",
+        "2": "+2 Durchdringung.",
+        "3": "+3 Durchdringung.",
+        "4": "+4 Durchdringung.",
+        "5": "+6 Durchdringung."
+      }
+    },
+    "Stopwatch": {
+      "name": "Stoppuhr",
+      "description": "Betäubt zufällige Gegner, wenn du Schaden nimmst.",
+      "levels": {
+        "1": "Betäubt 1 zufälligen Gegner für 1 Sekunde jedes Mal, wenn du Schaden nimmst.",
+        "2": "Betäubt 2 zufällige Gegner für 1 Sekunde jedes Mal, wenn du Schaden nimmst.",
+        "3": "Betäubt 3 zufällige Gegner für 1,5 Sekunden jedes Mal, wenn du Schaden nimmst.",
+        "4": "Betäubt 4 zufällige Gegner für 1,5 Sekunden jedes Mal, wenn du Schaden nimmst.",
+        "5": "Betäubt 5 zufällige Gegner für 2 Sekunden jedes Mal, wenn du Schaden nimmst."
+      }
+    },
+    "Rake": {
+      "name": "Rechen",
+      "description": "Erhöht die Raumgröße.",
+      "levels": {
+        "1": "+10% Raumgröße.",
+        "2": "+15% Raumgröße.",
+        "3": "+25% Raumgröße.",
+        "4": "+35% Raumgröße.",
+        "5": "+50% Raumgröße."
+      }
+    },
+    "Jumper Cable": {
+      "name": "Überbrückungskabel",
+      "description": "Regeneriert Leben, wenn du Schaden verursachst.",
+      "levels": {
+        "1": "Heilt 1% des verursachten Schadens.",
+        "2": "Heilt 2% des verursachten Schadens.",
+        "3": "Heilt 5% des verursachten Schadens.",
+        "4": "Heilt 15% des verursachten Schadens.",
+        "5": "Heilt 30% des verursachten Schadens."
+      }
+    },
+    "Shredder": {
+      "name": "Schredder",
+      "description": "Füge und erhalte drastisch mehr Schaden.",
+      "levels": {
+        "1": "+10% mehr zugefügter und erhaltener Schaden.",
+        "2": "+25% mehr zugefügter und erhaltener Schaden.",
+        "3": "+40% mehr zugefügter und erhaltener Schaden.",
+        "4": "+60% mehr zugefügter und erhaltener Schaden.",
+        "5": "+100% mehr zugefügter und erhaltener Schaden."
+      }
+    },
+    "Whiteboard": {
+      "name": "Whiteboard",
+      "description": "Reduziert deine Werte, erhöht sie jedoch pro Level deiner ausgerüsteten Karten.",
+      "levels": {
+        "1": "-30% aller Werte, +1% aller Werte pro Level deiner ausgerüsteten Karten.",
+        "2": "-40% aller Werte, +1% aller Werte pro Level deiner ausgerüsteten Karten.",
+        "3": "-60% aller Werte, +2% aller Werte pro Level deiner ausgerüsteten Karten.",
+        "4": "-75% aller Werte, +2% aller Werte pro Level deiner ausgerüsteten Karten.",
+        "5": "-90% aller Werte, +3% aller Werte pro Level deiner ausgerüsteten Karten."
+      }
+    },
+    "Drawing Tablet": {
+      "name": "Zeichentablett",
+      "description": "Erhöht die Anzahl deiner Projektile.",
+      "levels": {
+        "1": "+1 Projektilanzahl.",
+        "2": "+2 Projektilanzahl.",
+        "3": "+3 Projektilanzahl.",
+        "4": "+4 Projektilanzahl.",
+        "5": "+6 Projektilanzahl."
+      }
+    },
+    "Press Vest": {
+      "name": "Presseweste",
+      "description": "Erhöht deinen Schadenswiderstand, je schneller du bist.",
+      "levels": {
+        "1": "+2% Schadenswiderstand pro aktueller Bewegungsgeschwindigkeit (maximal 60%).",
+        "2": "+3% Schadenswiderstand pro aktueller Bewegungsgeschwindigkeit (maximal 65%).",
+        "3": "+4% Schadenswiderstand pro aktueller Bewegungsgeschwindigkeit (maximal 70%).",
+        "4": "+6% Schadenswiderstand pro aktueller Bewegungsgeschwindigkeit (maximal 75%).",
+        "5": "+8% Schadenswiderstand pro aktueller Bewegungsgeschwindigkeit (maximal 90%)."
+      }
+    },
+    "Tong": {
+      "name": "Zange",
+      "description": "Erhöht drastisch deine Angriffsgeschwindigkeit im Stillstand.",
+      "levels": {
+        "1": "+25% Angriffsgeschwindigkeit im Stillstand.",
+        "2": "+40% Angriffsgeschwindigkeit im Stillstand.",
+        "3": "+60% Angriffsgeschwindigkeit im Stillstand.",
+        "4": "+80% Angriffsgeschwindigkeit im Stillstand.",
+        "5": "+100% Angriffsgeschwindigkeit im Stillstand."
+      }
+    },
+    "High-Vis Vest": {
+      "name": "Warnweste",
+      "description": "Chance, erlittenen Schaden an Gegner zurückzugeben.",
+      "levels": {
+        "1": "20% Chance, erlittenen Schaden an Gegner zurückzugeben.",
+        "2": "40% Chance, erlittenen Schaden an Gegner zurückzugeben.",
+        "3": "60% Chance, erlittenen Schaden an Gegner zurückzugeben.",
+        "4": "80% Chance, erlittenen Schaden an Gegner zurückzugeben.",
+        "5": "100% Chance, erlittenen Schaden an Gegner zurückzugeben."
+      }
+    },
+    "Apprenticeship": {
+      "name": "Lehre",
+      "description": "Erhöht drastisch alle deine Werte.",
+      "levels": {
+        "1": "+25% alle Werte."
+      }
+    },
+    "Diploma": {
+      "name": "Diplom",
+      "description": "Reduziert drastisch deine Werte, aber Boosterpacks werden zufällig fallen gelassen.",
+      "levels": {
+        "1": "-50% auf alle Werte, aber jeder beendete Raum hat eine 10% Chance, ein Boosterpack fallen zu lassen (+10% pro beendeten Raum)."
+      }
+    },
+    "Internship": {
+      "name": "Praktikum",
+      "description": "Zählt für jedes Jobset +1.",
+      "levels": {
+        "1": "Jeder Job zählt +1 für ihre Set."
+      }
+    },
+    "Certification": {
+      "name": "Zertifizierung",
+      "description": "Erhöht drastisch dein Glück.",
+      "levels": {
+        "1": "Würfel jedes Ergebnis zweimal und nimm die bessere Option."
+      }
+    },
+    "Training": {
+      "name": "Ausbildung",
+      "description": "Erhöht drastisch dein maximales Leben.",
+      "levels": {
+        "1": "+100% maximales Leben."
+      }
+    }
+  }
+}
