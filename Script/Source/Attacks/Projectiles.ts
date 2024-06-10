@@ -25,8 +25,8 @@ namespace Script {
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.RANDOM,
             methods: {
-                afterSetup: function() {
-                    if(this.targetPosition){
+                afterSetup: function () {
+                    if (this.targetPosition) {
                         let target: ƒ.Vector3 = this.targetPosition.clone;
                         this.node.mtxLocal.translation = target;
                         this.node.mtxLocal.translate(ƒ.Vector3.Y(10));
@@ -36,19 +36,19 @@ namespace Script {
             }
         },
         "hammerPlayer": {
-            damage: 8,
-            speed: 7,
-            size: 0.6,
+            damage: 1,
+            speed: 10,
+            size: 1,
             sprite: ["projectile", "hammer"],
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.NONE,
             methods: {
-                afterSetup: function() {
+                afterSetup: function () {
                     this.direction = new ƒ.Vector3(0.5 - Math.random() * 1, 1, 0);
                 },
-                preMove: function(_fts: number) {
+                preMove: function (_fts: number) {
                     this.direction.y = Math.max(-1, this.direction.y - (_fts * (10 / this.speed)));
-                } 
+                }
             }
         },
         "discusPlayer": {
@@ -59,11 +59,12 @@ namespace Script {
             targetMode: ProjectileTargetMode.CLOSEST
         },
         "penPlayer": {
-            damage: 1,
+            damage: 2,
             speed: 20,
             sprite: ["projectile", "pen"],
             target: ProjectileTarget.ENEMY,
-            targetMode: ProjectileTargetMode.CLOSEST
+            targetMode: ProjectileTargetMode.CLOSEST,
+            rotateInDirection: true,
         },
         "codecivilPlayer": {
             damage: 1,
@@ -87,8 +88,8 @@ namespace Script {
             targetMode: ProjectileTargetMode.CLOSEST
         }
     }
-    
-    
+
+
     export const areasOfEffect: AreasOfEffect = {
         "toastImpact": {
             variant: "explosion",
@@ -109,6 +110,20 @@ namespace Script {
             size: 1,
             sprite: ["aoe", "explosion"],
             duration: 1,
+            target: ProjectileTarget.ENEMY,
+            events: {
+                "explode": function (_event) {
+                    this.explode();
+                }
+            },
+        },
+        "lightbulbPlayer": {
+            variant: "explosion",
+            damage: 5,
+            size: 2,
+            duration: 16 / 24,
+            sprite: ["aoe", "lightbulb"],
+            stunDuration: 1,
             target: ProjectileTarget.ENEMY,
             events: {
                 "explode": function (_event) {

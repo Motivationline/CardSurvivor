@@ -1,10 +1,10 @@
 namespace Script {
     import ƒ = FudgeCore;
     export class Animateable extends ƒ.Component {
-        private material: ƒ.ComponentMaterial;
+        protected material: ƒ.ComponentMaterial;
         private currentlyActiveSprite: AnimationSprite;
         private currentlyActiveEventListener: (_event: CustomEvent) => void;
-        private uniqueAnimationId: number;
+        protected uniqueAnimationId: number;
 
         constructor() {
             super();

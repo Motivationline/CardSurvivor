@@ -93,6 +93,8 @@ namespace Script {
         artillery?: boolean,
         sprite: AnimationSprite | [string, string],
         methods?: ProjectileFunctions,
+        rotateInDirection?: boolean,
+        stunDuration?: number,
     }
 
     export interface ProjectileFunctions {
@@ -127,6 +129,8 @@ namespace Script {
         lockedToEntity: boolean,
         impact: ActiveEffect[],
         artillery: boolean,
+        rotateInDirection: boolean,
+        stunDuration: number,
     }
 
     export interface ProjectileTracking {
@@ -150,6 +154,7 @@ namespace Script {
         damageDelay?: number,
         events?: { [name: string]: (_event?: CustomEvent) => void; }
         targetMode?: ProjectileTargetMode,
+        stunDuration?: number,
     }
     //#endregion
 
@@ -162,6 +167,7 @@ namespace Script {
     export interface Hit {
         damage: number,
         knockbackDirection?: ƒ.Vector3,
+        stun?: number,
     }
     //#endregion
 

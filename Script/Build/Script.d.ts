@@ -1,10 +1,10 @@
 declare namespace Script {
     import ƒ = FudgeCore;
     class Animateable extends ƒ.Component {
-        private material;
+        protected material: ƒ.ComponentMaterial;
         private currentlyActiveSprite;
         private currentlyActiveEventListener;
-        private uniqueAnimationId;
+        protected uniqueAnimationId: number;
         constructor();
         protected deserialized: () => void;
         protected getSprite(_sp: AnimationSprite | [string, string]): AnimationSprite;
@@ -38,6 +38,7 @@ declare namespace Script {
     class HitZoneGraphInstance extends InitializableGraphInstance {
     }
     class EnemyGraphInstance extends InitializableGraphInstance {
+        distanceToCharacter: number;
     }
     class AOEGraphInstance extends InitializableGraphInstance {
     }
@@ -107,6 +108,7 @@ declare namespace Script {
         PAUSED = 2,
         ROOM_CLEAR = 3
     }
+    let viewport: ƒ.Viewport;
     const provider: Provider;
     let gameState: GAMESTATE;
 }
@@ -214,6 +216,8 @@ declare namespace Script {
         artillery?: boolean;
         sprite: AnimationSprite | [string, string];
         methods?: ProjectileFunctions;
+        rotateInDirection?: boolean;
+        stunDuration?: number;
     }
     export interface ProjectileFunctions {
         afterSetup?: () => void;
@@ -247,6 +251,8 @@ declare namespace Script {
         lockedToEntity: boolean;
         impact: ActiveEffect[];
         artillery: boolean;
+        rotateInDirection: boolean;
+        stunDuration: number;
     }
     export interface ProjectileTracking {
         strength?: number;
@@ -270,6 +276,7 @@ declare namespace Script {
             [name: string]: (_event?: CustomEvent) => void;
         };
         targetMode?: ProjectileTargetMode;
+        stunDuration?: number;
     }
     export interface Hittable {
         health: number;
@@ -278,6 +285,7 @@ declare namespace Script {
     export interface Hit {
         damage: number;
         knockbackDirection?: ƒ.Vector3;
+        stun?: number;
     }
     export interface Pools {
         [key: string]: string[][];
@@ -318,6 +326,7 @@ declare namespace Script {
         size: number;
         damage: number;
         sprite: AnimationSprite | [string, string];
+        stunDuration: number;
         variant: "aoe" | "explosion";
         target: ProjectileTarget;
         private rigidbody;
@@ -341,10 +350,12 @@ declare namespace Script {
         target: ProjectileTarget;
         diminishing: boolean;
         artillery: boolean;
+        rotateInDirection: boolean;
         impact: ActiveEffect[];
         targetMode: ProjectileTargetMode;
         lockedToEntity: boolean;
         sprite: AnimationSprite;
+        stunDuration: number;
         private hazardZone;
         private prevDistance;
         private functions;
@@ -354,6 +365,7 @@ declare namespace Script {
         setup(_options: Partial<Projectile>, _modifier: PassiveCardEffectObject): Promise<void>;
         update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
         protected move(_frameTimeInSeconds: number): void;
+        protected rotate(): void;
         protected onTriggerEnter: (_event: ƒ.EventPhysics) => void;
         protected onTriggerExit: (_event: ƒ.EventPhysics) => void;
         protected hit(_hittable: Hittable): void;
@@ -493,12 +505,14 @@ declare namespace Script {
         private currentlyActiveAttack;
         private rigidbody;
         private touchingPlayer;
+        private stunned;
         private static defaults;
         constructor();
         protected deserializedListener: () => void;
         setup(_options: Partial<EnemyOptions>): void;
         private updateDesiredDistance;
         update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
+        stun(_time: number): void;
         private move;
         private chooseAttack;
         private executeAttack;
@@ -633,7 +647,10 @@ declare namespace Script {
         private debugRemoveEnemies;
         private spawnEnemies;
         removeEnemy(_enemy: Enemy): void;
-        getEnemy(_mode: ProjectileTargetMode, _maxDistance?: number): EnemyGraphInstance;
+        getEnemy(_mode: ProjectileTargetMode, _maxDistance?: number): EnemyGraphInstance | undefined;
+        private dmgDisplayElements;
+        displayDamage(_amt: number, _pos: ƒ.Vector3): void;
+        reset(): void;
     }
 }
 declare namespace Script {

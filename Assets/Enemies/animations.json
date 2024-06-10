@@ -180,6 +180,22 @@
             "event": "explode"
           }
         ]
+      },
+      "lightbulb": {
+        "fps": 24,
+        "frames": 16,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 1280,
+        "totalWidth": 1280,
+        "wrapAfter": 5,
+        "materialString": "Material|2024-06-05T09:26:47.343Z|19986",
+        "events": [
+          {
+            "frame": 6,
+            "event": "explode"
+          }
+        ]
       }
     }
   },
@@ -244,16 +260,6 @@
         "totalWidth": 768,
         "wrapAfter": 3,
         "materialString": "Material|2024-06-05T09:26:24.226Z|03765"
-      },
-      "lightbulb": {
-        "fps": 24,
-        "frames": 16,
-        "height": 256,
-        "width": 256,
-        "totalHeight": 1280,
-        "totalWidth": 1280,
-        "wrapAfter": 5,
-        "materialString": "Material|2024-06-05T09:26:47.343Z|19986"
       },
       "pen": {
         "fps": 24,

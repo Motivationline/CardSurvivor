@@ -63,6 +63,11 @@ namespace Script {
                                 }, i * (effect.delay ?? 0));
                             }
                             break;
+                        case "aoe":
+                            let pos = this.#charm.character.node.mtxWorld.translation.clone;
+                            let aoe = areasOfEffect[effect.aoe];
+                            this.#pm.createAOE(aoe, pos, this.#cm.combineEffects(_cumulatedEffects, effect.modifiers));
+                            break;
                     }
                 }
             }

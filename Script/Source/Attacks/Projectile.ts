@@ -15,10 +15,12 @@ namespace Script {
         target: ProjectileTarget;
         diminishing: boolean;
         artillery: boolean;
+        rotateInDirection: boolean;
         impact: ActiveEffect[];
         targetMode: ProjectileTargetMode;
         lockedToEntity: boolean;
         sprite: AnimationSprite;
+        stunDuration: number;
         private hazardZone: HitZoneGraphInstance;
         private prevDistance: number;
         private functions: ProjectileFunctions = {};
@@ -31,6 +33,7 @@ namespace Script {
             size: 0.5,
             speed: 2,
             damage: 1,
+            stunDuration: 0,
             target: ProjectileTarget.ENEMY,
             tracking: undefined,
             diminishing: false,
@@ -38,6 +41,7 @@ namespace Script {
             lockedToEntity: false,
             impact: undefined,
             artillery: false,
+            rotateInDirection: false,
             sprite: ["projectile", "toast"],
             methods: {}
         }
@@ -71,6 +75,7 @@ namespace Script {
             this.piercing = cm.modifyValue(_options.piercing, PassiveCardEffect.PROJECTILE_PIERCING, _modifier);
             this.target = _options.target;
             this.artillery = _options.artillery;
+            this.rotateInDirection = _options.rotateInDirection;
             this.diminishing = _options.diminishing;
             this.impact = _options.impact;
             this.targetMode = _options.targetMode;
@@ -91,7 +96,8 @@ namespace Script {
                 if (this.target === ProjectileTarget.PLAYER) {
                     pos = await provider.get(CharacterManager).character.node.mtxWorld.translation.clone;
                 } else if (this.target === ProjectileTarget.ENEMY) {
-                    pos = provider.get(EnemyManager).getEnemy(this.targetMode).mtxWorld.translation.clone;
+                    pos = provider.get(EnemyManager).getEnemy(this.targetMode)?.mtxWorld.translation.clone;
+                    if (!this.targetPosition) return this.remove();
                 }
                 let hz = await provider.get(ProjectileManager).createHitZone(pos);
                 this.tracking = {
@@ -105,8 +111,11 @@ namespace Script {
             }
 
             if (this.targetMode !== ProjectileTargetMode.NONE) {
-                this.targetPosition = provider.get(EnemyManager).getEnemy(this.targetMode).mtxWorld.translation.clone;
-                this.direction = ƒ.Vector3.DIFFERENCE(this.targetPosition, this.node.mtxLocal.translation);
+                let targetPosition = provider.get(EnemyManager).getEnemy(this.targetMode)?.mtxWorld.translation.clone;
+                if (!targetPosition) {
+                    return this.remove()
+                };
+                this.direction = ƒ.Vector3.DIFFERENCE(targetPosition, this.node.mtxLocal.translation);
             }
 
             if (this.tracking) {
@@ -123,6 +132,7 @@ namespace Script {
             if (this.functions.preMove) this.functions.preMove.call(this, _frameTimeInSeconds);
             this.move(_frameTimeInSeconds);
             if (this.functions.postMove) this.functions.postMove.call(this, _frameTimeInSeconds);
+            this.rotate();
             if (this.functions.postUpdate) this.functions.postUpdate.call(this, _charPosition, _frameTimeInSeconds);
         }
 
@@ -184,6 +194,15 @@ namespace Script {
             }
         }
 
+        protected rotate() {
+            if (!this.rotateInDirection) return;
+            let refVector = ƒ.Vector3.X(1);
+            let angle = Math.acos(ƒ.Vector3.DOT(this.direction, refVector) / (refVector.magnitude * this.direction.magnitude));
+            angle = angle * 180 / Math.PI;
+            let pivot = this.node.getComponent(ƒ.ComponentMesh).mtxPivot;
+            pivot.rotation = new ƒ.Vector3(pivot.rotation.x, pivot.rotation.y, angle);
+        }
+
         protected onTriggerEnter = (_event: ƒ.EventPhysics) => {
             if (this.artillery || this.targetPosition) return;
             if (_event.cmpRigidbody.node.name === "enemy" && this.target === ProjectileTarget.ENEMY) {
@@ -197,7 +216,7 @@ namespace Script {
         }
 
         protected hit(_hittable: Hittable) {
-            _hittable.hit({ damage: this.damage });
+            _hittable.hit({ damage: this.damage, stun: this.stunDuration });
             this.piercing--;
             if (this.piercing < 0) this.remove();
         }
