@@ -139,6 +139,12 @@ progress[value]::-moz-progress-bar {
   height: 3em;
 }
 
+#xp-display {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
 #card-upgrade-popup {
   pointer-events: all;
   display: flex;
@@ -675,7 +681,7 @@ progress[value]::-moz-progress-bar {
 .dmg-number {
   position: absolute;
   color: white;
-  animation: dmg 1s linear;
+  animation: dmg 1.2s linear;
 }
 
 @keyframes wiggle {

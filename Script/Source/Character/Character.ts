@@ -110,6 +110,14 @@ namespace Script {
             return 0;
         }
 
+        public reset(){
+            this.health = this.maxHealth;
+            this.updateHealthVisually();
+            this.rigidbody.activate(false);
+            this.node.mtxLocal.translation = new ƒ.Vector3();
+            this.rigidbody.activate(true);
+        }
+
         private changeVisualDirection(_rot: number = 0) {
             for (let child of this.visualChildren) {
                 let mesh = child.getComponent(ƒ.ComponentMesh);

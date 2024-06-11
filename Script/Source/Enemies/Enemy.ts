@@ -240,7 +240,11 @@ namespace Script {
 
             this.enemyManager.removeEnemy(this);
             this.removeAnimationEventListeners();
-            //TODO: drop XP
+            if(isFinite(_hit.damage)){
+                this.enemyManager.addXP(this.dropXP);
+            } else {
+                this.enemyManager.addXP(this.dropXP / 2);
+            }
             return _hit.damage + this.health;
         }
     }

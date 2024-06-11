@@ -104,5 +104,16 @@ namespace Script {
             _parent.addChild(hz);
             return hz;
         }
+
+        public cleanup(){
+            ƒ.Recycler.storeMultiple(...this.projectiles);
+            for(let projectile of this.projectileScripts){
+                projectile.node.getParent().removeChild(projectile.node);
+                projectile.removeAttachments();
+            }
+            this.projectiles.length = 0;
+            this.projectileScripts.length = 0;
+            
+        }
     }
 }

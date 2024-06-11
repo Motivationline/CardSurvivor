@@ -137,7 +137,7 @@ namespace Script {
         "needlePlayer": {
             damage: 5,
             speed: 0,
-            sprite: ["projectile", "needle"],
+            sprite: ["aoe", "needles"],
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.NONE,
         }
@@ -178,6 +178,19 @@ namespace Script {
             duration: 16 / 24,
             sprite: ["aoe", "lightbulb"],
             stunDuration: 1,
+            target: ProjectileTarget.ENEMY,
+            events: {
+                "explode": function (_event) {
+                    this.explode();
+                }
+            },
+        },
+        "smokeMaskPlayer": {
+            variant: "explosion",
+            damage: 2,
+            size: 2,
+            duration: 30 / 24,
+            sprite: ["aoe", "smokemask"],
             target: ProjectileTarget.ENEMY,
             events: {
                 "explode": function (_event) {

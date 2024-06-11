@@ -138,6 +138,18 @@ namespace Script {
             if (this.functions.postUpdate) this.functions.postUpdate.call(this, _charPosition, _frameTimeInSeconds);
         }
 
+        public removeAttachments(): void {
+            this.removeHazardZone();
+        }
+
+        private removeHazardZone() {
+            if (!this.hazardZone) return;
+
+            ƒ.Recycler.store(this.hazardZone);
+            this.hazardZone.getParent().removeChild(this.hazardZone);
+            this.hazardZone = undefined;
+        }
+
         protected move(_frameTimeInSeconds: number) {
             if (this.tracking && this.tracking.target) {
                 this.tracking.startTrackingAfter -= _frameTimeInSeconds;
@@ -147,7 +159,7 @@ namespace Script {
 
                     // we need to track a certain node, so modify direction accordingly
                     this.direction = ƒ.Vector3.SUM(diff.scale(this.tracking.strength ?? 1), this.direction.scale(1 - (this.tracking.strength ?? 1)));
-                    
+
                     // this.direction.add(ƒ.Vector3.SCALE(diff, (this.tracking.strength ?? 1) * Math.min(_frameTimeInSeconds, 1)));
 
                     let mgtSqrd = diff.magnitudeSquared;
@@ -170,11 +182,7 @@ namespace Script {
                     this.prevDistance = distanceToTarget;
                     if (this.artillery && this.tracking.startTrackingAfter > 0) return;
                     // target position reached
-                    if (this.hazardZone) {
-                        ƒ.Recycler.store(this.hazardZone);
-                        this.hazardZone.getParent().removeChild(this.hazardZone);
-                        this.hazardZone = undefined;
-                    }
+                    this.removeHazardZone();
 
                     if (this.impact && this.impact.length) {
                         for (let impact of this.impact) {

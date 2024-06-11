@@ -137,6 +137,9 @@ namespace Script {
         private currentWaveEnd: number = 0;
         private currentRoomEnd: number = 0;
 
+        private currentXP: number = 0;
+        private xpElement: HTMLElement;
+
         private timeElement: HTMLElement = document.getElementById("timer");
 
         constructor(private readonly provider: Provider) {
@@ -152,6 +155,7 @@ namespace Script {
             document.getElementById("debug-end-room").addEventListener("touchstart", this.debugButtons);
             document.getElementById("debug-next-room").addEventListener("touchstart", this.debugButtons);
             document.getElementById("debug-kill-enemies").addEventListener("touchstart", this.debugButtons);
+            this.xpElement = document.getElementById("xp-display");
         }
 
         public setup() {
@@ -225,16 +229,27 @@ namespace Script {
         }
 
 
-        private endRoom() {
+        private async endRoom(_cleanup: boolean = false) {
+            gameState = GAMESTATE.PAUSED;
             while (this.enemyScripts.length > 0) {
                 this.enemyScripts[0].hit({ damage: Infinity });
             }
-            //TODO collect XP
+            provider.get(ProjectileManager).cleanup();
             console.log(`Room ${this.currentRoom} done. Press N to continue.`);
-            gameState = GAMESTATE.ROOM_CLEAR;
+            ƒ.Time.game.setScale(0);
+            
+            if(!_cleanup){
+                // collect XP
+                while(this.currentXP >= 100){
+                    this.currentXP -= 100;
+                    await this.characterManager.upgradeCards();
+                }
+                this.nextRoom();
+            }
         }
 
         public nextRoom() {
+            ƒ.Time.game.setScale(1);
             this.currentRoom++;
             this.currentWave = -1;
             this.currentWaveEnd = 0;
@@ -485,11 +500,18 @@ namespace Script {
         }
 
         public reset() {
-            this.endRoom();
+            this.endRoom(true);
+            this.currentXP = 0;
+            this.addXP(0);
             this.currentWave = -1;
             this.currentRoom = -1;
             this.currentRoomEnd = 0;
             this.currentWaveEnd = 0;
+        }
+
+        public addXP(_xp: number) {
+            this.currentXP += _xp;
+            this.xpElement.innerText = this.currentXP.toString();
         }
     }
 }

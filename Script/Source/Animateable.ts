@@ -62,5 +62,7 @@ namespace Script {
         }
 
         public update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number) { };
+
+        public removeAttachments(){};
     }
 }

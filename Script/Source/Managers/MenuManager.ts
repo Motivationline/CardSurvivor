@@ -56,12 +56,14 @@ namespace Script {
         private async startGame() {
             this.openMenu(MenuType.NONE);
             gameState = GAMESTATE.ROOM_CLEAR;
-            ƒ.Time.game.setScale(1);
-
+            
             let dataManager = provider.get(DataManager);
             let cardManager = provider.get(CardManager);
             cardManager.setCards([], dataManager.savedDeckRaw);
+            let character = provider.get(CharacterManager).character;
+            character?.reset();
             await provider.get(CharacterManager).upgradeCards(5, true, 1);
+            ƒ.Time.game.setScale(1);
             provider.get(EnemyManager).nextRoom();
         }
 

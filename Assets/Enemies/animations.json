@@ -205,7 +205,13 @@
         "totalHeight": 1536,
         "totalWidth": 1536,
         "wrapAfter": 6,
-        "materialString": "Material|2024-06-11T14:26:14.943Z|41599"
+        "materialString": "Material|2024-06-11T14:26:14.943Z|41599",
+        "events": [
+          {
+            "frame": 6,
+            "event": "explode"
+          }
+        ]
       },
       "needles": {
         "fps": 24,

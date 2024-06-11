@@ -11,6 +11,7 @@ declare namespace Script {
         protected setCentralAnimator(_as: AnimationSprite, _unique?: boolean, _eventListener?: (_event: CustomEvent) => void): void;
         protected removeAnimationEventListeners(): void;
         update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
+        removeAttachments(): void;
     }
 }
 declare namespace Script {
@@ -370,6 +371,8 @@ declare namespace Script {
         protected init: () => void;
         setup(_options: Partial<Projectile>, _modifier: PassiveCardEffectObject): Promise<void>;
         update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
+        removeAttachments(): void;
+        private removeHazardZone;
         protected move(_frameTimeInSeconds: number): void;
         protected rotate(): void;
         protected onTriggerEnter: (_event: ƒ.EventPhysics) => void;
@@ -470,6 +473,7 @@ declare namespace Script {
         move(_direction: ƒ.Vector2, _time: number): void;
         update(_direction: ƒ.Vector2): void;
         hit(_hit: Hit): number;
+        reset(): void;
         private changeVisualDirection;
         private updateHealthVisually;
         private setAnimation;
@@ -633,6 +637,8 @@ declare namespace Script {
         private currentArea;
         private currentWaveEnd;
         private currentRoomEnd;
+        private currentXP;
+        private xpElement;
         private timeElement;
         constructor(provider: Provider);
         setup(): void;
@@ -657,6 +663,7 @@ declare namespace Script {
         private dmgDisplayElements;
         displayDamage(_amt: number, _pos: ƒ.Vector3): void;
         reset(): void;
+        addXP(_xp: number): void;
     }
 }
 declare namespace Script {
@@ -701,5 +708,6 @@ declare namespace Script {
         createProjectile(_options: Partial<Projectile>, _position: ƒ.Vector3, _modifiers: PassiveCardEffectObject, _parent?: ƒ.Node): Promise<void>;
         createAOE(_options: Partial<AreaOfEffect>, _position: ƒ.Vector3, _modifiers: PassiveCardEffectObject, _parent?: ƒ.Node): Promise<void>;
         createHitZone(_position: ƒ.Vector3, _size?: number, _parent?: ƒ.Node): Promise<HitZoneGraphInstance>;
+        cleanup(): void;
     }
 }
