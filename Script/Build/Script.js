@@ -1242,7 +1242,7 @@ var Script;
                                     }
                                     let projectile = Script.projectiles[effect.projectile];
                                     this.#pm.createProjectile(projectile, pos, this.#cm.combineEffects(_cumulatedEffects, effect.modifiers), projectile.lockedToEntity ? this.#charm.character.node : undefined);
-                                }, i * (effect.delay ?? 0));
+                                }, i * (effect.delay ?? 0) * 1000);
                             }
                             break;
                         case "aoe":
