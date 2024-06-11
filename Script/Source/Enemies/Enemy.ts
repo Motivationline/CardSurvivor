@@ -1,6 +1,6 @@
 /// <reference path="../Animateable.ts" />
 namespace Script {
-    export class Enemy extends Animateable implements EnemyOptions, Hittable {
+    export class Enemy extends Animateable implements EnemyOptions, Hitable {
         public speed: number = 1;
         public damage: number = 1;
         public knockbackMultiplier: number = 1;

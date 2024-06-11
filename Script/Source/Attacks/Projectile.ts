@@ -97,11 +97,11 @@ namespace Script {
                     pos = await provider.get(CharacterManager).character.node.mtxWorld.translation.clone;
                 } else if (this.target === ProjectileTarget.ENEMY) {
                     pos = provider.get(EnemyManager).getEnemy(this.targetMode)?.mtxWorld.translation.clone;
-                    if (!this.targetPosition) return this.remove();
+                    if (!pos) return this.remove();
                 }
                 let hz = await provider.get(ProjectileManager).createHitZone(pos);
                 this.tracking = {
-                    strength: 200,
+                    strength: 1,
                     target: hz,
                     startTrackingAfter: 1
                 }
@@ -137,14 +137,16 @@ namespace Script {
         }
 
         protected move(_frameTimeInSeconds: number) {
-            if (this.tracking) {
+            if (this.tracking && this.tracking.target) {
                 this.tracking.startTrackingAfter -= _frameTimeInSeconds;
                 if (this.tracking.startTrackingAfter <= 0) {
                     this.tracking.stopTrackingAfter -= _frameTimeInSeconds;
                     let diff = ƒ.Vector3.DIFFERENCE(this.tracking.target.mtxWorld.translation, this.node.mtxWorld.translation);
 
                     // we need to track a certain node, so modify direction accordingly
-                    this.direction.add(ƒ.Vector3.SCALE(diff, (this.tracking.strength ?? 1) * Math.min(_frameTimeInSeconds, 1)));
+                    this.direction = ƒ.Vector3.SUM(diff.scale(this.tracking.strength ?? 1), this.direction.scale(1 - (this.tracking.strength ?? 1)));
+                    
+                    // this.direction.add(ƒ.Vector3.SCALE(diff, (this.tracking.strength ?? 1) * Math.min(_frameTimeInSeconds, 1)));
 
                     let mgtSqrd = diff.magnitudeSquared;
                     if (this.tracking.stopTrackingAfter <= 0 || (mgtSqrd <= Math.pow(this.tracking.stopTrackingInRadius, 2) && mgtSqrd !== 0)) {
@@ -215,9 +217,11 @@ namespace Script {
             // console.log("onTriggerExit", _event);
         }
 
-        protected hit(_hittable: Hittable) {
-            _hittable.hit({ damage: this.damage, stun: this.stunDuration });
+        protected hit(_hitable: Hitable) {
+            if (this.functions.preHit) this.functions.preHit.call(this, _hitable);
+            _hitable.hit({ damage: this.damage, stun: this.stunDuration });
             this.piercing--;
+            if (this.functions.postHit) this.functions.postHit.call(this, _hitable);
             if (this.piercing < 0) this.remove();
         }
 

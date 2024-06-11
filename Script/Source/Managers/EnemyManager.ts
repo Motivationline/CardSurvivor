@@ -180,7 +180,7 @@ namespace Script {
             }
 
             // dmg numbers
-            for(let dmg of this.dmgDisplayElements){
+            for (let dmg of this.dmgDisplayElements) {
                 let pos = viewport.pointWorldToClient(dmg[1]);
                 dmg[0].style.top = pos.y + "px";
                 dmg[0].style.left = pos.x + "px";
@@ -439,34 +439,37 @@ namespace Script {
             _enemy.node.getParent()?.removeChild(_enemy.node);
         }
 
-        public getEnemy(_mode: ProjectileTargetMode, _maxDistance: number = 20): EnemyGraphInstance | undefined {
+        public getEnemy(_mode: ProjectileTargetMode, _pos: ƒ.Vector3 = provider.get(CharacterManager).character.node.mtxWorld.translation, _exclude: EnemyGraphInstance[] = [], _maxDistance: number = 20,): EnemyGraphInstance | undefined {
             if (!this.enemies || this.enemies.length === 0) return undefined;
             _maxDistance *= _maxDistance;
-            let characterPos = provider.get(CharacterManager).character.node.mtxWorld.translation;
             let enemies = [...this.enemies];
             if (_mode === ProjectileTargetMode.RANDOM) {
                 //TODO: make sure chosen enemy is visible on screen
                 while (enemies.length > 0) {
                     let index = Math.floor(Math.random() * this.enemies.length)
                     let enemy = this.enemies.splice(index, 1)[0];
-                    if (ƒ.Vector3.DIFFERENCE(enemy.mtxWorld.translation, characterPos).magnitudeSquared <= _maxDistance) {
+                    if (_exclude.includes(enemy)) continue;
+                    if (ƒ.Vector3.DIFFERENCE(enemy.mtxWorld.translation, _pos).magnitudeSquared <= _maxDistance) {
                         return enemy;
                     }
                 }
             } else if (_mode === ProjectileTargetMode.CLOSEST) {
                 for (let e of enemies) {
-                    e.distanceToCharacter = ƒ.Vector3.DIFFERENCE(e.mtxWorld.translation, characterPos).magnitudeSquared;
+                    e.distanceToCharacter = ƒ.Vector3.DIFFERENCE(e.mtxWorld.translation, _pos).magnitudeSquared;
                 }
                 enemies.sort((a, b) => a.distanceToCharacter - b.distanceToCharacter);
-                return (enemies[0]);
+                for (let i = 0; i < enemies.length; i++) {
+                    if (!_exclude.includes(enemies[i]))
+                        return (enemies[i]);
+                }
             }
             return undefined;
         }
 
         private dmgDisplayElements: [HTMLElement, ƒ.Vector3][] = [];
         public displayDamage(_amt: number, _pos: ƒ.Vector3) {
-            if(!isFinite(_amt)) return;
-            let dmgText = _amt.toPrecision(1);
+            if (!isFinite(_amt)) return;
+            let dmgText = _amt.toFixed(0);
             let textElement = document.createElement("span");
             textElement.classList.add(("dmg-number"));
             textElement.innerText = dmgText;

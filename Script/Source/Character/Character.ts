@@ -1,6 +1,6 @@
 namespace Script {
     import ƒ = FudgeCore;
-    export class Character extends ƒ.Component implements Hittable {
+    export class Character extends ƒ.Component implements Hitable {
         #animator: SpriteAnimator;
         #walkingSprite: AnimationSprite = {
             fps: 24,

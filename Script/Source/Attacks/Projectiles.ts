@@ -26,6 +26,7 @@ namespace Script {
             targetMode: ProjectileTargetMode.RANDOM,
             methods: {
                 afterSetup: function () {
+                    this.targetPosition = provider.get(EnemyManager).getEnemy(this.targetMode)?.mtxWorld.translation.clone;
                     if (this.targetPosition) {
                         let target: ƒ.Vector3 = this.targetPosition.clone;
                         this.node.mtxLocal.translation = target;
@@ -52,11 +53,35 @@ namespace Script {
             }
         },
         "discusPlayer": {
-            damage: 1,
+            damage: 5,
             speed: 20,
             sprite: ["projectile", "discus"],
             target: ProjectileTarget.ENEMY,
-            targetMode: ProjectileTargetMode.CLOSEST
+            targetMode: ProjectileTargetMode.NONE,
+
+            methods: {
+                afterSetup: function () {
+                    let enemy = provider.get(EnemyManager).getEnemy(ProjectileTargetMode.CLOSEST);
+                    this.tracking = {
+                        stopTrackingAfter: Infinity,
+                        startTrackingAfter: 0,
+                        stopTrackingInRadius: 0,
+                        strength: 1,
+                        target: enemy,
+                    } satisfies ProjectileTracking;
+                },
+                preUpdate: function () {
+                    let target: EnemyGraphInstance = this.tracking.target;
+                    if (!target?.getParent()) {
+                        let newEnemy = provider.get(EnemyManager).getEnemy(ProjectileTargetMode.CLOSEST, this.node.mtxWorld.translation);
+                        this.tracking.target = newEnemy;
+                    }
+                },
+                postHit: function (_hitable: Hitable) {
+                    let newEnemy = provider.get(EnemyManager).getEnemy(ProjectileTargetMode.CLOSEST, (<Enemy>_hitable).node.mtxWorld.translation, [(<EnemyGraphInstance>(<Enemy>_hitable).node)]);
+                    this.tracking.target = newEnemy;
+                },
+            }
         },
         "penPlayer": {
             damage: 2,

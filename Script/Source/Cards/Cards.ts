@@ -378,8 +378,8 @@ namespace Script {
                         cooldown: 3,
                         modifiers: {
                             absolute: {
-                                damage: 0 //5 Base Damage
-                                //TODO: Add bounces - 2
+                                damage: 0, //5 Base Damage
+                                projectilePiercing: 1
                             }
                         }
                     }]
@@ -392,8 +392,8 @@ namespace Script {
                         cooldown: 3,
                         modifiers: {
                             absolute: {
-                                damage: 3 //5 Base Damage
-                                //TODO: Add bounces - 2
+                                damage: 3, //5 Base Damage
+                                projectilePiercing: 1
                             }
                         }
                     }]
@@ -406,8 +406,8 @@ namespace Script {
                         cooldown: 2,
                         modifiers: {
                             absolute: {
-                                damage: 3 //5 Base Damage
-                                //TODO: Add bounces - 2
+                                damage: 3, //5 Base Damage
+                                projectilePiercing: 1
                             }
                         }
                     }]
@@ -420,8 +420,8 @@ namespace Script {
                         cooldown: 2,
                         modifiers: {
                             absolute: {
-                                damage: 5 //5 Base Damage
-                                //TODO: Add bounces - 3
+                                damage: 5, //5 Base Damage
+                                projectilePiercing: 2
                             }
                         }
                     }]
@@ -434,8 +434,8 @@ namespace Script {
                         cooldown: 2,
                         modifiers: {
                             absolute: {
-                                damage: 5 //5 Base Damage
-                                //TODO: Add bounces - 4
+                                damage: 5, //5 Base Damage
+                                projectilePiercing: 3
                             }
                         }
                     }]

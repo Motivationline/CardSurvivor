@@ -225,6 +225,8 @@ declare namespace Script {
         postUpdate?: (_charPosition: ƒ.Vector3, _frameTimeInSeconds: number) => void;
         preMove?: (_frameTimeInSeconds: number) => void;
         postMove?: (_frameTimeInSeconds: number) => void;
+        preHit?: (_hitable: Hitable) => void;
+        postHit?: (_hitable: Hitable) => void;
     }
     export enum ProjectileTargetMode {
         NONE = 0,
@@ -278,7 +280,7 @@ declare namespace Script {
         targetMode?: ProjectileTargetMode;
         stunDuration?: number;
     }
-    export interface Hittable {
+    export interface Hitable {
         health: number;
         hit: (_hit: Hit) => number;
     }
@@ -368,7 +370,7 @@ declare namespace Script {
         protected rotate(): void;
         protected onTriggerEnter: (_event: ƒ.EventPhysics) => void;
         protected onTriggerExit: (_event: ƒ.EventPhysics) => void;
-        protected hit(_hittable: Hittable): void;
+        protected hit(_hitable: Hitable): void;
         private remove;
     }
 }
@@ -449,7 +451,7 @@ declare namespace Script {
 }
 declare namespace Script {
     import ƒ = FudgeCore;
-    class Character extends ƒ.Component implements Hittable {
+    class Character extends ƒ.Component implements Hitable {
         #private;
         prevAnimation: AnimationState;
         private prevDirection;
@@ -488,7 +490,7 @@ declare namespace Script {
     };
 }
 declare namespace Script {
-    class Enemy extends Animateable implements EnemyOptions, Hittable {
+    class Enemy extends Animateable implements EnemyOptions, Hitable {
         speed: number;
         damage: number;
         knockbackMultiplier: number;
@@ -647,7 +649,7 @@ declare namespace Script {
         private debugRemoveEnemies;
         private spawnEnemies;
         removeEnemy(_enemy: Enemy): void;
-        getEnemy(_mode: ProjectileTargetMode, _maxDistance?: number): EnemyGraphInstance | undefined;
+        getEnemy(_mode: ProjectileTargetMode, _pos?: ƒ.Vector3, _exclude?: EnemyGraphInstance[], _maxDistance?: number): EnemyGraphInstance | undefined;
         private dmgDisplayElements;
         displayDamage(_amt: number, _pos: ƒ.Vector3): void;
         reset(): void;
@@ -684,6 +686,7 @@ declare namespace Script {
         static aoeGraph: ƒ.Graph;
         static hitZoneGraph: ƒ.Graph;
         private projectilesNode;
+        private hitzoneNode;
         constructor(provider: Provider);
         setup(): void;
         private start;

@@ -8,6 +8,7 @@ namespace Script {
         static aoeGraph: ƒ.Graph;
         static hitZoneGraph: ƒ.Graph;
         private projectilesNode: ƒ.Node;
+        private hitzoneNode: ƒ.Node;
 
         constructor(private readonly provider: Provider) {
             if (ƒ.Project.mode === ƒ.MODE.EDITOR) return;
@@ -25,6 +26,7 @@ namespace Script {
         private start = (_event: CustomEvent) => {
             let viewport: ƒ.Viewport = _event.detail;
             this.projectilesNode = viewport.getBranch().getChildrenByName("projectiles")[0];
+            this.hitzoneNode = viewport.getBranch().getChildrenByName("hitzones")[0];
         }
         private loaded = async () => {
             ProjectileManager.projectileGraph = <ƒ.Graph>await ƒ.Project.getResourcesByName("projectile")[0];
@@ -70,12 +72,12 @@ namespace Script {
             pgi.mtxLocal.translation = ƒ.Vector3.SUM(_position);
             
             let p = pgi.getComponent(ProjectileComponent);
-            p.setup(_options, _modifiers);
-
             _parent.addChild(pgi);
 
             this.projectileScripts.push(p);
             this.projectiles.push(pgi);
+            
+            p.setup(_options, _modifiers);
         }
         public async createAOE(_options: Partial<AreaOfEffect>, _position: ƒ.Vector3, _modifiers: PassiveCardEffectObject, _parent: ƒ.Node = this.projectilesNode) {
             let aoeGi = ƒ.Recycler.get(AOEGraphInstance);
@@ -92,7 +94,7 @@ namespace Script {
             this.projectiles.push(aoeGi);
         }
 
-        public async createHitZone(_position: ƒ.Vector3, _size: number = 1, _parent: ƒ.Node = this.projectilesNode): Promise<HitZoneGraphInstance> {
+        public async createHitZone(_position: ƒ.Vector3, _size: number = 1, _parent: ƒ.Node = this.hitzoneNode): Promise<HitZoneGraphInstance> {
             let hz = ƒ.Recycler.get(HitZoneGraphInstance);
             if(!hz.initialized) {
                 await hz.set(ProjectileManager.hitZoneGraph);

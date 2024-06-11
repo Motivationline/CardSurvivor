@@ -139,6 +139,14 @@
           }
         },
         {
+          "ƒ.Node": {
+            "name": "hitzones",
+            "active": true,
+            "components": {},
+            "children": []
+          }
+        },
+        {
           "ƒ.GraphInstance": {
             "deserializeFromSource": true,
             "idSource": "Graph|2024-05-02T11:53:50.845Z|82610"

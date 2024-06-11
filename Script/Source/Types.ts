@@ -103,6 +103,8 @@ namespace Script {
         postUpdate?: (_charPosition: ƒ.Vector3, _frameTimeInSeconds: number) => void;
         preMove?: (_frameTimeInSeconds: number) => void;
         postMove?: (_frameTimeInSeconds: number) => void;
+        preHit?: (_hitable: Hitable) => void;
+        postHit?: (_hitable: Hitable) => void;
     }
     export enum ProjectileTargetMode {
         NONE,
@@ -158,8 +160,8 @@ namespace Script {
     }
     //#endregion
 
-    //#region Hittable
-    export interface Hittable {
+    //#region Hitable
+    export interface Hitable {
         health: number,
         hit: (_hit: Hit) => number,
     }
