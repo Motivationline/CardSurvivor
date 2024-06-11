@@ -141,6 +141,7 @@ namespace Script {
         "needlePlayer": {
             damage: 5,
             speed: 0,
+            size: 1,
             sprite: ["aoe", "needles"],
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.NONE,

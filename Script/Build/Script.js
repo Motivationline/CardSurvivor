@@ -1145,6 +1145,7 @@ var Script;
         "needlePlayer": {
             damage: 5,
             speed: 0,
+            size: 1,
             sprite: ["aoe", "needles"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.NONE,
