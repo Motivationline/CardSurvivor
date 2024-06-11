@@ -55,6 +55,7 @@ namespace Script {
         "discusPlayer": {
             damage: 5,
             speed: 20,
+            range: 15,
             sprite: ["projectile", "discus"],
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.NONE,
@@ -86,6 +87,7 @@ namespace Script {
         "penPlayer": {
             damage: 2,
             speed: 20,
+            range: 4,
             sprite: ["projectile", "pen"],
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.CLOSEST,
@@ -112,6 +114,7 @@ namespace Script {
         "dividerPlayer": {
             damage: 5,
             speed: 10,
+            range: 12,
             sprite: ["projectile", "divider"],
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.CLOSEST,
@@ -129,6 +132,7 @@ namespace Script {
         "chiselPlayer": {
             damage: 15,
             speed: 15,
+            range: 6,
             sprite: ["projectile", "chisel"],
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.CLOSEST,
