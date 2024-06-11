@@ -606,6 +606,7 @@ namespace Script {
                         projectile: "needlePlayer",
                         amount: 1,
                         cooldown: 5, //TODO: Leave a projectile every 5 units moved
+                        cooldownBasedOnDistance: true,
                         modifiers: {
                             absolute: {
                                 damage: 0, //5 Base Damage
@@ -619,6 +620,7 @@ namespace Script {
                         projectile: "needlePlayer",
                         amount: 1,
                         cooldown: 4, //TODO: Leave a projectile every 4 units moved
+                        cooldownBasedOnDistance: true,
                         modifiers: {
                             absolute: {
                                 damage: 1, //5 Base Damage
@@ -632,6 +634,7 @@ namespace Script {
                         projectile: "needlePlayer",
                         amount: 1,
                         cooldown: 4, //TODO: Leave a projectile every 4 units moved
+                        cooldownBasedOnDistance: true,
                         modifiers: {
                             absolute: {
                                 damage: 3, //5 Base Damage
@@ -645,6 +648,7 @@ namespace Script {
                         projectile: "needlePlayer",
                         amount: 1,
                         cooldown: 3, //TODO: Leave a projectile every 3 units moved
+                        cooldownBasedOnDistance: true,
                         modifiers: {
                             absolute: {
                                 damage: 3, //5 Base Damage
@@ -658,6 +662,7 @@ namespace Script {
                         projectile: "needlePlayer",
                         amount: 1,
                         cooldown: 2, //TODO: Leave a projectile every 2 units moved
+                        cooldownBasedOnDistance: true,
                         modifiers: {
                             absolute: {
                                 damage: 5, //5 Base Damage

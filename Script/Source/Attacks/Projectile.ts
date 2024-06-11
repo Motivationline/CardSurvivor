@@ -23,6 +23,7 @@ namespace Script {
         stunDuration: number;
         private hazardZone: HitZoneGraphInstance;
         private prevDistance: number;
+        private modifiers: PassiveCardEffectObject = {};
         private functions: ProjectileFunctions = {};
 
         protected static defaults: Projectile = {
@@ -88,6 +89,7 @@ namespace Script {
 
             this.hazardZone = undefined;
             this.prevDistance = Infinity;
+            this.modifiers = _modifier;
 
             //TODO rotate projectile towards flight direction
 
@@ -179,10 +181,10 @@ namespace Script {
                             //TODO implement impacts
                             switch (impact.type) {
                                 case "projectile":
-                                    provider.get(ProjectileManager).createProjectile(projectiles[impact.projectile], this.targetPosition, impact.modifiers)
+                                    provider.get(ProjectileManager).createProjectile(projectiles[impact.projectile], this.targetPosition, provider.get(CardManager).combineEffects(impact.modifiers, this.modifiers));
                                     break;
                                 case "aoe":
-                                    provider.get(ProjectileManager).createAOE(areasOfEffect[impact.aoe], this.targetPosition, impact.modifiers);
+                                    provider.get(ProjectileManager).createAOE(areasOfEffect[impact.aoe], this.targetPosition, provider.get(CardManager).combineEffects(impact.modifiers, this.modifiers));
                                     break;
                             }
                         }

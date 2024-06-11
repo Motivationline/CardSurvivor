@@ -20,6 +20,7 @@ namespace Script {
     interface ActiveCardEffectBase {
         cooldown?: number,
         currentCooldown?: number,
+        cooldownBasedOnDistance?: boolean,
         modifiers?: PassiveCardEffectObject,
     }
 
