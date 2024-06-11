@@ -605,7 +605,7 @@ namespace Script {
                         type: "projectile",
                         projectile: "needlePlayer",
                         amount: 1,
-                        cooldown: 5, //TODO: Leave a projectile every 5 units moved
+                        cooldown: 4, //TODO: Leave a projectile every 5 units moved
                         cooldownBasedOnDistance: true,
                         modifiers: {
                             absolute: {
@@ -619,7 +619,7 @@ namespace Script {
                         type: "projectile",
                         projectile: "needlePlayer",
                         amount: 1,
-                        cooldown: 4, //TODO: Leave a projectile every 4 units moved
+                        cooldown: 3.5, //TODO: Leave a projectile every 4 units moved
                         cooldownBasedOnDistance: true,
                         modifiers: {
                             absolute: {
@@ -633,7 +633,7 @@ namespace Script {
                         type: "projectile",
                         projectile: "needlePlayer",
                         amount: 1,
-                        cooldown: 4, //TODO: Leave a projectile every 4 units moved
+                        cooldown: 3, //TODO: Leave a projectile every 4 units moved
                         cooldownBasedOnDistance: true,
                         modifiers: {
                             absolute: {
@@ -647,7 +647,7 @@ namespace Script {
                         type: "projectile",
                         projectile: "needlePlayer",
                         amount: 1,
-                        cooldown: 3, //TODO: Leave a projectile every 3 units moved
+                        cooldown: 2, //TODO: Leave a projectile every 3 units moved
                         cooldownBasedOnDistance: true,
                         modifiers: {
                             absolute: {
@@ -661,7 +661,7 @@ namespace Script {
                         type: "projectile",
                         projectile: "needlePlayer",
                         amount: 1,
-                        cooldown: 2, //TODO: Leave a projectile every 2 units moved
+                        cooldown: 1, //TODO: Leave a projectile every 2 units moved
                         cooldownBasedOnDistance: true,
                         modifiers: {
                             absolute: {
