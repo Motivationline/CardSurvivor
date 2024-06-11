@@ -2128,5 +2128,30 @@
         }
       }
     }
+  },
+  "Material|2024-06-11T14:26:14.943Z|41599": {
+    "ƒ.Material": {
+      "name": "ShaderLitTextured",
+      "idResource": "Material|2024-06-11T14:26:14.943Z|41599",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-06-11T14:26:18.954Z|87356"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-06-11T14:26:18.954Z|87356": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Projectiles\\smokemask_aoe.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-06-11T14:26:18.954Z|87356",
+        "name": "Assets\\Projectiles\\smokemask_aoe.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
   }
 }

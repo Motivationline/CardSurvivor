@@ -363,6 +363,17 @@
               },
               {
                 "idResource": "TextureImage|2024-05-14T12:52:23.956Z|42262"
+              },
+              {
+                "name": "SmokeMask",
+                "entries": [
+                  {
+                    "idResource": "Material|2024-06-11T14:26:14.943Z|41599"
+                  },
+                  {
+                    "idResource": "TextureImage|2024-06-11T14:26:18.954Z|87356"
+                  }
+                ]
               }
             ]
           }
