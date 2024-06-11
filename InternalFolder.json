@@ -374,6 +374,17 @@
                     "idResource": "TextureImage|2024-06-11T14:26:18.954Z|87356"
                   }
                 ]
+              },
+              {
+                "name": "Needles",
+                "entries": [
+                  {
+                    "idResource": "Material|2024-06-11T15:07:42.173Z|90906"
+                  },
+                  {
+                    "idResource": "TextureImage|2024-06-11T15:07:50.040Z|25960"
+                  }
+                ]
               }
             ]
           }

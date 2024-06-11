@@ -215,13 +215,13 @@
       },
       "needles": {
         "fps": 24,
-        "frames": 30,
+        "frames": 24,
         "height": 256,
         "width": 256,
-        "totalHeight": 1536,
-        "totalWidth": 1536,
+        "totalHeight": 1280,
+        "totalWidth": 1280,
         "wrapAfter": 6,
-        "materialString": "Material|2024-06-11T14:26:14.943Z|41599"
+        "materialString": "Material|2024-06-11T15:07:42.173Z|90906"
       }
     }
   },
