@@ -2087,20 +2087,45 @@
       "coat": {
         "ƒ.CoatTextured": {
           "color": "[1, 1, 1, 1]",
-          "idTexture": "TextureImage|2024-06-10T09:12:26.588Z|30781"
+          "idTexture": "TextureImage|2024-06-11T08:31:48.806Z|20136"
         }
       }
     }
   },
-  "TextureImage|2024-06-10T09:12:26.588Z|30781": {
+  "TextureImage|2024-06-11T08:31:48.806Z|20136": {
     "ƒ.TextureImage": {
-      "url": "Assets\\Cards\\Items\\Anvil.png",
+      "url": "Assets\\Projectiles\\Anvil.png",
       "type": "TextureImage",
       "Texture": {
-        "idResource": "TextureImage|2024-06-10T09:12:26.588Z|30781",
-        "name": "Assets\\Cards\\Items\\Anvil.png",
+        "idResource": "TextureImage|2024-06-11T08:31:48.806Z|20136",
+        "name": "Assets\\Projectiles\\Anvil.png",
         "mipmap": "CRISP",
         "wrap": "REPEAT"
+      }
+    }
+  },
+  "TextureImage|2024-06-11T13:29:09.158Z|44957": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Projectiles\\divider_projectile.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-06-11T13:29:09.158Z|44957",
+        "name": "Assets\\Projectiles\\divider_projectile.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-06-11T13:29:16.719Z|99245": {
+    "ƒ.Material": {
+      "name": "DIvierMat",
+      "idResource": "Material|2024-06-11T13:29:16.719Z|99245",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-06-11T13:29:09.158Z|44957"
+        }
       }
     }
   }
