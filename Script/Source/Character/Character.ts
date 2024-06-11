@@ -52,9 +52,17 @@ namespace Script {
         }
 
         move(_direction: ƒ.Vector2, _time: number) {
+            let scale = this.cardManager.modifyValuePlayer(this.speed, PassiveCardEffect.MOVEMENT_SPEED);
+            // prevent player from leaving playarea
+            let charPosition = this.node.mtxWorld.translation.clone;
+            let newVelocity = ƒ.Vector3.SCALE(new ƒ.Vector3(_direction.x, _direction.y), scale);
+            charPosition.add(ƒ.Vector3.SCALE(newVelocity, ƒ.Loop.timeFrameGame / 1000));
+            if(charPosition.x > 12 || charPosition.x < -12) newVelocity.x = 0;
+            if(charPosition.y > 7 || charPosition.y < -7) newVelocity.y = 0;
+            
             //TODO: update this to use physics
-            this.rigidbody.setVelocity(ƒ.Vector3.SCALE(new ƒ.Vector3(_direction.x, _direction.y), this.cardManager.modifyValuePlayer(this.speed, PassiveCardEffect.MOVEMENT_SPEED)));
-            this.#animator.setTime()
+            this.rigidbody.setVelocity(newVelocity);
+            this.#animator.setTime();
             if (_direction.magnitudeSquared === 0) {
                 this.setAnimation(AnimationState.IDLE);
             } else {
