@@ -1792,7 +1792,6 @@ namespace Script {
                 { //Tier 4
                     passiveEffects: {
                         absolute: {
-                            health: 100
                             //TODO: +3 health for every enemy that spawns.
                         }
                     }
@@ -1800,7 +1799,6 @@ namespace Script {
                 { //Tier 5
                     passiveEffects: {
                         absolute: {
-                            health: 150
                             //TODO: +5 health for every enemy that spawns.
                         }
                     }
