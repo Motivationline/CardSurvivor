@@ -110,6 +110,7 @@ namespace Script {
     export enum ProjectileTargetMode {
         NONE,
         CLOSEST,
+        FURTHEST,
         STRONGEST,
         RANDOM,
     }

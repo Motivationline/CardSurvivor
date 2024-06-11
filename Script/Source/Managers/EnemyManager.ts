@@ -453,11 +453,12 @@ namespace Script {
                         return enemy;
                     }
                 }
-            } else if (_mode === ProjectileTargetMode.CLOSEST) {
+            } else if (_mode === ProjectileTargetMode.CLOSEST || _mode === ProjectileTargetMode.FURTHEST) {
                 for (let e of enemies) {
                     e.distanceToCharacter = ƒ.Vector3.DIFFERENCE(e.mtxWorld.translation, _pos).magnitudeSquared;
                 }
                 enemies.sort((a, b) => a.distanceToCharacter - b.distanceToCharacter);
+                if (_mode === ProjectileTargetMode.FURTHEST) enemies.reverse();
                 for (let i = 0; i < enemies.length; i++) {
                     if (!_exclude.includes(enemies[i]))
                         return (enemies[i]);

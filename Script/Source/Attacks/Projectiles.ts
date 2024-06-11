@@ -96,7 +96,7 @@ namespace Script {
             speed: 20,
             sprite: ["projectile", "codecivil"],
             target: ProjectileTarget.ENEMY,
-            targetMode: ProjectileTargetMode.CLOSEST,
+            targetMode: ProjectileTargetMode.FURTHEST,
             methods: {
                 afterSetup: function() {
                     this.minDamage = this.damage;

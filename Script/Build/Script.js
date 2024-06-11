@@ -683,8 +683,9 @@ var Script;
     (function (ProjectileTargetMode) {
         ProjectileTargetMode[ProjectileTargetMode["NONE"] = 0] = "NONE";
         ProjectileTargetMode[ProjectileTargetMode["CLOSEST"] = 1] = "CLOSEST";
-        ProjectileTargetMode[ProjectileTargetMode["STRONGEST"] = 2] = "STRONGEST";
-        ProjectileTargetMode[ProjectileTargetMode["RANDOM"] = 3] = "RANDOM";
+        ProjectileTargetMode[ProjectileTargetMode["FURTHEST"] = 2] = "FURTHEST";
+        ProjectileTargetMode[ProjectileTargetMode["STRONGEST"] = 3] = "STRONGEST";
+        ProjectileTargetMode[ProjectileTargetMode["RANDOM"] = 4] = "RANDOM";
     })(ProjectileTargetMode = Script.ProjectileTargetMode || (Script.ProjectileTargetMode = {}));
     let ProjectileTarget;
     (function (ProjectileTarget) {
@@ -1087,7 +1088,7 @@ var Script;
             speed: 20,
             sprite: ["projectile", "codecivil"],
             target: Script.ProjectileTarget.ENEMY,
-            targetMode: Script.ProjectileTargetMode.CLOSEST,
+            targetMode: Script.ProjectileTargetMode.FURTHEST,
             methods: {
                 afterSetup: function () {
                     this.minDamage = this.damage;
@@ -5561,11 +5562,13 @@ var Script;
                     }
                 }
             }
-            else if (_mode === Script.ProjectileTargetMode.CLOSEST) {
+            else if (_mode === Script.ProjectileTargetMode.CLOSEST || _mode === Script.ProjectileTargetMode.FURTHEST) {
                 for (let e of enemies) {
                     e.distanceToCharacter = Script.ƒ.Vector3.DIFFERENCE(e.mtxWorld.translation, _pos).magnitudeSquared;
                 }
                 enemies.sort((a, b) => a.distanceToCharacter - b.distanceToCharacter);
+                if (_mode === Script.ProjectileTargetMode.FURTHEST)
+                    enemies.reverse();
                 for (let i = 0; i < enemies.length; i++) {
                     if (!_exclude.includes(enemies[i]))
                         return (enemies[i]);

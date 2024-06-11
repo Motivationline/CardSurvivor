@@ -233,8 +233,9 @@ declare namespace Script {
     export enum ProjectileTargetMode {
         NONE = 0,
         CLOSEST = 1,
-        STRONGEST = 2,
-        RANDOM = 3
+        FURTHEST = 2,
+        STRONGEST = 3,
+        RANDOM = 4
     }
     export enum ProjectileTarget {
         PLAYER = 0,
