@@ -958,35 +958,35 @@ namespace Script {
                 { //Tier 1
                     passiveEffects: {
                         absolute: {
-                            movementSpeed: 0.5,
+                            movementSpeed: 0.25,
                         }
                     }
                 },
                 { //Tier 2
                     passiveEffects: {
                         absolute: {
-                            movementSpeed: 1,
+                            movementSpeed: 0.5,
                         }
                     }
                 },
                 { //Tier 3
                     passiveEffects: {
                         absolute: {
-                            movementSpeed: 2,
+                            movementSpeed: 0.75,
                         }
                     }
                 },
                 { //Tier 4
                     passiveEffects: {
                         absolute: {
-                            movementSpeed: 3,
+                            movementSpeed: 1.25,
                         }
                     }
                 },
                 { //Tier 5
                     passiveEffects: {
                         absolute: {
-                            movementSpeed: 5,
+                            movementSpeed: 2,
                         }
                     }
                 },

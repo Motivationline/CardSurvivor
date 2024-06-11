@@ -2528,6 +2528,13 @@ var Script;
                 {
                     passiveEffects: {
                         absolute: {
+                            movementSpeed: 0.25,
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        absolute: {
                             movementSpeed: 0.5,
                         }
                     }
@@ -2535,7 +2542,14 @@ var Script;
                 {
                     passiveEffects: {
                         absolute: {
-                            movementSpeed: 1,
+                            movementSpeed: 0.75,
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        absolute: {
+                            movementSpeed: 1.25,
                         }
                     }
                 },
@@ -2543,20 +2557,6 @@ var Script;
                     passiveEffects: {
                         absolute: {
                             movementSpeed: 2,
-                        }
-                    }
-                },
-                {
-                    passiveEffects: {
-                        absolute: {
-                            movementSpeed: 3,
-                        }
-                    }
-                },
-                {
-                    passiveEffects: {
-                        absolute: {
-                            movementSpeed: 5,
                         }
                     }
                 },
