@@ -77,7 +77,7 @@ namespace Script {
                         this.tracking.target = newEnemy;
                     }
                 },
-                postHit: function (_hitable: Hitable) {
+                postHit: function (_hitable: Hitable) { 
                     let newEnemy = provider.get(EnemyManager).getEnemy(ProjectileTargetMode.CLOSEST, (<Enemy>_hitable).node.mtxWorld.translation, [(<EnemyGraphInstance>(<Enemy>_hitable).node)]);
                     this.tracking.target = newEnemy;
                 },
@@ -91,12 +91,23 @@ namespace Script {
             targetMode: ProjectileTargetMode.CLOSEST,
             rotateInDirection: true,
         },
-        "codecivilPlayer": {
-            damage: 1,
+        "codeCivilPlayer": {
+            damage: 3,
             speed: 20,
             sprite: ["projectile", "codecivil"],
             target: ProjectileTarget.ENEMY,
-            targetMode: ProjectileTargetMode.CLOSEST
+            targetMode: ProjectileTargetMode.CLOSEST,
+            methods: {
+                afterSetup: function() {
+                    this.minDamage = this.damage;
+                    this.maxDamage = this.damage * 10;
+                    this.totalDistance = 0;
+                },
+                postMove: function(_frameTimeInSeconds: number) {
+                    this.totalDistance += this.speed * _frameTimeInSeconds;
+                    this.damage = Math.min(this.maxDamage, this.minDamage * (Math.max(1, this.totalDistance)));
+                }
+            }
         },
         "dividerPlayer": {
             damage: 1,

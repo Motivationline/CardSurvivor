@@ -455,8 +455,7 @@ namespace Script {
                         cooldown: 3,
                         modifiers: {
                             absolute: {
-                                damage: 0 //3-30 Base Damage
-                                //TODO: More damage depending on distance
+                                damage: 0 //3 Base Damage (x10 for max distance)
                             }
                         }
                     }]
@@ -469,8 +468,7 @@ namespace Script {
                         cooldown: 3,
                         modifiers: {
                             absolute: {
-                                damage: 0 //4-40 Base Damage
-                                //TODO: More damage depending on distance
+                                damage: 1 //3 Base Damage (x10 for max distance)
                             }
                         }
                     }]
@@ -483,8 +481,7 @@ namespace Script {
                         cooldown: 2.5,
                         modifiers: {
                             absolute: {
-                                damage: 0 //5-50 Base Damage
-                                //TODO: More damage depending on distance
+                                damage: 2 //3 Base Damage (x10 for max distance)
                             }
                         }
                     }]
@@ -497,8 +494,7 @@ namespace Script {
                         cooldown: 2,
                         modifiers: {
                             absolute: {
-                                damage: 0 //6-60 Base Damage
-                                //TODO: More damage depending on distance
+                                damage: 3 //3 Base Damage (x10 for max distance)
                             }
                         }
                     }]
@@ -511,8 +507,7 @@ namespace Script {
                         cooldown: 2,
                         modifiers: {
                             absolute: {
-                                damage: 0 //8-80 Base Damage
-                                //TODO: More damage depending on distance
+                                damage: 5 //3 Base Damage (x10 for max distance)
                             }
                         }
                     }]

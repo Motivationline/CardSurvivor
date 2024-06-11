@@ -1077,12 +1077,23 @@ var Script;
             targetMode: Script.ProjectileTargetMode.CLOSEST,
             rotateInDirection: true,
         },
-        "codecivilPlayer": {
-            damage: 1,
+        "codeCivilPlayer": {
+            damage: 3,
             speed: 20,
             sprite: ["projectile", "codecivil"],
             target: Script.ProjectileTarget.ENEMY,
-            targetMode: Script.ProjectileTargetMode.CLOSEST
+            targetMode: Script.ProjectileTargetMode.CLOSEST,
+            methods: {
+                afterSetup: function () {
+                    this.minDamage = this.damage;
+                    this.maxDamage = this.damage * 10;
+                    this.totalDistance = 0;
+                },
+                postMove: function (_frameTimeInSeconds) {
+                    this.totalDistance += this.speed * _frameTimeInSeconds;
+                    this.damage = Math.min(this.maxDamage, this.minDamage * (Math.max(1, this.totalDistance)));
+                }
+            }
         },
         "dividerPlayer": {
             damage: 1,
@@ -2005,8 +2016,7 @@ var Script;
                             cooldown: 3,
                             modifiers: {
                                 absolute: {
-                                    damage: 0 //3-30 Base Damage
-                                    //TODO: More damage depending on distance
+                                    damage: 0 //3 Base Damage (x10 for max distance)
                                 }
                             }
                         }]
@@ -2019,8 +2029,7 @@ var Script;
                             cooldown: 3,
                             modifiers: {
                                 absolute: {
-                                    damage: 0 //4-40 Base Damage
-                                    //TODO: More damage depending on distance
+                                    damage: 1 //3 Base Damage (x10 for max distance)
                                 }
                             }
                         }]
@@ -2033,8 +2042,7 @@ var Script;
                             cooldown: 2.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 0 //5-50 Base Damage
-                                    //TODO: More damage depending on distance
+                                    damage: 2 //3 Base Damage (x10 for max distance)
                                 }
                             }
                         }]
@@ -2047,8 +2055,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 0 //6-60 Base Damage
-                                    //TODO: More damage depending on distance
+                                    damage: 3 //3 Base Damage (x10 for max distance)
                                 }
                             }
                         }]
@@ -2061,8 +2068,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 0 //8-80 Base Damage
-                                    //TODO: More damage depending on distance
+                                    damage: 5 //3 Base Damage (x10 for max distance)
                                 }
                             }
                         }]
