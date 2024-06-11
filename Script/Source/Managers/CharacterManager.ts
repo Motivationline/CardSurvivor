@@ -21,6 +21,10 @@ namespace Script {
             this.movementVector = _direction;
         }
 
+        public getMovement() {
+            return this.movementVector;
+        }
+
         private update = () => {
             if (!this.#character) return;
             if (gameState === GAMESTATE.PAUSED) return;

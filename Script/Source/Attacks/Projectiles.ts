@@ -15,7 +15,7 @@ namespace Script {
             target: ProjectileTarget.PLAYER,
         },
         "anvilPlayer": {
-            damage: 10,
+            damage: 0,
             speed: 20,
             impact: [{
                 type: "aoe",
@@ -131,7 +131,15 @@ namespace Script {
             speed: 15,
             sprite: ["projectile", "chisel"],
             target: ProjectileTarget.ENEMY,
-            targetMode: ProjectileTargetMode.CLOSEST
+            targetMode: ProjectileTargetMode.CLOSEST,
+            rotateInDirection: true,
+        },
+        "needlePlayer": {
+            damage: 5,
+            speed: 0,
+            sprite: ["projectile", "needle"],
+            target: ProjectileTarget.ENEMY,
+            targetMode: ProjectileTargetMode.NONE,
         }
     }
 

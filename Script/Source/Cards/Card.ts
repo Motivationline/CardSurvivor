@@ -43,7 +43,11 @@ namespace Script {
             if (!this.levels[this.level].activeEffects || !this.levels[this.level].activeEffects.length) return;
             for (let effect of this.levels[this.level].activeEffects) {
                 if (isNaN(effect.currentCooldown)) effect.currentCooldown = effect.cooldown;
-                effect.currentCooldown -= _time;
+                if (effect.cooldownBasedOnDistance){
+                    effect.currentCooldown -= this.#charm.getMovement().magnitude * this.#charm.character.speed * _time;
+                } else {
+                    effect.currentCooldown -= _time;
+                }
                 if (effect.currentCooldown <= 0) {
                     effect.currentCooldown = this.#cm.modifyValuePlayer(effect.cooldown, PassiveCardEffect.COOLDOWN_REDUCTION, effect.modifiers);
                     switch (effect.type) {

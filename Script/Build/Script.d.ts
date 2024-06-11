@@ -72,6 +72,7 @@ declare namespace Script {
         get character(): Character;
         set character(_char: Character);
         setMovement(_direction: ƒ.Vector2): void;
+        getMovement(): ƒ.Vector2;
         private update;
         upgradeCards(_amountOverride?: number, _newCards?: boolean, _rerolls?: number): Promise<void>;
     }
@@ -150,6 +151,7 @@ declare namespace Script {
     interface ActiveCardEffectBase {
         cooldown?: number;
         currentCooldown?: number;
+        cooldownBasedOnDistance?: boolean;
         modifiers?: PassiveCardEffectObject;
     }
     export interface CardEffectProjectile extends ActiveCardEffectBase {
@@ -360,6 +362,7 @@ declare namespace Script {
         stunDuration: number;
         private hazardZone;
         private prevDistance;
+        private modifiers;
         private functions;
         protected static defaults: Projectile;
         constructor();
