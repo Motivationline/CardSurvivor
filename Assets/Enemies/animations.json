@@ -220,7 +220,7 @@
         "width": 256,
         "totalHeight": 1280,
         "totalWidth": 1280,
-        "wrapAfter": 6,
+        "wrapAfter": 5,
         "materialString": "Material|2024-06-11T15:07:42.173Z|90906"
       }
     }
