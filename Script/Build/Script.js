@@ -931,6 +931,10 @@ var Script;
             if (dir.magnitudeSquared > 0)
                 dir.normalize(Math.min(1, _frameTimeInSeconds) * this.speed);
             this.node.mtxLocal.translate(dir);
+            this.range -= dir.magnitude;
+            if (this.range < 0) {
+                this.remove();
+            }
             //TODO check if flew past target position (due to lag?) and still explode
             if (this.targetPosition) {
                 let distanceToTarget = Script.ƒ.Vector3.DIFFERENCE(this.targetPosition, this.node.mtxWorld.translation).magnitudeSquared;
