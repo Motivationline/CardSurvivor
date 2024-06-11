@@ -1002,7 +1002,7 @@ var Script;
             target: Script.ProjectileTarget.PLAYER,
         },
         "anvilPlayer": {
-            damage: 20,
+            damage: 10,
             speed: 20,
             impact: [{
                     type: "aoe",
@@ -1113,8 +1113,8 @@ var Script;
             }
         },
         "chiselPlayer": {
-            damage: 1,
-            speed: 20,
+            damage: 15,
+            speed: 15,
             sprite: ["projectile", "chisel"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.CLOSEST
@@ -1136,8 +1136,8 @@ var Script;
         },
         "anvilImpact": {
             variant: "explosion",
-            damage: 20,
-            size: 1,
+            damage: 10,
+            size: 1.5,
             sprite: ["aoe", "explosion"],
             duration: 1,
             target: Script.ProjectileTarget.ENEMY,
@@ -1586,7 +1586,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 0, //8 Base Damage
+                                    damage: 0,
                                     projectilePiercing: 2
                                 }
                             }
@@ -1600,7 +1600,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 4, //8 Base Damage
+                                    damage: 4,
                                     projectilePiercing: 2
                                 }
                             }
@@ -1614,7 +1614,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 4, //8 Base Damage
+                                    damage: 4,
                                     projectilePiercing: 2
                                 }
                             }
@@ -1628,7 +1628,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 7, //8 Base Damage
+                                    damage: 7,
                                     projectilePiercing: 3
                                 }
                             }
@@ -1642,7 +1642,7 @@ var Script;
                             cooldown: 1.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 7, //8 Base Damage
+                                    damage: 7,
                                     projectilePiercing: 4
                                 }
                             }
@@ -1679,7 +1679,7 @@ var Script;
                                     damage: 4 //10 Base Damage
                                 }
                             }
-                        }]
+                        }],
                 },
                 {
                     activeEffects: [{
@@ -1803,37 +1803,11 @@ var Script;
                     activeEffects: [{
                             type: "aoe",
                             aoe: "lightbulbPlayer",
-                            cooldown: 5,
+                            cooldown: 4,
                             modifiers: {
                                 absolute: {
-                                    damage: 0, //5 Base Damage
+                                    damage: 0,
                                     effectDuration: 0 //1 Base Duration
-                                }
-                            }
-                        }]
-                },
-                {
-                    activeEffects: [{
-                            type: "aoe",
-                            aoe: "lightbulbPlayer",
-                            cooldown: 5,
-                            modifiers: {
-                                absolute: {
-                                    damage: 1, //5 Base Damage
-                                    effectDuration: 0 //1 Base Duration
-                                }
-                            }
-                        }]
-                },
-                {
-                    activeEffects: [{
-                            type: "aoe",
-                            aoe: "lightbulbPlayer",
-                            cooldown: 5,
-                            modifiers: {
-                                absolute: {
-                                    damage: 1, //5 Base Damage
-                                    effectDuration: 0.5 //1 Base Duration
                                 }
                             }
                         }]
@@ -1845,8 +1819,9 @@ var Script;
                             cooldown: 4,
                             modifiers: {
                                 absolute: {
-                                    damage: 1, //5 Base Damage
-                                    effectDuration: 0.5 //1 Base Duration
+                                    damage: 1,
+                                    effectDuration: 0,
+                                    projectileSize: 1.1
                                 }
                             }
                         }]
@@ -1858,8 +1833,37 @@ var Script;
                             cooldown: 4,
                             modifiers: {
                                 absolute: {
-                                    damage: 3, //5 Base Damage
-                                    effectDuration: 1 //1 Base Duration
+                                    damage: 1,
+                                    effectDuration: 0.5,
+                                    projectileSize: 1.3
+                                }
+                            }
+                        }]
+                },
+                {
+                    activeEffects: [{
+                            type: "aoe",
+                            aoe: "lightbulbPlayer",
+                            cooldown: 3,
+                            modifiers: {
+                                absolute: {
+                                    damage: 1,
+                                    effectDuration: 0.5,
+                                    projectileSize: 1.5
+                                }
+                            }
+                        }]
+                },
+                {
+                    activeEffects: [{
+                            type: "aoe",
+                            aoe: "lightbulbPlayer",
+                            cooldown: 3,
+                            modifiers: {
+                                absolute: {
+                                    damage: 3,
+                                    effectDuration: 1,
+                                    projectileSize: 2
                                 }
                             }
                         }]
@@ -1949,7 +1953,7 @@ var Script;
                             cooldown: 3,
                             modifiers: {
                                 absolute: {
-                                    damage: 0, //5 Base Damage
+                                    damage: 0,
                                     projectilePiercing: 1
                                 }
                             }
@@ -1963,7 +1967,7 @@ var Script;
                             cooldown: 3,
                             modifiers: {
                                 absolute: {
-                                    damage: 3, //5 Base Damage
+                                    damage: 3,
                                     projectilePiercing: 1
                                 }
                             }
@@ -1977,7 +1981,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 3, //5 Base Damage
+                                    damage: 3,
                                     projectilePiercing: 1
                                 }
                             }
@@ -1991,7 +1995,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 5, //5 Base Damage
+                                    damage: 5,
                                     projectilePiercing: 2
                                 }
                             }
@@ -2005,7 +2009,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 5, //5 Base Damage
+                                    damage: 5,
                                     projectilePiercing: 3
                                 }
                             }
@@ -2098,7 +2102,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 0, //5 Base Damage
+                                    damage: 0,
                                     projectilePiercing: 3
                                 }
                             }
@@ -2112,7 +2116,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 2, //5 Base Damage
+                                    damage: 2,
                                     projectilePiercing: 3
                                 }
                             }
@@ -2126,7 +2130,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 2, //5 Base Damage
+                                    damage: 2,
                                     projectilePiercing: 3
                                 }
                             }
@@ -2140,7 +2144,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 3, //5 Base Damage
+                                    damage: 3,
                                     projectilePiercing: 4
                                 }
                             }
@@ -2154,7 +2158,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 5, //5 Base Damage
+                                    damage: 5,
                                     projectilePiercing: 6
                                 }
                             }
@@ -2172,7 +2176,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 5, //TODO: Leave a projectile every 5 units moved
+                            cooldown: 5,
                             modifiers: {
                                 absolute: {
                                     damage: 0, //5 Base Damage
@@ -2185,7 +2189,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 4, //TODO: Leave a projectile every 4 units moved
+                            cooldown: 4,
                             modifiers: {
                                 absolute: {
                                     damage: 1, //5 Base Damage
@@ -2198,7 +2202,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 4, //TODO: Leave a projectile every 4 units moved
+                            cooldown: 4,
                             modifiers: {
                                 absolute: {
                                     damage: 3, //5 Base Damage
@@ -2211,7 +2215,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 3, //TODO: Leave a projectile every 3 units moved
+                            cooldown: 3,
                             modifiers: {
                                 absolute: {
                                     damage: 3, //5 Base Damage
@@ -2224,7 +2228,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 2, //TODO: Leave a projectile every 2 units moved
+                            cooldown: 2,
                             modifiers: {
                                 absolute: {
                                     damage: 5, //5 Base Damage

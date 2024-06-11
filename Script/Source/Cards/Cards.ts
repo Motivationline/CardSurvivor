@@ -108,7 +108,7 @@ namespace Script {
                                 damage: 4 //10 Base Damage
                             }
                         }
-                    }]
+                    }],
                 },
                 { //Tier 3
                     activeEffects: [{
@@ -232,7 +232,7 @@ namespace Script {
                     activeEffects: [{
                         type: "aoe",
                         aoe: "lightbulbPlayer",
-                        cooldown: 5,
+                        cooldown: 4,
                         modifiers: {
                             absolute: {
                                 damage: 0, //5 Base Damage
@@ -245,11 +245,12 @@ namespace Script {
                     activeEffects: [{
                         type: "aoe",
                         aoe: "lightbulbPlayer",
-                        cooldown: 5,
+                        cooldown: 4,
                         modifiers: {
                             absolute: {
                                 damage: 1, //5 Base Damage
-                                effectDuration: 0 //1 Base Duration
+                                effectDuration: 0, //1 Base Duration
+                                projectileSize: 1.1
                             }
                         }
                     }]
@@ -258,11 +259,12 @@ namespace Script {
                     activeEffects: [{
                         type: "aoe",
                         aoe: "lightbulbPlayer",
-                        cooldown: 5,
+                        cooldown: 4,
                         modifiers: {
                             absolute: {
                                 damage: 1, //5 Base Damage
-                                effectDuration: 0.5 //1 Base Duration
+                                effectDuration: 0.5, //1 Base Duration
+                                projectileSize: 1.3
                             }
                         }
                     }]
@@ -271,11 +273,12 @@ namespace Script {
                     activeEffects: [{
                         type: "aoe",
                         aoe: "lightbulbPlayer",
-                        cooldown: 4,
+                        cooldown: 3,
                         modifiers: {
                             absolute: {
                                 damage: 1, //5 Base Damage
-                                effectDuration: 0.5 //1 Base Duration
+                                effectDuration: 0.5, //1 Base Duration
+                                projectileSize: 1.5
                             }
                         }
                     }]
@@ -284,11 +287,12 @@ namespace Script {
                     activeEffects: [{
                         type: "aoe",
                         aoe: "lightbulbPlayer",
-                        cooldown: 4,
+                        cooldown: 3,
                         modifiers: {
                             absolute: {
                                 damage: 3, //5 Base Damage
-                                effectDuration: 1 //1 Base Duration
+                                effectDuration: 1, //1 Base Duration
+                                projectileSize: 2
                             }
                         }
                     }]

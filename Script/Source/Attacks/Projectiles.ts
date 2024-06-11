@@ -15,7 +15,7 @@ namespace Script {
             target: ProjectileTarget.PLAYER,
         },
         "anvilPlayer": {
-            damage: 20,
+            damage: 10,
             speed: 20,
             impact: [{
                 type: "aoe",
@@ -127,8 +127,8 @@ namespace Script {
             }
         },
         "chiselPlayer": {
-            damage: 1,
-            speed: 20,
+            damage: 15,
+            speed: 15,
             sprite: ["projectile", "chisel"],
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.CLOSEST
@@ -152,8 +152,8 @@ namespace Script {
         },
         "anvilImpact": {
             variant: "explosion",
-            damage: 20,
-            size: 1,
+            damage: 10,
+            size: 1.5,
             sprite: ["aoe", "explosion"],
             duration: 1,
             target: ProjectileTarget.ENEMY,
