@@ -903,7 +903,7 @@ var Script;
                     // this.direction.add(ƒ.Vector3.SCALE(diff, (this.tracking.strength ?? 1) * Math.min(_frameTimeInSeconds, 1)));
                     let mgtSqrd = diff.magnitudeSquared;
                     if (this.tracking.stopTrackingAfter <= 0 || (mgtSqrd <= Math.pow(this.tracking.stopTrackingInRadius, 2) && mgtSqrd !== 0)) {
-                        console.log("stop tracking", this.tracking.stopTrackingAfter);
+                        // console.log("stop tracking", this.tracking.stopTrackingAfter)
                         // end of tracking
                         this.tracking = undefined;
                     }
@@ -1096,11 +1096,21 @@ var Script;
             }
         },
         "dividerPlayer": {
-            damage: 1,
-            speed: 20,
+            damage: 5,
+            speed: 10,
             sprite: ["projectile", "divider"],
             target: Script.ProjectileTarget.ENEMY,
-            targetMode: Script.ProjectileTargetMode.CLOSEST
+            targetMode: Script.ProjectileTargetMode.CLOSEST,
+            methods: {
+                afterSetup: function () {
+                    this.tracking = {
+                        target: Script.provider.get(Script.CharacterManager).character.node,
+                        startTrackingAfter: 0.5,
+                        stopTrackingAfter: 0.5,
+                        strength: 0.1,
+                    };
+                },
+            }
         },
         "chiselPlayer": {
             damage: 1,

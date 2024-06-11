@@ -150,7 +150,7 @@ namespace Script {
 
                     let mgtSqrd = diff.magnitudeSquared;
                     if (this.tracking.stopTrackingAfter <= 0 || (mgtSqrd <= Math.pow(this.tracking.stopTrackingInRadius, 2) && mgtSqrd !== 0)) {
-                        console.log("stop tracking", this.tracking.stopTrackingAfter,)
+                        // console.log("stop tracking", this.tracking.stopTrackingAfter)
                         // end of tracking
                         this.tracking = undefined;
                     }

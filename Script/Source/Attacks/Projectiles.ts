@@ -110,11 +110,21 @@ namespace Script {
             }
         },
         "dividerPlayer": {
-            damage: 1,
-            speed: 20,
+            damage: 5,
+            speed: 10,
             sprite: ["projectile", "divider"],
             target: ProjectileTarget.ENEMY,
-            targetMode: ProjectileTargetMode.CLOSEST
+            targetMode: ProjectileTargetMode.CLOSEST,
+            methods: {
+                afterSetup: function() {
+                    this.tracking = {
+                        target: provider.get(CharacterManager).character.node,
+                        startTrackingAfter: 0.5,
+                        stopTrackingAfter: 0.5,
+                        strength: 0.1,
+                    } satisfies ProjectileTracking
+                },
+            }
         },
         "chiselPlayer": {
             damage: 1,
