@@ -323,12 +323,12 @@
       },
       "divider": {
         "fps": 24,
-        "frames": 1,
+        "frames": 12,
         "height": 256,
         "width": 256,
-        "totalHeight": 256,
-        "totalWidth": 256,
-        "wrapAfter": 1,
+        "totalHeight": 1024,
+        "totalWidth": 1024,
+        "wrapAfter": 4,
         "materialString": "Material|2024-06-11T13:29:16.719Z|99245"
       }
 
