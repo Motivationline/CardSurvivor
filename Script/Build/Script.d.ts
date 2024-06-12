@@ -325,6 +325,7 @@ declare namespace Script {
         amount: number;
         duration: number;
         minEnemiesOverride?: number;
+        bonus?: PassiveCardEffectObject;
     }
     export {};
 }
@@ -663,7 +664,7 @@ declare namespace Script {
         private waitMs;
         private spawnWave;
         private getWave;
-        private getRoomModifier;
+        private getWaveModifier;
         private poolSelections;
         private getEnemyList;
         private spawnEnemy;

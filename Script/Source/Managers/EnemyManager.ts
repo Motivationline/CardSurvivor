@@ -288,7 +288,8 @@ namespace Script {
             }
 
             // update timer
-            this.timeElement.innerText = `room ${this.currentRoom} ends in: ${Math.floor(this.currentRoomEnd - currentTime)}ms - wave ${this.currentWave} ends in: ${Math.floor(this.currentWaveEnd - currentTime)}ms`;
+            // this.timeElement.innerText = `room ${this.currentRoom} ends in: ${Math.floor(this.currentRoomEnd - currentTime)}ms - wave ${this.currentWave} ends in: ${Math.floor(this.currentWaveEnd - currentTime)}ms`;
+            this.timeElement.innerText = `${Math.ceil((this.currentRoomEnd - currentTime) / 1000)}`;
 
         }
 
@@ -308,7 +309,12 @@ namespace Script {
                     this.currentXP -= 100;
                     await this.characterManager.upgradeCards();
                 }
-                await this.waitMs(3000);
+                this.timeElement.innerText = `3`;
+                await this.waitMs(1000);
+                this.timeElement.innerText = `2`;
+                await this.waitMs(1000);
+                this.timeElement.innerText = `1`;
+                await this.waitMs(1000);
                 this.nextRoom();
             }
         }
@@ -374,10 +380,11 @@ namespace Script {
             return rooms[_area][_room].waves?.[_wave] ?? rooms[_area][_room].defaultWave;
         }
 
-        private getRoomModifier(_area: string, _room: number): PassiveCardEffectObject | undefined {
+        private getWaveModifier(_area: string, _room: number, _wave: number): PassiveCardEffectObject | undefined {
             if (!rooms[_area]) return undefined;
             if (!rooms[_area][_room]) return undefined;
-            return rooms[_area][_room].bonus;
+            let wave = this.getWave(_area, _room, _wave);
+            return provider.get(CardManager).combineEffects(wave.bonus, rooms[_area][_room].bonus);
         }
 
         private poolSelections: string[] = [];
@@ -418,7 +425,7 @@ namespace Script {
             this.enemyNode.addChild(newEnemyGraphInstance);
             this.enemies.push(newEnemyGraphInstance);
             let enemyScript = newEnemyGraphInstance.getComponent(Enemy);
-            enemyScript.setup(enemies[_enemy], this.getRoomModifier(this.currentArea, this.currentRoom));
+            enemyScript.setup(enemies[_enemy], this.getWaveModifier(this.currentArea, this.currentRoom, this.currentWave));
             this.enemyScripts.push(enemyScript);
         }
 

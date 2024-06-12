@@ -131,6 +131,13 @@ progress::-webkit-progress-value {
   border-radius: 5vw;
 }
 
+#timer {
+  display: block;
+  text-align: center;
+  margin-top: 2vh;
+  font-size: 2rem;
+}
+
 #game-overlay-pause {
   pointer-events: all;
   position: absolute;
