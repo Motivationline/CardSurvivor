@@ -329,6 +329,28 @@ declare namespace Script {
     export {};
 }
 declare namespace Script {
+    import ƒ = FudgeCore;
+    class AOE extends Animateable implements AreaOfEffect {
+        duration: number;
+        events?: {
+            [name: string]: (_event?: CustomEvent<any>) => void;
+        };
+        targetMode?: ProjectileTargetMode;
+        size: number;
+        damage: number;
+        sprite: AnimationSprite | [string, string];
+        stunDuration: number;
+        variant: "aoe" | "explosion";
+        target: ProjectileTarget;
+        private rigidbody;
+        private defaults;
+        setup(_options: Partial<AreaOfEffect>, _modifier: PassiveCardEffectObject): void;
+        private explode;
+        update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
+        private eventListener;
+    }
+}
+declare namespace Script {
     class ProjectileComponent extends Animateable implements Projectile {
         tracking: ProjectileTracking;
         direction: ƒ.Vector3;
@@ -700,27 +722,5 @@ declare namespace Script {
         createAOE(_options: Partial<AreaOfEffect>, _position: ƒ.Vector3, _modifiers: PassiveCardEffectObject, _parent?: ƒ.Node): Promise<void>;
         createHitZone(_position: ƒ.Vector3, _size?: number, _parent?: ƒ.Node): Promise<HitZoneGraphInstance>;
         cleanup(): void;
-    }
-}
-declare namespace Script {
-    import ƒ = FudgeCore;
-    class AOE extends Animateable implements AreaOfEffect {
-        duration: number;
-        events?: {
-            [name: string]: (_event?: CustomEvent<any>) => void;
-        };
-        targetMode?: ProjectileTargetMode;
-        size: number;
-        damage: number;
-        sprite: AnimationSprite | [string, string];
-        stunDuration: number;
-        variant: "aoe" | "explosion";
-        target: ProjectileTarget;
-        private rigidbody;
-        private defaults;
-        setup(_options: Partial<AreaOfEffect>, _modifier: PassiveCardEffectObject): void;
-        private explode;
-        update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
-        private eventListener;
     }
 }

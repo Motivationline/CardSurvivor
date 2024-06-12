@@ -703,6 +703,77 @@ var Script;
     })(HitType = Script.HitType || (Script.HitType = {}));
     //#endregion
 })(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    class AOE extends Script.Animateable {
+        duration;
+        events;
+        targetMode;
+        size;
+        damage;
+        sprite;
+        stunDuration;
+        variant;
+        target;
+        rigidbody;
+        defaults = {
+            size: 1,
+            damage: 0,
+            sprite: ["aoe", "explosion"],
+            duration: 1,
+            variant: "explosion",
+            target: Script.ProjectileTarget.ENEMY,
+            stunDuration: 0,
+        };
+        setup(_options, _modifier) {
+            let cm = Script.provider.get(Script.CardManager);
+            _options = { ...this.defaults, ..._options };
+            this.size = cm.modifyValue(_options.size, Script.PassiveCardEffect.PROJECTILE_SIZE, _modifier);
+            this.damage = cm.modifyValue(_options.damage, Script.PassiveCardEffect.DAMAGE, _modifier);
+            this.variant = _options.variant;
+            this.stunDuration = cm.modifyValue(_options.stunDuration, Script.PassiveCardEffect.EFFECT_DURATION, _modifier);
+            this.duration = this.variant === "explosion" ? _options.duration : cm.modifyValue(_options.duration, Script.PassiveCardEffect.EFFECT_DURATION, _modifier);
+            this.targetMode = _options.targetMode;
+            this.target = _options.target;
+            this.events = _options.events;
+            this.sprite = this.getSprite(_options.sprite);
+            this.setCentralAnimator(this.sprite, true, this.eventListener);
+            this.node.mtxLocal.scaling = ƒ.Vector3.ONE(this.size);
+            this.rigidbody = this.node.getComponent(ƒ.ComponentRigidbody);
+            setTimeout(() => {
+                this.removeAnimationEventListeners();
+                Script.provider.get(Script.ProjectileManager).removeAOE(this);
+            }, this.duration * 1000);
+        }
+        // should be called through a timing listener
+        explode() {
+            if (this.variant !== "explosion")
+                return;
+            for (let collision of this.rigidbody.collisions) {
+                if (this.target === Script.ProjectileTarget.ENEMY && collision.node.name === "enemy") {
+                    collision.node.getComponent(Script.Enemy).hit({ damage: this.damage, stun: this.stunDuration, type: Script.HitType.AOE });
+                }
+                else if (this.target === Script.ProjectileTarget.PLAYER && collision.node.name === "character") {
+                    let char = Script.provider.get(Script.CharacterManager).character;
+                    char.hit({ damage: this.damage, stun: this.stunDuration, type: Script.HitType.AOE });
+                }
+            }
+        }
+        update(_charPosition, _frameTimeInSeconds) {
+            if (this.variant !== "aoe")
+                return;
+        }
+        eventListener = (_event) => {
+            if (!this.events)
+                return;
+            if (!this.events[_event.type])
+                return;
+            this.events[_event.type].call(this, _event);
+        };
+    }
+    Script.AOE = AOE;
+})(Script || (Script = {}));
 /// <reference path="../Types.ts" />
 /// <reference path="../Animateable.ts" />
 var Script;
@@ -5278,7 +5349,28 @@ var Script;
                     }
                 }
             },
-            // room 3
+            // room 5
+            {
+                duration: 35,
+                defaultWave: {
+                    enemies: [
+                        { pool: 0, weight: 8 },
+                        { pool: 1, weight: 2 },
+                    ],
+                    amount: 5,
+                    duration: 6,
+                    minEnemiesOverride: 2,
+                },
+                waveAmount: 6,
+                bonus: {
+                    multiplier: {
+                        health: 0.5,
+                        damage: 1,
+                        xp: 2,
+                    }
+                }
+            },
+            // room X
             {
                 duration: 40,
                 defaultWave: {
@@ -5929,76 +6021,5 @@ var Script;
         }
     }
     Script.ProjectileManager = ProjectileManager;
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
-    var ƒ = FudgeCore;
-    class AOE extends Script.Animateable {
-        duration;
-        events;
-        targetMode;
-        size;
-        damage;
-        sprite;
-        stunDuration;
-        variant;
-        target;
-        rigidbody;
-        defaults = {
-            size: 1,
-            damage: 0,
-            sprite: ["aoe", "explosion"],
-            duration: 1,
-            variant: "explosion",
-            target: Script.ProjectileTarget.ENEMY,
-            stunDuration: 0,
-        };
-        setup(_options, _modifier) {
-            let cm = Script.provider.get(Script.CardManager);
-            _options = { ...this.defaults, ..._options };
-            this.size = cm.modifyValue(_options.size, Script.PassiveCardEffect.PROJECTILE_SIZE, _modifier);
-            this.damage = cm.modifyValue(_options.damage, Script.PassiveCardEffect.DAMAGE, _modifier);
-            this.variant = _options.variant;
-            this.stunDuration = cm.modifyValue(_options.stunDuration, Script.PassiveCardEffect.EFFECT_DURATION, _modifier);
-            this.duration = this.variant === "explosion" ? _options.duration : cm.modifyValue(_options.duration, Script.PassiveCardEffect.EFFECT_DURATION, _modifier);
-            this.targetMode = _options.targetMode;
-            this.target = _options.target;
-            this.events = _options.events;
-            this.sprite = this.getSprite(_options.sprite);
-            this.setCentralAnimator(this.sprite, true, this.eventListener);
-            this.node.mtxLocal.scaling = ƒ.Vector3.ONE(this.size);
-            this.rigidbody = this.node.getComponent(ƒ.ComponentRigidbody);
-            setTimeout(() => {
-                this.removeAnimationEventListeners();
-                Script.provider.get(Script.ProjectileManager).removeAOE(this);
-            }, this.duration * 1000);
-        }
-        // should be called through a timing listener
-        explode() {
-            if (this.variant !== "explosion")
-                return;
-            for (let collision of this.rigidbody.collisions) {
-                if (this.target === Script.ProjectileTarget.ENEMY && collision.node.name === "enemy") {
-                    collision.node.getComponent(Script.Enemy).hit({ damage: this.damage, stun: this.stunDuration, type: Script.HitType.AOE });
-                }
-                else if (this.target === Script.ProjectileTarget.PLAYER && collision.node.name === "character") {
-                    let char = Script.provider.get(Script.CharacterManager).character;
-                    char.hit({ damage: this.damage, stun: this.stunDuration, type: Script.HitType.AOE });
-                }
-            }
-        }
-        update(_charPosition, _frameTimeInSeconds) {
-            if (this.variant !== "aoe")
-                return;
-        }
-        eventListener = (_event) => {
-            if (!this.events)
-                return;
-            if (!this.events[_event.type])
-                return;
-            this.events[_event.type].call(this, _event);
-        };
-    }
-    Script.AOE = AOE;
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map

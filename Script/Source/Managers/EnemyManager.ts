@@ -86,7 +86,28 @@ namespace Script {
                     }
                 }
             },
-            // room 3
+            // room 5
+            {
+                duration: 35,
+                defaultWave: {
+                    enemies: [
+                        { pool: 0, weight: 8 },
+                        { pool: 1, weight: 2 },
+                    ],
+                    amount: 5,
+                    duration: 6,
+                    minEnemiesOverride: 2,
+                },
+                waveAmount: 6,
+                bonus: {
+                    multiplier: {
+                        health: 0.5,
+                        damage: 1,
+                        xp: 2,
+                    }
+                }
+            },
+            // room X
             {
                 duration: 40,
                 defaultWave: {
