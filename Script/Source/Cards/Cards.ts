@@ -13,6 +13,7 @@ namespace Script {
                         projectile: "hammerPlayer",
                         amount: 1,
                         cooldown: 2,
+                        currentCooldown: 1,
                         modifiers: {
                             absolute: {
                                 damage: 0, //8 Base Damage
@@ -27,6 +28,7 @@ namespace Script {
                         projectile: "hammerPlayer",
                         amount: 1,
                         cooldown: 2,
+                        currentCooldown: 1,
                         modifiers: {
                             absolute: {
                                 damage: 4, //8 Base Damage
@@ -41,6 +43,7 @@ namespace Script {
                         projectile: "hammerPlayer",
                         amount: 2,
                         cooldown: 2,
+                        currentCooldown: 1,
                         modifiers: {
                             absolute: {
                                 damage: 4, //8 Base Damage
@@ -55,6 +58,7 @@ namespace Script {
                         projectile: "hammerPlayer",
                         amount: 2,
                         cooldown: 2,
+                        currentCooldown: 1,
                         modifiers: {
                             absolute: {
                                 damage: 7, //8 Base Damage
@@ -69,6 +73,7 @@ namespace Script {
                         projectile: "hammerPlayer",
                         amount: 2,
                         cooldown: 1.5,
+                        currentCooldown: 0.75,
                         modifiers: {
                             absolute: {
                                 damage: 7, //8 Base Damage
@@ -90,6 +95,7 @@ namespace Script {
                         projectile: "anvilPlayer",
                         amount: 1,
                         cooldown: 3,
+                        currentCooldown: 1.5,
                         modifiers: {
                             absolute: {
                                 damage: 0 //10 Base Damage
@@ -103,6 +109,7 @@ namespace Script {
                         projectile: "anvilPlayer",
                         amount: 1,
                         cooldown: 3,
+                        currentCooldown: 1.5,
                         modifiers: {
                             absolute: {
                                 damage: 4 //10 Base Damage
@@ -116,6 +123,7 @@ namespace Script {
                         projectile: "anvilPlayer",
                         amount: 2,
                         cooldown: 3,
+                        currentCooldown: 1.5,
                         modifiers: {
                             absolute: {
                                 damage: 4 //10 Base Damage
@@ -129,6 +137,7 @@ namespace Script {
                         projectile: "anvilPlayer",
                         amount: 2,
                         cooldown: 3,
+                        currentCooldown: 1.5,
                         modifiers: {
                             absolute: {
                                 damage: 10 //10 Base Damage
@@ -142,6 +151,7 @@ namespace Script {
                         projectile: "anvilPlayer",
                         amount: 3,
                         cooldown: 2,
+                        currentCooldown: 1,
                         modifiers: {
                             absolute: {
                                 damage: 10 //10 Base Damage
@@ -233,6 +243,7 @@ namespace Script {
                         type: "aoe",
                         aoe: "lightbulbPlayer",
                         cooldown: 4,
+                        currentCooldown: 2,
                         modifiers: {
                             absolute: {
                                 damage: 0, //5 Base Damage
@@ -246,6 +257,7 @@ namespace Script {
                         type: "aoe",
                         aoe: "lightbulbPlayer",
                         cooldown: 4,
+                        currentCooldown: 2,
                         modifiers: {
                             absolute: {
                                 damage: 1, //5 Base Damage
@@ -260,6 +272,7 @@ namespace Script {
                         type: "aoe",
                         aoe: "lightbulbPlayer",
                         cooldown: 4,
+                        currentCooldown: 2,
                         modifiers: {
                             absolute: {
                                 damage: 1, //5 Base Damage
@@ -274,6 +287,7 @@ namespace Script {
                         type: "aoe",
                         aoe: "lightbulbPlayer",
                         cooldown: 3,
+                        currentCooldown: 2,
                         modifiers: {
                             absolute: {
                                 damage: 1, //5 Base Damage
@@ -288,6 +302,7 @@ namespace Script {
                         type: "aoe",
                         aoe: "lightbulbPlayer",
                         cooldown: 3,
+                        currentCooldown: 2,
                         modifiers: {
                             absolute: {
                                 damage: 3, //5 Base Damage
@@ -309,6 +324,7 @@ namespace Script {
                         type: "aoe",
                         aoe: "smokeMaskPlayer",
                         cooldown: 2,
+                        currentCooldown: 1,
                         modifiers: {
                             absolute: {
                                 damage: 0 //2 Base Damage
@@ -321,6 +337,7 @@ namespace Script {
                         type: "aoe",
                         aoe: "smokeMaskPlayer",
                         cooldown: 2,
+                        currentCooldown: 1,
                         modifiers: {
                             absolute: {
                                 damage: 1 //2 Base Damage
@@ -333,6 +350,7 @@ namespace Script {
                         type: "aoe",
                         aoe: "smokeMaskPlayer",
                         cooldown: 1.5,
+                        currentCooldown: 0.75,
                         modifiers: {
                             absolute: {
                                 damage: 1 //2 Base Damage
@@ -345,6 +363,7 @@ namespace Script {
                         type: "aoe",
                         aoe: "smokeMaskPlayer",
                         cooldown: 1,
+                        currentCooldown: 0.5,
                         modifiers: {
                             absolute: {
                                 damage: 2 //2 Base Damage
@@ -357,6 +376,7 @@ namespace Script {
                         type: "aoe",
                         aoe: "smokeMaskPlayer",
                         cooldown: 1,
+                        currentCooldown: 0.5,
                         modifiers: {
                             absolute: {
                                 damage: 3, //2 Base Damage
@@ -380,6 +400,7 @@ namespace Script {
                         projectile: "discusPlayer",
                         amount: 1,
                         cooldown: 3,
+                        currentCooldown: 1,
                         modifiers: {
                             absolute: {
                                 damage: 0, //5 Base Damage
@@ -394,6 +415,7 @@ namespace Script {
                         projectile: "discusPlayer",
                         amount: 1,
                         cooldown: 3,
+                        currentCooldown: 1,
                         modifiers: {
                             absolute: {
                                 damage: 3, //5 Base Damage
@@ -408,6 +430,7 @@ namespace Script {
                         projectile: "discusPlayer",
                         amount: 1,
                         cooldown: 2,
+                        currentCooldown: 0.5,
                         modifiers: {
                             absolute: {
                                 damage: 3, //5 Base Damage
@@ -422,10 +445,14 @@ namespace Script {
                         projectile: "discusPlayer",
                         amount: 1,
                         cooldown: 2,
+                        currentCooldown: 0.5,
                         modifiers: {
                             absolute: {
                                 damage: 5, //5 Base Damage
                                 projectilePiercing: 2
+                            },
+                            multiplier: {
+                                projectileRange: 1.1,
                             }
                         }
                     }]
@@ -436,10 +463,14 @@ namespace Script {
                         projectile: "discusPlayer",
                         amount: 2,
                         cooldown: 2,
+                        currentCooldown: 0.5,
                         modifiers: {
                             absolute: {
                                 damage: 5, //5 Base Damage
-                                projectilePiercing: 3
+                                projectilePiercing: 3,
+                            },
+                            multiplier: {
+                                projectileRange: 1.2,
                             }
                         }
                     }]
@@ -457,6 +488,7 @@ namespace Script {
                         projectile: "codeCivilPlayer",
                         amount: 1,
                         cooldown: 3,
+                        currentCooldown: 1.5,
                         modifiers: {
                             absolute: {
                                 damage: 0 //3 Base Damage (x10 for max distance)
@@ -470,6 +502,7 @@ namespace Script {
                         projectile: "codeCivilPlayer",
                         amount: 1,
                         cooldown: 3,
+                        currentCooldown: 1.5,
                         modifiers: {
                             absolute: {
                                 damage: 1 //3 Base Damage (x10 for max distance)
@@ -483,6 +516,7 @@ namespace Script {
                         projectile: "codeCivilPlayer",
                         amount: 1,
                         cooldown: 2.5,
+                        currentCooldown: 1.25,
                         modifiers: {
                             absolute: {
                                 damage: 2 //3 Base Damage (x10 for max distance)
@@ -496,6 +530,7 @@ namespace Script {
                         projectile: "codeCivilPlayer",
                         amount: 1,
                         cooldown: 2,
+                        currentCooldown: 1,
                         modifiers: {
                             absolute: {
                                 damage: 3 //3 Base Damage (x10 for max distance)
@@ -509,6 +544,7 @@ namespace Script {
                         projectile: "codeCivilPlayer",
                         amount: 2,
                         cooldown: 2,
+                        currentCooldown: 1,
                         modifiers: {
                             absolute: {
                                 damage: 5 //3 Base Damage (x10 for max distance)
@@ -529,6 +565,7 @@ namespace Script {
                         projectile: "dividerPlayer",
                         amount: 1,
                         cooldown: 2,
+                        currentCooldown: 1,
                         modifiers: {
                             absolute: {
                                 damage: 0, //5 Base Damage
@@ -543,6 +580,7 @@ namespace Script {
                         projectile: "dividerPlayer",
                         amount: 1,
                         cooldown: 2,
+                        currentCooldown: 1,
                         modifiers: {
                             absolute: {
                                 damage: 2, //5 Base Damage
@@ -557,6 +595,7 @@ namespace Script {
                         projectile: "dividerPlayer",
                         amount: 2,
                         cooldown: 2,
+                        currentCooldown: 1,
                         modifiers: {
                             absolute: {
                                 damage: 2, //5 Base Damage
@@ -571,10 +610,14 @@ namespace Script {
                         projectile: "dividerPlayer",
                         amount: 2,
                         cooldown: 2,
+                        currentCooldown: 1,
                         modifiers: {
                             absolute: {
                                 damage: 3, //5 Base Damage
                                 projectilePiercing: 4
+                            },
+                            multiplier: {
+                                projectileRange: 1.1
                             }
                         }
                     }]
@@ -584,11 +627,15 @@ namespace Script {
                         type: "projectile",
                         projectile: "dividerPlayer",
                         amount: 2,
-                        cooldown: 2,
+                        cooldown: 1.5,
+                        currentCooldown: 0.75,
                         modifiers: {
                             absolute: {
                                 damage: 5, //5 Base Damage
                                 projectilePiercing: 6
+                            },
+                            multiplier: {
+                                projectileRange: 1.2
                             }
                         }
                     }]
@@ -606,6 +653,7 @@ namespace Script {
                         projectile: "needlePlayer",
                         amount: 1,
                         cooldown: 4, //TODO: Leave a projectile every 5 units moved
+                        currentCooldown: 2,
                         cooldownBasedOnDistance: true,
                         modifiers: {
                             absolute: {
@@ -620,6 +668,7 @@ namespace Script {
                         projectile: "needlePlayer",
                         amount: 1,
                         cooldown: 3.5, //TODO: Leave a projectile every 4 units moved
+                        currentCooldown: 1.75,
                         cooldownBasedOnDistance: true,
                         modifiers: {
                             absolute: {
@@ -634,6 +683,7 @@ namespace Script {
                         projectile: "needlePlayer",
                         amount: 1,
                         cooldown: 3, //TODO: Leave a projectile every 4 units moved
+                        currentCooldown: 1.5,
                         cooldownBasedOnDistance: true,
                         modifiers: {
                             absolute: {
@@ -648,6 +698,7 @@ namespace Script {
                         projectile: "needlePlayer",
                         amount: 1,
                         cooldown: 2, //TODO: Leave a projectile every 3 units moved
+                        currentCooldown: 1,
                         cooldownBasedOnDistance: true,
                         modifiers: {
                             absolute: {
@@ -662,6 +713,7 @@ namespace Script {
                         projectile: "needlePlayer",
                         amount: 1,
                         cooldown: 1, //TODO: Leave a projectile every 2 units moved
+                        currentCooldown: 0.5,
                         cooldownBasedOnDistance: true,
                         modifiers: {
                             absolute: {
@@ -683,6 +735,7 @@ namespace Script {
                         projectile: "chiselPlayer",
                         amount: 1,
                         cooldown: 2,
+                        currentCooldown: 1,
                         modifiers: {
                             absolute: {
                                 damage: 0, //15 Base Damage
@@ -696,6 +749,7 @@ namespace Script {
                         projectile: "chiselPlayer",
                         amount: 1,
                         cooldown: 2,
+                        currentCooldown: 1,
                         modifiers: {
                             absolute: {
                                 damage: 10, //15 Base Damage
@@ -709,6 +763,7 @@ namespace Script {
                         projectile: "chiselPlayer",
                         amount: 2,
                         cooldown: 2,
+                        currentCooldown: 1,
                         modifiers: {
                             absolute: {
                                 damage: 10, //15 Base Damage
@@ -722,6 +777,7 @@ namespace Script {
                         projectile: "chiselPlayer",
                         amount: 2,
                         cooldown: 2,
+                        currentCooldown: 1,
                         modifiers: {
                             absolute: {
                                 damage: 20, //15 Base Damage
@@ -735,6 +791,7 @@ namespace Script {
                         projectile: "chiselPlayer",
                         amount: 2,
                         cooldown: 1.5,
+                        currentCooldown: 0.75,
                         modifiers: {
                             absolute: {
                                 damage: 25, //15 Base Damage
