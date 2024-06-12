@@ -3,7 +3,7 @@ namespace Script {
         multiplier: {
             enemySize: 2,
             damage: 2,
-            health: 4,
+            health: 3,
             movementSpeed: 0.8,
             knockback: 0.1,
             xp: 5,
@@ -119,7 +119,7 @@ namespace Script {
                     }
                 }
             },
-            // room 5
+            // room 5 - ELITE
             {
                 duration: 40,
                 defaultWave: {
@@ -166,31 +166,29 @@ namespace Script {
                         { pool: 0, weight: 5 },
                         { pool: 1, weight: 5 },
                     ],
-                    amount: 10,
-                    duration: 10,
+                    amount: 6,
+                    duration: 8,
                     minEnemiesOverride: 2,
                 },
                 waveAmount: 6,
-                waves: [
-                    {
-                        enemies: [
-                            { pool: 2 },
-                        ],
-                        amount: 4,
-                        duration: 10,
+                bonus: {
+                    multiplier: {
+                        health: 1,
+                        damage: 1.2,
+                        xp: 1.2,
                     }
-                ],
+                }
             },
-            // room X
+            // room 7
             {
                 duration: 50,
                 defaultWave: {
                     enemies: [
-                        { pool: 0, weight: 55 },
-                        { pool: 1, weight: 25 },
-                        { pool: 2, weight: 20 },
+                        { pool: 0, weight: 5 },
+                        { pool: 1, weight: 3 },
+                        { pool: 2, weight: 2 },
                     ],
-                    amount: 10,
+                    amount: 8,
                     duration: 10,
                     minEnemiesOverride: 2,
                 },
@@ -200,12 +198,73 @@ namespace Script {
                         enemies: [
                             { pool: 2 },
                         ],
-                        amount: 4,
+                        amount: 2,
                         duration: 10,
+                    },
+                    {
+                        enemies: [
+                            { pool: 0, weight: 5 },
+                            { pool: 1, weight: 3 },
+                            { pool: 2, weight: 2 },
+                        ],
+                        amount: 8,
+                        duration: 10,
+                        minEnemiesOverride: 0,
                     }
                 ],
+                bonus: {
+                    multiplier: {
+                        health: 1.2,
+                        damage: 1.2,
+                        xp: 1,
+                    }
+                }
             },
-            // room 5
+            // room 8 - SCHWARM
+            {
+                duration: 50,
+                defaultWave: {
+                    enemies: [
+                        { pool: 0 },
+                    ],
+                    amount: 3,
+                    duration: 0.75,
+                    minEnemiesOverride: 2,
+                },
+                waveAmount: 75,
+                bonus: {
+                    multiplier: {
+                        health: 0.8,
+                        movementSpeed: 1.5,
+                        damage: 0.8,
+                        xp: 0.3,
+                        enemySize: 0.6,
+                    }
+                }
+            },
+            // room 9
+            {
+                duration: 55,
+                defaultWave: {
+                    enemies: [
+                        { pool: 0, weight: 3 },
+                        { pool: 1, weight: 4 },
+                        { pool: 2, weight: 3 },
+                    ],
+                    amount: 8,
+                    duration: 10,
+                    minEnemiesOverride: 2,
+                },
+                waveAmount: 7,
+                bonus: {
+                    multiplier: {
+                        health: 1.3,
+                        damage: 1.3,
+                        xp: 1,
+                    }
+                }
+            },
+            // room 10 - BOSS
             {
                 duration: 60,
                 boss: true,
@@ -217,15 +276,6 @@ namespace Script {
                 },
                 waveAmount: 1
             },
-            //room 6
-            {
-                duration: 60,
-                bonus: {
-                    multiplier: {
-                        health: 1.5,
-                    }
-                }
-            }
         ]
     }
 
