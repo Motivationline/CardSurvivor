@@ -24,7 +24,7 @@ namespace Script {
                 bonus: {
                     multiplier: {
                         health: 0.3,
-                        damage: 0.5,
+                        damage: 1,
                         xp: 5,
                     }
                 }
@@ -42,7 +42,7 @@ namespace Script {
                 bonus: {
                     multiplier: {
                         health: 0.3,
-                        damage: 0.6,
+                        damage: 1,
                         xp: 4,
                     }
                 }
@@ -81,7 +81,7 @@ namespace Script {
                 bonus: {
                     multiplier: {
                         health: 0.4,
-                        damage: 0.7,
+                        damage: 1,
                         xp: 3,
                     }
                 }
