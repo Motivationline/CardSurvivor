@@ -12,6 +12,7 @@ namespace Script {
         private currentlyDesiredDistance: [number, number] = [0, 0];
         private currentlyDesiredDistanceSquared: [number, number] = [0, 0];
         public dropXP: number = 0;
+        public size: number = 1;
 
         private enemyManager: EnemyManager;
         private prevDirection: number;
@@ -27,6 +28,7 @@ namespace Script {
             speed: 1,
             desiredDistance: [0, 0],
             dropXP: 1,
+            size: 1,
             health: 1,
             knockbackMultiplier: 1,
             moveSprite: {
@@ -72,6 +74,9 @@ namespace Script {
             this.moveSprite = this.getSprite(_options.moveSprite);
             this.setCentralAnimator(this.moveSprite);
             this.stunned = 0;
+            this.size = _options.size;
+            
+            this.node.mtxLocal.scaling = ƒ.Vector3.ONE(this.size);
         }
 
         private updateDesiredDistance(_distance: [number, number]) {
@@ -259,6 +264,7 @@ namespace Script {
         desiredDistance: [number, number];
         dropXP: number;
         directionOverride?: ƒ.Vector3;
+        size?: number;
     }
 
     export interface EnemyAttack {

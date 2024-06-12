@@ -884,6 +884,7 @@ var Script;
             if (this.tracking) {
                 this.tracking = { ...{ stopTrackingAfter: Infinity, stopTrackingInRadius: 0, strength: 1, startTrackingAfter: 0 }, ...this.tracking };
             }
+            this.node.getComponent(Script.ƒ.ComponentMesh).mtxPivot.rotation = new Script.ƒ.Vector3();
             if (this.functions.afterSetup) {
                 this.functions.afterSetup.call(this);
             }
@@ -1250,7 +1251,7 @@ var Script;
                 if (isNaN(effect.currentCooldown))
                     effect.currentCooldown = effect.cooldown;
                 if (effect.cooldownBasedOnDistance) {
-                    effect.currentCooldown -= this.#charm.getMovement().magnitude * this.#charm.character.speed * _time;
+                    effect.currentCooldown -= this.#charm.getMovement().magnitude * this.#cm.modifyValuePlayer(this.#charm.character.speed, Script.PassiveCardEffect.MOVEMENT_SPEED) * _time;
                 }
                 else {
                     effect.currentCooldown -= _time;
@@ -1635,7 +1636,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 0,
+                                    damage: 0, //8 Base Damage
                                     projectilePiercing: 2
                                 }
                             }
@@ -1649,7 +1650,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 4,
+                                    damage: 4, //8 Base Damage
                                     projectilePiercing: 2
                                 }
                             }
@@ -1663,7 +1664,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 4,
+                                    damage: 4, //8 Base Damage
                                     projectilePiercing: 2
                                 }
                             }
@@ -1677,7 +1678,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 7,
+                                    damage: 7, //8 Base Damage
                                     projectilePiercing: 3
                                 }
                             }
@@ -1691,7 +1692,7 @@ var Script;
                             cooldown: 1.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 7,
+                                    damage: 7, //8 Base Damage
                                     projectilePiercing: 4
                                 }
                             }
@@ -1855,7 +1856,7 @@ var Script;
                             cooldown: 4,
                             modifiers: {
                                 absolute: {
-                                    damage: 0,
+                                    damage: 0, //5 Base Damage
                                     effectDuration: 0 //1 Base Duration
                                 }
                             }
@@ -1868,8 +1869,8 @@ var Script;
                             cooldown: 4,
                             modifiers: {
                                 absolute: {
-                                    damage: 1,
-                                    effectDuration: 0,
+                                    damage: 1, //5 Base Damage
+                                    effectDuration: 0, //1 Base Duration
                                     projectileSize: 1.1
                                 }
                             }
@@ -1882,8 +1883,8 @@ var Script;
                             cooldown: 4,
                             modifiers: {
                                 absolute: {
-                                    damage: 1,
-                                    effectDuration: 0.5,
+                                    damage: 1, //5 Base Damage
+                                    effectDuration: 0.5, //1 Base Duration
                                     projectileSize: 1.3
                                 }
                             }
@@ -1896,8 +1897,8 @@ var Script;
                             cooldown: 3,
                             modifiers: {
                                 absolute: {
-                                    damage: 1,
-                                    effectDuration: 0.5,
+                                    damage: 1, //5 Base Damage
+                                    effectDuration: 0.5, //1 Base Duration
                                     projectileSize: 1.5
                                 }
                             }
@@ -1910,8 +1911,8 @@ var Script;
                             cooldown: 3,
                             modifiers: {
                                 absolute: {
-                                    damage: 3,
-                                    effectDuration: 1,
+                                    damage: 3, //5 Base Damage
+                                    effectDuration: 1, //1 Base Duration
                                     projectileSize: 2
                                 }
                             }
@@ -2002,7 +2003,7 @@ var Script;
                             cooldown: 3,
                             modifiers: {
                                 absolute: {
-                                    damage: 0,
+                                    damage: 0, //5 Base Damage
                                     projectilePiercing: 1
                                 }
                             }
@@ -2016,7 +2017,7 @@ var Script;
                             cooldown: 3,
                             modifiers: {
                                 absolute: {
-                                    damage: 3,
+                                    damage: 3, //5 Base Damage
                                     projectilePiercing: 1
                                 }
                             }
@@ -2030,7 +2031,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 3,
+                                    damage: 3, //5 Base Damage
                                     projectilePiercing: 1
                                 }
                             }
@@ -2044,7 +2045,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 5,
+                                    damage: 5, //5 Base Damage
                                     projectilePiercing: 2
                                 }
                             }
@@ -2058,7 +2059,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 5,
+                                    damage: 5, //5 Base Damage
                                     projectilePiercing: 3
                                 }
                             }
@@ -2151,7 +2152,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 0,
+                                    damage: 0, //5 Base Damage
                                     projectilePiercing: 3
                                 }
                             }
@@ -2165,7 +2166,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 2,
+                                    damage: 2, //5 Base Damage
                                     projectilePiercing: 3
                                 }
                             }
@@ -2179,7 +2180,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 2,
+                                    damage: 2, //5 Base Damage
                                     projectilePiercing: 3
                                 }
                             }
@@ -2193,7 +2194,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 3,
+                                    damage: 3, //5 Base Damage
                                     projectilePiercing: 4
                                 }
                             }
@@ -2207,7 +2208,7 @@ var Script;
                             cooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 5,
+                                    damage: 5, //5 Base Damage
                                     projectilePiercing: 6
                                 }
                             }
@@ -2225,7 +2226,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 4,
+                            cooldown: 4, //TODO: Leave a projectile every 5 units moved
                             cooldownBasedOnDistance: true,
                             modifiers: {
                                 absolute: {
@@ -2239,7 +2240,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 3.5,
+                            cooldown: 3.5, //TODO: Leave a projectile every 4 units moved
                             cooldownBasedOnDistance: true,
                             modifiers: {
                                 absolute: {
@@ -2253,7 +2254,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 3,
+                            cooldown: 3, //TODO: Leave a projectile every 4 units moved
                             cooldownBasedOnDistance: true,
                             modifiers: {
                                 absolute: {
@@ -2267,7 +2268,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 2,
+                            cooldown: 2, //TODO: Leave a projectile every 3 units moved
                             cooldownBasedOnDistance: true,
                             modifiers: {
                                 absolute: {
@@ -2281,7 +2282,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 1,
+                            cooldown: 1, //TODO: Leave a projectile every 2 units moved
                             cooldownBasedOnDistance: true,
                             modifiers: {
                                 absolute: {
@@ -4714,6 +4715,7 @@ var Script;
         currentlyDesiredDistance = [0, 0];
         currentlyDesiredDistanceSquared = [0, 0];
         dropXP = 0;
+        size = 1;
         enemyManager;
         prevDirection;
         currentlyActiveAttack;
@@ -4726,6 +4728,7 @@ var Script;
             speed: 1,
             desiredDistance: [0, 0],
             dropXP: 1,
+            size: 1,
             health: 1,
             knockbackMultiplier: 1,
             moveSprite: {
@@ -4768,6 +4771,8 @@ var Script;
             this.moveSprite = this.getSprite(_options.moveSprite);
             this.setCentralAnimator(this.moveSprite);
             this.stunned = 0;
+            this.size = _options.size;
+            this.node.mtxLocal.scaling = Script.ƒ.Vector3.ONE(this.size);
         }
         updateDesiredDistance(_distance) {
             this.currentlyDesiredDistance = _distance;

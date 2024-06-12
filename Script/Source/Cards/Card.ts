@@ -44,7 +44,7 @@ namespace Script {
             for (let effect of this.levels[this.level].activeEffects) {
                 if (isNaN(effect.currentCooldown)) effect.currentCooldown = effect.cooldown;
                 if (effect.cooldownBasedOnDistance){
-                    effect.currentCooldown -= this.#charm.getMovement().magnitude * this.#charm.character.speed * _time;
+                    effect.currentCooldown -= this.#charm.getMovement().magnitude * this.#cm.modifyValuePlayer(this.#charm.character.speed, PassiveCardEffect.MOVEMENT_SPEED) * _time;
                 } else {
                     effect.currentCooldown -= _time;
                 }
