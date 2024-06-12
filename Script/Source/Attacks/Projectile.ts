@@ -124,6 +124,8 @@ namespace Script {
                 this.tracking = { ...{ stopTrackingAfter: Infinity, stopTrackingInRadius: 0, strength: 1, startTrackingAfter: 0 }, ...this.tracking }
             }
 
+            this.node.getComponent(ƒ.ComponentMesh).mtxPivot.rotation = new ƒ.Vector3();
+
             if (this.functions.afterSetup) {
                 this.functions.afterSetup.call(this);
             }
