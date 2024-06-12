@@ -205,6 +205,22 @@
           }
         ]
       },
+      "toastexplosion": {
+        "fps": 24,
+        "frames": 30,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 1536,
+        "totalWidth": 1536,
+        "wrapAfter": 6,
+        "materialString": "Material|2024-06-12T14:01:45.293Z|92583",
+        "events": [
+          {
+            "frame": 2,
+            "event": "explode"
+          }
+        ]
+      },
       "lightbulb": {
         "fps": 24,
         "frames": 16,

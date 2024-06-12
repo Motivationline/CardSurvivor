@@ -423,6 +423,17 @@
               },
               {
                 "idResource": "Material|2024-05-14T12:52:38.980Z|47111"
+              },
+              {
+                "name": "ToastExplosion",
+                "entries": [
+                  {
+                    "idResource": "Material|2024-06-12T14:01:45.293Z|92583"
+                  },
+                  {
+                    "idResource": "TextureImage|2024-06-12T14:01:54.456Z|50006"
+                  }
+                ]
               }
             ]
           }

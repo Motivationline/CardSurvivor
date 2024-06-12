@@ -1165,8 +1165,8 @@ var Script;
         "toastImpact": {
             variant: "explosion",
             damage: 10,
-            size: 1,
-            sprite: ["aoe", "explosion"],
+            size: 2,
+            sprite: ["aoe", "toastexplosion"],
             duration: 1,
             target: Script.ProjectileTarget.PLAYER,
             events: {
@@ -1646,7 +1646,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 0,
+                                    damage: 0, //8 Base Damage
                                     projectilePiercing: 2
                                 }
                             }
@@ -1661,7 +1661,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 4,
+                                    damage: 4, //8 Base Damage
                                     projectilePiercing: 2
                                 }
                             }
@@ -1676,7 +1676,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 4,
+                                    damage: 4, //8 Base Damage
                                     projectilePiercing: 2
                                 }
                             }
@@ -1691,7 +1691,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 7,
+                                    damage: 7, //8 Base Damage
                                     projectilePiercing: 3
                                 }
                             }
@@ -1706,7 +1706,7 @@ var Script;
                             currentCooldown: 0.75,
                             modifiers: {
                                 absolute: {
-                                    damage: 7,
+                                    damage: 7, //8 Base Damage
                                     projectilePiercing: 4
                                 }
                             }
@@ -1876,7 +1876,7 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 0,
+                                    damage: 0, //5 Base Damage
                                     effectDuration: 0 //1 Base Duration
                                 }
                             }
@@ -1890,8 +1890,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 1,
-                                    effectDuration: 0,
+                                    damage: 1, //5 Base Damage
+                                    effectDuration: 0, //1 Base Duration
                                     projectileSize: 1.1
                                 }
                             }
@@ -1905,8 +1905,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 1,
-                                    effectDuration: 0.5,
+                                    damage: 1, //5 Base Damage
+                                    effectDuration: 0.5, //1 Base Duration
                                     projectileSize: 1.3
                                 }
                             }
@@ -1920,8 +1920,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 1,
-                                    effectDuration: 0.5,
+                                    damage: 1, //5 Base Damage
+                                    effectDuration: 0.5, //1 Base Duration
                                     projectileSize: 1.5
                                 }
                             }
@@ -1935,8 +1935,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 3,
-                                    effectDuration: 1,
+                                    damage: 3, //5 Base Damage
+                                    effectDuration: 1, //1 Base Duration
                                     projectileSize: 2
                                 }
                             }
@@ -2033,7 +2033,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 0,
+                                    damage: 0, //5 Base Damage
                                     projectilePiercing: 1
                                 }
                             }
@@ -2048,7 +2048,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 3,
+                                    damage: 3, //5 Base Damage
                                     projectilePiercing: 1
                                 }
                             }
@@ -2063,7 +2063,7 @@ var Script;
                             currentCooldown: 0.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 3,
+                                    damage: 3, //5 Base Damage
                                     projectilePiercing: 1
                                 }
                             }
@@ -2078,7 +2078,7 @@ var Script;
                             currentCooldown: 0.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 5,
+                                    damage: 5, //5 Base Damage
                                     projectilePiercing: 2
                                 },
                                 multiplier: {
@@ -2096,7 +2096,7 @@ var Script;
                             currentCooldown: 0.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 5,
+                                    damage: 5, //5 Base Damage
                                     projectilePiercing: 3,
                                 },
                                 multiplier: {
@@ -2198,7 +2198,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 0,
+                                    damage: 0, //5 Base Damage
                                     projectilePiercing: 3
                                 }
                             }
@@ -2213,7 +2213,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 2,
+                                    damage: 2, //5 Base Damage
                                     projectilePiercing: 3
                                 }
                             }
@@ -2228,7 +2228,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 2,
+                                    damage: 2, //5 Base Damage
                                     projectilePiercing: 3
                                 }
                             }
@@ -2243,7 +2243,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 3,
+                                    damage: 3, //5 Base Damage
                                     projectilePiercing: 4
                                 },
                                 multiplier: {
@@ -2261,7 +2261,7 @@ var Script;
                             currentCooldown: 0.75,
                             modifiers: {
                                 absolute: {
-                                    damage: 5,
+                                    damage: 5, //5 Base Damage
                                     projectilePiercing: 6
                                 },
                                 multiplier: {
@@ -2282,7 +2282,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 4,
+                            cooldown: 4, //TODO: Leave a projectile every 5 units moved
                             currentCooldown: 2,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2297,7 +2297,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 3.5,
+                            cooldown: 3.5, //TODO: Leave a projectile every 4 units moved
                             currentCooldown: 1.75,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2312,7 +2312,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 3,
+                            cooldown: 3, //TODO: Leave a projectile every 4 units moved
                             currentCooldown: 1.5,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2327,7 +2327,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 2,
+                            cooldown: 2, //TODO: Leave a projectile every 3 units moved
                             currentCooldown: 1,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2342,7 +2342,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 1,
+                            cooldown: 1, //TODO: Leave a projectile every 2 units moved
                             currentCooldown: 0.5,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -4778,6 +4778,251 @@ var Script;
         },
     };
 })(Script || (Script = {}));
+/// <reference path="../Animateable.ts" />
+var Script;
+/// <reference path="../Animateable.ts" />
+(function (Script) {
+    class Enemy extends Script.Animateable {
+        speed = 1;
+        damage = 1;
+        knockbackMultiplier = 1;
+        health = 1;
+        attacks = [];
+        moveSprite;
+        desiredDistance = [0, 0];
+        directionOverride;
+        currentlyDesiredDistance = [0, 0];
+        currentlyDesiredDistanceSquared = [0, 0];
+        dropXP = 0;
+        size = 1;
+        enemyManager;
+        prevDirection;
+        currentlyActiveAttack;
+        rigidbody;
+        touchingPlayer;
+        stunned = 0;
+        static defaults = {
+            attacks: [],
+            damage: 1,
+            speed: 1,
+            desiredDistance: [0, 0],
+            dropXP: 1,
+            size: 1,
+            health: 1,
+            knockbackMultiplier: 1,
+            moveSprite: {
+                fps: 1,
+                frames: 1,
+                height: 256,
+                width: 256,
+                totalHeight: 256,
+                totalWidth: 256,
+                wrapAfter: 1,
+            },
+            directionOverride: undefined,
+        };
+        constructor() {
+            super();
+            if (Script.ƒ.Project.mode === Script.ƒ.MODE.EDITOR)
+                return;
+            this.addEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.deserializedListener);
+        }
+        deserializedListener = () => {
+            this.removeEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.deserializedListener);
+            this.enemyManager = Script.provider.get(Script.EnemyManager);
+            this.rigidbody = this.node.getComponent(Script.ƒ.ComponentRigidbody);
+            this.rigidbody.effectGravity = 0;
+            this.rigidbody.effectRotation = new Script.ƒ.Vector3(0, 0, 0);
+            this.rigidbody.addEventListener("ColliderEnteredCollision" /* ƒ.EVENT_PHYSICS.COLLISION_ENTER */, this.onCollisionEnter);
+            this.rigidbody.addEventListener("ColliderLeftCollision" /* ƒ.EVENT_PHYSICS.COLLISION_EXIT */, this.onCollisionExit);
+        };
+        setup(_options, _modifier) {
+            _options = { ...Enemy.defaults, ..._options };
+            let cm = Script.provider.get(Script.CardManager);
+            this.speed = cm.modifyValue(_options.speed, Script.PassiveCardEffect.MOVEMENT_SPEED, _modifier);
+            this.damage = cm.modifyValue(_options.damage, Script.PassiveCardEffect.DAMAGE, _modifier);
+            this.knockbackMultiplier = cm.modifyValue(_options.knockbackMultiplier, Script.PassiveCardEffect.KNOCKBACK, _modifier);
+            this.health = cm.modifyValue(_options.health, Script.PassiveCardEffect.HEALTH, _modifier);
+            this.attacks = _options.attacks;
+            this.desiredDistance = _options.desiredDistance;
+            this.dropXP = cm.modifyValue(_options.dropXP, Script.PassiveCardEffect.XP, _modifier);
+            this.directionOverride = _options.directionOverride;
+            this.updateDesiredDistance(this.desiredDistance);
+            this.moveSprite = this.getSprite(_options.moveSprite);
+            this.setCentralAnimator(this.moveSprite);
+            this.stunned = 0;
+            this.size = cm.modifyValue(_options.size, Script.PassiveCardEffect.ENEMY_SIZE, _modifier);
+            this.node.mtxLocal.scaling = Script.ƒ.Vector3.ONE(this.size);
+        }
+        updateDesiredDistance(_distance) {
+            this.currentlyDesiredDistance = _distance;
+            this.currentlyDesiredDistanceSquared = [this.currentlyDesiredDistance[0] * this.currentlyDesiredDistance[0], this.currentlyDesiredDistance[1] * this.currentlyDesiredDistance[1]];
+        }
+        update(_charPosition, _frameTimeInSeconds) {
+            if (this.stunned > 0) {
+                this.stunned = Math.max(0, this.stunned - _frameTimeInSeconds);
+                if (this.stunned <= 0) {
+                    this.setCentralAnimator(this.moveSprite);
+                }
+                return;
+            }
+            // check distance to player
+            let diff = Script.ƒ.Vector3.DIFFERENCE(_charPosition, this.node.mtxLocal.translation);
+            let mgtSqrd = diff.magnitudeSquared;
+            if (this.currentlyActiveAttack && this.currentlyActiveAttack.movement && this.currentlyActiveAttack.started) {
+                this.currentlyActiveAttack.movement.call(this, diff, mgtSqrd, _charPosition, _frameTimeInSeconds);
+            }
+            else {
+                this.move(diff, mgtSqrd, _frameTimeInSeconds);
+            }
+            // if the enemy has special attacks and none are active, choose one
+            this.chooseAttack();
+            // if there is a currently active attack, execute it
+            this.executeAttack(mgtSqrd, _frameTimeInSeconds);
+        }
+        stun(_time) {
+            if (this.stunned <= 0) {
+                this.removeAnimationEventListeners();
+                let am = Script.provider.get(Script.AnimationManager);
+                if (this.uniqueAnimationId) {
+                    am.removeUniqueAnimationMtx(this.uniqueAnimationId);
+                    this.uniqueAnimationId = undefined;
+                }
+                let sa = new Script.SpriteAnimator(this.moveSprite, 0);
+                this.material.mtxPivot = sa.matrix;
+            }
+            this.stunned += _time;
+            this.currentlyActiveAttack = undefined;
+        }
+        move(_diff, _mgtSqrd, _frameTimeInSeconds) {
+            if (this.directionOverride) {
+                // do we have a movement override?
+                let direction = this.directionOverride.clone;
+                direction.normalize(this.speed);
+                //TODO: change to physics based movement
+                // this.node.mtxLocal.translate(direction, false);
+                this.rigidbody.setVelocity(direction);
+            }
+            else {
+                // normal movement
+                _diff.normalize(this.speed);
+                //move towards or away from player?
+                if (_mgtSqrd < this.currentlyDesiredDistanceSquared[0]) {
+                    // we're too close to the player, gotta move away
+                    _diff.scale(-1);
+                }
+                else if (_mgtSqrd > this.currentlyDesiredDistanceSquared[0] && _mgtSqrd < this.currentlyDesiredDistanceSquared[1]) {
+                    // we're in a good distance to the player, no need to move further
+                    _diff = Script.ƒ.Vector3.ZERO();
+                    //TODO: set idle animation
+                }
+                //TODO: change to physics based movement
+                // this.node.mtxLocal.translate(_diff, false);
+                this.rigidbody.setVelocity(_diff);
+            }
+            // rotate visually to face correct direction
+            let dir = Math.sign(_diff.x);
+            if (dir !== this.prevDirection && dir !== 0) {
+                this.prevDirection = dir;
+                if (this.prevDirection > 0) {
+                    this.node.getComponent(Script.ƒ.ComponentMesh).mtxPivot.rotation = new Script.ƒ.Vector3();
+                }
+                else if (this.prevDirection < 0) {
+                    this.node.getComponent(Script.ƒ.ComponentMesh).mtxPivot.rotation = new Script.ƒ.Vector3(0, 180, 0);
+                }
+            }
+            // are we touching the player?
+            if (this.touchingPlayer) {
+                let character = Script.provider.get(Script.CharacterManager).character;
+                // let mag = ƒ.Vector3.DIFFERENCE(character.node.mtxWorld.translation, this.node.mtxWorld.translation).magnitudeSquared;
+                // if (mag < 0.64 /* 0.8² (player hitbox size) TODO: update this if player or enemy size changes */)
+                character.hit({ damage: this.damage * _frameTimeInSeconds, type: Script.HitType.MELEE });
+                // console.log(this.rigidbody.collisions);
+            }
+        }
+        chooseAttack() {
+            if (this.currentlyActiveAttack || this.attacks.length === 0)
+                return;
+            this.currentlyActiveAttack = { ...this.attacks[Math.floor(Math.random() * this.attacks.length)] };
+            this.currentlyActiveAttack.started = false;
+            this.currentlyActiveAttack.done = false;
+            this.updateDesiredDistance(this.currentlyActiveAttack.requiredDistance);
+        }
+        executeAttack(_mgtSqrd, _frameTimeInSeconds) {
+            if (!this.currentlyActiveAttack)
+                return;
+            if (!this.currentlyActiveAttack.started) {
+                // attack hasn't started yet. should we start it?
+                if (_mgtSqrd > this.currentlyDesiredDistanceSquared[0] && _mgtSqrd < this.currentlyDesiredDistanceSquared[1]) {
+                    // start the attack
+                    this.currentlyActiveAttack.started = true;
+                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.attackSprite), true, this.eventListener);
+                }
+            }
+            if (this.currentlyActiveAttack.started) {
+                // attack is ongoingw
+                if (this.currentlyActiveAttack.windUp > 0) {
+                    // still preparing
+                    this.currentlyActiveAttack.windUp -= _frameTimeInSeconds;
+                }
+                else if (!this.currentlyActiveAttack.done) {
+                    // time to execute attack
+                    this.currentlyActiveAttack.done = true;
+                    this.currentlyActiveAttack.attack?.call(this);
+                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.cooldownSprite), true, this.eventListener);
+                }
+                else {
+                    //we're on cooldown now
+                    this.currentlyActiveAttack.cooldown -= _frameTimeInSeconds;
+                    if (this.currentlyActiveAttack.cooldown < 0) {
+                        // cooldown is up, we're ready to do something else
+                        this.currentlyActiveAttack = undefined;
+                        this.updateDesiredDistance(this.desiredDistance);
+                        this.setCentralAnimator(this.moveSprite);
+                    }
+                }
+            }
+        }
+        eventListener = (_event) => {
+            if (!this.currentlyActiveAttack.events)
+                return;
+            if (!this.currentlyActiveAttack.events[_event.type])
+                return;
+            this.currentlyActiveAttack.events[_event.type].call(this, _event);
+        };
+        onCollisionEnter = (_event) => {
+            if (_event.cmpRigidbody.node.name !== "character")
+                return;
+            this.touchingPlayer = true;
+        };
+        onCollisionExit = (_event) => {
+            if (_event.cmpRigidbody.node.name !== "character")
+                return;
+            this.touchingPlayer = false;
+        };
+        hit(_hit) {
+            this.health -= _hit.damage;
+            //display damage numbers
+            this.enemyManager.displayDamage(_hit.damage, this.node.mtxWorld.translation);
+            //TODO apply knockback
+            if (_hit.stun) {
+                this.stun(_hit.stun);
+            }
+            if (this.health > 0)
+                return _hit.damage;
+            this.enemyManager.removeEnemy(this);
+            this.removeAnimationEventListeners();
+            if (isFinite(_hit.damage)) {
+                this.enemyManager.addXP(this.dropXP);
+            }
+            else {
+                this.enemyManager.addXP(this.dropXP / 2);
+            }
+            return _hit.damage + this.health;
+        }
+    }
+    Script.Enemy = Enemy;
+})(Script || (Script = {}));
 var Script;
 (function (Script) {
     class AnimationManager {
@@ -5885,250 +6130,5 @@ var Script;
         }
     }
     Script.ProjectileManager = ProjectileManager;
-})(Script || (Script = {}));
-/// <reference path="../Animateable.ts" />
-var Script;
-/// <reference path="../Animateable.ts" />
-(function (Script) {
-    class Enemy extends Script.Animateable {
-        speed = 1;
-        damage = 1;
-        knockbackMultiplier = 1;
-        health = 1;
-        attacks = [];
-        moveSprite;
-        desiredDistance = [0, 0];
-        directionOverride;
-        currentlyDesiredDistance = [0, 0];
-        currentlyDesiredDistanceSquared = [0, 0];
-        dropXP = 0;
-        size = 1;
-        enemyManager;
-        prevDirection;
-        currentlyActiveAttack;
-        rigidbody;
-        touchingPlayer;
-        stunned = 0;
-        static defaults = {
-            attacks: [],
-            damage: 1,
-            speed: 1,
-            desiredDistance: [0, 0],
-            dropXP: 1,
-            size: 1,
-            health: 1,
-            knockbackMultiplier: 1,
-            moveSprite: {
-                fps: 1,
-                frames: 1,
-                height: 256,
-                width: 256,
-                totalHeight: 256,
-                totalWidth: 256,
-                wrapAfter: 1,
-            },
-            directionOverride: undefined,
-        };
-        constructor() {
-            super();
-            if (Script.ƒ.Project.mode === Script.ƒ.MODE.EDITOR)
-                return;
-            this.addEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.deserializedListener);
-        }
-        deserializedListener = () => {
-            this.removeEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.deserializedListener);
-            this.enemyManager = Script.provider.get(Script.EnemyManager);
-            this.rigidbody = this.node.getComponent(Script.ƒ.ComponentRigidbody);
-            this.rigidbody.effectGravity = 0;
-            this.rigidbody.effectRotation = new Script.ƒ.Vector3(0, 0, 0);
-            this.rigidbody.addEventListener("ColliderEnteredCollision" /* ƒ.EVENT_PHYSICS.COLLISION_ENTER */, this.onCollisionEnter);
-            this.rigidbody.addEventListener("ColliderLeftCollision" /* ƒ.EVENT_PHYSICS.COLLISION_EXIT */, this.onCollisionExit);
-        };
-        setup(_options, _modifier) {
-            _options = { ...Enemy.defaults, ..._options };
-            let cm = Script.provider.get(Script.CardManager);
-            this.speed = cm.modifyValue(_options.speed, Script.PassiveCardEffect.MOVEMENT_SPEED, _modifier);
-            this.damage = cm.modifyValue(_options.damage, Script.PassiveCardEffect.DAMAGE, _modifier);
-            this.knockbackMultiplier = cm.modifyValue(_options.knockbackMultiplier, Script.PassiveCardEffect.KNOCKBACK, _modifier);
-            this.health = cm.modifyValue(_options.health, Script.PassiveCardEffect.HEALTH, _modifier);
-            this.attacks = _options.attacks;
-            this.desiredDistance = _options.desiredDistance;
-            this.dropXP = cm.modifyValue(_options.dropXP, Script.PassiveCardEffect.XP, _modifier);
-            this.directionOverride = _options.directionOverride;
-            this.updateDesiredDistance(this.desiredDistance);
-            this.moveSprite = this.getSprite(_options.moveSprite);
-            this.setCentralAnimator(this.moveSprite);
-            this.stunned = 0;
-            this.size = cm.modifyValue(_options.size, Script.PassiveCardEffect.ENEMY_SIZE, _modifier);
-            this.node.mtxLocal.scaling = Script.ƒ.Vector3.ONE(this.size);
-        }
-        updateDesiredDistance(_distance) {
-            this.currentlyDesiredDistance = _distance;
-            this.currentlyDesiredDistanceSquared = [this.currentlyDesiredDistance[0] * this.currentlyDesiredDistance[0], this.currentlyDesiredDistance[1] * this.currentlyDesiredDistance[1]];
-        }
-        update(_charPosition, _frameTimeInSeconds) {
-            if (this.stunned > 0) {
-                this.stunned = Math.max(0, this.stunned - _frameTimeInSeconds);
-                if (this.stunned <= 0) {
-                    this.setCentralAnimator(this.moveSprite);
-                }
-                return;
-            }
-            // check distance to player
-            let diff = Script.ƒ.Vector3.DIFFERENCE(_charPosition, this.node.mtxLocal.translation);
-            let mgtSqrd = diff.magnitudeSquared;
-            if (this.currentlyActiveAttack && this.currentlyActiveAttack.movement && this.currentlyActiveAttack.started) {
-                this.currentlyActiveAttack.movement.call(this, diff, mgtSqrd, _charPosition, _frameTimeInSeconds);
-            }
-            else {
-                this.move(diff, mgtSqrd, _frameTimeInSeconds);
-            }
-            // if the enemy has special attacks and none are active, choose one
-            this.chooseAttack();
-            // if there is a currently active attack, execute it
-            this.executeAttack(mgtSqrd, _frameTimeInSeconds);
-        }
-        stun(_time) {
-            if (this.stunned <= 0) {
-                this.removeAnimationEventListeners();
-                let am = Script.provider.get(Script.AnimationManager);
-                if (this.uniqueAnimationId) {
-                    am.removeUniqueAnimationMtx(this.uniqueAnimationId);
-                    this.uniqueAnimationId = undefined;
-                }
-                let sa = new Script.SpriteAnimator(this.moveSprite, 0);
-                this.material.mtxPivot = sa.matrix;
-            }
-            this.stunned += _time;
-            this.currentlyActiveAttack = undefined;
-        }
-        move(_diff, _mgtSqrd, _frameTimeInSeconds) {
-            if (this.directionOverride) {
-                // do we have a movement override?
-                let direction = this.directionOverride.clone;
-                direction.normalize(this.speed);
-                //TODO: change to physics based movement
-                // this.node.mtxLocal.translate(direction, false);
-                this.rigidbody.setVelocity(direction);
-            }
-            else {
-                // normal movement
-                _diff.normalize(this.speed);
-                //move towards or away from player?
-                if (_mgtSqrd < this.currentlyDesiredDistanceSquared[0]) {
-                    // we're too close to the player, gotta move away
-                    _diff.scale(-1);
-                }
-                else if (_mgtSqrd > this.currentlyDesiredDistanceSquared[0] && _mgtSqrd < this.currentlyDesiredDistanceSquared[1]) {
-                    // we're in a good distance to the player, no need to move further
-                    _diff = Script.ƒ.Vector3.ZERO();
-                    //TODO: set idle animation
-                }
-                //TODO: change to physics based movement
-                // this.node.mtxLocal.translate(_diff, false);
-                this.rigidbody.setVelocity(_diff);
-            }
-            // rotate visually to face correct direction
-            let dir = Math.sign(_diff.x);
-            if (dir !== this.prevDirection && dir !== 0) {
-                this.prevDirection = dir;
-                if (this.prevDirection > 0) {
-                    this.node.getComponent(Script.ƒ.ComponentMesh).mtxPivot.rotation = new Script.ƒ.Vector3();
-                }
-                else if (this.prevDirection < 0) {
-                    this.node.getComponent(Script.ƒ.ComponentMesh).mtxPivot.rotation = new Script.ƒ.Vector3(0, 180, 0);
-                }
-            }
-            // are we touching the player?
-            if (this.touchingPlayer) {
-                let character = Script.provider.get(Script.CharacterManager).character;
-                // let mag = ƒ.Vector3.DIFFERENCE(character.node.mtxWorld.translation, this.node.mtxWorld.translation).magnitudeSquared;
-                // if (mag < 0.64 /* 0.8² (player hitbox size) TODO: update this if player or enemy size changes */)
-                character.hit({ damage: this.damage * _frameTimeInSeconds, type: Script.HitType.MELEE });
-                // console.log(this.rigidbody.collisions);
-            }
-        }
-        chooseAttack() {
-            if (this.currentlyActiveAttack || this.attacks.length === 0)
-                return;
-            this.currentlyActiveAttack = { ...this.attacks[Math.floor(Math.random() * this.attacks.length)] };
-            this.currentlyActiveAttack.started = false;
-            this.currentlyActiveAttack.done = false;
-            this.updateDesiredDistance(this.currentlyActiveAttack.requiredDistance);
-        }
-        executeAttack(_mgtSqrd, _frameTimeInSeconds) {
-            if (!this.currentlyActiveAttack)
-                return;
-            if (!this.currentlyActiveAttack.started) {
-                // attack hasn't started yet. should we start it?
-                if (_mgtSqrd > this.currentlyDesiredDistanceSquared[0] && _mgtSqrd < this.currentlyDesiredDistanceSquared[1]) {
-                    // start the attack
-                    this.currentlyActiveAttack.started = true;
-                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.attackSprite), true, this.eventListener);
-                }
-            }
-            if (this.currentlyActiveAttack.started) {
-                // attack is ongoingw
-                if (this.currentlyActiveAttack.windUp > 0) {
-                    // still preparing
-                    this.currentlyActiveAttack.windUp -= _frameTimeInSeconds;
-                }
-                else if (!this.currentlyActiveAttack.done) {
-                    // time to execute attack
-                    this.currentlyActiveAttack.done = true;
-                    this.currentlyActiveAttack.attack?.call(this);
-                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.cooldownSprite), true, this.eventListener);
-                }
-                else {
-                    //we're on cooldown now
-                    this.currentlyActiveAttack.cooldown -= _frameTimeInSeconds;
-                    if (this.currentlyActiveAttack.cooldown < 0) {
-                        // cooldown is up, we're ready to do something else
-                        this.currentlyActiveAttack = undefined;
-                        this.updateDesiredDistance(this.desiredDistance);
-                        this.setCentralAnimator(this.moveSprite);
-                    }
-                }
-            }
-        }
-        eventListener = (_event) => {
-            if (!this.currentlyActiveAttack.events)
-                return;
-            if (!this.currentlyActiveAttack.events[_event.type])
-                return;
-            this.currentlyActiveAttack.events[_event.type].call(this, _event);
-        };
-        onCollisionEnter = (_event) => {
-            if (_event.cmpRigidbody.node.name !== "character")
-                return;
-            this.touchingPlayer = true;
-        };
-        onCollisionExit = (_event) => {
-            if (_event.cmpRigidbody.node.name !== "character")
-                return;
-            this.touchingPlayer = false;
-        };
-        hit(_hit) {
-            this.health -= _hit.damage;
-            //display damage numbers
-            this.enemyManager.displayDamage(_hit.damage, this.node.mtxWorld.translation);
-            //TODO apply knockback
-            if (_hit.stun) {
-                this.stun(_hit.stun);
-            }
-            if (this.health > 0)
-                return _hit.damage;
-            this.enemyManager.removeEnemy(this);
-            this.removeAnimationEventListeners();
-            if (isFinite(_hit.damage)) {
-                this.enemyManager.addXP(this.dropXP);
-            }
-            else {
-                this.enemyManager.addXP(this.dropXP / 2);
-            }
-            return _hit.damage + this.health;
-        }
-    }
-    Script.Enemy = Enemy;
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map

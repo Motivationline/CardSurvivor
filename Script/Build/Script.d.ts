@@ -509,6 +509,81 @@ declare namespace Script {
     };
 }
 declare namespace Script {
+    class Enemy extends Animateable implements EnemyOptions, Hitable {
+        speed: number;
+        damage: number;
+        knockbackMultiplier: number;
+        health: number;
+        attacks: EnemyAttack[];
+        moveSprite: AnimationSprite;
+        desiredDistance: [number, number];
+        directionOverride: ƒ.Vector3;
+        private currentlyDesiredDistance;
+        private currentlyDesiredDistanceSquared;
+        dropXP: number;
+        size: number;
+        private enemyManager;
+        private prevDirection;
+        private currentlyActiveAttack;
+        private rigidbody;
+        private touchingPlayer;
+        private stunned;
+        private static defaults;
+        constructor();
+        protected deserializedListener: () => void;
+        setup(_options: Partial<EnemyOptions>, _modifier: PassiveCardEffectObject): void;
+        private updateDesiredDistance;
+        update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
+        stun(_time: number): void;
+        private move;
+        private chooseAttack;
+        private executeAttack;
+        private eventListener;
+        private onCollisionEnter;
+        private onCollisionExit;
+        hit(_hit: Hit): number;
+    }
+    interface EnemyOptions {
+        speed: number;
+        damage: number;
+        knockbackMultiplier: number;
+        health: number;
+        attacks: EnemyAttack[];
+        moveSprite: AnimationSprite | [string, string];
+        desiredDistance: [number, number];
+        dropXP: number;
+        directionOverride?: ƒ.Vector3;
+        size?: number;
+    }
+    interface EnemyAttack {
+        requiredDistance: [number, number];
+        windUp: number;
+        cooldown: number;
+        attackSprite?: AnimationSprite | [string, string];
+        cooldownSprite?: AnimationSprite | [string, string];
+        attack?: () => void;
+        movement?: (_diff: ƒ.Vector3, _mgtSqrd: number, _charPosition: ƒ.Vector3, _frameTimeInSeconds: number) => void;
+        events?: {
+            [name: string]: (_event?: CustomEvent) => void;
+        };
+    }
+    interface AnimationSprite {
+        width: number;
+        height: number;
+        totalWidth: number;
+        totalHeight: number;
+        frames: number;
+        fps: number;
+        wrapAfter: number;
+        material?: ƒ.Material;
+        events?: AnimationEvent[];
+    }
+    interface AnimationEvent {
+        frame: number;
+        event: string;
+    }
+}
+declare namespace Script {
     class AnimationManager {
         private readonly provider;
         private shared;
@@ -649,80 +724,5 @@ declare namespace Script {
         createAOE(_options: Partial<AreaOfEffect>, _position: ƒ.Vector3, _modifiers: PassiveCardEffectObject, _parent?: ƒ.Node): Promise<void>;
         createHitZone(_position: ƒ.Vector3, _size?: number, _parent?: ƒ.Node): Promise<HitZoneGraphInstance>;
         cleanup(): void;
-    }
-}
-declare namespace Script {
-    class Enemy extends Animateable implements EnemyOptions, Hitable {
-        speed: number;
-        damage: number;
-        knockbackMultiplier: number;
-        health: number;
-        attacks: EnemyAttack[];
-        moveSprite: AnimationSprite;
-        desiredDistance: [number, number];
-        directionOverride: ƒ.Vector3;
-        private currentlyDesiredDistance;
-        private currentlyDesiredDistanceSquared;
-        dropXP: number;
-        size: number;
-        private enemyManager;
-        private prevDirection;
-        private currentlyActiveAttack;
-        private rigidbody;
-        private touchingPlayer;
-        private stunned;
-        private static defaults;
-        constructor();
-        protected deserializedListener: () => void;
-        setup(_options: Partial<EnemyOptions>, _modifier: PassiveCardEffectObject): void;
-        private updateDesiredDistance;
-        update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
-        stun(_time: number): void;
-        private move;
-        private chooseAttack;
-        private executeAttack;
-        private eventListener;
-        private onCollisionEnter;
-        private onCollisionExit;
-        hit(_hit: Hit): number;
-    }
-    interface EnemyOptions {
-        speed: number;
-        damage: number;
-        knockbackMultiplier: number;
-        health: number;
-        attacks: EnemyAttack[];
-        moveSprite: AnimationSprite | [string, string];
-        desiredDistance: [number, number];
-        dropXP: number;
-        directionOverride?: ƒ.Vector3;
-        size?: number;
-    }
-    interface EnemyAttack {
-        requiredDistance: [number, number];
-        windUp: number;
-        cooldown: number;
-        attackSprite?: AnimationSprite | [string, string];
-        cooldownSprite?: AnimationSprite | [string, string];
-        attack?: () => void;
-        movement?: (_diff: ƒ.Vector3, _mgtSqrd: number, _charPosition: ƒ.Vector3, _frameTimeInSeconds: number) => void;
-        events?: {
-            [name: string]: (_event?: CustomEvent) => void;
-        };
-    }
-    interface AnimationSprite {
-        width: number;
-        height: number;
-        totalWidth: number;
-        totalHeight: number;
-        frames: number;
-        fps: number;
-        wrapAfter: number;
-        material?: ƒ.Material;
-        events?: AnimationEvent[];
-    }
-    interface AnimationEvent {
-        frame: number;
-        event: string;
     }
 }

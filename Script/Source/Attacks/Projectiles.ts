@@ -154,8 +154,8 @@ namespace Script {
         "toastImpact": {
             variant: "explosion",
             damage: 10,
-            size: 1,
-            sprite: ["aoe", "explosion"],
+            size: 2,
+            sprite: ["aoe", "toastexplosion"],
             duration: 1,
             target: ProjectileTarget.PLAYER,
             events: {
