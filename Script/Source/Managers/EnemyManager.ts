@@ -65,7 +65,7 @@ namespace Script {
                         enemies: [
                             { pool: 1 }
                         ],
-                        amount: 1,
+                        amount: 2,
                         duration: 10,
                     },
                     {
@@ -101,7 +101,7 @@ namespace Script {
                 waveAmount: 6,
                 bonus: {
                     multiplier: {
-                        health: 0.5,
+                        health: 0.6,
                         damage: 1,
                         xp: 2,
                     }
@@ -138,8 +138,38 @@ namespace Script {
                         minEnemiesOverride: 0,
                     }
                 ],
+                bonus: {
+                    multiplier: {
+                        health: 0.8,
+                        damage: 1,
+                        xp: 1.5,
+                    }
+                }
             },
             // room 6
+            {
+                duration: 45,
+                defaultWave: {
+                    enemies: [
+                        { pool: 0, weight: 5 },
+                        { pool: 1, weight: 5 },
+                    ],
+                    amount: 10,
+                    duration: 10,
+                    minEnemiesOverride: 2,
+                },
+                waveAmount: 6,
+                waves: [
+                    {
+                        enemies: [
+                            { pool: 2 },
+                        ],
+                        amount: 4,
+                        duration: 10,
+                    }
+                ],
+            },
+            // room X
             {
                 duration: 50,
                 defaultWave: {

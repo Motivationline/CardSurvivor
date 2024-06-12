@@ -3,7 +3,7 @@ namespace Script {
         microwave: {
             moveSprite: ["microwave", "move"],
             size: 0.9,
-            damage: 5,
+            damage: 10,
             desiredDistance: [0, 0],
             health: 15,
             speed: 0.8,
@@ -12,7 +12,7 @@ namespace Script {
         },
         chair: {
             moveSprite: ["chair", "move"],
-            damage: 4,
+            damage: 8,
             desiredDistance: [0, 0],
             health: 10,
             speed: 1.2,
@@ -29,7 +29,7 @@ namespace Script {
             attacks: [
                 {
                     cooldown: 2,
-                    requiredDistance: [2, 6],
+                    requiredDistance: [2, 5],
                     attackSprite: ["toaster", "attack"],
                     cooldownSprite: ["toaster", "idle"],
                     windUp: 1,
@@ -51,7 +51,7 @@ namespace Script {
         closet: {
             moveSprite: ["closet", "move"],
             size: 1.5,
-            damage: 30,
+            damage: 50,
             desiredDistance: [0, 0],
             health: 50,
             speed: 0.2,
@@ -61,7 +61,7 @@ namespace Script {
         motor: {
             moveSprite: ["motor", "move"],
             size: 1.1,
-            damage: 10,
+            damage: 20,
             desiredDistance: [0, 1],
             health: 25,
             speed: 2,
@@ -78,14 +78,14 @@ namespace Script {
         ventilator: {
             moveSprite: ["ventilator", "move"],
             size: 0.5,
-            damage: 2,
+            damage: 5,
             speed: 2,
             health: 4,
             dropXP: 0.5
         },
         mixer: {
             moveSprite: ["mixer", "move"],
-            damage: 20,
+            damage: 30,
             desiredDistance: [2, 3],
             health: 25,
             speed: 1.5,
