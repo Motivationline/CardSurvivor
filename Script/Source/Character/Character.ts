@@ -24,6 +24,7 @@ namespace Script {
         #layers: CharacterLayer[] = [];
         #healthElement: HTMLProgressElement;
         private prevDirection: number = 0;
+        private defaultMaxHealth = 100;
         health: number = 100;
         maxHealth: number = 100;
         private rigidbody: ƒ.ComponentRigidbody;
@@ -110,7 +111,16 @@ namespace Script {
             return 0;
         }
 
+        public updateMaxHealth() {
+            let newMax: number = this.cardManager.modifyValuePlayer(this.defaultMaxHealth, PassiveCardEffect.HEALTH);
+            let diff = newMax - this.maxHealth;
+            this.maxHealth = newMax;
+            this.health += Math.max(0, diff);
+            this.updateHealthVisually();
+        }
+
         public reset(){
+            this.maxHealth = this.defaultMaxHealth;
             this.health = this.maxHealth;
             this.updateHealthVisually();
             this.rigidbody.activate(false);

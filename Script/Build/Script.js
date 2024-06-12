@@ -4441,6 +4441,7 @@ var Script;
         #layers = [];
         #healthElement;
         prevDirection = 0;
+        defaultMaxHealth = 100;
         health = 100;
         maxHealth = 100;
         rigidbody;
@@ -4522,7 +4523,15 @@ var Script;
             // TODO: Game Over
             return 0;
         }
+        updateMaxHealth() {
+            let newMax = this.cardManager.modifyValuePlayer(this.defaultMaxHealth, Script.PassiveCardEffect.HEALTH);
+            let diff = newMax - this.maxHealth;
+            this.maxHealth = newMax;
+            this.health += Math.max(0, diff);
+            this.updateHealthVisually();
+        }
         reset() {
+            this.maxHealth = this.defaultMaxHealth;
             this.health = this.maxHealth;
             this.updateHealthVisually();
             this.rigidbody.activate(false);
@@ -5044,6 +5053,7 @@ var Script;
             }
             this.cumulativeEffects = this.combineEffects(...cardEffects);
             this.currentMaxActiveCardAmount = this.modifyValuePlayer(this.defaultMaxActiveCardAmount, Script.PassiveCardEffect.CARD_SLOTS);
+            Script.provider.get(Script.CharacterManager).character?.updateMaxHealth();
         }
         combineEffects(..._effects) {
             let combined = { absolute: {}, multiplier: {} };

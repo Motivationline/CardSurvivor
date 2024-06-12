@@ -50,6 +50,7 @@ namespace Script {
             this.cumulativeEffects = this.combineEffects(...cardEffects);
 
             this.currentMaxActiveCardAmount = this.modifyValuePlayer(this.defaultMaxActiveCardAmount, PassiveCardEffect.CARD_SLOTS);
+            provider.get(CharacterManager).character?.updateMaxHealth();
         }
 
         public combineEffects(..._effects: PassiveCardEffectObject[]): PassiveCardEffectObject {

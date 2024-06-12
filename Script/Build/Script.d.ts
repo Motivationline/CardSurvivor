@@ -462,6 +462,7 @@ declare namespace Script {
         #private;
         prevAnimation: AnimationState;
         private prevDirection;
+        private defaultMaxHealth;
         health: number;
         maxHealth: number;
         private rigidbody;
@@ -473,6 +474,7 @@ declare namespace Script {
         move(_direction: ƒ.Vector2, _time: number): void;
         update(_direction: ƒ.Vector2): void;
         hit(_hit: Hit): number;
+        updateMaxHealth(): void;
         reset(): void;
         private changeVisualDirection;
         private updateHealthVisually;
