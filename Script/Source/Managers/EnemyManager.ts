@@ -16,22 +16,47 @@ namespace Script {
                 duration: 20,
                 defaultWave: {
                     enemies: [{ pool: 0 }],
-                    amount: 5,
-                    duration: 4,
-                    minEnemiesOverride: 2,
+                    amount: 3,
+                    duration: 6,
+                    minEnemiesOverride: 1,
                 },
-                waveAmount: 6,
+                waveAmount: 4,
+                bonus: {
+                    multiplier: {
+                        health: 0.3,
+                        damage: 0.5,
+                        xp: 5,
+                    }
+                }
             },
             // room 2
+            {
+                duration: 25,
+                defaultWave: {
+                    enemies: [{ pool: 0 }],
+                    amount: 5,
+                    duration: 5,
+                    minEnemiesOverride: 2,
+                },
+                waveAmount: 5,
+                bonus: {
+                    multiplier: {
+                        health: 0.3,
+                        damage: 0.6,
+                        xp: 4,
+                    }
+                }
+            },
+            // room 3
             {
                 duration: 30,
                 defaultWave: {
                     enemies: [
-                        { pool: 0, weight: 6 },
-                        { pool: 1, weight: 4 },
+                        { pool: 0, weight: 9 },
+                        { pool: 1, weight: 1 },
                     ],
-                    amount: 6,
-                    duration: 5,
+                    amount: 5,
+                    duration: 6,
                     minEnemiesOverride: 2,
                 },
                 waveAmount: 6,
@@ -40,10 +65,26 @@ namespace Script {
                         enemies: [
                             { pool: 1 }
                         ],
-                        amount: 4,
+                        amount: 1,
                         duration: 10,
+                    },
+                    {
+                        enemies: [
+                            { pool: 0, weight: 9 },
+                            { pool: 1, weight: 1 },
+                        ],
+                        amount: 5,
+                        duration: 6,
+                        minEnemiesOverride: 0,
                     }
-                ]
+                ],
+                bonus: {
+                    multiplier: {
+                        health: 0.4,
+                        damage: 0.7,
+                        xp: 3,
+                    }
+                }
             },
             // room 3
             {
