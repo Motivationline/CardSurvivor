@@ -166,13 +166,13 @@
   "aoe": {
     "animations": {
       "explosion": {
-        "fps": 21,
-        "frames": 21,
+        "fps": 24,
+        "frames": 30,
         "height": 256,
         "width": 256,
-        "totalHeight": 1280,
-        "totalWidth": 1280,
-        "wrapAfter": 5,
+        "totalHeight": 1536,
+        "totalWidth": 1536,
+        "wrapAfter": 6,
         "materialString": "Material|2024-05-14T12:52:38.980Z|47111",
         "events": [
           {

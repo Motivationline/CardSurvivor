@@ -21,6 +21,7 @@ namespace Script {
                 type: "aoe",
                 aoe: "anvilImpact"
             }],
+            size: 0.7,
             sprite: ["projectile", "anvil"],
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.RANDOM,
@@ -166,7 +167,7 @@ namespace Script {
         "anvilImpact": {
             variant: "explosion",
             damage: 10,
-            size: 1.5,
+            size: 2.5,
             sprite: ["aoe", "explosion"],
             duration: 1,
             target: ProjectileTarget.ENEMY,
