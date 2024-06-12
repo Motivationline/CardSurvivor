@@ -75,7 +75,7 @@ namespace Script {
             this.moveSprite = this.getSprite(_options.moveSprite);
             this.setCentralAnimator(this.moveSprite);
             this.stunned = 0;
-            this.size = _options.size;
+            this.size = cm.modifyValue(_options.size, PassiveCardEffect.ENEMY_SIZE, _modifier);
             
             this.node.mtxLocal.scaling = ƒ.Vector3.ONE(this.size);
         }

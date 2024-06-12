@@ -59,6 +59,7 @@ namespace Script {
         CARD_UPGRADE_SLOTS = "cardUpgradeSlots",
         MOVEMENT_SPEED = "movementSpeed",
         XP = "xp",
+        ENEMY_SIZE = "enemySize",
     }
 
     export enum CardRarity {

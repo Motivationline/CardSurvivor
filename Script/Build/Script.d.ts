@@ -186,7 +186,8 @@ declare namespace Script {
         CARD_SLOTS = "cardSlots",
         CARD_UPGRADE_SLOTS = "cardUpgradeSlots",
         MOVEMENT_SPEED = "movementSpeed",
-        XP = "xp"
+        XP = "xp",
+        ENEMY_SIZE = "enemySize"
     }
     export enum CardRarity {
         COMMON = "common",

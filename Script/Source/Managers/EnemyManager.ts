@@ -1,4 +1,16 @@
 namespace Script {
+    const eliteModifier: PassiveCardEffectObject = {
+        multiplier: {
+            enemySize: 2,
+            damage: 2,
+            health: 4,
+            movementSpeed: 0.8,
+            knockback: 0.1,
+            xp: 5,
+        }
+    }
+
+
     const pools: Pools = {
         "electronics": [
             ["microwave", "chair"],
@@ -339,6 +351,7 @@ namespace Script {
                     this.currentXP -= 100;
                     await this.characterManager.upgradeCards();
                 }
+                this.addXP(0);
                 this.timeElement.innerText = `3`;
                 await this.waitMs(1000);
                 this.timeElement.innerText = `2`;
@@ -387,7 +400,7 @@ namespace Script {
 
             let { totalWeight, enemies, elites } = this.getEnemyList(wave);
             for (let elite of elites) {
-                this.spawnEnemy(elite);
+                this.spawnEnemy(elite, undefined, true);
             }
             for (let i = 0; i < wave.amount; i++) {
                 let x = Math.random() * totalWeight;
@@ -445,7 +458,7 @@ namespace Script {
             return { totalWeight, enemies, elites };
         }
 
-        private async spawnEnemy(_enemy: string, _relativePosition: ƒ.Vector3 = ƒ.Vector3.NORMALIZATION(new ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), 5)) {
+        private async spawnEnemy(_enemy: string, _relativePosition: ƒ.Vector3 = ƒ.Vector3.NORMALIZATION(new ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), 5), _elite: boolean = false) {
             let newEnemyGraphInstance = ƒ.Recycler.get(EnemyGraphInstance);
             if (!newEnemyGraphInstance.initialized) {
                 await newEnemyGraphInstance.set(this.enemyGraph);
@@ -455,7 +468,9 @@ namespace Script {
             this.enemyNode.addChild(newEnemyGraphInstance);
             this.enemies.push(newEnemyGraphInstance);
             let enemyScript = newEnemyGraphInstance.getComponent(Enemy);
-            enemyScript.setup(enemies[_enemy], this.getWaveModifier(this.currentArea, this.currentRoom, this.currentWave));
+            let modifier = this.getWaveModifier(this.currentArea, this.currentRoom, this.currentWave);
+            if (_elite) modifier = provider.get(CardManager).combineEffects(eliteModifier, modifier);
+            enemyScript.setup(enemies[_enemy], modifier);
             this.enemyScripts.push(enemyScript);
         }
 
