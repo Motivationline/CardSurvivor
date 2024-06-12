@@ -278,13 +278,14 @@ namespace Script {
             provider.get(ProjectileManager).cleanup();
             console.log(`Room ${this.currentRoom} done. Press N to continue.`);
             ƒ.Time.game.setScale(0);
-            
-            if(!_cleanup){
+
+            if (!_cleanup) {
                 // collect XP
-                while(this.currentXP >= 100){
+                while (this.currentXP >= 100) {
                     this.currentXP -= 100;
                     await this.characterManager.upgradeCards();
                 }
+                await this.waitMs(3000);
                 this.nextRoom();
             }
         }
@@ -307,6 +308,12 @@ namespace Script {
             if (room.reward) {
                 //TODO spawn reward stuff
             }
+        }
+
+        private async waitMs(_ms: number): Promise<void> {
+            return new Promise((resolve) => {
+                setTimeout(resolve, _ms);
+            });
         }
 
 
@@ -345,8 +352,8 @@ namespace Script {
         }
 
         private getRoomModifier(_area: string, _room: number): PassiveCardEffectObject | undefined {
-            if(!rooms[_area]) return undefined;
-            if(!rooms[_area][_room]) return undefined;
+            if (!rooms[_area]) return undefined;
+            if (!rooms[_area][_room]) return undefined;
             return rooms[_area][_room].bonus;
         }
 
