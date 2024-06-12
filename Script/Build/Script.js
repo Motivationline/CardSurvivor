@@ -672,6 +672,7 @@ var Script;
         PassiveCardEffect["CARD_SLOTS"] = "cardSlots";
         PassiveCardEffect["CARD_UPGRADE_SLOTS"] = "cardUpgradeSlots";
         PassiveCardEffect["MOVEMENT_SPEED"] = "movementSpeed";
+        PassiveCardEffect["XP"] = "xp";
     })(PassiveCardEffect = Script.PassiveCardEffect || (Script.PassiveCardEffect = {}));
     let CardRarity;
     (function (CardRarity) {
@@ -4766,15 +4767,16 @@ var Script;
             this.rigidbody.addEventListener("ColliderEnteredCollision" /* ƒ.EVENT_PHYSICS.COLLISION_ENTER */, this.onCollisionEnter);
             this.rigidbody.addEventListener("ColliderLeftCollision" /* ƒ.EVENT_PHYSICS.COLLISION_EXIT */, this.onCollisionExit);
         };
-        setup(_options) {
+        setup(_options, _modifier) {
             _options = { ...Enemy.defaults, ..._options };
-            this.speed = _options.speed;
-            this.damage = _options.damage;
-            this.knockbackMultiplier = _options.knockbackMultiplier;
-            this.health = _options.health;
+            let cm = Script.provider.get(Script.CardManager);
+            this.speed = cm.modifyValue(_options.speed, Script.PassiveCardEffect.MOVEMENT_SPEED, _modifier);
+            this.damage = cm.modifyValue(_options.damage, Script.PassiveCardEffect.DAMAGE, _modifier);
+            this.knockbackMultiplier = cm.modifyValue(_options.knockbackMultiplier, Script.PassiveCardEffect.KNOCKBACK, _modifier);
+            this.health = cm.modifyValue(_options.health, Script.PassiveCardEffect.HEALTH, _modifier);
             this.attacks = _options.attacks;
             this.desiredDistance = _options.desiredDistance;
-            this.dropXP = _options.dropXP;
+            this.dropXP = cm.modifyValue(_options.dropXP, Script.PassiveCardEffect.XP, _modifier);
             this.directionOverride = _options.directionOverride;
             this.updateDesiredDistance(this.desiredDistance);
             this.moveSprite = this.getSprite(_options.moveSprite);
@@ -5314,7 +5316,7 @@ var Script;
                 duration: 60,
                 bonus: {
                     multiplier: {
-                        health: 1.5
+                        health: 1.5,
                     }
                 }
             }
@@ -5480,6 +5482,13 @@ var Script;
                 return undefined;
             return rooms[_area][_room].waves?.[_wave] ?? rooms[_area][_room].defaultWave;
         }
+        getRoomModifier(_area, _room) {
+            if (!rooms[_area])
+                return undefined;
+            if (!rooms[_area][_room])
+                return undefined;
+            return rooms[_area][_room].bonus;
+        }
         poolSelections = [];
         getEnemyList(_wave) {
             let totalWeight = 0;
@@ -5517,7 +5526,7 @@ var Script;
             this.enemyNode.addChild(newEnemyGraphInstance);
             this.enemies.push(newEnemyGraphInstance);
             let enemyScript = newEnemyGraphInstance.getComponent(Script.Enemy);
-            enemyScript.setup(Script.enemies[_enemy]);
+            enemyScript.setup(Script.enemies[_enemy], this.getRoomModifier(this.currentArea, this.currentRoom));
             this.enemyScripts.push(enemyScript);
         }
         debugEvents = (_event) => {

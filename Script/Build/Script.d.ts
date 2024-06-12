@@ -185,7 +185,8 @@ declare namespace Script {
         DAMAGE_REDUCTION = "damageReduction",
         CARD_SLOTS = "cardSlots",
         CARD_UPGRADE_SLOTS = "cardUpgradeSlots",
-        MOVEMENT_SPEED = "movementSpeed"
+        MOVEMENT_SPEED = "movementSpeed",
+        XP = "xp"
     }
     export enum CardRarity {
         COMMON = "common",
@@ -522,7 +523,7 @@ declare namespace Script {
         private static defaults;
         constructor();
         protected deserializedListener: () => void;
-        setup(_options: Partial<EnemyOptions>): void;
+        setup(_options: Partial<EnemyOptions>, _modifier: PassiveCardEffectObject): void;
         private updateDesiredDistance;
         update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
         stun(_time: number): void;
@@ -655,6 +656,7 @@ declare namespace Script {
         nextRoom(): void;
         private spawnWave;
         private getWave;
+        private getRoomModifier;
         private poolSelections;
         private getEnemyList;
         private spawnEnemy;

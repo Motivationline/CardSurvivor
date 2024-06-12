@@ -116,7 +116,7 @@ namespace Script {
                 duration: 60,
                 bonus: {
                     multiplier: {
-                        health: 1.5
+                        health: 1.5,
                     }
                 }
             }
@@ -303,6 +303,12 @@ namespace Script {
             return rooms[_area][_room].waves?.[_wave] ?? rooms[_area][_room].defaultWave;
         }
 
+        private getRoomModifier(_area: string, _room: number): PassiveCardEffectObject | undefined {
+            if(!rooms[_area]) return undefined;
+            if(!rooms[_area][_room]) return undefined;
+            return rooms[_area][_room].bonus;
+        }
+
         private poolSelections: string[] = [];
         private getEnemyList(_wave: Wave): { totalWeight: number, enemies: { name: string, weight: number }[], elites: string[] } {
             let totalWeight = 0;
@@ -341,7 +347,7 @@ namespace Script {
             this.enemyNode.addChild(newEnemyGraphInstance);
             this.enemies.push(newEnemyGraphInstance);
             let enemyScript = newEnemyGraphInstance.getComponent(Enemy);
-            enemyScript.setup(enemies[_enemy]);
+            enemyScript.setup(enemies[_enemy], this.getRoomModifier(this.currentArea, this.currentRoom));
             this.enemyScripts.push(enemyScript);
         }
 

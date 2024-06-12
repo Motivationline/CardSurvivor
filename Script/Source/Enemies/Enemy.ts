@@ -60,15 +60,16 @@ namespace Script {
             this.rigidbody.addEventListener(ƒ.EVENT_PHYSICS.COLLISION_EXIT, this.onCollisionExit);
         }
 
-        setup(_options: Partial<EnemyOptions>) {
+        setup(_options: Partial<EnemyOptions>, _modifier: PassiveCardEffectObject) {
             _options = { ...Enemy.defaults, ..._options };
-            this.speed = _options.speed;
-            this.damage = _options.damage;
-            this.knockbackMultiplier = _options.knockbackMultiplier;
-            this.health = _options.health;
+            let cm = provider.get(CardManager);
+            this.speed = cm.modifyValue(_options.speed, PassiveCardEffect.MOVEMENT_SPEED, _modifier);
+            this.damage = cm.modifyValue(_options.damage, PassiveCardEffect.DAMAGE, _modifier);
+            this.knockbackMultiplier = cm.modifyValue(_options.knockbackMultiplier, PassiveCardEffect.KNOCKBACK, _modifier);
+            this.health = cm.modifyValue(_options.health, PassiveCardEffect.HEALTH, _modifier);
             this.attacks = _options.attacks;
             this.desiredDistance = _options.desiredDistance;
-            this.dropXP = _options.dropXP;
+            this.dropXP = cm.modifyValue(_options.dropXP, PassiveCardEffect.XP, _modifier);
             this.directionOverride = _options.directionOverride;
             this.updateDesiredDistance(this.desiredDistance);
             this.moveSprite = this.getSprite(_options.moveSprite);
