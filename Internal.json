@@ -176,7 +176,7 @@
                                 "pivot": {
                                   "translation": "[0, 0, 0]",
                                   "rotation": "[0, 0, 0]",
-                                  "scaling": "[100, 1, 1]"
+                                  "scaling": "[26.000000000000014, 1, 1]"
                                 },
                                 "Component": {
                                   "active": true
@@ -188,7 +188,7 @@
                             {
                               "ƒ.ComponentTransform": {
                                 "local": {
-                                  "translation": "[0, 37.50000762939453, 0]",
+                                  "translation": "[0, 7.500007629394531, 0]",
                                   "rotation": "[0, 0, 0]",
                                   "scaling": "[1, 1, 1]"
                                 },
@@ -232,7 +232,7 @@
                                 "pivot": {
                                   "translation": "[0, 0]",
                                   "rotation": 0,
-                                  "scaling": "[25, 1]"
+                                  "scaling": "[6, 1]"
                                 },
                                 "Component": {
                                   "active": true
@@ -255,9 +255,9 @@
                               "ƒ.ComponentMesh": {
                                 "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
                                 "pivot": {
-                                  "translation": "[0, 0, 0]",
+                                  "translation": "[0, 0, 0.2]",
                                   "rotation": "[0, 0, 0]",
-                                  "scaling": "[100, 1, 1]"
+                                  "scaling": "[26, 1, 1]"
                                 },
                                 "Component": {
                                   "active": true
@@ -269,7 +269,7 @@
                             {
                               "ƒ.ComponentTransform": {
                                 "local": {
-                                  "translation": "[0, -37.499996185302734, 0]",
+                                  "translation": "[0, -7.799996185302733, 0]",
                                   "rotation": "[0, 0, 0]",
                                   "scaling": "[1, 1, 1]"
                                 },
@@ -313,7 +313,7 @@
                                 "pivot": {
                                   "translation": "[0, 0]",
                                   "rotation": 0,
-                                  "scaling": "[25, 1]"
+                                  "scaling": "[6, 1]"
                                 },
                                 "Component": {
                                   "active": true
@@ -336,9 +336,9 @@
                               "ƒ.ComponentMesh": {
                                 "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
                                 "pivot": {
-                                  "translation": "[0, 0, 0]",
+                                  "translation": "[0, 0, -0.01]",
                                   "rotation": "[0, 0, 0]",
-                                  "scaling": "[1, 77, 1]"
+                                  "scaling": "[1, 15.699999999999998, 1]"
                                 },
                                 "Component": {
                                   "active": true
@@ -350,7 +350,7 @@
                             {
                               "ƒ.ComponentTransform": {
                                 "local": {
-                                  "translation": "[-49.99999237060547, 0, 0]",
+                                  "translation": "[-12.599992370605467, 0, 0]",
                                   "rotation": "[0, 0, 0]",
                                   "scaling": "[1, 1, 1]"
                                 },
@@ -394,7 +394,7 @@
                                 "pivot": {
                                   "translation": "[0, 0]",
                                   "rotation": 0,
-                                  "scaling": "[1, 10.999998092651367]"
+                                  "scaling": "[1, 2.999998092651367]"
                                 },
                                 "Component": {
                                   "active": true
@@ -417,9 +417,9 @@
                               "ƒ.ComponentMesh": {
                                 "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
                                 "pivot": {
-                                  "translation": "[0, 0, 0]",
+                                  "translation": "[0, 0, -0.01]",
                                   "rotation": "[0, 0, 0]",
-                                  "scaling": "[1, 77, 1]"
+                                  "scaling": "[1, 15.699999999999998, 1]"
                                 },
                                 "Component": {
                                   "active": true
@@ -431,7 +431,7 @@
                             {
                               "ƒ.ComponentTransform": {
                                 "local": {
-                                  "translation": "[50, 0, 0]",
+                                  "translation": "[12.500000000000002, 0, 0]",
                                   "rotation": "[0, 0, 0]",
                                   "scaling": "[1, 1, 1]"
                                 },
@@ -475,7 +475,7 @@
                                 "pivot": {
                                   "translation": "[0, 0]",
                                   "rotation": 0,
-                                  "scaling": "[1, 10.999998092651367]"
+                                  "scaling": "[1, 2.999998092651367]"
                                 },
                                 "Component": {
                                   "active": true
