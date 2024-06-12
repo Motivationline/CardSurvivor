@@ -289,10 +289,16 @@ declare namespace Script {
         health: number;
         hit: (_hit: Hit) => number;
     }
+    export enum HitType {
+        PROJECTILE = 0,
+        AOE = 1,
+        MELEE = 2
+    }
     export interface Hit {
         damage: number;
         knockbackDirection?: ƒ.Vector3;
         stun?: number;
+        type?: HitType;
     }
     export interface Pools {
         [key: string]: string[][];

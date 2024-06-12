@@ -235,7 +235,7 @@ namespace Script {
 
         protected hit(_hitable: Hitable) {
             if (this.functions.preHit) this.functions.preHit.call(this, _hitable);
-            _hitable.hit({ damage: this.damage, stun: this.stunDuration });
+            _hitable.hit({ damage: this.damage, stun: this.stunDuration, type: HitType.PROJECTILE });
             this.piercing--;
             if (this.functions.postHit) this.functions.postHit.call(this, _hitable);
             if (this.piercing < 0) this.remove();

@@ -51,10 +51,10 @@ namespace Script {
             if (this.variant !== "explosion") return;
             for (let collision of this.rigidbody.collisions) {
                 if (this.target === ProjectileTarget.ENEMY && collision.node.name === "enemy") {
-                    collision.node.getComponent(Enemy).hit({ damage: this.damage, stun: this.stunDuration });
+                    collision.node.getComponent(Enemy).hit({ damage: this.damage, stun: this.stunDuration, type: HitType.AOE });
                 } else if (this.target === ProjectileTarget.PLAYER && collision.node.name === "character") {
                     let char = provider.get(CharacterManager).character;
-                    char.hit({ damage: this.damage });
+                    char.hit({ damage: this.damage, stun: this.stunDuration, type: HitType.AOE });
                 }
 
             }

@@ -695,6 +695,12 @@ var Script;
         ProjectileTarget[ProjectileTarget["PLAYER"] = 0] = "PLAYER";
         ProjectileTarget[ProjectileTarget["ENEMY"] = 1] = "ENEMY";
     })(ProjectileTarget = Script.ProjectileTarget || (Script.ProjectileTarget = {}));
+    let HitType;
+    (function (HitType) {
+        HitType[HitType["PROJECTILE"] = 0] = "PROJECTILE";
+        HitType[HitType["AOE"] = 1] = "AOE";
+        HitType[HitType["MELEE"] = 2] = "MELEE";
+    })(HitType = Script.HitType || (Script.HitType = {}));
     //#endregion
 })(Script || (Script = {}));
 var Script;
@@ -746,11 +752,11 @@ var Script;
                 return;
             for (let collision of this.rigidbody.collisions) {
                 if (this.target === Script.ProjectileTarget.ENEMY && collision.node.name === "enemy") {
-                    collision.node.getComponent(Script.Enemy).hit({ damage: this.damage, stun: this.stunDuration });
+                    collision.node.getComponent(Script.Enemy).hit({ damage: this.damage, stun: this.stunDuration, type: Script.HitType.AOE });
                 }
                 else if (this.target === Script.ProjectileTarget.PLAYER && collision.node.name === "character") {
                     let char = Script.provider.get(Script.CharacterManager).character;
-                    char.hit({ damage: this.damage });
+                    char.hit({ damage: this.damage, stun: this.stunDuration, type: Script.HitType.AOE });
                 }
             }
         }
@@ -992,7 +998,7 @@ var Script;
         hit(_hitable) {
             if (this.functions.preHit)
                 this.functions.preHit.call(this, _hitable);
-            _hitable.hit({ damage: this.damage, stun: this.stunDuration });
+            _hitable.hit({ damage: this.damage, stun: this.stunDuration, type: Script.HitType.PROJECTILE });
             this.piercing--;
             if (this.functions.postHit)
                 this.functions.postHit.call(this, _hitable);
@@ -4867,7 +4873,7 @@ var Script;
                 let character = Script.provider.get(Script.CharacterManager).character;
                 // let mag = ƒ.Vector3.DIFFERENCE(character.node.mtxWorld.translation, this.node.mtxWorld.translation).magnitudeSquared;
                 // if (mag < 0.64 /* 0.8² (player hitbox size) TODO: update this if player or enemy size changes */)
-                character.hit({ damage: this.damage * _frameTimeInSeconds });
+                character.hit({ damage: this.damage * _frameTimeInSeconds, type: Script.HitType.MELEE });
                 // console.log(this.rigidbody.collisions);
             }
         }

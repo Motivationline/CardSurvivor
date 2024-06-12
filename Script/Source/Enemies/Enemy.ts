@@ -170,7 +170,7 @@ namespace Script {
                 let character = provider.get(CharacterManager).character;
                 // let mag = ƒ.Vector3.DIFFERENCE(character.node.mtxWorld.translation, this.node.mtxWorld.translation).magnitudeSquared;
                 // if (mag < 0.64 /* 0.8² (player hitbox size) TODO: update this if player or enemy size changes */)
-                character.hit({ damage: this.damage * _frameTimeInSeconds });
+                character.hit({ damage: this.damage * _frameTimeInSeconds, type: HitType.MELEE });
                 // console.log(this.rigidbody.collisions);
             }
         }
