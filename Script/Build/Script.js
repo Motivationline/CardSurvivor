@@ -1251,7 +1251,7 @@ var Script;
                 if (isNaN(effect.currentCooldown))
                     effect.currentCooldown = effect.cooldown;
                 if (effect.cooldownBasedOnDistance) {
-                    effect.currentCooldown -= this.#charm.getMovement().magnitude * this.#charm.character.speed * _time;
+                    effect.currentCooldown -= this.#charm.getMovement().magnitude * this.#cm.modifyValuePlayer(this.#charm.character.speed, Script.PassiveCardEffect.MOVEMENT_SPEED) * _time;
                 }
                 else {
                     effect.currentCooldown -= _time;
@@ -4715,6 +4715,7 @@ var Script;
         currentlyDesiredDistance = [0, 0];
         currentlyDesiredDistanceSquared = [0, 0];
         dropXP = 0;
+        size = 1;
         enemyManager;
         prevDirection;
         currentlyActiveAttack;
@@ -4727,6 +4728,7 @@ var Script;
             speed: 1,
             desiredDistance: [0, 0],
             dropXP: 1,
+            size: 1,
             health: 1,
             knockbackMultiplier: 1,
             moveSprite: {
@@ -4769,6 +4771,8 @@ var Script;
             this.moveSprite = this.getSprite(_options.moveSprite);
             this.setCentralAnimator(this.moveSprite);
             this.stunned = 0;
+            this.size = _options.size;
+            this.node.mtxLocal.scaling = Script.ƒ.Vector3.ONE(this.size);
         }
         updateDesiredDistance(_distance) {
             this.currentlyDesiredDistance = _distance;

@@ -510,6 +510,7 @@ declare namespace Script {
         private currentlyDesiredDistance;
         private currentlyDesiredDistanceSquared;
         dropXP: number;
+        size: number;
         private enemyManager;
         private prevDirection;
         private currentlyActiveAttack;
@@ -541,6 +542,7 @@ declare namespace Script {
         desiredDistance: [number, number];
         dropXP: number;
         directionOverride?: ƒ.Vector3;
+        size?: number;
     }
     interface EnemyAttack {
         requiredDistance: [number, number];
