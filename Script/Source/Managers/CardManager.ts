@@ -3,8 +3,8 @@ namespace Script {
         private currentlyActiveCards: Card[] = [];
         private deckCards: Card[] = [];
         private cumulativeEffects: PassiveCardEffectObject = { absolute: {}, multiplier: {} };
-        private defaultMaxActiveCardAmount: number = 10;
-        private currentMaxActiveCardAmount: number = 10;
+        private defaultMaxActiveCardAmount: number = 5;
+        private currentMaxActiveCardAmount: number = 5;
 
         constructor() {
             this.updateEffects();

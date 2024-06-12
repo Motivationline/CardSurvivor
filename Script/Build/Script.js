@@ -4835,8 +4835,8 @@ var Script;
         currentlyActiveCards = [];
         deckCards = [];
         cumulativeEffects = { absolute: {}, multiplier: {} };
-        defaultMaxActiveCardAmount = 10;
-        currentMaxActiveCardAmount = 10;
+        defaultMaxActiveCardAmount = 5;
+        currentMaxActiveCardAmount = 5;
         constructor() {
             this.updateEffects();
             Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
