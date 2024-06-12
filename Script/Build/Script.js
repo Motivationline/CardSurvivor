@@ -4681,6 +4681,7 @@ var Script;
     Script.enemies = {
         microwave: {
             moveSprite: ["microwave", "move"],
+            size: 0.9,
             damage: 5,
             desiredDistance: [0, 0],
             health: 15,
@@ -4707,7 +4708,7 @@ var Script;
             attacks: [
                 {
                     cooldown: 2,
-                    requiredDistance: [2, 3],
+                    requiredDistance: [2, 6],
                     attackSprite: ["toaster", "attack"],
                     cooldownSprite: ["toaster", "idle"],
                     windUp: 1,
@@ -4722,6 +4723,7 @@ var Script;
         },
         closet: {
             moveSprite: ["closet", "move"],
+            size: 1.5,
             damage: 30,
             desiredDistance: [0, 0],
             health: 50,
@@ -4731,6 +4733,7 @@ var Script;
         },
         motor: {
             moveSprite: ["motor", "move"],
+            size: 1.1,
             damage: 10,
             desiredDistance: [0, 1],
             health: 25,
@@ -4747,6 +4750,7 @@ var Script;
         },
         ventilator: {
             moveSprite: ["ventilator", "move"],
+            size: 0.5,
             damage: 2,
             speed: 2,
             health: 4,
@@ -5297,7 +5301,7 @@ var Script;
                 duration: 25,
                 defaultWave: {
                     enemies: [{ pool: 0 }],
-                    amount: 5,
+                    amount: 4,
                     duration: 5,
                     minEnemiesOverride: 2,
                 },
@@ -5345,11 +5349,11 @@ var Script;
                     multiplier: {
                         health: 0.4,
                         damage: 1,
-                        xp: 3,
+                        xp: 2,
                     }
                 }
             },
-            // room 5
+            // room 4
             {
                 duration: 35,
                 defaultWave: {
@@ -5370,7 +5374,7 @@ var Script;
                     }
                 }
             },
-            // room X
+            // room 5
             {
                 duration: 40,
                 defaultWave: {
@@ -5378,29 +5382,31 @@ var Script;
                         { pool: 0, weight: 6 },
                         { pool: 1, weight: 4 },
                     ],
-                    amount: 8,
-                    duration: 8,
+                    amount: 5,
+                    duration: 6,
                     minEnemiesOverride: 2,
                 },
                 waveAmount: 6,
                 waves: [
                     {
                         enemies: [
-                            { pool: 0, weight: 6 },
-                            { pool: 1, weight: 4 },
                             { pool: 0, elite: true },
                         ],
-                        amount: 6,
+                        amount: 1,
                         duration: 10,
+                    },
+                    {
+                        enemies: [
+                            { pool: 0, weight: 6 },
+                            { pool: 1, weight: 4 },
+                        ],
+                        amount: 5,
+                        duration: 6,
+                        minEnemiesOverride: 0,
                     }
                 ],
             },
-            // room bonus
-            {
-                duration: Infinity,
-                reward: true,
-            },
-            // room 4
+            // room 6
             {
                 duration: 50,
                 defaultWave: {

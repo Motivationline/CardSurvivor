@@ -2,6 +2,7 @@ namespace Script {
     export const enemies: { [id: string]: Partial<EnemyOptions> } = {
         microwave: {
             moveSprite: ["microwave", "move"],
+            size: 0.9,
             damage: 5,
             desiredDistance: [0, 0],
             health: 15,
@@ -28,7 +29,7 @@ namespace Script {
             attacks: [
                 {
                     cooldown: 2,
-                    requiredDistance: [2, 3],
+                    requiredDistance: [2, 6],
                     attackSprite: ["toaster", "attack"],
                     cooldownSprite: ["toaster", "idle"],
                     windUp: 1,
@@ -49,6 +50,7 @@ namespace Script {
         },
         closet: {
             moveSprite: ["closet", "move"],
+            size: 1.5,
             damage: 30,
             desiredDistance: [0, 0],
             health: 50,
@@ -58,6 +60,7 @@ namespace Script {
         },
         motor: {
             moveSprite: ["motor", "move"],
+            size: 1.1,
             damage: 10,
             desiredDistance: [0, 1],
             health: 25,
@@ -74,6 +77,7 @@ namespace Script {
         },
         ventilator: {
             moveSprite: ["ventilator", "move"],
+            size: 0.5,
             damage: 2,
             speed: 2,
             health: 4,

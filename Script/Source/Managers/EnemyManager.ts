@@ -34,7 +34,7 @@ namespace Script {
                 duration: 25,
                 defaultWave: {
                     enemies: [{ pool: 0 }],
-                    amount: 5,
+                    amount: 4,
                     duration: 5,
                     minEnemiesOverride: 2,
                 },
@@ -82,11 +82,11 @@ namespace Script {
                     multiplier: {
                         health: 0.4,
                         damage: 1,
-                        xp: 3,
+                        xp: 2,
                     }
                 }
             },
-            // room 5
+            // room 4
             {
                 duration: 35,
                 defaultWave: {
@@ -107,7 +107,7 @@ namespace Script {
                     }
                 }
             },
-            // room X
+            // room 5
             {
                 duration: 40,
                 defaultWave: {
@@ -115,29 +115,31 @@ namespace Script {
                         { pool: 0, weight: 6 },
                         { pool: 1, weight: 4 },
                     ],
-                    amount: 8,
-                    duration: 8,
+                    amount: 5,
+                    duration: 6,
                     minEnemiesOverride: 2,
                 },
                 waveAmount: 6,
                 waves: [
                     {
                         enemies: [
-                            { pool: 0, weight: 6 },
-                            { pool: 1, weight: 4 },
                             { pool: 0, elite: true },
                         ],
-                        amount: 6,
+                        amount: 1,
                         duration: 10,
+                    },
+                    {
+                        enemies: [
+                            { pool: 0, weight: 6 },
+                            { pool: 1, weight: 4 },
+                        ],
+                        amount: 5,
+                        duration: 6,
+                        minEnemiesOverride: 0,
                     }
                 ],
             },
-            // room bonus
-            {
-                duration: Infinity,
-                reward: true,
-            },
-            // room 4
+            // room 6
             {
                 duration: 50,
                 defaultWave: {
