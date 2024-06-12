@@ -272,7 +272,7 @@ namespace Script {
                 defaultWave: {
                     amount: 1,
                     duration: 60,
-                    enemies: ["microwave-boss"],
+                    enemies: ["toasterBoss"],
                 },
                 waveAmount: 1
             },

@@ -133,7 +133,21 @@
         "totalHeight": 3584,
         "totalWidth": 3584,
         "wrapAfter": 14,
-        "materialString": "Material|2024-06-12T13:20:21.427Z|49920"
+        "materialString": "Material|2024-06-12T13:20:21.427Z|49920",
+        "events": [
+          {
+            "frame": 39,
+            "event": "fire"
+          },
+          {
+            "frame": 105,
+            "event": "fire"
+          },
+          {
+            "frame": 165,
+            "event": "fire"
+          }
+        ]
       },
       "attack03":{
         "fps": 24,

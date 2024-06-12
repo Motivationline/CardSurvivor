@@ -82,7 +82,7 @@ namespace Script {
         [id: string]: ProjectileData,
     }
 
-    interface ProjectileData {
+    export interface ProjectileData {
         damage: number,
         size?: number,
         speed: number,
@@ -102,6 +102,7 @@ namespace Script {
 
     export interface ProjectileFunctions {
         afterSetup?: () => void,
+        beforeSetup?: (_options: Partial<Projectile>, _modifier: PassiveCardEffectObject) => void,
         preUpdate?: (_charPosition: ƒ.Vector3, _frameTimeInSeconds: number) => void,
         postUpdate?: (_charPosition: ƒ.Vector3, _frameTimeInSeconds: number) => void;
         preMove?: (_frameTimeInSeconds: number) => void;

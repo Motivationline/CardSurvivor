@@ -101,5 +101,57 @@ namespace Script {
                 }
             ]
         },
+
+        toasterBoss: {
+            moveSprite: ["toaster", "move"],
+            damage: 30,
+            desiredDistance: [0, Infinity],
+            dropXP: 100,
+            health: 1000,
+            knockbackMultiplier: 0.1,
+            size: 3,
+            speed: 1,
+            attacks: [
+                // 3 waves of toasts
+                {
+                    requiredDistance: [0, Infinity],
+                    cooldown: 2,
+                    windUp: 181 / 24,
+                    attackSprite: ["bosstoaster", "attack01"],
+                    cooldownSprite: ["toaster", "idle"],
+                    events: {
+                        fire: function () {
+                            let modification: Partial<ProjectileData> = {
+                                size: 2,
+                                methods: {
+                                    afterSetup: function () {
+                                        let delta = new ƒ.Vector3(Math.random() * 5 - 2.5, Math.random() * 5 - 2.5);
+                                        this.hazardZone.mtxLocal.translate(delta);
+                                        this.targetPosition.add(delta);
+                                    },
+                                }
+                            }
+                            for (let i: number = 0; i < 5; i++) {
+                                provider.get(ProjectileManager).createProjectile({ ...projectiles["toastEnemy"], ...modification },
+                                    ƒ.Vector3.SUM(
+                                        this.node.mtxWorld.translation,
+                                        ƒ.Vector3.Y(0.3)
+                                    ),
+                                    undefined,
+                                );
+                            }
+                        }
+                    }
+                },
+
+                // running away
+                // {
+                //     requiredDistance: [5, 6],
+                //     cooldown: 
+                // },
+
+                // jump
+            ]
+        }
     }
 }

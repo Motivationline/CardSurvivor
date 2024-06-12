@@ -836,6 +836,9 @@ var Script;
             this.node.getComponent(Script.ƒ.ComponentRigidbody).addEventListener("TriggerLeftCollision" /* ƒ.EVENT_PHYSICS.TRIGGER_EXIT */, this.onTriggerExit);
         };
         async setup(_options, _modifier) {
+            if (this.functions.beforeSetup) {
+                this.functions.beforeSetup.call(this, _options, _modifier);
+            }
             let cm = Script.provider.get(Script.CardManager);
             _options = { ...ProjectileComponent.defaults, ..._options };
             this.direction = _options.direction;
@@ -864,14 +867,14 @@ var Script;
             if (this.artillery) {
                 let pos = new Script.ƒ.Vector3();
                 if (this.target === Script.ProjectileTarget.PLAYER) {
-                    pos = await Script.provider.get(Script.CharacterManager).character.node.mtxWorld.translation.clone;
+                    pos = Script.provider.get(Script.CharacterManager).character.node.mtxWorld.translation.clone;
                 }
                 else if (this.target === Script.ProjectileTarget.ENEMY) {
                     pos = Script.provider.get(Script.EnemyManager).getEnemy(this.targetMode)?.mtxWorld.translation.clone;
                     if (!pos)
                         return this.remove();
                 }
-                let hz = await Script.provider.get(Script.ProjectileManager).createHitZone(pos);
+                let hz = await Script.provider.get(Script.ProjectileManager).createHitZone(pos, this.size);
                 this.tracking = {
                     strength: 1,
                     target: hz,
@@ -970,7 +973,7 @@ var Script;
                 }
             }
             // remove projectile if outside of room
-            if (this.node.cmpTransform.mtxLocal.translation.magnitudeSquared > 850 /* 15 width, 25 height playarea => max magnSqr = 850 */) {
+            if (this.node.cmpTransform.mtxLocal.translation.magnitudeSquared > 18500 /* 15 width, 25 height playarea => max magnSqr = 850 */) {
                 this.remove();
             }
         }
@@ -1008,6 +1011,7 @@ var Script;
         }
         remove() {
             Script.provider.get(Script.ProjectileManager).removeProjectile(this);
+            this.removeHazardZone();
         }
     }
     Script.ProjectileComponent = ProjectileComponent;
@@ -4776,6 +4780,49 @@ var Script;
                 }
             ]
         },
+        toasterBoss: {
+            moveSprite: ["toaster", "move"],
+            damage: 30,
+            desiredDistance: [0, Infinity],
+            dropXP: 100,
+            health: 1000,
+            knockbackMultiplier: 0.1,
+            size: 3,
+            speed: 1,
+            attacks: [
+                // 3 waves of toasts
+                {
+                    requiredDistance: [0, Infinity],
+                    cooldown: 2,
+                    windUp: 181 / 24,
+                    attackSprite: ["bosstoaster", "attack01"],
+                    cooldownSprite: ["toaster", "idle"],
+                    events: {
+                        fire: function () {
+                            let modification = {
+                                size: 2,
+                                methods: {
+                                    afterSetup: function () {
+                                        let delta = new Script.ƒ.Vector3(Math.random() * 5 - 2.5, Math.random() * 5 - 2.5);
+                                        this.hazardZone.mtxLocal.translate(delta);
+                                        this.targetPosition.add(delta);
+                                    },
+                                }
+                            };
+                            for (let i = 0; i < 5; i++) {
+                                Script.provider.get(Script.ProjectileManager).createProjectile({ ...Script.projectiles["toastEnemy"], ...modification }, Script.ƒ.Vector3.SUM(this.node.mtxWorld.translation, Script.ƒ.Vector3.Y(0.3)), undefined);
+                            }
+                        }
+                    }
+                },
+                // running away
+                // {
+                //     requiredDistance: [5, 6],
+                //     cooldown: 
+                // },
+                // jump
+            ]
+        }
     };
 })(Script || (Script = {}));
 /// <reference path="../Animateable.ts" />
@@ -5539,7 +5586,7 @@ var Script;
                 defaultWave: {
                     amount: 1,
                     duration: 60,
-                    enemies: ["microwave-boss"],
+                    enemies: ["toasterBoss"],
                 },
                 waveAmount: 1
             },

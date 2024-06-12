@@ -64,6 +64,9 @@ namespace Script {
         }
 
         async setup(_options: Partial<Projectile>, _modifier: PassiveCardEffectObject): Promise<void> {
+            if (this.functions.beforeSetup) {
+                this.functions.beforeSetup.call(this, _options, _modifier);
+            }
             let cm = provider.get(CardManager);
             _options = { ...ProjectileComponent.defaults, ..._options };
             this.direction = _options.direction;
@@ -96,12 +99,12 @@ namespace Script {
             if (this.artillery) {
                 let pos = new ƒ.Vector3();
                 if (this.target === ProjectileTarget.PLAYER) {
-                    pos = await provider.get(CharacterManager).character.node.mtxWorld.translation.clone;
+                    pos = provider.get(CharacterManager).character.node.mtxWorld.translation.clone;
                 } else if (this.target === ProjectileTarget.ENEMY) {
                     pos = provider.get(EnemyManager).getEnemy(this.targetMode)?.mtxWorld.translation.clone;
                     if (!pos) return this.remove();
                 }
-                let hz = await provider.get(ProjectileManager).createHitZone(pos);
+                let hz = await provider.get(ProjectileManager).createHitZone(pos, this.size);
                 this.tracking = {
                     strength: 1,
                     target: hz,
@@ -207,7 +210,7 @@ namespace Script {
                 }
             }
             // remove projectile if outside of room
-            if (this.node.cmpTransform.mtxLocal.translation.magnitudeSquared > 850 /* 15 width, 25 height playarea => max magnSqr = 850 */) {
+            if (this.node.cmpTransform.mtxLocal.translation.magnitudeSquared > 18500 /* 15 width, 25 height playarea => max magnSqr = 850 */) {
                 this.remove();
             }
         }
@@ -243,6 +246,7 @@ namespace Script {
 
         private remove() {
             provider.get(ProjectileManager).removeProjectile(this);
+            this.removeHazardZone();
         }
     }
 
