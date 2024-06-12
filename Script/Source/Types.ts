@@ -207,6 +207,7 @@ namespace Script {
         amount: number,
         duration: number,
         minEnemiesOverride?: number,
+        bonus?: PassiveCardEffectObject,
     }
     //#endregion
 }
