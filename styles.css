@@ -132,10 +132,11 @@ progress::-webkit-progress-value {
 }
 
 #timer {
-  display: block;
-  text-align: center;
-  margin-top: 2vh;
-  font-size: 2rem;
+    display: block;
+    text-align: center;
+    margin-top: 2vh;
+    font-size: 4rem;
+    text-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
 }
 
 #game-overlay-pause {
