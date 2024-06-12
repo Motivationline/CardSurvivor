@@ -654,6 +654,7 @@ declare namespace Script {
         private roomManagement;
         private endRoom;
         nextRoom(): void;
+        private waitMs;
         private spawnWave;
         private getWave;
         private getRoomModifier;

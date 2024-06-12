@@ -5430,6 +5430,7 @@ var Script;
                     this.currentXP -= 100;
                     await this.characterManager.upgradeCards();
                 }
+                await this.waitMs(3000);
                 this.nextRoom();
             }
         }
@@ -5449,6 +5450,11 @@ var Script;
             if (room.reward) {
                 //TODO spawn reward stuff
             }
+        }
+        async waitMs(_ms) {
+            return new Promise((resolve) => {
+                setTimeout(resolve, _ms);
+            });
         }
         async spawnWave(wave) {
             if (!wave) {
