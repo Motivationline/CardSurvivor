@@ -73,6 +73,9 @@
                     "idResource": "TextureImage|2024-05-03T11:58:41.522Z|58044"
                   }
                 ]
+              },
+              {
+                "idResource": "TextureImage|2024-06-12T08:33:46.651Z|28444"
               }
             ]
           },
@@ -99,6 +102,9 @@
               },
               {
                 "idResource": "Material|2024-05-03T11:09:35.781Z|61584"
+              },
+              {
+                "idResource": "Material|2024-06-12T08:48:32.005Z|49605"
               }
             ]
           }
