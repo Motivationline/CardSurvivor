@@ -196,6 +196,32 @@
         ]
       },
       {
+        "name": "boss",
+        "entries": [
+          {
+            "name": "textures",
+            "entries": [
+              {
+                "name": "attack01",
+                "entries": [
+                  {
+                    "idResource": "TextureImage|2024-06-12T13:20:15.155Z|24951"
+                  }
+                ]
+              },
+              {
+                "name": "attack03",
+                "entries": [
+                  {
+                    "idResource": "TextureImage|2024-06-12T13:20:13.790Z|62939"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "backgrounds",
         "entries": [
           {
@@ -365,9 +391,6 @@
             "name": "textures",
             "entries": [
               {
-                "idResource": "Material|2024-05-14T12:52:38.980Z|47111"
-              },
-              {
                 "idResource": "TextureImage|2024-05-14T12:52:23.956Z|42262"
               },
               {
@@ -391,6 +414,9 @@
                     "idResource": "TextureImage|2024-06-11T15:07:50.040Z|25960"
                   }
                 ]
+              },
+              {
+                "idResource": "Material|2024-05-14T12:52:38.980Z|47111"
               }
             ]
           }

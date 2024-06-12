@@ -174,9 +174,9 @@
                               "ƒ.ComponentMesh": {
                                 "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
                                 "pivot": {
-                                  "translation": "[0, 0, -0.030000000000000013]",
+                                  "translation": "[0, 0, -0.029999999329447746]",
                                   "rotation": "[0, 0, 0]",
-                                  "scaling": "[26.000000000000014, 1, 1]"
+                                  "scaling": "[26, 1, 1]"
                                 },
                                 "Component": {
                                   "active": true
@@ -255,7 +255,7 @@
                               "ƒ.ComponentMesh": {
                                 "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
                                 "pivot": {
-                                  "translation": "[0, 0, -0.009999999999999995]",
+                                  "translation": "[0, 0, -0.009999999776482582]",
                                   "rotation": "[0, 0, 0]",
                                   "scaling": "[26, 1, 1]"
                                 },
@@ -269,7 +269,7 @@
                             {
                               "ƒ.ComponentTransform": {
                                 "local": {
-                                  "translation": "[0, -7.849996185302734, 0]",
+                                  "translation": "[0, -7.849996089935303, 0]",
                                   "rotation": "[0, 0, 0]",
                                   "scaling": "[1, 1, 1]"
                                 },
@@ -336,9 +336,9 @@
                               "ƒ.ComponentMesh": {
                                 "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
                                 "pivot": {
-                                  "translation": "[0, 0, -0.02]",
+                                  "translation": "[0, 0, -0.019999999552965164]",
                                   "rotation": "[0, 0, 0]",
-                                  "scaling": "[1, 15.699999999999998, 1]"
+                                  "scaling": "[1, 15.699999809265137, 1]"
                                 },
                                 "Component": {
                                   "active": true
@@ -350,7 +350,7 @@
                             {
                               "ƒ.ComponentTransform": {
                                 "local": {
-                                  "translation": "[-12.599992370605467, 0, 0]",
+                                  "translation": "[-12.599992752075195, 0, 0]",
                                   "rotation": "[0, 0, 0]",
                                   "scaling": "[1, 1, 1]"
                                 },
@@ -417,9 +417,9 @@
                               "ƒ.ComponentMesh": {
                                 "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
                                 "pivot": {
-                                  "translation": "[0, 0, -0.02]",
+                                  "translation": "[0, 0, -0.019999999552965164]",
                                   "rotation": "[0, 0, 0]",
-                                  "scaling": "[1, 15.699999999999998, 1]"
+                                  "scaling": "[1, 15.699999809265137, 1]"
                                 },
                                 "Component": {
                                   "active": true
@@ -431,7 +431,7 @@
                             {
                               "ƒ.ComponentTransform": {
                                 "local": {
-                                  "translation": "[12.500000000000002, 0, 0]",
+                                  "translation": "[12.5, 0, 0]",
                                   "rotation": "[0, 0, 0]",
                                   "scaling": "[1, 1, 1]"
                                 },
@@ -519,7 +519,7 @@
                         "ƒ.ComponentMesh": {
                           "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
                           "pivot": {
-                            "translation": "[0, 0, -0.20000000000000004]",
+                            "translation": "[0, 0, -0.20000000298023224]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[25, 15, 1]"
                           },
@@ -543,7 +543,7 @@
                         "ƒ.ComponentMesh": {
                           "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
                           "pivot": {
-                            "translation": "[0, 0, -0.300000023841858]",
+                            "translation": "[0, 0, -0.30000001192092896]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[120, 100, 1]"
                           },
@@ -837,6 +837,31 @@
       "Texture": {
         "idResource": "TextureImage|2024-05-03T11:08:44.440Z|74472",
         "name": "Assets\\Character\\base\\walk\\Robot_base_walk_Layer1.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-06-12T08:48:32.005Z|49605": {
+    "ƒ.Material": {
+      "name": "ShaderLitTextured",
+      "idResource": "Material|2024-06-12T08:48:32.005Z|49605",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-06-12T08:33:46.651Z|28444"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-06-12T08:33:46.651Z|28444": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Enemies\\Shadow.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-06-12T08:33:46.651Z|28444",
+        "name": "Assets\\Enemies\\Shadow.png",
         "mipmap": "CRISP",
         "wrap": "REPEAT"
       }
@@ -1311,9 +1336,9 @@
                   "ƒ.ComponentMesh": {
                     "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
                     "pivot": {
-                      "translation": "[0, -0.42000000000000004, -0.1]",
+                      "translation": "[0, -0.41999998688697815, -0.10000000149011612]",
                       "rotation": "[0, 0, 0]",
-                      "scaling": "[0.8, 0.76, 0.8]"
+                      "scaling": "[0.800000011920929, 0.7599999904632568, 0.800000011920929]"
                     },
                     "Component": {
                       "active": true
@@ -1483,7 +1508,7 @@
                 {
                   "ƒ.ComponentTransform": {
                     "local": {
-                      "translation": "[0, -0.25, -0.01]",
+                      "translation": "[0, -0.25, -0.009999999776482582]",
                       "rotation": "[0, 0, 0]",
                       "scaling": "[1, 1, 1]"
                     },
@@ -2278,28 +2303,27 @@
       }
     }
   },
-  "TextureImage|2024-06-12T08:33:46.651Z|28444": {
+  "TextureImage|2024-06-12T13:20:13.790Z|62939": {
     "ƒ.TextureImage": {
-      "url": "Assets\\Enemies\\Shadow.png",
+      "url": "Assets\\Enemies\\Bosstoaster\\bosstaoster_attack03.png",
       "type": "TextureImage",
       "Texture": {
-        "idResource": "TextureImage|2024-06-12T08:33:46.651Z|28444",
-        "name": "Assets\\Enemies\\Shadow.png",
+        "idResource": "TextureImage|2024-06-12T13:20:13.790Z|62939",
+        "name": "Assets\\Enemies\\Bosstoaster\\bosstaoster_attack03.png",
         "mipmap": "CRISP",
         "wrap": "REPEAT"
       }
     }
   },
-  "Material|2024-06-12T08:48:32.005Z|49605": {
-    "ƒ.Material": {
-      "name": "ShaderLitTextured",
-      "idResource": "Material|2024-06-12T08:48:32.005Z|49605",
-      "shader": "ShaderLitTextured",
-      "coat": {
-        "ƒ.CoatTextured": {
-          "color": "[1, 1, 1, 1]",
-          "idTexture": "TextureImage|2024-06-12T08:33:46.651Z|28444"
-        }
+  "TextureImage|2024-06-12T13:20:15.155Z|24951": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Enemies\\Bosstoaster\\bosstoaster_attack01.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-06-12T13:20:15.155Z|24951",
+        "name": "Assets\\Enemies\\Bosstoaster\\bosstoaster_attack01.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
       }
     }
   }
