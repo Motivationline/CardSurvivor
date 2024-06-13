@@ -5952,15 +5952,30 @@ var Script;
                     amount: 6,
                     duration: 0,
                     enemies: [
-                        "toasterBoss",
                         { pool: 5, weight: 5 },
                         { pool: 6, weight: 5 }
                     ],
                 },
-                waveAmount: 2,
+                waves: [
+                    {
+                        enemies: ["toasterBoss"],
+                        amount: 2,
+                        duration: 0,
+                        bonus: {
+                            multiplier: {
+                                health: 0.8,
+                                damage: 0.8,
+                                enemySize: 0.9,
+                                movementSpeed: 0.8,
+                                xp: 1,
+                            }
+                        }
+                    }
+                ],
+                waveAmount: 3,
                 bonus: {
                     multiplier: {
-                        health: 1.5,
+                        health: 2,
                         damage: 3,
                         enemySize: 1.1,
                         movementSpeed: 2,
