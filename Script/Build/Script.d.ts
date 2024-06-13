@@ -141,6 +141,7 @@ declare namespace Script {
         description?: string;
         image: string;
         rarity: CardRarity;
+        unlockByDefault?: boolean;
         levels: CardLevel[];
     }
     export interface CardLevel {
@@ -523,11 +524,15 @@ declare namespace Script {
         private currentlyDesiredDistanceSquared;
         dropXP: number;
         size: number;
+        events?: {
+            [name: string]: (_event?: CustomEvent<any>) => void;
+        };
         private enemyManager;
         private prevDirection;
         private currentlyActiveAttack;
         private rigidbody;
         private touchingPlayer;
+        private modifier;
         private stunned;
         private static defaults;
         constructor();
@@ -539,6 +544,7 @@ declare namespace Script {
         private move;
         private chooseAttack;
         private executeAttack;
+        protected setCentralAnimator(_as: AnimationSprite, _unique?: boolean): void;
         private eventListener;
         private onCollisionEnter;
         private onCollisionExit;
@@ -555,6 +561,9 @@ declare namespace Script {
         dropXP: number;
         directionOverride?: ƒ.Vector3;
         size?: number;
+        events?: {
+            [name: string]: (_event?: CustomEvent) => void;
+        };
     }
     interface EnemyAttack {
         requiredDistance: [number, number];
@@ -567,6 +576,7 @@ declare namespace Script {
         events?: {
             [name: string]: (_event?: CustomEvent) => void;
         };
+        weight?: number;
     }
     interface AnimationSprite {
         width: number;

@@ -36,6 +36,14 @@ namespace Script {
             this.collection = dm.savedCollectionRaw;
             this.deck = dm.savedDeckRaw;
             // this.selection = dm.savedSelectionRaw;
+
+            // unlock default cards
+            for (let cardId in cards) {
+                let card = cards[cardId];
+                if (card.unlockByDefault && !this.collection[cardId]) {
+                    this.collection[cardId] = { amount: 1, lvl: 0 };
+                }
+            }
         }
 
         setup() {
@@ -52,6 +60,14 @@ namespace Script {
                 // selectionToFrom: <HTMLButtonElement>document.getElementById("card-popup-selection-to-from"),
                 // selectionTo: <HTMLButtonElement>document.getElementById("card-popup-selection-to"),
             }
+            document.getElementById("unlock-all").addEventListener("click", () => {
+                for (let cardId in cards) {
+                    if (!this.collection[cardId]) {
+                        this.collection[cardId] = { amount: 1, lvl: 0 };
+                    }
+                }
+                this.updateVisuals(true);
+            })
 
             this.installListeners();
 
@@ -74,7 +90,7 @@ namespace Script {
             // TODO change this to not create a popup
             // if (!this.collection[cardID]) return;
             if (!this.collection[cardID]) {
-                this.addCardToCollection(cardID, 1);
+                // this.addCardToCollection(cardID, 1);
                 return;
             }
             let visual = this.cardVisuals.get(cardID);
@@ -96,8 +112,8 @@ namespace Script {
             if (this.collection[cardID]) {
                 // card is in selection, so it's selectable
                 // if (this.selection.includes(cardID)) {
-                    // this.popupButtons.deckToFrom.classList.remove("hidden");
-                    // this.popupButtons.selectionFrom.classList.remove("hidden");
+                //     this.popupButtons.deckToFrom.classList.remove("hidden");
+                //     this.popupButtons.selectionFrom.classList.remove("hidden");
                 // }
                 if (this.deck.includes(cardID)) {
                     this.popupButtons.deckFrom.classList.remove("hidden");

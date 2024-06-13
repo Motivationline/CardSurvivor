@@ -648,6 +648,7 @@ progress::-webkit-progress-value {
   filter: brightness(0);
 }
 
+/* 
 #hideLocked:checked~#collection-outer-wrapper .card.locked {
   display: none;
 }
@@ -658,7 +659,8 @@ progress::-webkit-progress-value {
 
 #hideLocked:checked~#collection-outer-wrapper label[for="hideLocked"]::before {
   content: "Show";
-}
+} 
+*/
 
 /* touch stuff */
 #swipe-game-overlay {

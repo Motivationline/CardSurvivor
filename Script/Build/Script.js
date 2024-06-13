@@ -982,7 +982,7 @@ var Script;
                 return;
             let refVector = Script.ƒ.Vector3.X(1);
             let angle = Math.acos(Script.ƒ.Vector3.DOT(this.direction, refVector) / (refVector.magnitude * this.direction.magnitude));
-            angle = angle * 180 / Math.PI;
+            angle = angle * 180 / Math.PI * Math.sign(this.direction.y);
             let pivot = this.node.getComponent(Script.ƒ.ComponentMesh).mtxPivot;
             pivot.rotation = new Script.ƒ.Vector3(pivot.rotation.x, pivot.rotation.y, angle);
         }
@@ -1021,6 +1021,13 @@ var Script;
 /// <reference path="../Types.ts" />
 (function (Script) {
     Script.projectiles = {
+        "genericBullet": {
+            damage: 1,
+            speed: 1,
+            rotateInDirection: true,
+            sprite: ["projectile", "genericBullet"],
+            target: Script.ProjectileTarget.PLAYER,
+        },
         "toastEnemy": {
             damage: 1,
             speed: 20,
@@ -1322,6 +1329,13 @@ var Script;
             this.collection = dm.savedCollectionRaw;
             this.deck = dm.savedDeckRaw;
             // this.selection = dm.savedSelectionRaw;
+            // unlock default cards
+            for (let cardId in Script.cards) {
+                let card = Script.cards[cardId];
+                if (card.unlockByDefault && !this.collection[cardId]) {
+                    this.collection[cardId] = { amount: 1, lvl: 0 };
+                }
+            }
         }
         setup() {
             // this.selectionElement = document.getElementById("selection");
@@ -1337,6 +1351,14 @@ var Script;
                 // selectionToFrom: <HTMLButtonElement>document.getElementById("card-popup-selection-to-from"),
                 // selectionTo: <HTMLButtonElement>document.getElementById("card-popup-selection-to"),
             };
+            document.getElementById("unlock-all").addEventListener("click", () => {
+                for (let cardId in Script.cards) {
+                    if (!this.collection[cardId]) {
+                        this.collection[cardId] = { amount: 1, lvl: 0 };
+                    }
+                }
+                this.updateVisuals(true);
+            });
             this.installListeners();
             for (let cardID in Script.cards) {
                 let card = Script.cards[cardID];
@@ -1354,7 +1376,7 @@ var Script;
             // TODO change this to not create a popup
             // if (!this.collection[cardID]) return;
             if (!this.collection[cardID]) {
-                this.addCardToCollection(cardID, 1);
+                // this.addCardToCollection(cardID, 1);
                 return;
             }
             let visual = this.cardVisuals.get(cardID);
@@ -1375,8 +1397,8 @@ var Script;
             if (this.collection[cardID]) {
                 // card is in selection, so it's selectable
                 // if (this.selection.includes(cardID)) {
-                // this.popupButtons.deckToFrom.classList.remove("hidden");
-                // this.popupButtons.selectionFrom.classList.remove("hidden");
+                //     this.popupButtons.deckToFrom.classList.remove("hidden");
+                //     this.popupButtons.selectionFrom.classList.remove("hidden");
                 // }
                 if (this.deck.includes(cardID)) {
                     this.popupButtons.deckFrom.classList.remove("hidden");
@@ -1650,7 +1672,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 0,
+                                    damage: 0, //8 Base Damage
                                     projectilePiercing: 2
                                 }
                             }
@@ -1665,7 +1687,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 4,
+                                    damage: 4, //8 Base Damage
                                     projectilePiercing: 2
                                 }
                             }
@@ -1680,7 +1702,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 4,
+                                    damage: 4, //8 Base Damage
                                     projectilePiercing: 2
                                 }
                             }
@@ -1695,7 +1717,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 7,
+                                    damage: 7, //8 Base Damage
                                     projectilePiercing: 3
                                 }
                             }
@@ -1710,7 +1732,7 @@ var Script;
                             currentCooldown: 0.75,
                             modifiers: {
                                 absolute: {
-                                    damage: 7,
+                                    damage: 7, //8 Base Damage
                                     projectilePiercing: 4
                                 }
                             }
@@ -1880,7 +1902,7 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 0,
+                                    damage: 0, //5 Base Damage
                                     effectDuration: 0 //1 Base Duration
                                 }
                             }
@@ -1894,8 +1916,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 1,
-                                    effectDuration: 0,
+                                    damage: 1, //5 Base Damage
+                                    effectDuration: 0, //1 Base Duration
                                     projectileSize: 1.1
                                 }
                             }
@@ -1909,8 +1931,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 1,
-                                    effectDuration: 0.5,
+                                    damage: 1, //5 Base Damage
+                                    effectDuration: 0.5, //1 Base Duration
                                     projectileSize: 1.3
                                 }
                             }
@@ -1924,8 +1946,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 1,
-                                    effectDuration: 0.5,
+                                    damage: 1, //5 Base Damage
+                                    effectDuration: 0.5, //1 Base Duration
                                     projectileSize: 1.5
                                 }
                             }
@@ -1939,8 +1961,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 3,
-                                    effectDuration: 1,
+                                    damage: 3, //5 Base Damage
+                                    effectDuration: 1, //1 Base Duration
                                     projectileSize: 2
                                 }
                             }
@@ -2037,7 +2059,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 0,
+                                    damage: 0, //5 Base Damage
                                     projectilePiercing: 1
                                 }
                             }
@@ -2052,7 +2074,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 3,
+                                    damage: 3, //5 Base Damage
                                     projectilePiercing: 1
                                 }
                             }
@@ -2067,7 +2089,7 @@ var Script;
                             currentCooldown: 0.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 3,
+                                    damage: 3, //5 Base Damage
                                     projectilePiercing: 1
                                 }
                             }
@@ -2082,7 +2104,7 @@ var Script;
                             currentCooldown: 0.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 5,
+                                    damage: 5, //5 Base Damage
                                     projectilePiercing: 2
                                 },
                                 multiplier: {
@@ -2100,7 +2122,7 @@ var Script;
                             currentCooldown: 0.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 5,
+                                    damage: 5, //5 Base Damage
                                     projectilePiercing: 3,
                                 },
                                 multiplier: {
@@ -2202,7 +2224,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 0,
+                                    damage: 0, //5 Base Damage
                                     projectilePiercing: 3
                                 }
                             }
@@ -2217,7 +2239,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 2,
+                                    damage: 2, //5 Base Damage
                                     projectilePiercing: 3
                                 }
                             }
@@ -2232,7 +2254,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 2,
+                                    damage: 2, //5 Base Damage
                                     projectilePiercing: 3
                                 }
                             }
@@ -2247,7 +2269,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 3,
+                                    damage: 3, //5 Base Damage
                                     projectilePiercing: 4
                                 },
                                 multiplier: {
@@ -2265,7 +2287,7 @@ var Script;
                             currentCooldown: 0.75,
                             modifiers: {
                                 absolute: {
-                                    damage: 5,
+                                    damage: 5, //5 Base Damage
                                     projectilePiercing: 6
                                 },
                                 multiplier: {
@@ -2286,7 +2308,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 4,
+                            cooldown: 4, //TODO: Leave a projectile every 5 units moved
                             currentCooldown: 2,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2301,7 +2323,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 3.5,
+                            cooldown: 3.5, //TODO: Leave a projectile every 4 units moved
                             currentCooldown: 1.75,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2316,7 +2338,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 3,
+                            cooldown: 3, //TODO: Leave a projectile every 4 units moved
                             currentCooldown: 1.5,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2331,7 +2353,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 2,
+                            cooldown: 2, //TODO: Leave a projectile every 3 units moved
                             currentCooldown: 1,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2346,7 +2368,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 1,
+                            cooldown: 1, //TODO: Leave a projectile every 2 units moved
                             currentCooldown: 0.5,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -4721,7 +4743,7 @@ var Script;
                     movement: () => { },
                     events: {
                         fire: function () {
-                            Script.provider.get(Script.ProjectileManager).createProjectile(Script.projectiles["toastEnemy"], Script.ƒ.Vector3.SUM(this.node.mtxWorld.translation, Script.ƒ.Vector3.Y(0.3)), undefined);
+                            Script.provider.get(Script.ProjectileManager).createProjectile(Script.projectiles["toastEnemy"], Script.ƒ.Vector3.SUM(this.node.mtxWorld.translation, Script.ƒ.Vector3.Y(0.3)), this.modifier);
                         }
                     }
                 }
@@ -4736,6 +4758,25 @@ var Script;
             speed: 0.2,
             knockbackMultiplier: 0.2,
             dropXP: 3,
+            events: {
+                // running away causes attacks
+                step: function () {
+                    let projectileAmount = 4;
+                    let radiusBetweenProjectiles = (2 * Math.PI) / projectileAmount;
+                    let startRadius = 0;
+                    let modification = {
+                        damage: 1,
+                        speed: 2,
+                    };
+                    let pm = Script.provider.get(Script.ProjectileManager);
+                    this.stepAmount = isNaN(this.stepAmount) ? 0 : this.stepAmount + 1;
+                    for (let i = 0; i < projectileAmount; i++) {
+                        let angle = i * radiusBetweenProjectiles + startRadius + (this.stepAmount % 2) * 0.5 * radiusBetweenProjectiles;
+                        let direction = new Script.ƒ.Vector3(Math.cos(angle), Math.sin(angle));
+                        pm.createProjectile({ ...Script.projectiles["genericBullet"], ...modification, ...{ direction } }, this.node.mtxWorld.translation, this.modifier);
+                    }
+                }
+            },
         },
         motor: {
             moveSprite: ["motor", "move"],
@@ -4783,20 +4824,48 @@ var Script;
         toasterBoss: {
             moveSprite: ["toaster", "move"],
             damage: 30,
-            desiredDistance: [0, Infinity],
+            desiredDistance: [5, Infinity],
             dropXP: 100,
             health: 1000,
             knockbackMultiplier: 0.1,
             size: 3,
             speed: 1,
+            events: {
+                // running away causes attacks
+                step: function () {
+                    let projectileAmount = 4;
+                    let radiusBetweenProjectiles = (2 * Math.PI) / projectileAmount;
+                    let startRadius = 0;
+                    let modification = {
+                        damage: 10,
+                        speed: 5,
+                        size: 2,
+                    };
+                    let pm = Script.provider.get(Script.ProjectileManager);
+                    for (let i = 0; i < projectileAmount; i++) {
+                        pm.createProjectile({
+                            ...Script.projectiles["genericBullet"], ...modification, ...{
+                                methods: {
+                                    afterSetup: function () {
+                                        let angle = i * radiusBetweenProjectiles + startRadius;
+                                        this.direction = new Script.ƒ.Vector3(Math.cos(angle), Math.sin(angle));
+                                    }
+                                }
+                            }
+                        }, this.node.mtxWorld.translation, this.modifier);
+                    }
+                }
+            },
             attacks: [
                 // 3 waves of toasts
                 {
+                    weight: 1,
                     requiredDistance: [0, Infinity],
                     cooldown: 2,
                     windUp: 181 / 24,
                     attackSprite: ["bosstoaster", "attack01"],
                     cooldownSprite: ["toaster", "idle"],
+                    movement: function () { },
                     events: {
                         fire: function () {
                             let modification = {
@@ -4815,12 +4884,19 @@ var Script;
                         }
                     }
                 },
-                // running away
-                // {
-                //     requiredDistance: [5, 6],
-                //     cooldown: 
-                // },
+                // run
+                {
+                    weight: 2,
+                    requiredDistance: [3, 6],
+                    cooldown: 1,
+                    windUp: 0,
+                },
                 // jump
+                {
+                    requiredDistance: [5, 6],
+                    cooldown: 0,
+                    windUp: 0,
+                },
             ]
         }
     };
@@ -4842,11 +4918,13 @@ var Script;
         currentlyDesiredDistanceSquared = [0, 0];
         dropXP = 0;
         size = 1;
+        events;
         enemyManager;
         prevDirection;
         currentlyActiveAttack;
         rigidbody;
         touchingPlayer;
+        modifier = {};
         stunned = 0;
         static defaults = {
             attacks: [],
@@ -4867,6 +4945,7 @@ var Script;
                 wrapAfter: 1,
             },
             directionOverride: undefined,
+            events: undefined,
         };
         constructor() {
             super();
@@ -4899,7 +4978,9 @@ var Script;
             this.setCentralAnimator(this.moveSprite);
             this.stunned = 0;
             this.size = cm.modifyValue(_options.size, Script.PassiveCardEffect.ENEMY_SIZE, _modifier);
+            this.events = _options.events;
             this.node.mtxLocal.scaling = Script.ƒ.Vector3.ONE(this.size);
+            this.modifier = _modifier ?? {};
         }
         updateDesiredDistance(_distance) {
             this.currentlyDesiredDistance = _distance;
@@ -4990,7 +5071,18 @@ var Script;
         chooseAttack() {
             if (this.currentlyActiveAttack || this.attacks.length === 0)
                 return;
-            this.currentlyActiveAttack = { ...this.attacks[Math.floor(Math.random() * this.attacks.length)] };
+            let totalWeight = 0;
+            for (let attack of this.attacks) {
+                totalWeight += attack.weight ?? 1;
+            }
+            let selectedWeight = Math.random() * totalWeight;
+            for (let attack of this.attacks) {
+                selectedWeight -= attack.weight ?? 1;
+                if (selectedWeight <= 0) {
+                    this.currentlyActiveAttack = { ...attack }; // spread to have new object
+                    break;
+                }
+            }
             this.currentlyActiveAttack.started = false;
             this.currentlyActiveAttack.done = false;
             this.updateDesiredDistance(this.currentlyActiveAttack.requiredDistance);
@@ -5003,7 +5095,7 @@ var Script;
                 if (_mgtSqrd > this.currentlyDesiredDistanceSquared[0] && _mgtSqrd < this.currentlyDesiredDistanceSquared[1]) {
                     // start the attack
                     this.currentlyActiveAttack.started = true;
-                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.attackSprite), true, this.eventListener);
+                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.attackSprite), true);
                 }
             }
             if (this.currentlyActiveAttack.started) {
@@ -5016,7 +5108,7 @@ var Script;
                     // time to execute attack
                     this.currentlyActiveAttack.done = true;
                     this.currentlyActiveAttack.attack?.call(this);
-                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.cooldownSprite), true, this.eventListener);
+                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.cooldownSprite), true);
                 }
                 else {
                     //we're on cooldown now
@@ -5030,7 +5122,22 @@ var Script;
                 }
             }
         }
+        setCentralAnimator(_as, _unique = false) {
+            super.setCentralAnimator(_as, _unique, this.eventListener);
+        }
         eventListener = (_event) => {
+            // walk event
+            if (!(this.currentlyActiveAttack && this.currentlyActiveAttack.events && this.currentlyActiveAttack.events[_event.type])) {
+                if (!this.events)
+                    return;
+                if (!this.events[_event.type])
+                    return;
+                this.events[_event.type].call(this, _event);
+                return;
+            }
+            // attack event
+            if (!this.currentlyActiveAttack)
+                return;
             if (!this.currentlyActiveAttack.events)
                 return;
             if (!this.currentlyActiveAttack.events[_event.type])
@@ -5328,12 +5435,12 @@ var Script;
     };
     const pools = {
         "electronics": [
-            ["microwave", "chair"],
-            ["toaster", "closet"],
-            ["motor"],
-            ["ventilator"],
-            ["chair"],
-            ["toaster"],
+            ["microwave", "chair"], // --0
+            ["toaster", "closet"], // --1
+            ["motor"], // --2
+            ["ventilator"], // --3
+            ["chair"], //mixer --4
+            ["toaster"], // --5
             ["closet"] // --6
         ]
     };

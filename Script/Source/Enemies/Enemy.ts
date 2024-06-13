@@ -13,12 +13,14 @@ namespace Script {
         private currentlyDesiredDistanceSquared: [number, number] = [0, 0];
         public dropXP: number = 0;
         public size: number = 1;
+        public events?: { [name: string]: (_event?: CustomEvent<any>) => void; };
 
         private enemyManager: EnemyManager;
         private prevDirection: number;
         private currentlyActiveAttack: EnemyAttackActive;
         private rigidbody: ƒ.ComponentRigidbody;
         private touchingPlayer: boolean;
+        private modifier: PassiveCardEffectObject = {};
 
         private stunned: number = 0;
 
@@ -41,6 +43,7 @@ namespace Script {
                 wrapAfter: 1,
             },
             directionOverride: undefined,
+            events: undefined,
         }
 
         constructor() {
@@ -76,8 +79,11 @@ namespace Script {
             this.setCentralAnimator(this.moveSprite);
             this.stunned = 0;
             this.size = cm.modifyValue(_options.size, PassiveCardEffect.ENEMY_SIZE, _modifier);
-            
+            this.events = _options.events;
+
             this.node.mtxLocal.scaling = ƒ.Vector3.ONE(this.size);
+
+            this.modifier = _modifier ?? {};
         }
 
         private updateDesiredDistance(_distance: [number, number]) {
@@ -177,7 +183,20 @@ namespace Script {
 
         private chooseAttack() {
             if (this.currentlyActiveAttack || this.attacks.length === 0) return;
-            this.currentlyActiveAttack = { ...this.attacks[Math.floor(Math.random() * this.attacks.length)] };
+
+            let totalWeight = 0;
+            for (let attack of this.attacks) {
+                totalWeight += attack.weight ?? 1;
+            }
+            let selectedWeight = Math.random() * totalWeight;
+            for (let attack of this.attacks) {
+                selectedWeight -= attack.weight ?? 1;
+                if (selectedWeight <= 0) {
+                    this.currentlyActiveAttack = { ...attack }; // spread to have new object
+                    break;
+                }
+            }
+
             this.currentlyActiveAttack.started = false;
             this.currentlyActiveAttack.done = false;
             this.updateDesiredDistance(this.currentlyActiveAttack.requiredDistance);
@@ -191,7 +210,7 @@ namespace Script {
                 if (_mgtSqrd > this.currentlyDesiredDistanceSquared[0] && _mgtSqrd < this.currentlyDesiredDistanceSquared[1]) {
                     // start the attack
                     this.currentlyActiveAttack.started = true;
-                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.attackSprite), true, this.eventListener);
+                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.attackSprite), true);
                 }
             }
             if (this.currentlyActiveAttack.started) {
@@ -203,7 +222,7 @@ namespace Script {
                     // time to execute attack
                     this.currentlyActiveAttack.done = true;
                     this.currentlyActiveAttack.attack?.call(this);
-                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.cooldownSprite), true, this.eventListener);
+                    this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.cooldownSprite), true);
                 } else {
                     //we're on cooldown now
                     this.currentlyActiveAttack.cooldown -= _frameTimeInSeconds;
@@ -218,7 +237,20 @@ namespace Script {
             }
         }
 
+        protected setCentralAnimator(_as: AnimationSprite, _unique: boolean = false): void {
+            super.setCentralAnimator(_as, _unique, this.eventListener);
+        }
+
         private eventListener = (_event: CustomEvent) => {
+            // walk event
+            if (!(this.currentlyActiveAttack && this.currentlyActiveAttack.events && this.currentlyActiveAttack.events[_event.type])) {
+                if (!this.events) return;
+                if (!this.events[_event.type]) return;
+                this.events[_event.type].call(this, _event);
+                return;
+            }
+            // attack event
+            if (!this.currentlyActiveAttack) return;
             if (!this.currentlyActiveAttack.events) return;
             if (!this.currentlyActiveAttack.events[_event.type]) return;
             this.currentlyActiveAttack.events[_event.type].call(this, _event);
@@ -246,7 +278,7 @@ namespace Script {
 
             this.enemyManager.removeEnemy(this);
             this.removeAnimationEventListeners();
-            if(isFinite(_hit.damage)){
+            if (isFinite(_hit.damage)) {
                 this.enemyManager.addXP(this.dropXP);
             } else {
                 this.enemyManager.addXP(this.dropXP / 2);
@@ -266,6 +298,7 @@ namespace Script {
         dropXP: number;
         directionOverride?: ƒ.Vector3;
         size?: number;
+        events?: { [name: string]: (_event?: CustomEvent) => void; }
     }
 
     export interface EnemyAttack {
@@ -277,6 +310,7 @@ namespace Script {
         attack?: () => void;
         movement?: (_diff: ƒ.Vector3, _mgtSqrd: number, _charPosition: ƒ.Vector3, _frameTimeInSeconds: number) => void;
         events?: { [name: string]: (_event?: CustomEvent) => void; }
+        weight?: number;
     }
     interface EnemyAttackActive extends EnemyAttack {
         started?: boolean;

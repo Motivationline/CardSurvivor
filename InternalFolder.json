@@ -276,6 +276,17 @@
             "name": "textures",
             "entries": [
               {
+                "name": "GenericBullet",
+                "entries": [
+                  {
+                    "idResource": "TextureImage|2024-06-13T12:37:26.841Z|13707"
+                  },
+                  {
+                    "idResource": "Material|2024-06-13T12:37:34.140Z|88096"
+                  }
+                ]
+              },
+              {
                 "name": "Toast",
                 "entries": [
                   {

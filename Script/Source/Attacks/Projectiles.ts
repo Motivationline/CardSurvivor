@@ -3,6 +3,13 @@
 namespace Script {
 
     export const projectiles: Projectiles = {
+        "genericBullet": {
+            damage: 1,
+            speed: 1,
+            rotateInDirection: true,
+            sprite: ["projectile", "genericBullet"],
+            target: ProjectileTarget.PLAYER,
+        },
         "toastEnemy": {
             damage: 1,
             speed: 20,

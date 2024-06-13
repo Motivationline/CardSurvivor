@@ -41,7 +41,7 @@ namespace Script {
                                     this.node.mtxWorld.translation,
                                     ƒ.Vector3.Y(0.3)
                                 ),
-                                undefined,
+                                this.modifier,
                             );
                         }
                     }
@@ -57,6 +57,25 @@ namespace Script {
             speed: 0.2,
             knockbackMultiplier: 0.2,
             dropXP: 3,
+            events: {
+                // running away causes attacks
+                step: function () {
+                    let projectileAmount: number = 4;
+                    let radiusBetweenProjectiles: number = (2 * Math.PI) / projectileAmount;
+                    let startRadius: number = 0;
+                    let modification: Partial<ProjectileData> = {
+                        damage: 1,
+                        speed: 2,
+                    }
+                    let pm = provider.get(ProjectileManager);
+                    this.stepAmount = isNaN(this.stepAmount) ? 0 : this.stepAmount + 1;
+                    for (let i = 0; i < projectileAmount; i++) {
+                        let angle = i * radiusBetweenProjectiles + startRadius + (this.stepAmount % 2) * 0.5 * radiusBetweenProjectiles;
+                        let direction = new ƒ.Vector3(Math.cos(angle), Math.sin(angle));
+                        pm.createProjectile({...projectiles["genericBullet"], ...modification, ...{direction}}, this.node.mtxWorld.translation, this.modifier);
+                    }
+                }
+            },
         },
         motor: {
             moveSprite: ["motor", "move"],
@@ -105,20 +124,49 @@ namespace Script {
         toasterBoss: {
             moveSprite: ["toaster", "move"],
             damage: 30,
-            desiredDistance: [0, Infinity],
+            desiredDistance: [5, Infinity],
             dropXP: 100,
             health: 1000,
             knockbackMultiplier: 0.1,
             size: 3,
             speed: 1,
+            events: {
+                // running away causes attacks
+                step: function () {
+                    let projectileAmount: number = 4;
+                    let radiusBetweenProjectiles: number = (2 * Math.PI) / projectileAmount;
+                    let startRadius: number = 0;
+                    let modification: Partial<ProjectileData> = {
+                        damage: 10,
+                        speed: 5,
+                        size: 2,
+
+                    }
+                    let pm = provider.get(ProjectileManager);
+                    for (let i = 0; i < projectileAmount; i++) {
+                        pm.createProjectile({
+                            ...projectiles["genericBullet"], ...modification, ...{
+                                methods: {
+                                    afterSetup: function () {
+                                        let angle = i * radiusBetweenProjectiles + startRadius;
+                                        this.direction = new ƒ.Vector3(Math.cos(angle), Math.sin(angle));
+                                    }
+                                }
+                            }
+                        }, this.node.mtxWorld.translation, this.modifier);
+                    }
+                }
+            },
             attacks: [
                 // 3 waves of toasts
                 {
+                    weight: 1,
                     requiredDistance: [0, Infinity],
                     cooldown: 2,
                     windUp: 181 / 24,
                     attackSprite: ["bosstoaster", "attack01"],
                     cooldownSprite: ["toaster", "idle"],
+                    movement: function () { },
                     events: {
                         fire: function () {
                             let modification: Partial<ProjectileData> = {
@@ -144,13 +192,21 @@ namespace Script {
                     }
                 },
 
-                // running away
-                // {
-                //     requiredDistance: [5, 6],
-                //     cooldown: 
-                // },
+                // run
+                {
+                    weight: 2,
+                    requiredDistance: [3, 6],
+                    cooldown: 1,
+                    windUp: 0,
+                },
+
 
                 // jump
+                {
+                    requiredDistance: [5, 6],
+                    cooldown: 0,
+                    windUp: 0,
+                },
             ]
         }
     }

@@ -8,6 +8,7 @@ namespace Script {
         description?: string,
         image: string,
         rarity: CardRarity,
+        unlockByDefault?: boolean,
         levels: CardLevel[],
     }
     export interface CardLevel {

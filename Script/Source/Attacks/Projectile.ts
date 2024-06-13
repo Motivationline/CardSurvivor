@@ -219,7 +219,7 @@ namespace Script {
             if (!this.rotateInDirection) return;
             let refVector = ƒ.Vector3.X(1);
             let angle = Math.acos(ƒ.Vector3.DOT(this.direction, refVector) / (refVector.magnitude * this.direction.magnitude));
-            angle = angle * 180 / Math.PI;
+            angle = angle * 180 / Math.PI * Math.sign(this.direction.y);
             let pivot = this.node.getComponent(ƒ.ComponentMesh).mtxPivot;
             pivot.rotation = new ƒ.Vector3(pivot.rotation.x, pivot.rotation.y, angle);
         }
