@@ -64,8 +64,9 @@ namespace Script {
                     let radiusBetweenProjectiles: number = (2 * Math.PI) / projectileAmount;
                     let startRadius: number = 0;
                     let modification: Partial<ProjectileData> = {
-                        damage: 1,
-                        speed: 2,
+                        damage: 5,
+                        speed: 6,
+                        range: 4,
                     }
                     let pm = provider.get(ProjectileManager);
                     this.stepAmount = isNaN(this.stepAmount) ? 0 : this.stepAmount + 1;

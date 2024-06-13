@@ -74,10 +74,6 @@
           {
             "frame": 11,
             "event": "step"
-          },
-          {
-            "frame": 31,
-            "event": "step"
           }
         ]
       }
