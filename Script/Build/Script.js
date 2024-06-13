@@ -1121,6 +1121,7 @@ var Script;
         "codeCivilPlayer": {
             damage: 3,
             speed: 20,
+            range: 20,
             sprite: ["projectile", "codecivil"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.FURTHEST,
@@ -2161,7 +2162,8 @@ var Script;
                             currentCooldown: 1.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 1 //3 Base Damage (x10 for max distance)
+                                    damage: 1,
+                                    projectileRange: 2,
                                 }
                             }
                         }]
@@ -2175,7 +2177,8 @@ var Script;
                             currentCooldown: 1.25,
                             modifiers: {
                                 absolute: {
-                                    damage: 2 //3 Base Damage (x10 for max distance)
+                                    damage: 2,
+                                    projectileRange: 4,
                                 }
                             }
                         }]
@@ -2189,7 +2192,8 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 3 //3 Base Damage (x10 for max distance)
+                                    damage: 3,
+                                    projectileRange: 6,
                                 }
                             }
                         }]
@@ -2203,7 +2207,8 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 5 //3 Base Damage (x10 for max distance)
+                                    damage: 5,
+                                    projectileRange: 10,
                                 }
                             }
                         }]

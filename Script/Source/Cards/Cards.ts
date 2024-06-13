@@ -505,7 +505,8 @@ namespace Script {
                         currentCooldown: 1.5,
                         modifiers: {
                             absolute: {
-                                damage: 1 //3 Base Damage (x10 for max distance)
+                                damage: 1, //3 Base Damage (x10 for max distance)
+                                projectileRange: 2,
                             }
                         }
                     }]
@@ -519,7 +520,8 @@ namespace Script {
                         currentCooldown: 1.25,
                         modifiers: {
                             absolute: {
-                                damage: 2 //3 Base Damage (x10 for max distance)
+                                damage: 2, //3 Base Damage (x10 for max distance)
+                                projectileRange: 4,
                             }
                         }
                     }]
@@ -533,7 +535,8 @@ namespace Script {
                         currentCooldown: 1,
                         modifiers: {
                             absolute: {
-                                damage: 3 //3 Base Damage (x10 for max distance)
+                                damage: 3, //3 Base Damage (x10 for max distance)
+                                projectileRange: 6,
                             }
                         }
                     }]
@@ -547,7 +550,8 @@ namespace Script {
                         currentCooldown: 1,
                         modifiers: {
                             absolute: {
-                                damage: 5 //3 Base Damage (x10 for max distance)
+                                damage: 5, //3 Base Damage (x10 for max distance)
+                                projectileRange: 10,
                             }
                         }
                     }]

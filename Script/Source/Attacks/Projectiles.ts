@@ -104,6 +104,7 @@ namespace Script {
         "codeCivilPlayer": {
             damage: 3,
             speed: 20,
+            range: 20,
             sprite: ["projectile", "codecivil"],
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.FURTHEST,
