@@ -13,11 +13,13 @@ namespace Script {
 
     const pools: Pools = {
         "electronics": [
-            ["microwave", "chair"],
-            ["toaster", "closet"],
-            ["motor"],
-            ["ventilator"],
-            ["chair"],
+            ["microwave", "chair"], // --0
+            ["toaster", "closet"], // --1
+            ["motor"], // --2
+            ["ventilator"], // --3
+            ["chair"], //mixer --4
+            ["toaster"], // --5
+            ["closet"] // --6
         ]
     }
 
@@ -281,8 +283,9 @@ namespace Script {
                 duration: 60,
                 defaultWave: {
                     enemies: [
-                        { pool: 0, weight: 8 },
-                        { pool: 1, weight: 2 },
+                        { pool: 0, weight: 6 },
+                        { pool: 5, weight: 2 },
+                        { pool: 6, weight: 2 }
                     ],
                     amount: 6,
                     duration: 8,
@@ -290,15 +293,19 @@ namespace Script {
                 },
                 waveAmount: 7,
                 waves: [{
-                    enemies: [{ pool: 0 }],
-                    amount: 1,
+                    enemies: [
+                        { pool: 5 },
+                        { pool: 6 }
+                    ],
+                    amount: 2,
                     duration: 5,
                     minEnemiesOverride: 0,
                 },
                 {
                     enemies: [
-                        { pool: 0, weight: 8 },
-                        { pool: 1, weight: 2 },
+                        { pool: 0, weight: 6 },
+                        { pool: 5, weight: 2 },
+                        { pool: 6, weight: 2 }
                     ],
                     amount: 6,
                     duration: 8,
@@ -319,8 +326,9 @@ namespace Script {
                 duration: 60,
                 defaultWave: {
                     enemies: [
-                        { pool: 0, weight: 8 },
-                        { pool: 1, weight: 2 },
+                        { pool: 0, weight: 6 },
+                        { pool: 5, weight: 2 },
+                        { pool: 6, weight: 2 }
                     ],
                     amount: 5,
                     duration: 8,
@@ -341,8 +349,9 @@ namespace Script {
                 },
                 {
                     enemies: [
-                        { pool: 0, weight: 8 },
-                        { pool: 1, weight: 2 },
+                        { pool: 0, weight: 6 },
+                        { pool: 5, weight: 2 },
+                        { pool: 6, weight: 2 }
                     ],
                     amount: 5,
                     duration: 8,
@@ -363,8 +372,9 @@ namespace Script {
                 duration: 60,
                 defaultWave: {
                     enemies: [
-                        { pool: 1, weight: 3 },
-                        { pool: 2, weight: 7 },
+                        { pool: 2, weight: 8 },
+                        { pool: 5, weight: 1 },
+                        { pool: 6, weight: 1 },
                     ],
                     amount: 5,
                     duration: 8,
@@ -379,8 +389,9 @@ namespace Script {
                 },
                 {
                     enemies: [
-                        { pool: 1, weight: 3 },
-                        { pool: 2, weight: 7 },
+                        { pool: 2, weight: 8 },
+                        { pool: 5, weight: 1 },
+                        { pool: 6, weight: 1 },
                     ],
                     amount: 5,
                     duration: 8,
@@ -402,10 +413,11 @@ namespace Script {
                 defaultWave: {
                     enemies: [
                         { pool: 0, weight: 6 },
-                        { pool: 1, weight: 2 },
                         { pool: 2, weight: 2 },
+                        { pool: 5, weight: 1 },
+                        { pool: 6, weight: 1 },
                     ],
-                    amount: 3,
+                    amount: 5,
                     duration: 1,
                     minEnemiesOverride: 2,
                 },
@@ -425,9 +437,10 @@ namespace Script {
                 duration: 60,
                 defaultWave: {
                     enemies: [
-                        { pool: 0, weight: 5 },
-                        { pool: 1, weight: 3 },
-                        { pool: 2, weight: 2 },
+                        { pool: 0, weight: 50 },
+                        { pool: 2, weight: 20 },
+                        { pool: 5, weight: 15 },
+                        { pool: 6, weight: 15 },
                     ],
                     amount: 6,
                     duration: 8,
@@ -442,9 +455,10 @@ namespace Script {
                 },
                 {
                     enemies: [
-                        { pool: 0, weight: 5 },
-                        { pool: 1, weight: 3 },
-                        { pool: 2, weight: 2 },
+                        { pool: 0, weight: 50 },
+                        { pool: 2, weight: 20 },
+                        { pool: 5, weight: 15 },
+                        { pool: 6, weight: 15 },
                     ],
                     amount: 6,
                     duration: 8,
@@ -456,97 +470,146 @@ namespace Script {
                         enemySize: 1.1,
                         movementSpeed: 1.8,
                         damage: 4,
-                        xp: 1.75,
+                        xp: 1.5,
                     }
                 }
             },
-            // room 6
+            // room 16
             {
-                duration: 45,
+                duration: 60,
                 defaultWave: {
                     enemies: [
-                        { pool: 0, weight: 5 },
-                        { pool: 1, weight: 5 },
+                        { pool: 0, weight: 7 },
+                        { pool: 2, weight: 3 },
                     ],
-                    amount: 6,
-                    duration: 8,
+                    amount: 4,
+                    duration: 3,
                     minEnemiesOverride: 2,
                 },
-                waveAmount: 6,
+                waveAmount: 20,
                 bonus: {
                     multiplier: {
-                        health: 1,
-                        damage: 1.2,
-                        xp: 1.2,
-                    }
-                }
-            },
-            // room 7
-            {
-                duration: 50,
-                defaultWave: {
-                    enemies: [
-                        { pool: 0, weight: 5 },
-                        { pool: 1, weight: 3 },
-                        { pool: 2, weight: 2 },
-                    ],
-                    amount: 8,
-                    duration: 10,
-                    minEnemiesOverride: 2,
-                },
-                waveAmount: 6,
-                waves: [
-                    {
-                        enemies: [
-                            { pool: 2 },
-                        ],
-                        amount: 2,
-                        duration: 10,
-                    },
-                    {
-                        enemies: [
-                            { pool: 0, weight: 5 },
-                            { pool: 1, weight: 3 },
-                            { pool: 2, weight: 2 },
-                        ],
-                        amount: 8,
-                        duration: 10,
-                        minEnemiesOverride: 0,
-                    }
-                ],
-                bonus: {
-                    multiplier: {
-                        health: 1.2,
-                        damage: 1.2,
+                        health: 3,
+                        enemySize: 1.1,
+                        movementSpeed: 1.7,
+                        damage: 3,
                         xp: 1,
                     }
                 }
             },
-            // room 8 - SCHWARM
+            // room 17 - ADD VENTILATOR SWARM ENEMY
             {
-                duration: 50,
+                duration: 60,
                 defaultWave: {
                     enemies: [
-                        { pool: 0 },
+                        { pool: 0, weight: 4 },
+                        { pool: 2, weight: 2 },
+                        { pool: 5, weight: 2 },
+                        { pool: 6, weight: 2 },
                     ],
-                    amount: 3,
-                    duration: 0.75,
+                    amount: 10,
+                    duration: 10,
                     minEnemiesOverride: 2,
                 },
-                waveAmount: 75,
+                waveAmount: 7,
                 bonus: {
                     multiplier: {
-                        health: 0.8,
-                        movementSpeed: 1.5,
-                        damage: 0.8,
-                        xp: 0.3,
-                        enemySize: 0.6,
+                        health: 4,
+                        enemySize: 1.2,
+                        movementSpeed: 1.9,
+                        damage: 3,
+                        xp: 1.2,
                     }
                 }
             },
-            // room 9
+            // room 18 - ELITES
             {
-                duration: 55,
+                duration: 60,
+                defaultWave: {
+                    enemies: [
+                        { pool: 0, weight: 6 },
+                        { pool: 5, weight: 2 },
+                        { pool: 6, weight: 2 }
+                    ],
+                    amount: 5,
+                    duration: 8,
+                    minEnemiesOverride: 2,
+                },
+                waveAmount: 5,
+                waves: [{
+                    enemies: [
+                        { pool: 0, elite: true },
+                        { pool: 0 }
+                    ],
+                    amount: 6,
+                    duration: 12,
+                    minEnemiesOverride: 1,
+                    bonus: {
+                        multiplier: {
+                            health: 0.9,
+                            enemySize: 0.9,
+                        }
+                    }
+                },
+                    {
+                        enemies: [
+                            { pool: 5, elite: true },
+                            { pool: 5 }
+                        ],
+                        amount: 6,
+                        duration: 12,
+                        minEnemiesOverride: 1,
+                        bonus: {
+                            multiplier: {
+                                health: 0.9,
+                                enemySize: 0.9,
+                            }
+                        }
+                    },
+                    {
+                        enemies: [
+                            { pool: 6, elite: true },
+                            { pool: 6 }
+                        ],
+                        amount: 6,
+                        duration: 12,
+                        minEnemiesOverride: 1,
+                        bonus: {
+                            multiplier: {
+                                health: 0.9,
+                                enemySize: 0.9,
+                            }
+                        }
+                    },
+                    {
+                        enemies: [
+                            { pool: 2, elite: true },
+                            { pool: 2 }
+                        ],
+                        amount: 6,
+                        duration: 12,
+                        minEnemiesOverride: 1,
+                        bonus: {
+                            multiplier: {
+                                health: 0.9,
+                                enemySize: 0.9,
+                            }
+                        }
+                    },
+                ],
+                bonus: {
+                    multiplier: {
+                        health: 3.5,
+                        enemySize: 1.1,
+                        movementSpeed: 1.6,
+                        damage: 3.5,
+                        xp: 0.8,
+                    }
+                }
+            },
+            // room 19
+            {
+                duration: 60,
                 defaultWave: {
                     enemies: [
                         { pool: 0, weight: 3 },
@@ -561,22 +624,35 @@ namespace Script {
                 bonus: {
                     multiplier: {
                         health: 1.3,
-                        damage: 1.3,
+                        damage: 2,
                         xp: 1,
                     }
                 }
             },
-            // room 10 - BOSS
+            // room 20 - FINAL BOSS
             {
                 duration: 60,
                 boss: true,
                 canStopAfter: true,
                 defaultWave: {
-                    amount: 1,
-                    duration: 60,
-                    enemies: ["toasterBoss"],
+                    amount: 6,
+                    duration: 0,
+                    enemies: [
+                        "toasterBoss",
+                        { pool: 5, weight: 5 },
+                        { pool: 6, weight: 5 }
+                    ],
                 },
-                waveAmount: 1
+                waveAmount: 2,
+                bonus: {
+                    multiplier: {
+                        health: 1.5,
+                        damage: 3,
+                        enemySize: 1.1,
+                        movementSpeed: 2,
+                        xp: 1,
+                    }
+                }
             },
         ]
     }
