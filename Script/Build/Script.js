@@ -1307,7 +1307,7 @@ var Script;
         collection;
         deck;
         // private selection: string[];
-        maxDeckSize = 20;
+        maxDeckSize = 10;
         maxSelectedSize = 0;
         deckElement;
         // private selectionElement: HTMLElement;

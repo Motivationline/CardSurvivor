@@ -10,7 +10,7 @@ namespace Script {
         private deck: string[];
         // private selection: string[];
 
-        private maxDeckSize: number = 20;
+        private maxDeckSize: number = 10;
         private maxSelectedSize: number = 0;
 
         private deckElement: HTMLElement;
