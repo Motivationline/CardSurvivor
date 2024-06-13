@@ -3,10 +3,10 @@ namespace Script {
         multiplier: {
             enemySize: 2,
             damage: 2,
-            health: 3,
+            health: 10,
             movementSpeed: 0.8,
             knockback: 0.1,
-            xp: 5,
+            xp: 6,
         }
     }
 
@@ -155,6 +155,308 @@ namespace Script {
                         health: 0.8,
                         damage: 1,
                         xp: 1.5,
+                    }
+                }
+            },
+            // room 6
+            {
+                duration: 45,
+                defaultWave: {
+                    enemies: [
+                        { pool: 0, weight: 5 },
+                        { pool: 1, weight: 5 },
+                    ],
+                    amount: 6,
+                    duration: 8,
+                    minEnemiesOverride: 2,
+                },
+                waveAmount: 6,
+                bonus: {
+                    multiplier: {
+                        health: 1,
+                        damage: 1.2,
+                        xp: 1.2,
+                    }
+                }
+            },
+            // room 7
+            {
+                duration: 50,
+                defaultWave: {
+                    enemies: [
+                        { pool: 0, weight: 5 },
+                        { pool: 1, weight: 3 },
+                        { pool: 2, weight: 2 },
+                    ],
+                    amount: 8,
+                    duration: 10,
+                    minEnemiesOverride: 2,
+                },
+                waveAmount: 6,
+                waves: [
+                    {
+                        enemies: [
+                            { pool: 2 },
+                        ],
+                        amount: 2,
+                        duration: 10,
+                    },
+                    {
+                        enemies: [
+                            { pool: 0, weight: 5 },
+                            { pool: 1, weight: 3 },
+                            { pool: 2, weight: 2 },
+                        ],
+                        amount: 8,
+                        duration: 10,
+                        minEnemiesOverride: 0,
+                    }
+                ],
+                bonus: {
+                    multiplier: {
+                        health: 1.2,
+                        damage: 1.2,
+                        xp: 1,
+                    }
+                }
+            },
+            // room 8 - SCHWARM
+            {
+                duration: 50,
+                defaultWave: {
+                    enemies: [
+                        { pool: 0 },
+                    ],
+                    amount: 3,
+                    duration: 0.75,
+                    minEnemiesOverride: 2,
+                },
+                waveAmount: 75,
+                bonus: {
+                    multiplier: {
+                        health: 0.2,
+                        movementSpeed: 1.5,
+                        damage: 0.8,
+                        xp: 0.3,
+                        enemySize: 0.6,
+                    }
+                }
+            },
+            // room 9
+            {
+                duration: 55,
+                defaultWave: {
+                    enemies: [
+                        { pool: 0, weight: 3 },
+                        { pool: 1, weight: 4 },
+                        { pool: 2, weight: 3 },
+                    ],
+                    amount: 8,
+                    duration: 10,
+                    minEnemiesOverride: 2,
+                },
+                waveAmount: 7,
+                bonus: {
+                    multiplier: {
+                        health: 1.3,
+                        damage: 1.3,
+                        xp: 1,
+                    }
+                }
+            },
+            // room 10 - BOSS ----------------------------------------------------------------------------------------
+            {
+                duration: 60,
+                boss: true,
+                canStopAfter: true,
+                defaultWave: {
+                    amount: 1,
+                    duration: 60,
+                    enemies: ["toasterBoss"],
+                },
+                waveAmount: 1
+            },
+            // room 11
+            {
+                duration: 60,
+                defaultWave: {
+                    enemies: [
+                        { pool: 0, weight: 8 },
+                        { pool: 1, weight: 2 },
+                    ],
+                    amount: 6,
+                    duration: 8,
+                    minEnemiesOverride: 2,
+                },
+                waveAmount: 7,
+                waves: [{
+                    enemies: [{ pool: 0 }],
+                    amount: 1,
+                    duration: 5,
+                    minEnemiesOverride: 0,
+                },
+                {
+                    enemies: [
+                        { pool: 0, weight: 8 },
+                        { pool: 1, weight: 2 },
+                    ],
+                    amount: 6,
+                    duration: 8,
+                    minEnemiesOverride: 0,
+                }],
+                bonus: {
+                    multiplier: {
+                        health: 3,
+                        enemySize: 1.1,
+                        movementSpeed: 1.6,
+                        damage: 3,
+                        xp: 1.5,
+                    }
+                }
+            },
+            // room 12 - ELITE
+            {
+                duration: 60,
+                defaultWave: {
+                    enemies: [
+                        { pool: 0, weight: 8 },
+                        { pool: 1, weight: 2 },
+                    ],
+                    amount: 5,
+                    duration: 8,
+                    minEnemiesOverride: 2,
+                },
+                waveAmount: 8,
+                waves: [{
+                    enemies: [{ pool: 1, elite: true }],
+                    amount: 1,
+                    duration: 10,
+                    minEnemiesOverride: 0,
+                    bonus: {
+                        multiplier: {
+                            health: 0.8,
+                            enemySize: 0.9,
+                        }
+                    }
+                },
+                {
+                    enemies: [
+                        { pool: 0, weight: 8 },
+                        { pool: 1, weight: 2 },
+                    ],
+                    amount: 5,
+                    duration: 8,
+                    minEnemiesOverride: 0,
+                }],
+                bonus: {
+                    multiplier: {
+                        health: 3.5,
+                        enemySize: 1.1,
+                        movementSpeed: 1.6,
+                        damage: 3.5,
+                        xp: 1.5,
+                    }
+                }
+            },
+            // room 13 - VENTILATOR -- ADD VENTILATOR SWARM ABILITY
+            {
+                duration: 60,
+                defaultWave: {
+                    enemies: [
+                        { pool: 1, weight: 3 },
+                        { pool: 2, weight: 7 },
+                    ],
+                    amount: 5,
+                    duration: 8,
+                    minEnemiesOverride: 2,
+                },
+                waveAmount: 8,
+                waves: [{
+                    enemies: [{ pool: 3 }],
+                    amount: 1,
+                    duration: 4,
+                    minEnemiesOverride: 0,
+                },
+                {
+                    enemies: [
+                        { pool: 1, weight: 3 },
+                        { pool: 2, weight: 7 },
+                    ],
+                    amount: 5,
+                    duration: 8,
+                    minEnemiesOverride: 0,
+                }],
+                bonus: {
+                    multiplier: {
+                        health: 5,
+                        enemySize: 1.1,
+                        movementSpeed: 1.6,
+                        damage: 4,
+                        xp: 1.5,
+                    }
+                }
+            },
+            // room 14 - SCHWARM
+            {
+                duration: 60,
+                defaultWave: {
+                    enemies: [
+                        { pool: 0, weight: 6 },
+                        { pool: 1, weight: 2 },
+                        { pool: 2, weight: 2 },
+                    ],
+                    amount: 3,
+                    duration: 1,
+                    minEnemiesOverride: 2,
+                },
+                waveAmount: 60,
+                bonus: {
+                    multiplier: {
+                        health: 0.2,
+                        movementSpeed: 2,
+                        damage: 0.5,
+                        xp: 0.25,
+                        enemySize: 0.6,
+                    }
+                }
+            },
+            // room 15 - ELITE -- ADD VENTILATOR SWARM ENEMY
+            {
+                duration: 60,
+                defaultWave: {
+                    enemies: [
+                        { pool: 0, weight: 5 },
+                        { pool: 1, weight: 3 },
+                        { pool: 2, weight: 2 },
+                    ],
+                    amount: 6,
+                    duration: 8,
+                    minEnemiesOverride: 2,
+                },
+                waveAmount: 8,
+                waves: [{
+                    enemies: [{ pool: 2, elite: true }],
+                    amount: 1,
+                    duration: 10,
+                    minEnemiesOverride: 0,
+                },
+                {
+                    enemies: [
+                        { pool: 0, weight: 5 },
+                        { pool: 1, weight: 3 },
+                        { pool: 2, weight: 2 },
+                    ],
+                    amount: 6,
+                    duration: 8,
+                    minEnemiesOverride: 0,
+                }],
+                bonus: {
+                    multiplier: {
+                        health: 4,
+                        enemySize: 1.1,
+                        movementSpeed: 1.8,
+                        damage: 4,
+                        xp: 1.75,
                     }
                 }
             },
