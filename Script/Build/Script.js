@@ -2764,35 +2764,35 @@ var Script;
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +5% increased XP
+                            xp: 1.05 // +5% increased XP
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +10% increased XP
+                            xp: 1.1 // +10% increased XP
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +25% increased XP
+                            xp: 1.25 // +25% increased XP
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +40% increased XP
+                            xp: 1.4 // +40% increased XP
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +60% increased XP
+                            xp: 1.6 // +60% increased XP
                         }
                     }
                 },
@@ -6513,7 +6513,7 @@ var Script;
             this.currentWaveEnd = 0;
         }
         addXP(_xp) {
-            this.currentXP += _xp;
+            this.currentXP += Script.provider.get(Script.CardManager).modifyValuePlayer(_xp, Script.PassiveCardEffect.XP);
             this.xpElement.innerText = this.currentXP.toString();
         }
     }

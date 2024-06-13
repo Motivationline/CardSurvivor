@@ -1108,35 +1108,35 @@ namespace Script {
                 { //Tier 1
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +5% increased XP
+                            xp: 1.05 // +5% increased XP
                         }
                     }
                 },
                 { //Tier 2
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +10% increased XP
+                            xp: 1.1 // +10% increased XP
                         }
                     }
                 },
                 { //Tier 3
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +25% increased XP
+                            xp: 1.25 // +25% increased XP
                         }
                     }
                 },
                 { //Tier 4
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +40% increased XP
+                            xp: 1.4 // +40% increased XP
                         }
                     }
                 },
                 { //Tier 5
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +60% increased XP
+                            xp: 1.6 // +60% increased XP
                         }
                     }
                 },

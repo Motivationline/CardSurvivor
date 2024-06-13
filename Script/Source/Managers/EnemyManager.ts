@@ -1082,7 +1082,7 @@ namespace Script {
         }
 
         public addXP(_xp: number) {
-            this.currentXP += _xp;
+            this.currentXP += provider.get(CardManager).modifyValuePlayer(_xp, PassiveCardEffect.XP);
             this.xpElement.innerText = this.currentXP.toString();
         }
     }
