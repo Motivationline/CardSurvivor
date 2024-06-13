@@ -73,7 +73,7 @@ namespace Script {
                     for (let i = 0; i < projectileAmount; i++) {
                         let angle = i * radiusBetweenProjectiles + startRadius + (this.stepAmount % 2) * 0.5 * radiusBetweenProjectiles;
                         let direction = new ƒ.Vector3(Math.cos(angle), Math.sin(angle));
-                        pm.createProjectile({...projectiles["genericBullet"], ...modification, ...{direction}}, this.node.mtxWorld.translation, this.modifier);
+                        pm.createProjectile({ ...projectiles["genericBullet"], ...modification, ...{ direction } }, this.node.mtxWorld.translation, this.modifier);
                     }
                 }
             },
@@ -186,7 +186,7 @@ namespace Script {
                                         this.node.mtxWorld.translation,
                                         ƒ.Vector3.Y(0.3)
                                     ),
-                                    undefined,
+                                    this.modifier,
                                 );
                             }
                         }
@@ -204,9 +204,47 @@ namespace Script {
 
                 // jump
                 {
-                    requiredDistance: [5, 6],
-                    cooldown: 0,
-                    windUp: 0,
+                    attackSprite: ["bosstoaster", "attack03"],
+                    cooldownSprite: ["toaster", "idle"],
+                    weight: 100,
+                    requiredDistance: [4, 6],
+                    cooldown: 5,
+                    windUp: 44 / 24,
+                    movement: function () { },
+                    attack: function () {
+                        let modification: Partial<ProjectileData> = {
+                            size: 2,
+                            methods: {
+                                afterSetup: function () {
+                                    let position = this.node.mtxLocal.translation.clone;
+                                    this.hazardZone.mtxLocal.translation = position.clone;
+                                    this.targetPosition = position;
+                                    this.direction = ƒ.Vector3.Y(-1);
+                                    this.node.mtxLocal.translateY(20);
+                                },
+                            }
+                        }
+
+                        // move to furthest away point
+                        let charPosition = provider.get(CharacterManager).character.node.mtxWorld.translation;
+                        this.rigidbody.activate(false);
+                        this.node.mtxLocal.translation = new ƒ.Vector3(charPosition.x < 0 ? 11 : -11, charPosition.y < 0 ? 6.5 : -6.5)
+                        this.rigidbody.activate(true);
+
+                        let timeBetweenWavesInMS = 1500;
+                        let waves: number = 3;
+                        let projectilesPerWave: number = 100;
+                        for (let i = 0; i < waves; i++) {
+                            setTimeout(() => {
+                                for (let p = 0; p < projectilesPerWave; p++) {
+                                    provider.get(ProjectileManager).createProjectile({ ...projectiles["toastEnemy"], ...modification },
+                                        new ƒ.Vector3(Math.random() * 25 - 12.5, Math.random() * 15 - 7.5),
+                                        this.modifier,
+                                    );
+                                }
+                            }, timeBetweenWavesInMS * i * ƒ.Time.game.getScale());
+                        }
+                    },
                 },
             ]
         }
