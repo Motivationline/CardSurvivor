@@ -220,7 +220,7 @@ progress::-webkit-progress-value {
   height: 100vh;
   gap: 20px;
   background-color: rgba(108, 108, 121, 0.817);
-  --card-size: min(40vw, 50vh);
+  --card-size: min(40vw, 45vh);
 }
 
 #card-upgrade-popup-wrapper {
