@@ -5335,17 +5335,6 @@ var Script;
         "electronics": [
             // room 1
             {
-                duration: 60,
-                boss: true,
-                canStopAfter: true,
-                defaultWave: {
-                    amount: 1,
-                    duration: 60,
-                    enemies: ["toasterBoss"],
-                },
-                waveAmount: 1
-            },
-            {
                 duration: 20,
                 defaultWave: {
                     enemies: [{ pool: 0 }],
