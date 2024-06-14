@@ -46,7 +46,8 @@ namespace Script {
             rotateInDirection: false,
             dontNormalizeMovement: false,
             sprite: ["projectile", "toast"],
-            methods: {}
+            methods: {},
+            hitboxSize: 1,
         }
 
         constructor() {
@@ -91,6 +92,7 @@ namespace Script {
             this.setCentralAnimator(this.sprite);
 
             this.node.mtxLocal.scaling = ƒ.Vector3.ONE(this.size);
+            this.node.getComponent(ƒ.ComponentRigidbody).mtxPivot.scaling = ƒ.Vector3.ONE(_options.hitboxSize);
 
             this.hazardZone = undefined;
             this.prevDistance = Infinity;

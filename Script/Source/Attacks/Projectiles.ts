@@ -17,6 +17,7 @@ namespace Script {
             rotateInDirection: true,
             sprite: ["projectile", "flatToast"],
             target: ProjectileTarget.PLAYER,
+            hitboxSize: 0.5,
         },
         "toastEnemy": {
             damage: 1,

@@ -106,6 +106,7 @@ namespace Script {
         methods?: ProjectileFunctions,
         rotateInDirection?: boolean,
         stunDuration?: number,
+        hitboxSize?: number,
     }
 
     export interface ProjectileFunctions {

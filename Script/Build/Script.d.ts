@@ -230,6 +230,7 @@ declare namespace Script {
         methods?: ProjectileFunctions;
         rotateInDirection?: boolean;
         stunDuration?: number;
+        hitboxSize?: number;
     }
     export interface ProjectileFunctions {
         afterSetup?: () => void;
@@ -577,6 +578,7 @@ declare namespace Script {
         events?: {
             [name: string]: (_event?: CustomEvent) => void;
         };
+        hitboxSize?: number;
     }
     interface EnemyAttack {
         requiredDistance: [number, number];

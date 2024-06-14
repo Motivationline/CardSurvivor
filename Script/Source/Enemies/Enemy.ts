@@ -45,6 +45,7 @@ namespace Script {
             },
             directionOverride: undefined,
             events: undefined,
+            hitboxSize: 0.4,
         }
 
         constructor() {
@@ -86,6 +87,7 @@ namespace Script {
 
             this.modifier = _modifier ?? {};
             this.meleeCooldown = Math.random();
+            this.rigidbody.mtxPivot.scaling = ƒ.Vector3.ONE(_options.hitboxSize);
         }
 
         private updateDesiredDistance(_distance: [number, number]) {
@@ -304,7 +306,8 @@ namespace Script {
         dropXP: number;
         directionOverride?: ƒ.Vector3;
         size?: number;
-        events?: { [name: string]: (_event?: CustomEvent) => void; }
+        events?: { [name: string]: (_event?: CustomEvent) => void; };
+        hitboxSize?: number;
     }
 
     export interface EnemyAttack {

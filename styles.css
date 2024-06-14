@@ -67,7 +67,7 @@ p {
 }
 
 button {
-  padding: 0.5em 1em 1em 1em;
+  padding: 0.25em 1em 0.75em 1em;
   color: #2f3749;
   font: inherit;
   font-size: 2em;
@@ -252,7 +252,7 @@ progress::-webkit-progress-value {
   z-index: 1005;
 }
 
-#game-over-overlay:not(.hidden){
+#game-over-overlay:not(.hidden) {
   animation: fade 1s reverse forwards linear;
 }
 
@@ -308,9 +308,9 @@ progress::-webkit-progress-value {
   --card-size: calc(((100vw - 4 * var(--gap) - 2 * var(--padding))/ 5) * 21 / 15);
 }
 
-#collection-overlay * {
-  /* border: 1px solid red; */
-}
+/* #collection-overlay * {
+  border: 1px solid red;
+} */
 
 #collection-outer-wrapper {
   width: 100%;
@@ -402,9 +402,9 @@ progress::-webkit-progress-value {
   animation: wiggle 4s ease-in-out infinite;
 }
 
-#card-popup-card .card.legendary .card-rays {
-  /* animation: rotate 10s linear infinite; */
-}
+/* #card-popup-card .card.legendary .card-rays {
+  animation: rotate 10s linear infinite;
+} */
 
 #card-popup-selection-wrapper {
   display: flex;
