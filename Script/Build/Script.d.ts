@@ -421,45 +421,6 @@ declare namespace Script {
     }
 }
 declare namespace Script {
-    interface iCardCollection {
-        [id: string]: {
-            lvl: number;
-            amount: number;
-        };
-    }
-    class CardCollection {
-        private collection;
-        private deck;
-        private maxDeckSize;
-        private maxSelectedSize;
-        private deckElement;
-        private collectionElement;
-        private popupElement;
-        private popupButtons;
-        private deckSelectionSizeElement;
-        private selectedCard;
-        private cardVisuals;
-        constructor(provider: Provider);
-        setup(): void;
-        private openPopup;
-        addCardToCollection(_name: string, _amount: number): void;
-        getCardLevel(_name: string): number;
-        addCardToDeck(_name: string): void;
-        removeCardFromDeck(_name: string, _updateVisuals?: boolean): void;
-        private hidePopup;
-        private removeFromArray;
-        private addToArray;
-        private installListeners;
-        private popupClickListener;
-        private updateVisuals;
-        private putCardsInDeck;
-        fillWithPlaceholders(_array: HTMLElement[], _maxAmount: number): void;
-        private getCardPlaceholder;
-        private compareRarity;
-        private getRarityNumber;
-    }
-}
-declare namespace Script {
     class CardVisual {
         #private;
         static template: HTMLTemplateElement;
@@ -758,5 +719,44 @@ declare namespace Script {
         createAOE(_options: Partial<AreaOfEffect>, _position: ƒ.Vector3, _modifiers: PassiveCardEffectObject, _parent?: ƒ.Node): Promise<void>;
         createHitZone(_position: ƒ.Vector3, _size?: number, _parent?: ƒ.Node): Promise<HitZoneGraphInstance>;
         cleanup(): void;
+    }
+}
+declare namespace Script {
+    interface iCardCollection {
+        [id: string]: {
+            lvl: number;
+            amount: number;
+        };
+    }
+    class CardCollection {
+        private collection;
+        private deck;
+        private maxDeckSize;
+        private maxSelectedSize;
+        private deckElement;
+        private collectionElement;
+        private popupElement;
+        private popupButtons;
+        private deckSelectionSizeElement;
+        private selectedCard;
+        private cardVisuals;
+        constructor(provider: Provider);
+        setup(): void;
+        private openPopup;
+        addCardToCollection(_name: string, _amount: number): void;
+        getCardLevel(_name: string): number;
+        addCardToDeck(_name: string): void;
+        removeCardFromDeck(_name: string, _updateVisuals?: boolean): void;
+        private hidePopup;
+        private removeFromArray;
+        private addToArray;
+        private installListeners;
+        private popupClickListener;
+        private updateVisuals;
+        private putCardsInDeck;
+        fillWithPlaceholders(_array: HTMLElement[], _maxAmount: number): void;
+        private getCardPlaceholder;
+        private compareRarity;
+        private getRarityNumber;
     }
 }

@@ -1339,271 +1339,6 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
-    class CardCollection {
-        collection;
-        deck;
-        // private selection: string[];
-        maxDeckSize = 10;
-        maxSelectedSize = 0;
-        deckElement;
-        // private selectionElement: HTMLElement;
-        collectionElement;
-        popupElement;
-        popupButtons;
-        deckSelectionSizeElement;
-        selectedCard;
-        cardVisuals = new Map();
-        constructor(provider) {
-            let dm = provider.get(Script.DataManager);
-            this.collection = dm.savedCollectionRaw;
-            this.deck = dm.savedDeckRaw;
-            // this.selection = dm.savedSelectionRaw;
-            // unlock default cards
-            for (let cardId in Script.cards) {
-                let card = Script.cards[cardId];
-                if (card.unlockByDefault && !this.collection[cardId]) {
-                    this.collection[cardId] = { amount: 1, lvl: 0 };
-                }
-            }
-        }
-        setup() {
-            // this.selectionElement = document.getElementById("selection");
-            this.deckElement = document.getElementById("deck");
-            this.collectionElement = document.getElementById("collection-wrapper");
-            this.popupElement = document.getElementById("card-popup");
-            this.deckSelectionSizeElement = document.getElementById("deck-selection-size");
-            this.popupButtons = {
-                deckFrom: document.getElementById("card-popup-deck-from"),
-                // deckToFrom: <HTMLButtonElement>document.getElementById("card-popup-deck-to-from"),
-                deckTo: document.getElementById("card-popup-deck-to"),
-                // selectionFrom: <HTMLButtonElement>document.getElementById("card-popup-selection-from"),
-                // selectionToFrom: <HTMLButtonElement>document.getElementById("card-popup-selection-to-from"),
-                // selectionTo: <HTMLButtonElement>document.getElementById("card-popup-selection-to"),
-            };
-            document.getElementById("unlock-all").addEventListener("click", () => {
-                for (let cardId in Script.cards) {
-                    if (!this.collection[cardId]) {
-                        this.collection[cardId] = { amount: 1, lvl: 0 };
-                    }
-                }
-                this.updateVisuals(true);
-            });
-            this.installListeners();
-            for (let cardID in Script.cards) {
-                let card = Script.cards[cardID];
-                let visual = new Script.CardVisual(card, this.collectionElement, cardID);
-                this.cardVisuals.set(cardID, visual);
-                visual.htmlElement.addEventListener("click", this.openPopup);
-                visual.htmlElement.dataset.card = cardID;
-            }
-            this.updateVisuals(true);
-        }
-        openPopup = (_event) => {
-            let cardID = _event.currentTarget.dataset.card;
-            if (!cardID)
-                return;
-            // TODO change this to not create a popup
-            // if (!this.collection[cardID]) return;
-            if (!this.collection[cardID]) {
-                // this.addCardToCollection(cardID, 1);
-                return;
-            }
-            let visual = this.cardVisuals.get(cardID);
-            if (!visual)
-                return;
-            this.popupElement.classList.remove("hidden");
-            let cardElement = visual.htmlElement.cloneNode(true);
-            cardElement.classList.remove("locked", "selected");
-            this.popupElement.querySelector("#card-popup-card").replaceChildren(cardElement);
-            this.selectedCard = cardID;
-            // hide/show correct buttons
-            for (let button in this.popupButtons) {
-                //@ts-ignore
-                this.popupButtons[button].classList.add("hidden");
-                //@ts-ignore
-                this.popupButtons[button].classList.remove("disabled");
-            }
-            if (this.collection[cardID]) {
-                // card is in selection, so it's selectable
-                // if (this.selection.includes(cardID)) {
-                //     this.popupButtons.deckToFrom.classList.remove("hidden");
-                //     this.popupButtons.selectionFrom.classList.remove("hidden");
-                // }
-                if (this.deck.includes(cardID)) {
-                    this.popupButtons.deckFrom.classList.remove("hidden");
-                    // this.popupButtons.selectionToFrom.classList.remove("hidden");
-                }
-                else {
-                    this.popupButtons.deckTo.classList.remove("hidden");
-                    // this.popupButtons.selectionTo.classList.remove("hidden");
-                }
-                if (this.deck.length >= this.maxDeckSize) {
-                    this.popupButtons.deckTo.classList.add("disabled");
-                    // this.popupButtons.deckToFrom.classList.add("disabled");
-                }
-                // if (this.selection.length >= this.maxSelectedSize) {
-                //     this.popupButtons.selectionTo.classList.add("disabled");
-                //     this.popupButtons.selectionToFrom.classList.add("disabled");
-                // }
-            }
-        };
-        addCardToCollection(_name, _amount) {
-            if (!this.collection[_name]) {
-                this.collection[_name] = { amount: 0, lvl: 0 };
-            }
-            this.collection[_name].amount += _amount;
-            this.updateVisuals(true);
-        }
-        getCardLevel(_name) {
-            return this.collection[_name]?.lvl ?? 0;
-        }
-        addCardToDeck(_name) {
-            this.addToArray(_name, this.deck);
-            // this.removeCardFromSelection(_name, false);
-            this.updateVisuals();
-        }
-        removeCardFromDeck(_name, _updateVisuals = true) {
-            this.removeFromArray(_name, this.deck);
-            if (_updateVisuals)
-                this.updateVisuals();
-        }
-        // addCardToSelection(_name: string) {
-        //     this.addToArray(_name, this.selection);
-        //     this.removeCardFromDeck(_name, false);
-        //     this.updateVisuals();
-        // }
-        // removeCardFromSelection(_name: string, _updateVisuals: boolean = true) {
-        //     this.removeFromArray(_name, this.selection);
-        //     if (_updateVisuals) this.updateVisuals();
-        // }
-        hidePopup() {
-            this.popupElement.classList.add("hidden");
-        }
-        removeFromArray(_element, _array) {
-            let index = _array.indexOf(_element);
-            if (index >= 0) {
-                _array.splice(index, 1);
-            }
-        }
-        addToArray(_element, _array) {
-            if (_array.includes(_element))
-                return;
-            _array.push(_element);
-        }
-        installListeners() {
-            document.getElementById("card-popup-close").querySelector("img").addEventListener("click", () => { this.hidePopup(); });
-            document.getElementById("deck-back-button").querySelector("button").addEventListener("click", () => {
-                this.hidePopup();
-                Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.MAIN);
-            });
-            // this.popupButtons.selectionTo.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToSelection); })
-            // this.popupButtons.selectionToFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToSelection); })
-            // this.popupButtons.selectionFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.removeCardFromSelection); })
-            this.popupButtons.deckTo.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToDeck); });
-            // this.popupButtons.deckToFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToDeck); })
-            this.popupButtons.deckFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.removeCardFromDeck); });
-            this.popupElement.addEventListener("click", (_e) => {
-                if (_e.target === this.popupElement)
-                    this.hidePopup();
-            });
-        }
-        popupClickListener(_event, _func) {
-            if (_event.target.classList.contains("disabled"))
-                return;
-            _func.call(this, this.selectedCard);
-            this.hidePopup();
-        }
-        updateVisuals(_fullReset = false) {
-            // collection
-            let allCardsForCollection = [];
-            let collectionEntires = Object.keys(this.collection).sort(this.compareRarity);
-            for (let cardID of collectionEntires) {
-                let visual = this.cardVisuals.get(cardID);
-                if (!visual)
-                    continue;
-                allCardsForCollection.push(visual.htmlElement);
-                visual.htmlElement.classList.remove("locked", "selected");
-            }
-            for (let cardID in Script.cards) {
-                if (this.collection[cardID])
-                    continue;
-                let visual = this.cardVisuals.get(cardID);
-                if (!visual)
-                    continue;
-                allCardsForCollection.push(visual.htmlElement);
-                if (!_fullReset) {
-                    visual.htmlElement.classList.add("locked");
-                }
-            }
-            // for debugging we're adding a bunch of empty stuff to fill up to 100.
-            // this.fillWithPlaceholders(allCardsForCollection, 100);
-            if (_fullReset) {
-                this.collectionElement.replaceChildren(...allCardsForCollection);
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
-                        this.updateVisuals();
-                    });
-                });
-            }
-            else {
-                // selection
-                // this.putCardsInDeck(this.selection, this.selectionElement, this.maxSelectedSize);
-                // deck
-                this.putCardsInDeck(this.deck, this.deckElement, this.maxDeckSize);
-            }
-            // number
-            this.deckSelectionSizeElement.innerText = `${this.deck.length /* + this.selection.length */}/${this.maxDeckSize + this.maxSelectedSize}`;
-        }
-        putCardsInDeck(_selection, _parent, _maxSize) {
-            let cards = [];
-            for (let card of _selection) {
-                let visual = this.cardVisuals.get(card);
-                if (!visual)
-                    continue;
-                let clone = visual.htmlElement.cloneNode(true);
-                clone.classList.remove("selected", "locked");
-                clone.addEventListener("click", this.openPopup);
-                cards.push(clone);
-                visual.htmlElement.classList.add("selected");
-            }
-            this.fillWithPlaceholders(cards, _maxSize);
-            _parent.replaceChildren(...cards);
-        }
-        fillWithPlaceholders(_array, _maxAmount) {
-            for (let i = _array.length; i < _maxAmount; i++) {
-                _array.push(this.getCardPlaceholder());
-            }
-        }
-        getCardPlaceholder() {
-            let elem = document.createElement("div");
-            elem.classList.add("card", "placeholder");
-            return elem;
-        }
-        compareRarity = (a, b) => {
-            let cardA = Script.cards[a];
-            let cardB = Script.cards[b];
-            if (!cardA)
-                return -1;
-            if (!cardB)
-                return 1;
-            return this.getRarityNumber(cardA.rarity) - this.getRarityNumber(cardB.rarity);
-        };
-        getRarityNumber(_rarity) {
-            if (_rarity === Script.CardRarity.UNCOMMON)
-                return 1;
-            if (_rarity === Script.CardRarity.RARE)
-                return 2;
-            if (_rarity === Script.CardRarity.EPIC)
-                return 3;
-            if (_rarity === Script.CardRarity.LEGENDARY)
-                return 4;
-            return 0;
-        }
-    }
-    Script.CardCollection = CardCollection;
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
     class CardVisual {
         static template;
         static canvas;
@@ -1702,7 +1437,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 0, //8 Base Damage
+                                    damage: 0,
                                     projectilePiercing: 2
                                 }
                             }
@@ -1717,7 +1452,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 4, //8 Base Damage
+                                    damage: 4,
                                     projectilePiercing: 2
                                 }
                             }
@@ -1732,7 +1467,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 4, //8 Base Damage
+                                    damage: 4,
                                     projectilePiercing: 2
                                 }
                             }
@@ -1747,7 +1482,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 7, //8 Base Damage
+                                    damage: 7,
                                     projectilePiercing: 3
                                 }
                             }
@@ -1762,7 +1497,7 @@ var Script;
                             currentCooldown: 0.75,
                             modifiers: {
                                 absolute: {
-                                    damage: 7, //8 Base Damage
+                                    damage: 7,
                                     projectilePiercing: 4
                                 }
                             }
@@ -1935,7 +1670,7 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 0, //5 Base Damage
+                                    damage: 0,
                                     effectDuration: 0 //1 Base Duration
                                 }
                             }
@@ -1949,8 +1684,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 1, //5 Base Damage
-                                    effectDuration: 0, //1 Base Duration
+                                    damage: 1,
+                                    effectDuration: 0,
                                     projectileSize: 1.1
                                 }
                             }
@@ -1964,8 +1699,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 1, //5 Base Damage
-                                    effectDuration: 0.5, //1 Base Duration
+                                    damage: 1,
+                                    effectDuration: 0.5,
                                     projectileSize: 1.3
                                 }
                             }
@@ -1979,8 +1714,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 1, //5 Base Damage
-                                    effectDuration: 0.5, //1 Base Duration
+                                    damage: 1,
+                                    effectDuration: 0.5,
                                     projectileSize: 1.5
                                 }
                             }
@@ -1994,8 +1729,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 3, //5 Base Damage
-                                    effectDuration: 1, //1 Base Duration
+                                    damage: 3,
+                                    effectDuration: 1,
                                     projectileSize: 2
                                 }
                             }
@@ -2097,7 +1832,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 0, //5 Base Damage
+                                    damage: 0,
                                     projectilePiercing: 1
                                 }
                             }
@@ -2112,7 +1847,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 3, //5 Base Damage
+                                    damage: 3,
                                     projectilePiercing: 1
                                 }
                             }
@@ -2127,7 +1862,7 @@ var Script;
                             currentCooldown: 0.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 3, //5 Base Damage
+                                    damage: 3,
                                     projectilePiercing: 1
                                 }
                             }
@@ -2142,7 +1877,7 @@ var Script;
                             currentCooldown: 0.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 5, //5 Base Damage
+                                    damage: 5,
                                     projectilePiercing: 2
                                 },
                                 multiplier: {
@@ -2160,7 +1895,7 @@ var Script;
                             currentCooldown: 0.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 5, //5 Base Damage
+                                    damage: 5,
                                     projectilePiercing: 3,
                                 },
                                 multiplier: {
@@ -2200,7 +1935,7 @@ var Script;
                             currentCooldown: 1.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 1, //3 Base Damage (x10 for max distance)
+                                    damage: 1,
                                     projectileRange: 2,
                                 }
                             }
@@ -2215,7 +1950,7 @@ var Script;
                             currentCooldown: 1.25,
                             modifiers: {
                                 absolute: {
-                                    damage: 2, //3 Base Damage (x10 for max distance)
+                                    damage: 2,
                                     projectileRange: 4,
                                 }
                             }
@@ -2230,7 +1965,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 3, //3 Base Damage (x10 for max distance)
+                                    damage: 3,
                                     projectileRange: 6,
                                 }
                             }
@@ -2245,7 +1980,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 5, //3 Base Damage (x10 for max distance)
+                                    damage: 5,
                                     projectileRange: 10,
                                 }
                             }
@@ -2268,7 +2003,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 0, //5 Base Damage
+                                    damage: 0,
                                     projectilePiercing: 2
                                 }
                             }
@@ -2283,7 +2018,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 2, //5 Base Damage
+                                    damage: 2,
                                     projectilePiercing: 2
                                 }
                             }
@@ -2298,7 +2033,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 2, //5 Base Damage
+                                    damage: 2,
                                     projectilePiercing: 2
                                 }
                             }
@@ -2313,7 +2048,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 3, //5 Base Damage
+                                    damage: 3,
                                     projectilePiercing: 3
                                 },
                                 multiplier: {
@@ -2331,7 +2066,7 @@ var Script;
                             currentCooldown: 0.75,
                             modifiers: {
                                 absolute: {
-                                    damage: 5, //5 Base Damage
+                                    damage: 5,
                                     projectilePiercing: 5
                                 },
                                 multiplier: {
@@ -2353,7 +2088,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 4, //TODO: Leave a projectile every 5 units moved
+                            cooldown: 4,
                             currentCooldown: 2,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2368,7 +2103,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 3.5, //TODO: Leave a projectile every 4 units moved
+                            cooldown: 3.5,
                             currentCooldown: 1.75,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2383,7 +2118,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 3, //TODO: Leave a projectile every 4 units moved
+                            cooldown: 3,
                             currentCooldown: 1.5,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2398,7 +2133,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 2, //TODO: Leave a projectile every 3 units moved
+                            cooldown: 2,
                             currentCooldown: 1,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2413,7 +2148,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 1, //TODO: Leave a projectile every 2 units moved
+                            cooldown: 1,
                             currentCooldown: 0.5,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -4806,6 +4541,7 @@ var Script;
             speed: 0.8,
             knockbackMultiplier: 1,
             dropXP: 2,
+            hitboxSize: 0.5,
         },
         chair: {
             moveSprite: ["chair", "move"],
@@ -4815,6 +4551,7 @@ var Script;
             speed: 1.2,
             knockbackMultiplier: 1.2,
             dropXP: 2,
+            hitboxSize: 0.5,
         },
         toaster: {
             moveSprite: ["toaster", "move"],
@@ -4848,6 +4585,7 @@ var Script;
             speed: 0.2,
             knockbackMultiplier: 0.2,
             dropXP: 3,
+            hitboxSize: 0.6,
             events: {
                 // running away causes attacks
                 step: function () {
@@ -4877,6 +4615,7 @@ var Script;
             health: 25,
             speed: 2,
             dropXP: 4,
+            hitboxSize: 0.6,
             attacks: [
                 {
                     cooldown: 2,
@@ -5322,12 +5061,12 @@ var Script;
     };
     Script.pools = {
         "electronics": [
-            ["microwave", "chair"], // --0
-            ["toaster", "closet"], // --1
-            ["motor"], // --2
-            ["ventilator"], // --3
-            ["chair"], //mixer --4
-            ["toaster"], // --5
+            ["microwave", "chair"],
+            ["toaster", "closet"],
+            ["motor"],
+            ["ventilator"],
+            ["chair"],
+            ["toaster"],
             ["closet"] // --6
         ]
     };
@@ -6867,5 +6606,270 @@ var Script;
         }
     }
     Script.ProjectileManager = ProjectileManager;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    class CardCollection {
+        collection;
+        deck;
+        // private selection: string[];
+        maxDeckSize = 10;
+        maxSelectedSize = 0;
+        deckElement;
+        // private selectionElement: HTMLElement;
+        collectionElement;
+        popupElement;
+        popupButtons;
+        deckSelectionSizeElement;
+        selectedCard;
+        cardVisuals = new Map();
+        constructor(provider) {
+            let dm = provider.get(Script.DataManager);
+            this.collection = dm.savedCollectionRaw;
+            this.deck = dm.savedDeckRaw;
+            // this.selection = dm.savedSelectionRaw;
+            // unlock default cards
+            for (let cardId in Script.cards) {
+                let card = Script.cards[cardId];
+                if (card.unlockByDefault && !this.collection[cardId]) {
+                    this.collection[cardId] = { amount: 1, lvl: 0 };
+                }
+            }
+        }
+        setup() {
+            // this.selectionElement = document.getElementById("selection");
+            this.deckElement = document.getElementById("deck");
+            this.collectionElement = document.getElementById("collection-wrapper");
+            this.popupElement = document.getElementById("card-popup");
+            this.deckSelectionSizeElement = document.getElementById("deck-selection-size");
+            this.popupButtons = {
+                deckFrom: document.getElementById("card-popup-deck-from"),
+                // deckToFrom: <HTMLButtonElement>document.getElementById("card-popup-deck-to-from"),
+                deckTo: document.getElementById("card-popup-deck-to"),
+                // selectionFrom: <HTMLButtonElement>document.getElementById("card-popup-selection-from"),
+                // selectionToFrom: <HTMLButtonElement>document.getElementById("card-popup-selection-to-from"),
+                // selectionTo: <HTMLButtonElement>document.getElementById("card-popup-selection-to"),
+            };
+            document.getElementById("unlock-all").addEventListener("click", () => {
+                for (let cardId in Script.cards) {
+                    if (!this.collection[cardId]) {
+                        this.collection[cardId] = { amount: 1, lvl: 0 };
+                    }
+                }
+                this.updateVisuals(true);
+            });
+            this.installListeners();
+            for (let cardID in Script.cards) {
+                let card = Script.cards[cardID];
+                let visual = new Script.CardVisual(card, this.collectionElement, cardID);
+                this.cardVisuals.set(cardID, visual);
+                visual.htmlElement.addEventListener("click", this.openPopup);
+                visual.htmlElement.dataset.card = cardID;
+            }
+            this.updateVisuals(true);
+        }
+        openPopup = (_event) => {
+            let cardID = _event.currentTarget.dataset.card;
+            if (!cardID)
+                return;
+            // TODO change this to not create a popup
+            // if (!this.collection[cardID]) return;
+            if (!this.collection[cardID]) {
+                // this.addCardToCollection(cardID, 1);
+                return;
+            }
+            let visual = this.cardVisuals.get(cardID);
+            if (!visual)
+                return;
+            this.popupElement.classList.remove("hidden");
+            let cardElement = visual.htmlElement.cloneNode(true);
+            cardElement.classList.remove("locked", "selected");
+            this.popupElement.querySelector("#card-popup-card").replaceChildren(cardElement);
+            this.selectedCard = cardID;
+            // hide/show correct buttons
+            for (let button in this.popupButtons) {
+                //@ts-ignore
+                this.popupButtons[button].classList.add("hidden");
+                //@ts-ignore
+                this.popupButtons[button].classList.remove("disabled");
+            }
+            if (this.collection[cardID]) {
+                // card is in selection, so it's selectable
+                // if (this.selection.includes(cardID)) {
+                //     this.popupButtons.deckToFrom.classList.remove("hidden");
+                //     this.popupButtons.selectionFrom.classList.remove("hidden");
+                // }
+                if (this.deck.includes(cardID)) {
+                    this.popupButtons.deckFrom.classList.remove("hidden");
+                    // this.popupButtons.selectionToFrom.classList.remove("hidden");
+                }
+                else {
+                    this.popupButtons.deckTo.classList.remove("hidden");
+                    // this.popupButtons.selectionTo.classList.remove("hidden");
+                }
+                if (this.deck.length >= this.maxDeckSize) {
+                    this.popupButtons.deckTo.classList.add("disabled");
+                    // this.popupButtons.deckToFrom.classList.add("disabled");
+                }
+                // if (this.selection.length >= this.maxSelectedSize) {
+                //     this.popupButtons.selectionTo.classList.add("disabled");
+                //     this.popupButtons.selectionToFrom.classList.add("disabled");
+                // }
+            }
+        };
+        addCardToCollection(_name, _amount) {
+            if (!this.collection[_name]) {
+                this.collection[_name] = { amount: 0, lvl: 0 };
+            }
+            this.collection[_name].amount += _amount;
+            this.updateVisuals(true);
+        }
+        getCardLevel(_name) {
+            return this.collection[_name]?.lvl ?? 0;
+        }
+        addCardToDeck(_name) {
+            this.addToArray(_name, this.deck);
+            // this.removeCardFromSelection(_name, false);
+            this.updateVisuals();
+        }
+        removeCardFromDeck(_name, _updateVisuals = true) {
+            this.removeFromArray(_name, this.deck);
+            if (_updateVisuals)
+                this.updateVisuals();
+        }
+        // addCardToSelection(_name: string) {
+        //     this.addToArray(_name, this.selection);
+        //     this.removeCardFromDeck(_name, false);
+        //     this.updateVisuals();
+        // }
+        // removeCardFromSelection(_name: string, _updateVisuals: boolean = true) {
+        //     this.removeFromArray(_name, this.selection);
+        //     if (_updateVisuals) this.updateVisuals();
+        // }
+        hidePopup() {
+            this.popupElement.classList.add("hidden");
+        }
+        removeFromArray(_element, _array) {
+            let index = _array.indexOf(_element);
+            if (index >= 0) {
+                _array.splice(index, 1);
+            }
+        }
+        addToArray(_element, _array) {
+            if (_array.includes(_element))
+                return;
+            _array.push(_element);
+        }
+        installListeners() {
+            document.getElementById("card-popup-close").querySelector("img").addEventListener("click", () => { this.hidePopup(); });
+            document.getElementById("deck-back-button").querySelector("button").addEventListener("click", () => {
+                this.hidePopup();
+                Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.MAIN);
+            });
+            // this.popupButtons.selectionTo.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToSelection); })
+            // this.popupButtons.selectionToFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToSelection); })
+            // this.popupButtons.selectionFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.removeCardFromSelection); })
+            this.popupButtons.deckTo.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToDeck); });
+            // this.popupButtons.deckToFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.addCardToDeck); })
+            this.popupButtons.deckFrom.addEventListener("click", (_event) => { this.popupClickListener(_event, this.removeCardFromDeck); });
+            this.popupElement.addEventListener("click", (_e) => {
+                if (_e.target === this.popupElement)
+                    this.hidePopup();
+            });
+        }
+        popupClickListener(_event, _func) {
+            if (_event.target.classList.contains("disabled"))
+                return;
+            _func.call(this, this.selectedCard);
+            this.hidePopup();
+        }
+        updateVisuals(_fullReset = false) {
+            // collection
+            let allCardsForCollection = [];
+            let collectionEntires = Object.keys(this.collection).sort(this.compareRarity);
+            for (let cardID of collectionEntires) {
+                let visual = this.cardVisuals.get(cardID);
+                if (!visual)
+                    continue;
+                allCardsForCollection.push(visual.htmlElement);
+                visual.htmlElement.classList.remove("locked", "selected");
+            }
+            for (let cardID in Script.cards) {
+                if (this.collection[cardID])
+                    continue;
+                let visual = this.cardVisuals.get(cardID);
+                if (!visual)
+                    continue;
+                allCardsForCollection.push(visual.htmlElement);
+                if (!_fullReset) {
+                    visual.htmlElement.classList.add("locked");
+                }
+            }
+            // for debugging we're adding a bunch of empty stuff to fill up to 100.
+            // this.fillWithPlaceholders(allCardsForCollection, 100);
+            if (_fullReset) {
+                this.collectionElement.replaceChildren(...allCardsForCollection);
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        this.updateVisuals();
+                    });
+                });
+            }
+            else {
+                // selection
+                // this.putCardsInDeck(this.selection, this.selectionElement, this.maxSelectedSize);
+                // deck
+                this.putCardsInDeck(this.deck, this.deckElement, this.maxDeckSize);
+            }
+            // number
+            this.deckSelectionSizeElement.innerText = `${this.deck.length /* + this.selection.length */}/${this.maxDeckSize + this.maxSelectedSize}`;
+        }
+        putCardsInDeck(_selection, _parent, _maxSize) {
+            let cards = [];
+            for (let card of _selection) {
+                let visual = this.cardVisuals.get(card);
+                if (!visual)
+                    continue;
+                let clone = visual.htmlElement.cloneNode(true);
+                clone.classList.remove("selected", "locked");
+                clone.addEventListener("click", this.openPopup);
+                cards.push(clone);
+                visual.htmlElement.classList.add("selected");
+            }
+            this.fillWithPlaceholders(cards, _maxSize);
+            _parent.replaceChildren(...cards);
+        }
+        fillWithPlaceholders(_array, _maxAmount) {
+            for (let i = _array.length; i < _maxAmount; i++) {
+                _array.push(this.getCardPlaceholder());
+            }
+        }
+        getCardPlaceholder() {
+            let elem = document.createElement("div");
+            elem.classList.add("card", "placeholder");
+            return elem;
+        }
+        compareRarity = (a, b) => {
+            let cardA = Script.cards[a];
+            let cardB = Script.cards[b];
+            if (!cardA)
+                return -1;
+            if (!cardB)
+                return 1;
+            return this.getRarityNumber(cardA.rarity) - this.getRarityNumber(cardB.rarity);
+        };
+        getRarityNumber(_rarity) {
+            if (_rarity === Script.CardRarity.UNCOMMON)
+                return 1;
+            if (_rarity === Script.CardRarity.RARE)
+                return 2;
+            if (_rarity === Script.CardRarity.EPIC)
+                return 3;
+            if (_rarity === Script.CardRarity.LEGENDARY)
+                return 4;
+            return 0;
+        }
+    }
+    Script.CardCollection = CardCollection;
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map

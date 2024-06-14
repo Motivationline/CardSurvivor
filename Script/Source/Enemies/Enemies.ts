@@ -9,6 +9,7 @@ namespace Script {
             speed: 0.8,
             knockbackMultiplier: 1,
             dropXP: 2,
+            hitboxSize: 0.5,
         },
         chair: {
             moveSprite: ["chair", "move"],
@@ -18,6 +19,7 @@ namespace Script {
             speed: 1.2,
             knockbackMultiplier: 1.2,
             dropXP: 2,
+            hitboxSize: 0.5,
         },
         toaster: {
             moveSprite: ["toaster", "move"],
@@ -57,6 +59,7 @@ namespace Script {
             speed: 0.2,
             knockbackMultiplier: 0.2,
             dropXP: 3,
+            hitboxSize: 0.6,
             events: {
                 // running away causes attacks
                 step: function () {
@@ -86,6 +89,7 @@ namespace Script {
             health: 25,
             speed: 2,
             dropXP: 4,
+            hitboxSize: 0.6,
             attacks: [
                 {
                     cooldown: 2,
