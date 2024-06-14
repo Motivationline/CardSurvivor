@@ -123,13 +123,13 @@
     },
     "Safety Boots": {
       "name": "Sicherheitsschuhe",
-      "description": "Widerstandsfähiger gegen Bodeneffekte.",
+      "description": "Nimm weniger Schaden von Nahkampf Gegnern.",
       "levels": {
-        "1": "+10% Widerstand gegen Bodeneffekte.",
-        "2": "+20% Widerstand gegen Bodeneffekte.",
-        "3": "+30% Widerstand gegen Bodeneffekte.",
-        "4": "+40% Widerstand gegen Bodeneffekte.",
-        "5": "+60% Widerstand gegen Bodeneffekte."
+        "1": "-10% Schaden durch Nahkampf Gegnern.",
+        "2": "-20% Schaden durch Nahkampf Gegnern.",
+        "3": "-30% Schaden durch Nahkampf Gegnern.",
+        "4": "-40% Schaden durch Nahkampf Gegnern.",
+        "5": "-60% Schaden durch Nahkampf Gegnern."
       }
     },
     "Microphone": {

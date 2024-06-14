@@ -123,13 +123,13 @@
     },
     "Safety Boots": {
       "name": "Safety Boots",
-      "description": "More resistant against ground effects.",
+      "description": "Take less damage from melee attacks.",
       "levels": {
-        "1": "+10% resistance against ground effects.",
-        "2": "+20% resistance against ground effects.",
-        "3": "+30% resistance against ground effects.",
-        "4": "+40% resistance against ground effects.",
-        "5": "+60% resistance against ground effects."
+        "1": "-10% damage taken from melee attacks.",
+        "2": "-20% damage taken from melee attacks.",
+        "3": "-30% damage taken from melee attacks.",
+        "4": "-40% damage taken from melee attacks.",
+        "5": "-60% damage taken from melee attacks."
       }
     },
     "Microphone": {

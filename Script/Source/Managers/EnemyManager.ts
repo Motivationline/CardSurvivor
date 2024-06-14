@@ -316,7 +316,7 @@ namespace Script {
                         health: 3,
                         enemySize: 1.1,
                         movementSpeed: 1.6,
-                        damage: 3,
+                        damage: 2,
                         xp: 1.5,
                     }
                 }
@@ -362,7 +362,7 @@ namespace Script {
                         health: 3.5,
                         enemySize: 1.1,
                         movementSpeed: 1.6,
-                        damage: 3.5,
+                        damage: 2,
                         xp: 1.5,
                     }
                 }
@@ -401,8 +401,8 @@ namespace Script {
                     multiplier: {
                         health: 5,
                         enemySize: 1.1,
-                        movementSpeed: 1.6,
-                        damage: 4,
+                        movementSpeed: 1.5,
+                        damage: 2.5,
                         xp: 1.5,
                     }
                 }
@@ -425,7 +425,7 @@ namespace Script {
                 bonus: {
                     multiplier: {
                         health: 0.2,
-                        movementSpeed: 2,
+                        movementSpeed: 1.8,
                         damage: 0.5,
                         xp: 0.25,
                         enemySize: 0.6,
@@ -468,8 +468,8 @@ namespace Script {
                     multiplier: {
                         health: 4,
                         enemySize: 1.1,
-                        movementSpeed: 1.8,
-                        damage: 4,
+                        movementSpeed: 1.6,
+                        damage: 3,
                         xp: 1.5,
                     }
                 }
@@ -516,7 +516,7 @@ namespace Script {
                     multiplier: {
                         health: 4,
                         enemySize: 1.2,
-                        movementSpeed: 1.9,
+                        movementSpeed: 1.8,
                         damage: 3,
                         xp: 1.2,
                     }
@@ -624,8 +624,10 @@ namespace Script {
                 bonus: {
                     multiplier: {
                         health: 1.3,
-                        damage: 2,
-                        xp: 1,
+                        enemySize: 1.3,
+                        movementSpeed: 0.8,
+                        damage: 4,
+                        xp: 1.5,
                     }
                 }
             },
