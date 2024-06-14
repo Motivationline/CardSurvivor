@@ -701,6 +701,12 @@ progress::-webkit-progress-value {
   position: absolute;
   color: white;
   animation: dmg 1.2s linear;
+  -webkit-text-stroke: 1px black;
+}
+
+.dmg-number.player {
+  color: red;
+  font-size: larger;
 }
 
 @keyframes wiggle {

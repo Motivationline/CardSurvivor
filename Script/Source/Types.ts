@@ -72,8 +72,13 @@ namespace Script {
     }
 
     export type PassiveCardEffectObject = {
-        absolute?: { [key in PassiveCardEffect]?: number },
-        multiplier?: { [key in PassiveCardEffect]?: number },
+        absolute?: { [key in PassiveCardEffect]?: number | PassiveCardEffectModifier | Array<number | PassiveCardEffectModifier> },
+        multiplier?: { [key in PassiveCardEffect]?: number | PassiveCardEffectModifier | Array<number | PassiveCardEffectModifier> },
+    }
+
+    export type PassiveCardEffectModifier = {
+        value: number,
+        limitation?: string,
     }
     //#endregion
 
@@ -173,9 +178,9 @@ namespace Script {
     }
 
     export enum HitType {
-        PROJECTILE,
-        AOE,
-        MELEE,
+        PROJECTILE = "projectile",
+        AOE = "aoe",
+        MELEE = "melee",
     }
 
     export interface Hit {

@@ -698,9 +698,9 @@ var Script;
     })(ProjectileTarget = Script.ProjectileTarget || (Script.ProjectileTarget = {}));
     let HitType;
     (function (HitType) {
-        HitType[HitType["PROJECTILE"] = 0] = "PROJECTILE";
-        HitType[HitType["AOE"] = 1] = "AOE";
-        HitType[HitType["MELEE"] = 2] = "MELEE";
+        HitType["PROJECTILE"] = "projectile";
+        HitType["AOE"] = "aoe";
+        HitType["MELEE"] = "melee";
     })(HitType = Script.HitType || (Script.HitType = {}));
     //#endregion
 })(Script || (Script = {}));
@@ -2470,35 +2470,35 @@ var Script;
                 {
                     passiveEffects: {
                         multiplier: {
-                            damageReduction: 0.9 //TODO: Less Damage from projectiles
+                            damageReduction: { value: 0.9, limitation: Script.HitType.PROJECTILE } // Less Damage from projectiles
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                            damageReduction: 0.8 //TODO: Less Damage from projectiles
+                            damageReduction: { value: 0.8, limitation: Script.HitType.PROJECTILE } // Less Damage from projectiles
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                            damageReduction: 0.7 //TODO: Less Damage from projectiles
+                            damageReduction: { value: 0.7, limitation: Script.HitType.PROJECTILE } // Less Damage from projectiles
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                            damageReduction: 0.6 //TODO: Less Damage from projectiles
+                            damageReduction: { value: 0.6, limitation: Script.HitType.PROJECTILE } // Less Damage from projectiles
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                            damageReduction: 0.4 //TODO: Less Damage from projectiles
+                            damageReduction: { value: 0.4, limitation: Script.HitType.PROJECTILE } // Less Damage from projectiles
                         }
                     }
                 },
@@ -2512,35 +2512,35 @@ var Script;
                 {
                     passiveEffects: {
                         multiplier: {
-                            damageReduction: 0.9 //TODO: More resistant against ground effects
+                            damageReduction: { value: 0.9, limitation: Script.HitType.MELEE } // More resistant against melee
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                            damageReduction: 0.8 //TODO: More resistant against ground effects
+                            damageReduction: { value: 0.8, limitation: Script.HitType.MELEE } // More resistant against melee
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                            damageReduction: 0.7 //TODO: More resistant against ground effects
+                            damageReduction: { value: 0.7, limitation: Script.HitType.MELEE } // More resistant against melee
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                            damageReduction: 0.6 //TODO: More resistant against ground effects
+                            damageReduction: { value: 0.6, limitation: Script.HitType.MELEE } // More resistant against melee
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                            damageReduction: 0.4 //TODO: More resistant against ground effects
+                            damageReduction: { value: 0.4, limitation: Script.HitType.MELEE } // More resistant against melee
                         }
                     }
                 },
@@ -2722,35 +2722,35 @@ var Script;
                 {
                     passiveEffects: {
                         absolute: {
-                            damageReduction: 1
+                            damageReduction: -1
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         absolute: {
-                            damageReduction: 2
+                            damageReduction: -2
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         absolute: {
-                            damageReduction: 4
+                            damageReduction: -4
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         absolute: {
-                            damageReduction: 6
+                            damageReduction: -6
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         absolute: {
-                            damageReduction: 10
+                            damageReduction: -10
                         }
                     }
                 },
@@ -4611,8 +4611,12 @@ var Script;
             }
         }
         hit(_hit) {
-            this.health -= _hit.damage;
-            //TODO display damage numbers
+            if (_hit.type === Script.HitType.AOE)
+                _hit.type = Script.HitType.PROJECTILE;
+            let damage = Math.max(0, this.cardManager.modifyValuePlayer(_hit.damage, Script.PassiveCardEffect.DAMAGE_REDUCTION, undefined, _hit.type));
+            this.health -= damage;
+            // display damage numbers
+            Script.provider.get(Script.EnemyManager).displayDamage(damage, this.node.mtxWorld.translation, true);
             //update display
             this.updateHealthVisually();
             if (this.health > 0)
@@ -4963,6 +4967,7 @@ var Script;
         currentlyActiveAttack;
         rigidbody;
         touchingPlayer;
+        meleeCooldown;
         modifier = {};
         stunned = 0;
         static defaults = {
@@ -5020,6 +5025,7 @@ var Script;
             this.events = _options.events;
             this.node.mtxLocal.scaling = Script.ƒ.Vector3.ONE(this.size);
             this.modifier = _modifier ?? {};
+            this.meleeCooldown = Math.random();
         }
         updateDesiredDistance(_distance) {
             this.currentlyDesiredDistance = _distance;
@@ -5100,11 +5106,15 @@ var Script;
             }
             // are we touching the player?
             if (this.touchingPlayer) {
-                let character = Script.provider.get(Script.CharacterManager).character;
-                // let mag = ƒ.Vector3.DIFFERENCE(character.node.mtxWorld.translation, this.node.mtxWorld.translation).magnitudeSquared;
-                // if (mag < 0.64 /* 0.8² (player hitbox size) TODO: update this if player or enemy size changes */)
-                character.hit({ damage: this.damage * _frameTimeInSeconds, type: Script.HitType.MELEE });
-                // console.log(this.rigidbody.collisions);
+                this.meleeCooldown -= _frameTimeInSeconds;
+                if (this.meleeCooldown < 0) {
+                    this.meleeCooldown = 1;
+                    let character = Script.provider.get(Script.CharacterManager).character;
+                    // let mag = ƒ.Vector3.DIFFERENCE(character.node.mtxWorld.translation, this.node.mtxWorld.translation).magnitudeSquared;
+                    // if (mag < 0.64 /* 0.8² (player hitbox size) TODO: update this if player or enemy size changes */)
+                    character.hit({ damage: this.damage, type: Script.HitType.MELEE });
+                    // console.log(this.rigidbody.collisions);
+                }
             }
         }
         chooseAttack() {
@@ -5290,22 +5300,51 @@ var Script;
                 card.update(time, this.cumulativeEffects);
             }
         };
-        getEffectAbsolute(_effect, _modifier = this.cumulativeEffects) {
-            return _modifier.absolute?.[_effect] ?? 0;
-        }
-        getEffectMultiplier(_effect, _modifier = this.cumulativeEffects) {
-            return _modifier.multiplier?.[_effect] ?? 1;
-        }
-        modifyValuePlayer(_value, _effect, _localModifiers) {
-            if (_localModifiers) {
-                _value = (_value + this.getEffectAbsolute(_effect, _localModifiers)) * this.getEffectMultiplier(_effect, _localModifiers);
+        getEffectAbsolute(_effect, _modifier = this.cumulativeEffects, _limitation) {
+            let element = _modifier.absolute?.[_effect];
+            if (!element)
+                return 0;
+            if (Array.isArray(element)) {
+                let total = 0;
+                for (let el of element) {
+                    total += this.getValue(el, 0, _limitation);
+                }
+                return total;
             }
-            return (_value + this.getEffectAbsolute(_effect)) * this.getEffectMultiplier(_effect);
+            return this.getValue(element, 0, _limitation);
         }
-        modifyValue(_value, _effect, _modifier) {
+        getEffectMultiplier(_effect, _modifier = this.cumulativeEffects, _limitation) {
+            let element = _modifier.multiplier?.[_effect];
+            if (!element)
+                return 1;
+            if (Array.isArray(element)) {
+                let total = 1;
+                for (let el of element) {
+                    total *= this.getValue(el, 1, _limitation);
+                }
+                return total;
+            }
+            return this.getValue(element, 1, _limitation);
+        }
+        getValue(_val, _default = 0, _limitation) {
+            if (typeof _val === "number") {
+                return _val;
+            }
+            if (!_val.limitation || _val.limitation == _limitation) {
+                return _val.value;
+            }
+            return _default;
+        }
+        modifyValuePlayer(_value, _effect, _localModifiers, _limitation) {
+            if (_localModifiers) {
+                _value = (_value + this.getEffectAbsolute(_effect, _localModifiers, _limitation)) * this.getEffectMultiplier(_effect, _localModifiers, _limitation);
+            }
+            return (_value + this.getEffectAbsolute(_effect, this.cumulativeEffects, _limitation)) * this.getEffectMultiplier(_effect, this.cumulativeEffects, _limitation);
+        }
+        modifyValue(_value, _effect, _modifier, _limitation) {
             if (!_modifier)
                 return _value;
-            return (_value + this.getEffectAbsolute(_effect, _modifier)) * this.getEffectMultiplier(_effect, _modifier);
+            return (_value + this.getEffectAbsolute(_effect, _modifier, _limitation)) * this.getEffectMultiplier(_effect, _modifier, _limitation);
         }
         updateEffects() {
             let cardEffects = [];
@@ -5326,10 +5365,22 @@ var Script;
                     continue;
                 let effect;
                 for (effect in effectObj.absolute) {
-                    combined.absolute[effect] = (combined.absolute[effect] ?? 0) + effectObj.absolute[effect];
+                    let effectValue = effectObj.absolute[effect];
+                    if (!combined.absolute[effect])
+                        combined.absolute[effect] = [];
+                    if (Array.isArray(effectValue))
+                        combined.absolute[effect].push(...effectValue);
+                    else
+                        combined.absolute[effect].push(effectValue);
                 }
                 for (effect in effectObj.multiplier) {
-                    combined.multiplier[effect] = (combined.multiplier[effect] ?? 1) * effectObj.multiplier[effect];
+                    let effectValue = effectObj.multiplier[effect];
+                    if (!combined.multiplier[effect])
+                        combined.multiplier[effect] = [];
+                    if (Array.isArray(effectValue))
+                        combined.multiplier[effect].push(...effectValue);
+                    else
+                        combined.multiplier[effect].push(effectValue);
                 }
             }
             return combined;
@@ -6489,12 +6540,14 @@ var Script;
             return undefined;
         }
         dmgDisplayElements = [];
-        displayDamage(_amt, _pos) {
+        displayDamage(_amt, _pos, _onPlayer = false) {
             if (!isFinite(_amt))
                 return;
             let dmgText = _amt.toFixed(0);
             let textElement = document.createElement("span");
-            textElement.classList.add(("dmg-number"));
+            textElement.classList.add("dmg-number");
+            if (_onPlayer)
+                textElement.classList.add("player");
             textElement.innerText = dmgText;
             document.documentElement.appendChild(textElement);
             this.dmgDisplayElements.push([textElement, _pos.clone]);
@@ -6514,7 +6567,7 @@ var Script;
         }
         addXP(_xp) {
             this.currentXP += Script.provider.get(Script.CardManager).modifyValuePlayer(_xp, Script.PassiveCardEffect.XP);
-            this.xpElement.innerText = this.currentXP.toString();
+            this.xpElement.innerText = Math.floor(this.currentXP).toString();
         }
     }
     Script.EnemyManager = EnemyManager;

@@ -1055,11 +1055,12 @@ namespace Script {
         }
 
         private dmgDisplayElements: [HTMLElement, ƒ.Vector3][] = [];
-        public displayDamage(_amt: number, _pos: ƒ.Vector3) {
+        public displayDamage(_amt: number, _pos: ƒ.Vector3, _onPlayer: boolean = false) {
             if (!isFinite(_amt)) return;
             let dmgText = _amt.toFixed(0);
             let textElement = document.createElement("span");
-            textElement.classList.add(("dmg-number"));
+            textElement.classList.add("dmg-number")
+            if(_onPlayer) textElement.classList.add("player");
             textElement.innerText = dmgText;
 
             document.documentElement.appendChild(textElement);
@@ -1083,7 +1084,7 @@ namespace Script {
 
         public addXP(_xp: number) {
             this.currentXP += provider.get(CardManager).modifyValuePlayer(_xp, PassiveCardEffect.XP);
-            this.xpElement.innerText = this.currentXP.toString();
+            this.xpElement.innerText = Math.floor(this.currentXP).toString();
         }
     }
 }

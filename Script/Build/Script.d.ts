@@ -199,11 +199,15 @@ declare namespace Script {
     }
     export type PassiveCardEffectObject = {
         absolute?: {
-            [key in PassiveCardEffect]?: number;
+            [key in PassiveCardEffect]?: number | PassiveCardEffectModifier | Array<number | PassiveCardEffectModifier>;
         };
         multiplier?: {
-            [key in PassiveCardEffect]?: number;
+            [key in PassiveCardEffect]?: number | PassiveCardEffectModifier | Array<number | PassiveCardEffectModifier>;
         };
+    };
+    export type PassiveCardEffectModifier = {
+        value: number;
+        limitation?: string;
     };
     export interface Projectiles {
         [id: string]: ProjectileData;
@@ -293,9 +297,9 @@ declare namespace Script {
         hit: (_hit: Hit) => number;
     }
     export enum HitType {
-        PROJECTILE = 0,
-        AOE = 1,
-        MELEE = 2
+        PROJECTILE = "projectile",
+        AOE = "aoe",
+        MELEE = "melee"
     }
     export interface Hit {
         damage: number;
@@ -532,6 +536,7 @@ declare namespace Script {
         private currentlyActiveAttack;
         private rigidbody;
         private touchingPlayer;
+        private meleeCooldown;
         private modifier;
         private stunned;
         private static defaults;
@@ -617,10 +622,11 @@ declare namespace Script {
         constructor();
         get activeCards(): Card[];
         private update;
-        getEffectAbsolute(_effect: PassiveCardEffect, _modifier?: PassiveCardEffectObject): number;
-        getEffectMultiplier(_effect: PassiveCardEffect, _modifier?: PassiveCardEffectObject): number;
-        modifyValuePlayer(_value: number, _effect: PassiveCardEffect, _localModifiers?: PassiveCardEffectObject): number;
-        modifyValue(_value: number, _effect: PassiveCardEffect, _modifier: PassiveCardEffectObject): number;
+        getEffectAbsolute(_effect: PassiveCardEffect, _modifier?: PassiveCardEffectObject, _limitation?: string): number;
+        getEffectMultiplier(_effect: PassiveCardEffect, _modifier?: PassiveCardEffectObject, _limitation?: string): number;
+        private getValue;
+        modifyValuePlayer(_value: number, _effect: PassiveCardEffect, _localModifiers?: PassiveCardEffectObject, _limitation?: string): number;
+        modifyValue(_value: number, _effect: PassiveCardEffect, _modifier: PassiveCardEffectObject, _limitation?: string): number;
         updateEffects(): void;
         combineEffects(..._effects: PassiveCardEffectObject[]): PassiveCardEffectObject;
         private prevChosenCards;
@@ -687,7 +693,7 @@ declare namespace Script {
         removeEnemy(_enemy: Enemy): void;
         getEnemy(_mode: ProjectileTargetMode, _pos?: ƒ.Vector3, _exclude?: EnemyGraphInstance[], _maxDistance?: number): EnemyGraphInstance | undefined;
         private dmgDisplayElements;
-        displayDamage(_amt: number, _pos: ƒ.Vector3): void;
+        displayDamage(_amt: number, _pos: ƒ.Vector3, _onPlayer?: boolean): void;
         reset(): void;
         addXP(_xp: number): void;
     }

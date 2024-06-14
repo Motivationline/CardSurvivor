@@ -813,35 +813,35 @@ namespace Script {
                 { //Tier 1
                     passiveEffects: {
                         multiplier: {
-                            damageReduction: 0.9 //TODO: Less Damage from projectiles
+                            damageReduction: { value: 0.9, limitation: HitType.PROJECTILE } // Less Damage from projectiles
                         }
                     }
                 },
                 { //Tier 2
                     passiveEffects: {
                         multiplier: {
-                            damageReduction: 0.8 //TODO: Less Damage from projectiles
+                            damageReduction: { value: 0.8, limitation: HitType.PROJECTILE } // Less Damage from projectiles
                         }
                     }
                 },
                 { //Tier 3
                     passiveEffects: {
                         multiplier: {
-                            damageReduction: 0.7 //TODO: Less Damage from projectiles
+                            damageReduction: { value: 0.7, limitation: HitType.PROJECTILE } // Less Damage from projectiles
                         }
                     }
                 },
                 { //Tier 4
                     passiveEffects: {
                         multiplier: {
-                            damageReduction: 0.6 //TODO: Less Damage from projectiles
+                            damageReduction: { value: 0.6, limitation: HitType.PROJECTILE } // Less Damage from projectiles
                         }
                     }
                 },
                 { //Tier 5
                     passiveEffects: {
                         multiplier: {
-                            damageReduction: 0.4 //TODO: Less Damage from projectiles
+                            damageReduction: { value: 0.4, limitation: HitType.PROJECTILE } // Less Damage from projectiles
                         }
                     }
                 },
@@ -855,35 +855,35 @@ namespace Script {
                 { //Tier 1
                     passiveEffects: {
                         multiplier: {
-                            damageReduction: 0.9 //TODO: More resistant against ground effects
+                            damageReduction: { value: 0.9, limitation: HitType.MELEE } // More resistant against melee
                         }
                     }
                 },
                 { //Tier 2
                     passiveEffects: {
                         multiplier: {
-                            damageReduction: 0.8 //TODO: More resistant against ground effects
+                            damageReduction: { value: 0.8, limitation: HitType.MELEE } // More resistant against melee
                         }
                     }
                 },
                 { //Tier 3
                     passiveEffects: {
                         multiplier: {
-                            damageReduction: 0.7 //TODO: More resistant against ground effects
+                            damageReduction: { value: 0.7, limitation: HitType.MELEE } // More resistant against melee
                         }
                     }
                 },
                 { //Tier 4
                     passiveEffects: {
                         multiplier: {
-                            damageReduction: 0.6 //TODO: More resistant against ground effects
+                            damageReduction: { value: 0.6, limitation: HitType.MELEE } // More resistant against melee
                         }
                     }
                 },
                 { //Tier 5
                     passiveEffects: {
                         multiplier: {
-                            damageReduction: 0.4 //TODO: More resistant against ground effects
+                            damageReduction: { value: 0.4, limitation: HitType.MELEE } // More resistant against melee
                         }
                     }
                 },
@@ -973,7 +973,6 @@ namespace Script {
                 },
             ]
         },
-        
         "First Aid Kit": {
             image: "FirstAidKit.png",
             rarity: CardRarity.COMMON,
@@ -1066,35 +1065,35 @@ namespace Script {
                 { //Tier 1
                     passiveEffects: {
                         absolute: {
-                            damageReduction: 1
+                            damageReduction: -1
                         }
                     }
                 },
                 { //Tier 2
                     passiveEffects: {
                         absolute: {
-                            damageReduction: 2
+                            damageReduction: -2
                         }
                     }
                 },
                 { //Tier 3
                     passiveEffects: {
                         absolute: {
-                            damageReduction: 4
+                            damageReduction: -4
                         }
                     }
                 },
                 { //Tier 4
                     passiveEffects: {
                         absolute: {
-                            damageReduction: 6
+                            damageReduction: -6
                         }
                     }
                 },
                 { //Tier 5
                     passiveEffects: {
                         absolute: {
-                            damageReduction: 10
+                            damageReduction: -10
                         }
                     }
                 },

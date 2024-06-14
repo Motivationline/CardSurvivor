@@ -23,21 +23,53 @@ namespace Script {
             }
         }
 
-        public getEffectAbsolute(_effect: PassiveCardEffect, _modifier: PassiveCardEffectObject = this.cumulativeEffects): number {
-            return _modifier.absolute?.[_effect] ?? 0;
-        }
-        public getEffectMultiplier(_effect: PassiveCardEffect, _modifier: PassiveCardEffectObject = this.cumulativeEffects): number {
-            return _modifier.multiplier?.[_effect] ?? 1;
-        }
-        public modifyValuePlayer(_value: number, _effect: PassiveCardEffect, _localModifiers?: PassiveCardEffectObject) {
-            if (_localModifiers) {
-                _value = (_value + this.getEffectAbsolute(_effect, _localModifiers)) * this.getEffectMultiplier(_effect, _localModifiers);
+        public getEffectAbsolute(_effect: PassiveCardEffect, _modifier: PassiveCardEffectObject = this.cumulativeEffects, _limitation?: string): number {
+            let element = _modifier.absolute?.[_effect];
+            if (!element) return 0;
+
+            if (Array.isArray(element)) {
+                let total = 0;
+                for (let el of element) {
+                    total += this.getValue(el, 0, _limitation);
+                }
+                return total;
             }
-            return (_value + this.getEffectAbsolute(_effect)) * this.getEffectMultiplier(_effect);
+            return this.getValue(element, 0, _limitation);
         }
-        public modifyValue(_value: number, _effect: PassiveCardEffect, _modifier: PassiveCardEffectObject): number {
+
+        public getEffectMultiplier(_effect: PassiveCardEffect, _modifier: PassiveCardEffectObject = this.cumulativeEffects, _limitation?: string): number {
+            let element = _modifier.multiplier?.[_effect];
+            if (!element) return 1;
+
+            if (Array.isArray(element)) {
+                let total = 1;
+                for (let el of element) {
+                    total *= this.getValue(el, 1, _limitation);
+                }
+                return total;
+            }
+            return this.getValue(element, 1, _limitation);
+        }
+
+        private getValue(_val: number | PassiveCardEffectModifier, _default: number = 0, _limitation?: string) {
+            if (typeof _val === "number") {
+                return _val;
+            }
+            if (!_val.limitation || _val.limitation == _limitation) {
+                return _val.value;
+            }
+            return _default;
+        }
+
+        public modifyValuePlayer(_value: number, _effect: PassiveCardEffect, _localModifiers?: PassiveCardEffectObject, _limitation?: string) {
+            if (_localModifiers) {
+                _value = (_value + this.getEffectAbsolute(_effect, _localModifiers, _limitation)) * this.getEffectMultiplier(_effect, _localModifiers, _limitation);
+            }
+            return (_value + this.getEffectAbsolute(_effect, this.cumulativeEffects, _limitation)) * this.getEffectMultiplier(_effect, this.cumulativeEffects, _limitation);
+        }
+        public modifyValue(_value: number, _effect: PassiveCardEffect, _modifier: PassiveCardEffectObject, _limitation?: string): number {
             if (!_modifier) return _value;
-            return (_value + this.getEffectAbsolute(_effect, _modifier)) * this.getEffectMultiplier(_effect, _modifier)
+            return (_value + this.getEffectAbsolute(_effect, _modifier, _limitation)) * this.getEffectMultiplier(_effect, _modifier, _limitation)
         }
 
         public updateEffects() {
@@ -59,10 +91,20 @@ namespace Script {
                 if (!effectObj) continue;
                 let effect: PassiveCardEffect;
                 for (effect in effectObj.absolute) {
-                    combined.absolute[effect] = (combined.absolute[effect] ?? 0) + effectObj.absolute[effect];
+                    let effectValue = effectObj.absolute[effect];
+                    if (!combined.absolute[effect]) combined.absolute[effect] = [];
+                    if (Array.isArray(effectValue))
+                        (<Array<number | PassiveCardEffectModifier>>combined.absolute[effect]).push(...effectValue);
+                    else
+                        (<Array<number | PassiveCardEffectModifier>>combined.absolute[effect]).push(effectValue);
                 }
                 for (effect in effectObj.multiplier) {
-                    combined.multiplier[effect] = (combined.multiplier[effect] ?? 1) * effectObj.multiplier[effect];
+                    let effectValue = effectObj.multiplier[effect];
+                    if (!combined.multiplier[effect]) combined.multiplier[effect] = [];
+                    if (Array.isArray(effectValue))
+                        (<Array<number | PassiveCardEffectModifier>>combined.multiplier[effect]).push(...effectValue);
+                    else
+                        (<Array<number | PassiveCardEffectModifier>>combined.multiplier[effect]).push(effectValue);
                 }
             }
             return combined;

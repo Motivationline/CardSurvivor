@@ -58,9 +58,9 @@ namespace Script {
             let charPosition = this.node.mtxWorld.translation.clone;
             let newVelocity = ƒ.Vector3.SCALE(new ƒ.Vector3(_direction.x, _direction.y), scale);
             charPosition.add(ƒ.Vector3.SCALE(newVelocity, ƒ.Loop.timeFrameGame / 1000));
-            if(charPosition.x > 12 || charPosition.x < -12) newVelocity.x = 0;
-            if(charPosition.y > 7 || charPosition.y < -7) newVelocity.y = 0;
-            
+            if (charPosition.x > 12 || charPosition.x < -12) newVelocity.x = 0;
+            if (charPosition.y > 7 || charPosition.y < -7) newVelocity.y = 0;
+
             //TODO: update this to use physics
             this.rigidbody.setVelocity(newVelocity);
             this.#animator.setTime();
@@ -101,8 +101,11 @@ namespace Script {
         }
 
         hit(_hit: Hit): number {
-            this.health -= _hit.damage;
-            //TODO display damage numbers
+            if (_hit.type === HitType.AOE) _hit.type = HitType.PROJECTILE;
+            let damage = Math.max(0, this.cardManager.modifyValuePlayer(_hit.damage, PassiveCardEffect.DAMAGE_REDUCTION, undefined, _hit.type));
+            this.health -= damage;
+            // display damage numbers
+            provider.get(EnemyManager).displayDamage(damage, this.node.mtxWorld.translation, true);
             //update display
             this.updateHealthVisually();
             if (this.health > 0) return _hit.damage;
@@ -119,7 +122,7 @@ namespace Script {
             this.updateHealthVisually();
         }
 
-        public reset(){
+        public reset() {
             this.maxHealth = this.defaultMaxHealth;
             this.health = this.maxHealth;
             this.updateHealthVisually();
