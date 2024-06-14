@@ -6591,11 +6591,15 @@ var Script;
         displayDamage(_amt, _pos, _onPlayer = false) {
             if (!isFinite(_amt))
                 return;
-            let dmgText = _amt.toFixed(0);
+            if (_amt === 0)
+                return;
+            let dmgText = Number(Math.abs(_amt).toPrecision(1)).toString();
             let textElement = document.createElement("span");
             textElement.classList.add("dmg-number");
             if (_onPlayer)
                 textElement.classList.add("player");
+            if (_amt < 0)
+                textElement.classList.add("healing");
             textElement.innerText = dmgText;
             document.documentElement.appendChild(textElement);
             this.dmgDisplayElements.push([textElement, _pos.clone]);

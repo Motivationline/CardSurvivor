@@ -709,7 +709,7 @@ progress::-webkit-progress-value {
   font-size: larger;
 }
 .dmg-number.healing {
-  color: green;
+  color: lime;
   /* font-size: larger; */
 }
 

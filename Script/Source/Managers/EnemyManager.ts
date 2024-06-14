@@ -551,51 +551,51 @@ namespace Script {
                         }
                     }
                 },
-                    {
-                        enemies: [
-                            { pool: 5, elite: true },
-                            { pool: 5 }
-                        ],
-                        amount: 6,
-                        duration: 12,
-                        minEnemiesOverride: 1,
-                        bonus: {
-                            multiplier: {
-                                health: 0.9,
-                                enemySize: 0.9,
-                            }
+                {
+                    enemies: [
+                        { pool: 5, elite: true },
+                        { pool: 5 }
+                    ],
+                    amount: 6,
+                    duration: 12,
+                    minEnemiesOverride: 1,
+                    bonus: {
+                        multiplier: {
+                            health: 0.9,
+                            enemySize: 0.9,
                         }
-                    },
-                    {
-                        enemies: [
-                            { pool: 6, elite: true },
-                            { pool: 6 }
-                        ],
-                        amount: 6,
-                        duration: 12,
-                        minEnemiesOverride: 1,
-                        bonus: {
-                            multiplier: {
-                                health: 0.9,
-                                enemySize: 0.9,
-                            }
+                    }
+                },
+                {
+                    enemies: [
+                        { pool: 6, elite: true },
+                        { pool: 6 }
+                    ],
+                    amount: 6,
+                    duration: 12,
+                    minEnemiesOverride: 1,
+                    bonus: {
+                        multiplier: {
+                            health: 0.9,
+                            enemySize: 0.9,
                         }
-                    },
-                    {
-                        enemies: [
-                            { pool: 2, elite: true },
-                            { pool: 2 }
-                        ],
-                        amount: 6,
-                        duration: 12,
-                        minEnemiesOverride: 1,
-                        bonus: {
-                            multiplier: {
-                                health: 0.9,
-                                enemySize: 0.9,
-                            }
+                    }
+                },
+                {
+                    enemies: [
+                        { pool: 2, elite: true },
+                        { pool: 2 }
+                    ],
+                    amount: 6,
+                    duration: 12,
+                    minEnemiesOverride: 1,
+                    bonus: {
+                        multiplier: {
+                            health: 0.9,
+                            enemySize: 0.9,
                         }
-                    },
+                    }
+                },
                 ],
                 bonus: {
                     multiplier: {
@@ -1059,10 +1059,12 @@ namespace Script {
         private dmgDisplayElements: [HTMLElement, ƒ.Vector3][] = [];
         public displayDamage(_amt: number, _pos: ƒ.Vector3, _onPlayer: boolean = false) {
             if (!isFinite(_amt)) return;
-            let dmgText = _amt.toFixed(0);
+            if (_amt === 0) return;
+            let dmgText = Number(Math.abs(_amt).toPrecision(1)).toString();
             let textElement = document.createElement("span");
             textElement.classList.add("dmg-number")
-            if(_onPlayer) textElement.classList.add("player");
+            if (_onPlayer) textElement.classList.add("player");
+            if(_amt < 0) textElement.classList.add("healing");
             textElement.innerText = dmgText;
 
             document.documentElement.appendChild(textElement);
