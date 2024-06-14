@@ -606,11 +606,6 @@ declare namespace Script {
     }
 }
 declare namespace Script {
-    const eliteModifier: PassiveCardEffectObject;
-    const pools: Pools;
-    const rooms: Rooms;
-}
-declare namespace Script {
     class AnimationManager {
         private readonly provider;
         private shared;
@@ -753,4 +748,9 @@ declare namespace Script {
         createHitZone(_position: ƒ.Vector3, _size?: number, _parent?: ƒ.Node): Promise<HitZoneGraphInstance>;
         cleanup(): void;
     }
+}
+declare namespace Script {
+    const eliteModifier: PassiveCardEffectObject;
+    const pools: Pools;
+    const rooms: Rooms;
 }

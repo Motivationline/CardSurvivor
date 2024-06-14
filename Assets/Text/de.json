@@ -222,13 +222,13 @@
     },
     "Pills": {
       "name": "Pillen",
-      "description": "Erhöht die Wirkungsdauer deiner Effekte.",
+      "description": "Erhöht die Dauer deiner Betäubungen.",
       "levels": {
-        "1": "+20% Effektdauer.",
-        "2": "+30% Effektdauer.",
-        "3": "+50% Effektdauer.",
-        "4": "+70% Effektdauer.",
-        "5": "+100% Effektdauer."
+        "1": "+20% Betäubungsdauer.",
+        "2": "+30% Betäubungsdauer.",
+        "3": "+50% Betäubungsdauer.",
+        "4": "+70% Betäubungsdauer.",
+        "5": "+100% Betäubungsdauer."
       }
     },
     "Fire Hose": {

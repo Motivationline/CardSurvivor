@@ -1209,6 +1209,7 @@ namespace Script {
             image: "Drone.png",
             rarity: CardRarity.COMMON,
             name: "Drone",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -1252,6 +1253,7 @@ namespace Script {
             image: "Pills.png",
             rarity: CardRarity.UNCOMMON,
             name: "Pills",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -2555,6 +2557,7 @@ namespace Script {
             image: "Shredder.png",
             rarity: CardRarity.EPIC,
             name: "Shredder",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {

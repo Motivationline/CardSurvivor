@@ -222,13 +222,13 @@
     },
     "Pills": {
       "name": "Pills",
-      "description": "Increases your effect duration.",
+      "description": "Increases your stun duration.",
       "levels": {
-        "1": "+20% effect duration.",
-        "2": "+30% effect duration.",
-        "3": "+50% effect duration.",
-        "4": "+70% effect duration.",
-        "5": "+100% effect duration."
+        "1": "+20% stun duration.",
+        "2": "+30% stun duration.",
+        "3": "+50% stun duration.",
+        "4": "+70% stun duration.",
+        "5": "+100% stun duration."
       }
     },
     "Fire Hose": {
