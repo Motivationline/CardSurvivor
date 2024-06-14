@@ -2880,35 +2880,35 @@ var Script;
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +5% increased field of view (camera zoom)
+                            cameraFOV: 1.05, // +5% increased field of view (camera zoom) // currently camera distance, not FOV
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +10% increased field of view (camera zoom)
+                            cameraFOV: 1.1, // +10% increased field of view (camera zoom) // currently camera distance, not FOV
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +20% increased field of view (camera zoom)
+                            cameraFOV: 1.2, // +20% increased field of view (camera zoom) // currently camera distance, not FOV
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +35% increased field of view (camera zoom)
+                            cameraFOV: 1.35, // +35% increased field of view (camera zoom) // currently camera distance, not FOV
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +50% increased field of view (camera zoom)
+                            cameraFOV: 1.5, // +50% increased field of view (camera zoom) // currently camera distance, not FOV
                         }
                     }
                 },
@@ -4584,6 +4584,7 @@ var Script;
         speed = 3.5;
         visualChildren = [];
         regenTimer = 0;
+        defaultCameraDistance = 15;
         constructor() {
             super();
             if (ƒ.Project.mode === ƒ.MODE.EDITOR)
@@ -4662,6 +4663,14 @@ var Script;
             this.maxHealth = newMax;
             this.health += Math.max(0, diff);
             this.updateHealthVisually();
+        }
+        updateCameraFOV() {
+            let newDistance = this.cardManager.modifyValuePlayer(this.defaultCameraDistance, Script.PassiveCardEffect.CAMERA_FOV);
+            this.node.getChildrenByName("camera")[0].getComponent(ƒ.ComponentCamera).mtxPivot.translation = ƒ.Vector3.Z(newDistance);
+        }
+        updatePassiveEffects() {
+            this.updateMaxHealth();
+            this.updateCameraFOV();
         }
         reset() {
             this.maxHealth = this.defaultMaxHealth;
@@ -6077,7 +6086,7 @@ var Script;
             }
             this.cumulativeEffects = this.combineEffects(...cardEffects);
             this.currentMaxActiveCardAmount = this.modifyValuePlayer(this.defaultMaxActiveCardAmount, Script.PassiveCardEffect.CARD_SLOTS);
-            Script.provider.get(Script.CharacterManager).character?.updateMaxHealth();
+            Script.provider.get(Script.CharacterManager).character?.updatePassiveEffects();
         }
         combineEffects(..._effects) {
             let combined = { absolute: {}, multiplier: {} };

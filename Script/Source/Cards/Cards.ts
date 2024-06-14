@@ -1210,35 +1210,35 @@ namespace Script {
                 { //Tier 1
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +5% increased field of view (camera zoom)
+                            cameraFOV:  1.05, // +5% increased field of view (camera zoom) // currently camera distance, not FOV
                         }
                     }
                 },
                 { //Tier 2
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +10% increased field of view (camera zoom)
+                            cameraFOV:  1.1, // +10% increased field of view (camera zoom) // currently camera distance, not FOV
                         }
                     }
                 },
                 { //Tier 3
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +20% increased field of view (camera zoom)
+                            cameraFOV:  1.2, // +20% increased field of view (camera zoom) // currently camera distance, not FOV
                         }
                     }
                 },
                 { //Tier 4
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +35% increased field of view (camera zoom)
+                            cameraFOV:  1.35, // +35% increased field of view (camera zoom) // currently camera distance, not FOV
                         }
                     }
                 },
                 { //Tier 5
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +50% increased field of view (camera zoom)
+                            cameraFOV:  1.5, // +50% increased field of view (camera zoom) // currently camera distance, not FOV
                         }
                     }
                 },
