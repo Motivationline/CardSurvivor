@@ -59,12 +59,14 @@ namespace Script {
             sprite: ["projectile", "hammer"],
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.NONE,
+            dontNormalizeMovement: true,
             methods: {
                 afterSetup: function () {
-                    this.direction = new ƒ.Vector3(0.5 - Math.random() * 1, 1, 0);
+                    this.direction = new ƒ.Vector3(0.5 - Math.random() * 1, 1, 0).normalize();
+                    this.maxY = -1 * this.direction.y;
                 },
                 preMove: function (_fts: number) {
-                    this.direction.y = Math.max(-1, this.direction.y - (_fts * (10 / this.speed)));
+                    this.direction.y = Math.max(this.maxY, this.direction.y - (_fts * (10 / this.speed)));
                 }
             }
         },

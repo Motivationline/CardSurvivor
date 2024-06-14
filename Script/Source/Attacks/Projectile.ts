@@ -21,6 +21,7 @@ namespace Script {
         lockedToEntity: boolean;
         sprite: AnimationSprite;
         stunDuration: number;
+        dontNormalizeMovement: boolean;
         private hazardZone: HitZoneGraphInstance;
         private prevDistance: number;
         private modifiers: PassiveCardEffectObject = {};
@@ -43,6 +44,7 @@ namespace Script {
             impact: undefined,
             artillery: false,
             rotateInDirection: false,
+            dontNormalizeMovement: false,
             sprite: ["projectile", "toast"],
             methods: {}
         }
@@ -180,8 +182,10 @@ namespace Script {
                 }
             }
             let dir = this.direction.clone;
-            if (dir.magnitudeSquared > 0)
+            if (dir.magnitudeSquared > 0 && !this.dontNormalizeMovement)
                 dir.normalize(Math.min(1, _frameTimeInSeconds) * this.speed);
+            else 
+                dir.scale(Math.min(1, _frameTimeInSeconds) * this.speed);
             this.node.mtxLocal.translate(dir);
             this.range -= dir.magnitude;
             if (this.range < 0) {
