@@ -84,7 +84,7 @@ namespace Script {
         motor: {
             moveSprite: ["motor", "move"],
             size: 1.1,
-            damage: 20,
+            damage: 15,
             desiredDistance: [0, 1],
             health: 25,
             speed: 2,
@@ -92,7 +92,7 @@ namespace Script {
             hitboxSize: 0.6,
             attacks: [
                 {
-                    cooldown: 0.8, // how long it dashes, including delay
+                    cooldown: 0.81, // how long it dashes, including delay
                     requiredDistance: [1.5, 2.5],
                     windUp: 2, // how long it plans its attack
                     movement: function (_diff: ƒ.Vector3, _mgtSqrd: number, _charPosition: ƒ.Vector3, _frameTimeInSeconds: number) {
