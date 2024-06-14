@@ -708,6 +708,10 @@ progress::-webkit-progress-value {
   color: red;
   font-size: larger;
 }
+.dmg-number.healing {
+  color: green;
+  /* font-size: larger; */
+}
 
 @keyframes wiggle {
   0% {

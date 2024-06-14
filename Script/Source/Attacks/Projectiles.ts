@@ -21,6 +21,7 @@ namespace Script {
             damage: 1,
             speed: 20,
             artillery: true,
+            size: 0.5,
             impact: [{
                 type: "aoe",
                 aoe: "toastImpact"
@@ -169,7 +170,7 @@ namespace Script {
         "toastImpact": {
             variant: "explosion",
             damage: 10,
-            size: 2,
+            size: 1,
             sprite: ["aoe", "toastexplosion"],
             duration: 1,
             target: ProjectileTarget.PLAYER,

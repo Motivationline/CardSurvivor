@@ -554,7 +554,7 @@ var Script;
     }
     function start(_event) {
         Script.viewport = _event.detail;
-        // viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
+        Script.viewport.physicsDebugMode = Script.ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
         // ƒ.Time.game.setScale(0.1);
         Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         Script.ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
@@ -808,7 +808,7 @@ var Script;
             direction: new Script.ƒ.Vector3(),
             piercing: 0,
             range: Infinity,
-            size: 0.5,
+            size: 1,
             speed: 2,
             damage: 1,
             stunDuration: 0,
@@ -874,7 +874,11 @@ var Script;
                     if (!pos)
                         return this.remove();
                 }
-                let hz = await Script.provider.get(Script.ProjectileManager).createHitZone(pos, this.size);
+                let hzSize = this.size;
+                for (let impact of this.impact) {
+                    hzSize = Math.max(hzSize, cm.modifyValue(1, Script.PassiveCardEffect.PROJECTILE_SIZE, impact.modifiers));
+                }
+                let hz = await Script.provider.get(Script.ProjectileManager).createHitZone(pos, hzSize);
                 this.tracking = {
                     strength: 1,
                     target: hz,
@@ -1039,6 +1043,7 @@ var Script;
             damage: 1,
             speed: 20,
             artillery: true,
+            size: 0.5,
             impact: [{
                     type: "aoe",
                     aoe: "toastImpact"
@@ -1184,7 +1189,7 @@ var Script;
         "toastImpact": {
             variant: "explosion",
             damage: 10,
-            size: 2,
+            size: 1,
             sprite: ["aoe", "toastexplosion"],
             duration: 1,
             target: Script.ProjectileTarget.PLAYER,
@@ -1681,7 +1686,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 0,
+                                    damage: 0, //8 Base Damage
                                     projectilePiercing: 2
                                 }
                             }
@@ -1696,7 +1701,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 4,
+                                    damage: 4, //8 Base Damage
                                     projectilePiercing: 2
                                 }
                             }
@@ -1711,7 +1716,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 4,
+                                    damage: 4, //8 Base Damage
                                     projectilePiercing: 2
                                 }
                             }
@@ -1726,7 +1731,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 7,
+                                    damage: 7, //8 Base Damage
                                     projectilePiercing: 3
                                 }
                             }
@@ -1741,7 +1746,7 @@ var Script;
                             currentCooldown: 0.75,
                             modifiers: {
                                 absolute: {
-                                    damage: 7,
+                                    damage: 7, //8 Base Damage
                                     projectilePiercing: 4
                                 }
                             }
@@ -1914,7 +1919,7 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 0,
+                                    damage: 0, //5 Base Damage
                                     effectDuration: 0 //1 Base Duration
                                 }
                             }
@@ -1928,8 +1933,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 1,
-                                    effectDuration: 0,
+                                    damage: 1, //5 Base Damage
+                                    effectDuration: 0, //1 Base Duration
                                     projectileSize: 1.1
                                 }
                             }
@@ -1943,8 +1948,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 1,
-                                    effectDuration: 0.5,
+                                    damage: 1, //5 Base Damage
+                                    effectDuration: 0.5, //1 Base Duration
                                     projectileSize: 1.3
                                 }
                             }
@@ -1958,8 +1963,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 1,
-                                    effectDuration: 0.5,
+                                    damage: 1, //5 Base Damage
+                                    effectDuration: 0.5, //1 Base Duration
                                     projectileSize: 1.5
                                 }
                             }
@@ -1973,8 +1978,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 3,
-                                    effectDuration: 1,
+                                    damage: 3, //5 Base Damage
+                                    effectDuration: 1, //1 Base Duration
                                     projectileSize: 2
                                 }
                             }
@@ -2073,7 +2078,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 0,
+                                    damage: 0, //5 Base Damage
                                     projectilePiercing: 1
                                 }
                             }
@@ -2088,7 +2093,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 3,
+                                    damage: 3, //5 Base Damage
                                     projectilePiercing: 1
                                 }
                             }
@@ -2103,7 +2108,7 @@ var Script;
                             currentCooldown: 0.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 3,
+                                    damage: 3, //5 Base Damage
                                     projectilePiercing: 1
                                 }
                             }
@@ -2118,7 +2123,7 @@ var Script;
                             currentCooldown: 0.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 5,
+                                    damage: 5, //5 Base Damage
                                     projectilePiercing: 2
                                 },
                                 multiplier: {
@@ -2136,7 +2141,7 @@ var Script;
                             currentCooldown: 0.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 5,
+                                    damage: 5, //5 Base Damage
                                     projectilePiercing: 3,
                                 },
                                 multiplier: {
@@ -2176,7 +2181,7 @@ var Script;
                             currentCooldown: 1.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 1,
+                                    damage: 1, //3 Base Damage (x10 for max distance)
                                     projectileRange: 2,
                                 }
                             }
@@ -2191,7 +2196,7 @@ var Script;
                             currentCooldown: 1.25,
                             modifiers: {
                                 absolute: {
-                                    damage: 2,
+                                    damage: 2, //3 Base Damage (x10 for max distance)
                                     projectileRange: 4,
                                 }
                             }
@@ -2206,7 +2211,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 3,
+                                    damage: 3, //3 Base Damage (x10 for max distance)
                                     projectileRange: 6,
                                 }
                             }
@@ -2221,7 +2226,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 5,
+                                    damage: 5, //3 Base Damage (x10 for max distance)
                                     projectileRange: 10,
                                 }
                             }
@@ -2244,7 +2249,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 0,
+                                    damage: 0, //5 Base Damage
                                     projectilePiercing: 3
                                 }
                             }
@@ -2259,7 +2264,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 2,
+                                    damage: 2, //5 Base Damage
                                     projectilePiercing: 3
                                 }
                             }
@@ -2274,7 +2279,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 2,
+                                    damage: 2, //5 Base Damage
                                     projectilePiercing: 3
                                 }
                             }
@@ -2289,7 +2294,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 3,
+                                    damage: 3, //5 Base Damage
                                     projectilePiercing: 4
                                 },
                                 multiplier: {
@@ -2307,7 +2312,7 @@ var Script;
                             currentCooldown: 0.75,
                             modifiers: {
                                 absolute: {
-                                    damage: 5,
+                                    damage: 5, //5 Base Damage
                                     projectilePiercing: 6
                                 },
                                 multiplier: {
@@ -2329,7 +2334,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 4,
+                            cooldown: 4, //TODO: Leave a projectile every 5 units moved
                             currentCooldown: 2,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2344,7 +2349,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 3.5,
+                            cooldown: 3.5, //TODO: Leave a projectile every 4 units moved
                             currentCooldown: 1.75,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2359,7 +2364,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 3,
+                            cooldown: 3, //TODO: Leave a projectile every 4 units moved
                             currentCooldown: 1.5,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2374,7 +2379,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 2,
+                            cooldown: 2, //TODO: Leave a projectile every 3 units moved
                             currentCooldown: 1,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2389,7 +2394,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 1,
+                            cooldown: 1, //TODO: Leave a projectile every 2 units moved
                             currentCooldown: 0.5,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -4577,6 +4582,7 @@ var Script;
         cardManager;
         speed = 3.5;
         visualChildren = [];
+        regenTimer = 0;
         constructor() {
             super();
             if (ƒ.Project.mode === ƒ.MODE.EDITOR)
@@ -4633,14 +4639,7 @@ var Script;
         update(_direction) {
             let time = Math.min(1, ƒ.Loop.timeFrameGame / 1000);
             this.move(_direction, time);
-            // regenerate health
-            if (Script.gameState === Script.GAMESTATE.PLAYING) {
-                let regeneration = this.cardManager.modifyValuePlayer(0, Script.PassiveCardEffect.REGENERATION);
-                if (regeneration > 0) {
-                    this.health = Math.min(this.maxHealth, this.health + regeneration);
-                    this.updateHealthVisually();
-                }
-            }
+            this.regenerate(time);
         }
         hit(_hit) {
             if (_hit.type === Script.HitType.AOE)
@@ -4670,6 +4669,22 @@ var Script;
             this.rigidbody.activate(false);
             this.node.mtxLocal.translation = new ƒ.Vector3();
             this.rigidbody.activate(true);
+        }
+        regenerate(_time) {
+            // regenerate health while playing
+            if (Script.gameState !== Script.GAMESTATE.PLAYING)
+                return;
+            this.regenTimer -= _time;
+            if (this.regenTimer > 0)
+                return;
+            this.regenTimer = 1;
+            let regeneration = this.cardManager.modifyValuePlayer(0, Script.PassiveCardEffect.REGENERATION);
+            if (regeneration > 0) {
+                regeneration = Math.min(regeneration, this.maxHealth - this.health);
+                this.health += regeneration;
+                Script.provider.get(Script.EnemyManager).displayDamage(-regeneration, this.node.mtxWorld.translation, true);
+                this.updateHealthVisually();
+            }
         }
         changeVisualDirection(_rot = 0) {
             for (let child of this.visualChildren) {
@@ -4911,7 +4926,7 @@ var Script;
                     events: {
                         fire: function () {
                             let modification = {
-                                size: 2,
+                                size: 1,
                                 methods: {
                                     afterSetup: function () {
                                         let delta = new Script.ƒ.Vector3(Math.random() * 5 - 2.5, Math.random() * 5 - 2.5);
@@ -4921,7 +4936,7 @@ var Script;
                                 }
                             };
                             for (let i = 0; i < 5; i++) {
-                                Script.provider.get(Script.ProjectileManager).createProjectile({ ...Script.projectiles["toastEnemy"], ...modification }, Script.ƒ.Vector3.SUM(this.node.mtxWorld.translation, Script.ƒ.Vector3.Y(0.3)), this.modifier);
+                                Script.provider.get(Script.ProjectileManager).createProjectile({ ...Script.projectiles["toastEnemy"], ...modification }, Script.ƒ.Vector3.SUM(this.node.mtxWorld.translation, Script.ƒ.Vector3.Y(0.3)), { ...this.modifier, ...{ multiplier: { projectileSize: 2 } } });
                             }
                         }
                     }
@@ -4937,14 +4952,13 @@ var Script;
                 {
                     attackSprite: ["bosstoaster", "attack03"],
                     cooldownSprite: ["toaster", "idle"],
-                    weight: 100,
+                    weight: 1,
                     requiredDistance: [4, 6],
                     cooldown: 5,
                     windUp: 44 / 24,
                     movement: function () { },
                     attack: function () {
                         let modification = {
-                            size: 2,
                             methods: {
                                 afterSetup: function () {
                                     let position = this.node.mtxLocal.translation.clone;
@@ -5557,12 +5571,12 @@ var Script;
     };
     const pools = {
         "electronics": [
-            ["microwave", "chair"],
-            ["toaster", "closet"],
-            ["motor"],
-            ["ventilator"],
-            ["chair"],
-            ["toaster"],
+            ["microwave", "chair"], // --0
+            ["toaster", "closet"], // --1
+            ["motor"], // --2
+            ["ventilator"], // --3
+            ["chair"], //mixer --4
+            ["toaster"], // --5
             ["closet"] // --6
         ]
     };

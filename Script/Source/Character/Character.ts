@@ -31,6 +31,7 @@ namespace Script {
         private cardManager: CardManager;
         speed: number = 3.5;
         private visualChildren: ƒ.Node[] = [];
+        private regenTimer: number = 0;
 
         constructor() {
             super();
@@ -89,15 +90,7 @@ namespace Script {
         update(_direction: ƒ.Vector2) {
             let time: number = Math.min(1, ƒ.Loop.timeFrameGame / 1000);
             this.move(_direction, time);
-
-            // regenerate health
-            if (gameState === GAMESTATE.PLAYING) {
-                let regeneration: number = this.cardManager.modifyValuePlayer(0, PassiveCardEffect.REGENERATION);
-                if (regeneration > 0) {
-                    this.health = Math.min(this.maxHealth, this.health + regeneration);
-                    this.updateHealthVisually();
-                }
-            }
+            this.regenerate(time);
         }
 
         hit(_hit: Hit): number {
@@ -129,6 +122,22 @@ namespace Script {
             this.rigidbody.activate(false);
             this.node.mtxLocal.translation = new ƒ.Vector3();
             this.rigidbody.activate(true);
+        }
+
+        private regenerate(_time: number) {
+            // regenerate health while playing
+            if (gameState !== GAMESTATE.PLAYING) return;
+            this.regenTimer -= _time;
+            if(this.regenTimer > 0) return;
+            this.regenTimer = 1;
+
+            let regeneration: number = this.cardManager.modifyValuePlayer(0, PassiveCardEffect.REGENERATION);
+            if (regeneration > 0) {
+                regeneration = Math.min(regeneration, this.maxHealth - this.health);
+                this.health += regeneration;
+                provider.get(EnemyManager).displayDamage(-regeneration, this.node.mtxWorld.translation, true);
+                this.updateHealthVisually();
+            }
         }
 
         private changeVisualDirection(_rot: number = 0) {

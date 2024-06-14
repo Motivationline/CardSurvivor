@@ -171,7 +171,7 @@ namespace Script {
                     events: {
                         fire: function () {
                             let modification: Partial<ProjectileData> = {
-                                size: 2,
+                                size: 1,
                                 methods: {
                                     afterSetup: function () {
                                         let delta = new ƒ.Vector3(Math.random() * 5 - 2.5, Math.random() * 5 - 2.5);
@@ -186,7 +186,7 @@ namespace Script {
                                         this.node.mtxWorld.translation,
                                         ƒ.Vector3.Y(0.3)
                                     ),
-                                    this.modifier,
+                                    {...this.modifier, ...{multiplier: {projectileSize: 2}}},
                                 );
                             }
                         }
@@ -206,14 +206,13 @@ namespace Script {
                 {
                     attackSprite: ["bosstoaster", "attack03"],
                     cooldownSprite: ["toaster", "idle"],
-                    weight: 100,
+                    weight: 1,
                     requiredDistance: [4, 6],
                     cooldown: 5,
                     windUp: 44 / 24,
                     movement: function () { },
                     attack: function () {
                         let modification: Partial<ProjectileData> = {
-                            size: 2,
                             methods: {
                                 afterSetup: function () {
                                     let position = this.node.mtxLocal.translation.clone;

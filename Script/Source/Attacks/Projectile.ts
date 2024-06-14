@@ -31,7 +31,7 @@ namespace Script {
             direction: new ƒ.Vector3(),
             piercing: 0,
             range: Infinity,
-            size: 0.5,
+            size: 1,
             speed: 2,
             damage: 1,
             stunDuration: 0,
@@ -104,7 +104,11 @@ namespace Script {
                     pos = provider.get(EnemyManager).getEnemy(this.targetMode)?.mtxWorld.translation.clone;
                     if (!pos) return this.remove();
                 }
-                let hz = await provider.get(ProjectileManager).createHitZone(pos, this.size);
+                let hzSize = this.size;
+                for (let impact of this.impact) {
+                    hzSize = Math.max(hzSize, cm.modifyValue(1, PassiveCardEffect.PROJECTILE_SIZE, impact.modifiers));
+                }
+                let hz = await provider.get(ProjectileManager).createHitZone(pos, hzSize);
                 this.tracking = {
                     strength: 1,
                     target: hz,
@@ -180,7 +184,7 @@ namespace Script {
                 dir.normalize(Math.min(1, _frameTimeInSeconds) * this.speed);
             this.node.mtxLocal.translate(dir);
             this.range -= dir.magnitude;
-            if(this.range < 0) {
+            if (this.range < 0) {
                 this.remove();
             }
 
