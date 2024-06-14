@@ -140,13 +140,13 @@ namespace Script {
                     let modification: Partial<ProjectileData> = {
                         damage: 10,
                         speed: 5,
-                        size: 2,
+                        size: 1,
 
                     }
                     let pm = provider.get(ProjectileManager);
                     for (let i = 0; i < projectileAmount; i++) {
                         pm.createProjectile({
-                            ...projectiles["genericBullet"], ...modification, ...{
+                            ...projectiles["flatToast"], ...modification, ...{
                                 methods: {
                                     afterSetup: function () {
                                         let angle = i * radiusBetweenProjectiles + startRadius;

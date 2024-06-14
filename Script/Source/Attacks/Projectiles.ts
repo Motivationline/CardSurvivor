@@ -10,6 +10,13 @@ namespace Script {
             sprite: ["projectile", "genericBullet"],
             target: ProjectileTarget.PLAYER,
         },
+        "flatToast": {
+            damage: 1,
+            speed: 1,
+            rotateInDirection: true,
+            sprite: ["projectile", "flatToast"],
+            target: ProjectileTarget.PLAYER,
+        },
         "toastEnemy": {
             damage: 1,
             speed: 20,

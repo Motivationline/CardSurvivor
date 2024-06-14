@@ -1028,6 +1028,13 @@ var Script;
             sprite: ["projectile", "genericBullet"],
             target: Script.ProjectileTarget.PLAYER,
         },
+        "flatToast": {
+            damage: 1,
+            speed: 1,
+            rotateInDirection: true,
+            sprite: ["projectile", "flatToast"],
+            target: Script.ProjectileTarget.PLAYER,
+        },
         "toastEnemy": {
             damage: 1,
             speed: 20,
@@ -4872,12 +4879,12 @@ var Script;
                     let modification = {
                         damage: 10,
                         speed: 5,
-                        size: 2,
+                        size: 1,
                     };
                     let pm = Script.provider.get(Script.ProjectileManager);
                     for (let i = 0; i < projectileAmount; i++) {
                         pm.createProjectile({
-                            ...Script.projectiles["genericBullet"], ...modification, ...{
+                            ...Script.projectiles["flatToast"], ...modification, ...{
                                 methods: {
                                     afterSetup: function () {
                                         let angle = i * radiusBetweenProjectiles + startRadius;

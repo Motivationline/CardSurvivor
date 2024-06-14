@@ -303,6 +303,16 @@
         "wrapAfter": 4,
         "materialString": "Material|2024-06-13T12:37:34.140Z|88096"
       },
+      "flatToast": {
+        "fps": 24,
+        "frames": 8,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 768,
+        "totalWidth": 768,
+        "wrapAfter": 3,
+        "materialString": "Material|2024-06-14T08:52:10.213Z|27647"
+      },
       "toast": {
         "fps": 1,
         "frames": 1,
