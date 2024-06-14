@@ -84,7 +84,7 @@ namespace Script {
         motor: {
             moveSprite: ["motor", "move"],
             size: 1.1,
-            damage: 20,
+            damage: 30,
             desiredDistance: [0, 1],
             health: 25,
             speed: 2,
@@ -92,10 +92,24 @@ namespace Script {
             hitboxSize: 0.6,
             attacks: [
                 {
-                    cooldown: 2,
-                    requiredDistance: [0, 0],
-                    windUp: 2,
-                    movement: () => { },
+                    cooldown: 0.7, // how long it dashes
+                    requiredDistance: [1.5, 2.5],
+                    windUp: 2, // how long it plans its attack
+                    movement: function (_diff: ƒ.Vector3, _mgtSqrd: number, _charPosition: ƒ.Vector3, _frameTimeInSeconds: number) {
+                        if (this.currentlyActiveAttack.windUp > 0) return;
+                        this.move(_diff, _mgtSqrd, _frameTimeInSeconds);
+                    },
+                    attack: function () {
+                        let charPosition = provider.get(CharacterManager).character.node.mtxWorld.translation;
+                        let direction = ƒ.Vector3.DIFFERENCE(charPosition, this.node.mtxWorld.translation);
+                        this.directionOverride = direction;
+                        this.speed *= 5; // how much faster than "normal" speed should it be? ALSO CHANGE BELOW
+                        this.meleeCooldown = 0;
+                    },
+                    attackEnd: function() {
+                        this.directionOverride = undefined;
+                        this.speed /= 5; // change here
+                    }
                 }
             ]
         },

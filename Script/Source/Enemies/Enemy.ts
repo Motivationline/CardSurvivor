@@ -222,7 +222,7 @@ namespace Script {
                 }
             }
             if (this.currentlyActiveAttack.started) {
-                // attack is ongoingw
+                // attack is ongoing
                 if (this.currentlyActiveAttack.windUp > 0) {
                     // still preparing
                     this.currentlyActiveAttack.windUp -= _frameTimeInSeconds;
@@ -236,6 +236,7 @@ namespace Script {
                     this.currentlyActiveAttack.cooldown -= _frameTimeInSeconds;
                     if (this.currentlyActiveAttack.cooldown < 0) {
                         // cooldown is up, we're ready to do something else
+                        this.currentlyActiveAttack.attackEnd?.call(this);
                         this.currentlyActiveAttack = undefined;
                         this.updateDesiredDistance(this.desiredDistance);
                         this.setCentralAnimator(this.moveSprite);
@@ -318,6 +319,7 @@ namespace Script {
         cooldownSprite?: AnimationSprite | [string, string];
         attack?: () => void;
         movement?: (_diff: ƒ.Vector3, _mgtSqrd: number, _charPosition: ƒ.Vector3, _frameTimeInSeconds: number) => void;
+        attackEnd?: () => void;
         events?: { [name: string]: (_event?: CustomEvent) => void; }
         weight?: number;
     }
