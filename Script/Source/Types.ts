@@ -96,6 +96,7 @@ namespace Script {
         range?: number,
         piercing?: number,
         target?: ProjectileTarget;
+        dontNormalizeMovement?: boolean;
         diminishing?: boolean,
         targetMode?: ProjectileTargetMode,
         lockedToEntity?: boolean,

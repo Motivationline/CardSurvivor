@@ -220,6 +220,7 @@ declare namespace Script {
         range?: number;
         piercing?: number;
         target?: ProjectileTarget;
+        dontNormalizeMovement?: boolean;
         diminishing?: boolean;
         targetMode?: ProjectileTargetMode;
         lockedToEntity?: boolean;
@@ -378,6 +379,7 @@ declare namespace Script {
         lockedToEntity: boolean;
         sprite: AnimationSprite;
         stunDuration: number;
+        dontNormalizeMovement: boolean;
         private hazardZone;
         private prevDistance;
         private modifiers;
