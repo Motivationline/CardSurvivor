@@ -1158,10 +1158,12 @@ namespace Script {
                     }
                 },
             ]
-        }, "Solar Panel": {
+        },
+        "Solar Panel": {
             image: "SolarPanel.png",
             rarity: CardRarity.COMMON,
             name: "Solar Panel",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {

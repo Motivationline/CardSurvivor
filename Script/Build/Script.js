@@ -2822,10 +2822,12 @@ var Script;
                     }
                 },
             ]
-        }, "Solar Panel": {
+        },
+        "Solar Panel": {
             image: "SolarPanel.png",
             rarity: Script.CardRarity.COMMON,
             name: "Solar Panel",
+            unlockByDefault: true,
             levels: [
                 {
                     passiveEffects: {
