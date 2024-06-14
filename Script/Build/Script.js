@@ -2837,13 +2837,6 @@ var Script;
                 {
                     passiveEffects: {
                         absolute: {
-                            regeneration: 0.5,
-                        }
-                    }
-                },
-                {
-                    passiveEffects: {
-                        absolute: {
                             regeneration: 1,
                         }
                     }
@@ -2858,14 +2851,21 @@ var Script;
                 {
                     passiveEffects: {
                         absolute: {
-                            regeneration: 4,
+                            regeneration: 3,
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         absolute: {
-                            regeneration: 7,
+                            regeneration: 5,
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        absolute: {
+                            regeneration: 8,
                         }
                     }
                 },

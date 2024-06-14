@@ -1168,35 +1168,35 @@ namespace Script {
                 { //Tier 1
                     passiveEffects: {
                         absolute: {
-                            regeneration: 0.5,
+                            regeneration: 1,
                         }
                     }
                 },
                 { //Tier 2
                     passiveEffects: {
                         absolute: {
-                            regeneration: 1,
+                            regeneration: 2,
                         }
                     }
                 },
                 { //Tier 3
                     passiveEffects: {
                         absolute: {
-                            regeneration: 2,
+                            regeneration: 3,
                         }
                     }
                 },
                 { //Tier 4
                     passiveEffects: {
                         absolute: {
-                            regeneration: 4,
+                            regeneration: 5,
                         }
                     }
                 },
                 { //Tier 5
                     passiveEffects: {
                         absolute: {
-                            regeneration: 7,
+                            regeneration: 8,
                         }
                     }
                 },

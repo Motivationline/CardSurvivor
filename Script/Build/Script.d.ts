@@ -484,6 +484,7 @@ declare namespace Script {
         private cardManager;
         speed: number;
         private visualChildren;
+        private regenTimer;
         constructor();
         private init;
         move(_direction: ƒ.Vector2, _time: number): void;
@@ -491,6 +492,7 @@ declare namespace Script {
         hit(_hit: Hit): number;
         updateMaxHealth(): void;
         reset(): void;
+        private regenerate;
         private changeVisualDirection;
         private updateHealthVisually;
         private setAnimation;
