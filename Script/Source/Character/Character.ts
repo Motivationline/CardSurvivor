@@ -32,6 +32,7 @@ namespace Script {
         speed: number = 3.5;
         private visualChildren: ƒ.Node[] = [];
         private regenTimer: number = 0;
+        private defaultCameraDistance = 15;
 
         constructor() {
             super();
@@ -107,12 +108,22 @@ namespace Script {
             return 0;
         }
 
-        public updateMaxHealth() {
+        private updateMaxHealth() {
             let newMax: number = this.cardManager.modifyValuePlayer(this.defaultMaxHealth, PassiveCardEffect.HEALTH);
             let diff = newMax - this.maxHealth;
             this.maxHealth = newMax;
             this.health += Math.max(0, diff);
             this.updateHealthVisually();
+        }
+
+        private updateCameraFOV() {
+            let newDistance: number = this.cardManager.modifyValuePlayer(this.defaultCameraDistance, PassiveCardEffect.CAMERA_FOV);
+            this.node.getChildrenByName("camera")[0].getComponent(ƒ.ComponentCamera).mtxPivot.translation = ƒ.Vector3.Z(newDistance);
+        }
+
+        public updatePassiveEffects(){
+            this.updateMaxHealth();
+            this.updateCameraFOV();
         }
 
         public reset() {

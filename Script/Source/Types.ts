@@ -61,6 +61,7 @@ namespace Script {
         MOVEMENT_SPEED = "movementSpeed",
         XP = "xp",
         ENEMY_SIZE = "enemySize",
+        CAMERA_FOV = "cameraFOV",
     }
 
     export enum CardRarity {

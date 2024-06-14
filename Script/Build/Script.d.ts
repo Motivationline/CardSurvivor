@@ -188,7 +188,8 @@ declare namespace Script {
         CARD_UPGRADE_SLOTS = "cardUpgradeSlots",
         MOVEMENT_SPEED = "movementSpeed",
         XP = "xp",
-        ENEMY_SIZE = "enemySize"
+        ENEMY_SIZE = "enemySize",
+        CAMERA_FOV = "cameraFOV"
     }
     export enum CardRarity {
         COMMON = "common",
@@ -485,12 +486,15 @@ declare namespace Script {
         speed: number;
         private visualChildren;
         private regenTimer;
+        private defaultCameraDistance;
         constructor();
         private init;
         move(_direction: ƒ.Vector2, _time: number): void;
         update(_direction: ƒ.Vector2): void;
         hit(_hit: Hit): number;
-        updateMaxHealth(): void;
+        private updateMaxHealth;
+        private updateCameraFOV;
+        updatePassiveEffects(): void;
         reset(): void;
         private regenerate;
         private changeVisualDirection;
@@ -600,6 +604,11 @@ declare namespace Script {
         frame: number;
         event: string;
     }
+}
+declare namespace Script {
+    const eliteModifier: PassiveCardEffectObject;
+    const pools: Pools;
+    const rooms: Rooms;
 }
 declare namespace Script {
     class AnimationManager {
