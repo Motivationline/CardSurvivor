@@ -2066,6 +2066,7 @@ namespace Script {
             image: "FaceShield.png",
             rarity: CardRarity.RARE,
             name: "Face Shield",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {

@@ -676,27 +676,6 @@ declare namespace Script {
     }
 }
 declare namespace Script {
-    enum MenuType {
-        NONE = 0,
-        MAIN = 1,
-        COLLECTION = 2,
-        SETTINGS = 3,
-        PAUSE = 4,
-        CARD_UPGRADE = 5,
-        END_CONFIRM = 6,
-        GAME_OVER = 7
-    }
-    class MenuManager {
-        private menus;
-        private prevGameState;
-        setup(): void;
-        openMenu(_menu: MenuType): void;
-        private startGame;
-        openPauseMenu(): void;
-        private openPauseCardPopup;
-    }
-}
-declare namespace Script {
     class ProjectileManager {
         private readonly provider;
         private characterManager;
@@ -758,5 +737,26 @@ declare namespace Script {
         private getCardPlaceholder;
         private compareRarity;
         private getRarityNumber;
+    }
+}
+declare namespace Script {
+    enum MenuType {
+        NONE = 0,
+        MAIN = 1,
+        COLLECTION = 2,
+        SETTINGS = 3,
+        PAUSE = 4,
+        CARD_UPGRADE = 5,
+        END_CONFIRM = 6,
+        GAME_OVER = 7
+    }
+    class MenuManager {
+        private menus;
+        private prevGameState;
+        setup(): void;
+        openMenu(_menu: MenuType): void;
+        private startGame;
+        openPauseMenu(): void;
+        private openPauseCardPopup;
     }
 }
