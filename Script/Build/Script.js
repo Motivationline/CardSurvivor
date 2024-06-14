@@ -674,6 +674,7 @@ var Script;
         PassiveCardEffect["MOVEMENT_SPEED"] = "movementSpeed";
         PassiveCardEffect["XP"] = "xp";
         PassiveCardEffect["ENEMY_SIZE"] = "enemySize";
+        PassiveCardEffect["CAMERA_FOV"] = "cameraFOV";
     })(PassiveCardEffect = Script.PassiveCardEffect || (Script.PassiveCardEffect = {}));
     let CardRarity;
     (function (CardRarity) {
@@ -5274,292 +5275,7 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
-    class AnimationManager {
-        provider;
-        shared = {};
-        unique = new Map();
-        currentUniqueId = 0;
-        constructor(provider) {
-            this.provider = provider;
-            if (Script.ƒ.Project.mode === Script.ƒ.MODE.EDITOR)
-                return;
-            Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
-        }
-        update = () => {
-            if (Script.gameState !== Script.GAMESTATE.PLAYING)
-                return;
-            let time = Script.ƒ.Time.game.get();
-            for (let type in this.shared) {
-                for (let sa of this.shared[type]) {
-                    sa.setTime(time);
-                }
-            }
-            for (let sa of this.unique.values()) {
-                sa.setTime(time);
-            }
-        };
-        getUniqueAnimationMtx(_sprite) {
-            this.currentUniqueId++;
-            this.unique.set(this.currentUniqueId, new Script.SpriteAnimator(_sprite));
-            return [this.unique.get(this.currentUniqueId).matrix, this.currentUniqueId];
-        }
-        getAnimationMtx(_sprite) {
-            let type = `${_sprite.width}x${_sprite.height}in${_sprite.totalWidth}x${_sprite.totalHeight}with${_sprite.frames}at${_sprite.fps}and${_sprite.wrapAfter}`;
-            if (!this.shared[type]) {
-                let gameTime = Script.ƒ.Time.game.get();
-                let animTime = Math.floor((_sprite.frames / _sprite.fps) * 1000);
-                this.shared[type] = [
-                    new Script.SpriteAnimator(_sprite, gameTime),
-                    new Script.SpriteAnimator(_sprite, gameTime + Math.floor((Math.random() * animTime))),
-                    new Script.SpriteAnimator(_sprite, gameTime + Math.floor((Math.random() * animTime))),
-                    new Script.SpriteAnimator(_sprite, gameTime + Math.floor((Math.random() * animTime))),
-                ];
-            }
-            return this.shared[type][Math.floor(Math.random() * this.shared[type].length)].matrix;
-        }
-        removeUniqueAnimationMtx(_id) {
-            this.unique.delete(_id);
-        }
-    }
-    Script.AnimationManager = AnimationManager;
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
-    class CardManager {
-        currentlyActiveCards = [];
-        deckCards = [];
-        cumulativeEffects = { absolute: {}, multiplier: {} };
-        defaultMaxActiveCardAmount = 5;
-        currentMaxActiveCardAmount = 5;
-        constructor() {
-            this.updateEffects();
-            Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
-        }
-        get activeCards() {
-            return this.currentlyActiveCards;
-        }
-        update = () => {
-            if (Script.gameState !== Script.GAMESTATE.PLAYING)
-                return;
-            let time = Script.ƒ.Loop.timeFrameGame / 1000;
-            for (let card of this.currentlyActiveCards) {
-                card.update(time, this.cumulativeEffects);
-            }
-        };
-        getEffectAbsolute(_effect, _modifier = this.cumulativeEffects, _limitation) {
-            let element = _modifier.absolute?.[_effect];
-            if (!element)
-                return 0;
-            if (Array.isArray(element)) {
-                let total = 0;
-                for (let el of element) {
-                    total += this.getValue(el, 0, _limitation);
-                }
-                return total;
-            }
-            return this.getValue(element, 0, _limitation);
-        }
-        getEffectMultiplier(_effect, _modifier = this.cumulativeEffects, _limitation) {
-            let element = _modifier.multiplier?.[_effect];
-            if (!element)
-                return 1;
-            if (Array.isArray(element)) {
-                let total = 1;
-                for (let el of element) {
-                    total *= this.getValue(el, 1, _limitation);
-                }
-                return total;
-            }
-            return this.getValue(element, 1, _limitation);
-        }
-        getValue(_val, _default = 0, _limitation) {
-            if (typeof _val === "number") {
-                return _val;
-            }
-            if (!_val.limitation || _val.limitation == _limitation) {
-                return _val.value;
-            }
-            return _default;
-        }
-        modifyValuePlayer(_value, _effect, _localModifiers, _limitation) {
-            if (_localModifiers) {
-                _value = (_value + this.getEffectAbsolute(_effect, _localModifiers, _limitation)) * this.getEffectMultiplier(_effect, _localModifiers, _limitation);
-            }
-            return (_value + this.getEffectAbsolute(_effect, this.cumulativeEffects, _limitation)) * this.getEffectMultiplier(_effect, this.cumulativeEffects, _limitation);
-        }
-        modifyValue(_value, _effect, _modifier, _limitation) {
-            if (!_modifier)
-                return _value;
-            return (_value + this.getEffectAbsolute(_effect, _modifier, _limitation)) * this.getEffectMultiplier(_effect, _modifier, _limitation);
-        }
-        updateEffects() {
-            let cardEffects = [];
-            for (let card of this.currentlyActiveCards) {
-                let effects = card.effects;
-                if (!effects)
-                    continue;
-                cardEffects.push(effects);
-            }
-            this.cumulativeEffects = this.combineEffects(...cardEffects);
-            this.currentMaxActiveCardAmount = this.modifyValuePlayer(this.defaultMaxActiveCardAmount, Script.PassiveCardEffect.CARD_SLOTS);
-            Script.provider.get(Script.CharacterManager).character?.updateMaxHealth();
-        }
-        combineEffects(..._effects) {
-            let combined = { absolute: {}, multiplier: {} };
-            for (let effectObj of _effects) {
-                if (!effectObj)
-                    continue;
-                let effect;
-                for (effect in effectObj.absolute) {
-                    let effectValue = effectObj.absolute[effect];
-                    if (!combined.absolute[effect])
-                        combined.absolute[effect] = [];
-                    if (Array.isArray(effectValue))
-                        combined.absolute[effect].push(...effectValue);
-                    else
-                        combined.absolute[effect].push(effectValue);
-                }
-                for (effect in effectObj.multiplier) {
-                    let effectValue = effectObj.multiplier[effect];
-                    if (!combined.multiplier[effect])
-                        combined.multiplier[effect] = [];
-                    if (Array.isArray(effectValue))
-                        combined.multiplier[effect].push(...effectValue);
-                    else
-                        combined.multiplier[effect].push(effectValue);
-                }
-            }
-            return combined;
-        }
-        prevChosenCards = [];
-        setCards(_selection, _deck) {
-            this.currentlyActiveCards = [];
-            this.deckCards = [];
-            this.prevChosenCards = [];
-            for (let cardId of _selection) {
-                this.currentlyActiveCards.push(new Script.Card(Script.cards[cardId], cardId, 0));
-            }
-            for (let cardId of _deck) {
-                this.deckCards.push(new Script.Card(Script.cards[cardId], cardId, 0));
-            }
-            this.updateEffects();
-        }
-        getCardsToChooseFrom(_maxAmt, _newCards = false) {
-            let possibleCards = [...this.currentlyActiveCards];
-            if (this.currentlyActiveCards.length < this.currentMaxActiveCardAmount) {
-                possibleCards.push(...this.deckCards);
-            }
-            for (let i = 0; i < possibleCards.length; i++) {
-                let card = possibleCards[i];
-                if ((_newCards && this.prevChosenCards.includes(card)) ||
-                    (card.level >= card.levels.length - 1 && this.activeCards.includes(card))) {
-                    possibleCards.splice(i, 1);
-                    i--;
-                }
-            }
-            // shuffle options
-            possibleCards = possibleCards
-                .map(value => ({ value, sort: Math.random() }))
-                .sort((a, b) => a.sort - b.sort)
-                .map(({ value }) => value);
-            possibleCards.length = Math.min(Math.floor(_maxAmt), possibleCards.length);
-            this.prevChosenCards = possibleCards;
-            return possibleCards;
-        }
-        updateCardOrAdd(_cardId) {
-            let card = this.currentlyActiveCards.find((card) => card.id === _cardId);
-            if (card) {
-                // update
-                card.level = Math.min(card.level + 1, card.levels.length - 1);
-                return this.updateEffects();
-            }
-            ;
-            // add
-            for (let i = 0; i < this.deckCards.length; i++) {
-                let deckCard = this.deckCards[i];
-                if (deckCard.id === _cardId) {
-                    this.currentlyActiveCards.push(deckCard);
-                    this.deckCards.splice(i, 1);
-                    return this.updateEffects();
-                }
-            }
-        }
-    }
-    Script.CardManager = CardManager;
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
-    class Config {
-        animations;
-        constructor() {
-        }
-        async loadFiles() {
-            const animationFilePath = "./Assets/Enemies/animations.json";
-            this.animations = await (await fetch(animationFilePath)).json();
-        }
-        getAnimation(_enemyID, _animationID) {
-            if (!this.animations[_enemyID])
-                return undefined;
-            if (!this.animations[_enemyID].animations[_animationID])
-                return undefined;
-            let anim = this.animations[_enemyID].animations[_animationID];
-            if (!anim.material) {
-                let materials = Script.ƒ.Project.getResourcesByType(Script.ƒ.Material);
-                anim.material = materials.find(mat => mat.idResource === anim.materialString);
-            }
-            return anim;
-        }
-    }
-    Script.Config = Config;
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
-    class DataManager {
-        savedCollectionRaw = {};
-        savedDeckRaw = [];
-        savedSelectionRaw = [];
-        async load() {
-            this.savedCollectionRaw = this.catchObjChange(JSON.parse(localStorage.getItem("collection") ?? "{}"), () => { localStorage.setItem("collection", JSON.stringify(this.savedCollectionRaw)); });
-            this.savedDeckRaw = this.catchArrayChange(JSON.parse(localStorage.getItem("deck") ?? "[]"), () => { localStorage.setItem("deck", JSON.stringify(this.savedDeckRaw)); });
-            this.savedSelectionRaw = this.catchArrayChange(JSON.parse(localStorage.getItem("selection") ?? "[]"), () => { localStorage.setItem("selection", JSON.stringify(this.savedSelectionRaw)); });
-        }
-        catchObjChange(object, onChange) {
-            const handler = {
-                get(target, property, receiver) {
-                    try {
-                        return new Proxy(target[property], handler);
-                    }
-                    catch (err) {
-                        return Reflect.get(target, property, receiver);
-                    }
-                },
-                set(target, prop, value, receiver) {
-                    let result = Reflect.set(target, prop, value, receiver);
-                    if (result)
-                        onChange();
-                    return result;
-                }
-            };
-            const handlerForArray = {};
-            return new Proxy(object, handler);
-        }
-        catchArrayChange(object, onChange) {
-            const handler = {
-                set(target, prop, value, receiver) {
-                    let result = Reflect.set(target, prop, value, receiver);
-                    if (result)
-                        onChange();
-                    return result;
-                }
-            };
-            return new Proxy(object, handler);
-        }
-    }
-    Script.DataManager = DataManager;
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
-    const eliteModifier = {
+    Script.eliteModifier = {
         multiplier: {
             enemySize: 2,
             damage: 2,
@@ -5569,7 +5285,7 @@ var Script;
             xp: 6,
         }
     };
-    const pools = {
+    Script.pools = {
         "electronics": [
             ["microwave", "chair"], // --0
             ["toaster", "closet"], // --1
@@ -5580,7 +5296,7 @@ var Script;
             ["closet"] // --6
         ]
     };
-    const rooms = {
+    Script.rooms = {
         "electronics": [
             // room 1
             {
@@ -6230,6 +5946,294 @@ var Script;
             },
         ]
     };
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    class AnimationManager {
+        provider;
+        shared = {};
+        unique = new Map();
+        currentUniqueId = 0;
+        constructor(provider) {
+            this.provider = provider;
+            if (Script.ƒ.Project.mode === Script.ƒ.MODE.EDITOR)
+                return;
+            Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
+        }
+        update = () => {
+            if (Script.gameState !== Script.GAMESTATE.PLAYING)
+                return;
+            let time = Script.ƒ.Time.game.get();
+            for (let type in this.shared) {
+                for (let sa of this.shared[type]) {
+                    sa.setTime(time);
+                }
+            }
+            for (let sa of this.unique.values()) {
+                sa.setTime(time);
+            }
+        };
+        getUniqueAnimationMtx(_sprite) {
+            this.currentUniqueId++;
+            this.unique.set(this.currentUniqueId, new Script.SpriteAnimator(_sprite));
+            return [this.unique.get(this.currentUniqueId).matrix, this.currentUniqueId];
+        }
+        getAnimationMtx(_sprite) {
+            let type = `${_sprite.width}x${_sprite.height}in${_sprite.totalWidth}x${_sprite.totalHeight}with${_sprite.frames}at${_sprite.fps}and${_sprite.wrapAfter}`;
+            if (!this.shared[type]) {
+                let gameTime = Script.ƒ.Time.game.get();
+                let animTime = Math.floor((_sprite.frames / _sprite.fps) * 1000);
+                this.shared[type] = [
+                    new Script.SpriteAnimator(_sprite, gameTime),
+                    new Script.SpriteAnimator(_sprite, gameTime + Math.floor((Math.random() * animTime))),
+                    new Script.SpriteAnimator(_sprite, gameTime + Math.floor((Math.random() * animTime))),
+                    new Script.SpriteAnimator(_sprite, gameTime + Math.floor((Math.random() * animTime))),
+                ];
+            }
+            return this.shared[type][Math.floor(Math.random() * this.shared[type].length)].matrix;
+        }
+        removeUniqueAnimationMtx(_id) {
+            this.unique.delete(_id);
+        }
+    }
+    Script.AnimationManager = AnimationManager;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    class CardManager {
+        currentlyActiveCards = [];
+        deckCards = [];
+        cumulativeEffects = { absolute: {}, multiplier: {} };
+        defaultMaxActiveCardAmount = 5;
+        currentMaxActiveCardAmount = 5;
+        constructor() {
+            this.updateEffects();
+            Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
+        }
+        get activeCards() {
+            return this.currentlyActiveCards;
+        }
+        update = () => {
+            if (Script.gameState !== Script.GAMESTATE.PLAYING)
+                return;
+            let time = Script.ƒ.Loop.timeFrameGame / 1000;
+            for (let card of this.currentlyActiveCards) {
+                card.update(time, this.cumulativeEffects);
+            }
+        };
+        getEffectAbsolute(_effect, _modifier = this.cumulativeEffects, _limitation) {
+            let element = _modifier.absolute?.[_effect];
+            if (!element)
+                return 0;
+            if (Array.isArray(element)) {
+                let total = 0;
+                for (let el of element) {
+                    total += this.getValue(el, 0, _limitation);
+                }
+                return total;
+            }
+            return this.getValue(element, 0, _limitation);
+        }
+        getEffectMultiplier(_effect, _modifier = this.cumulativeEffects, _limitation) {
+            let element = _modifier.multiplier?.[_effect];
+            if (!element)
+                return 1;
+            if (Array.isArray(element)) {
+                let total = 1;
+                for (let el of element) {
+                    total *= this.getValue(el, 1, _limitation);
+                }
+                return total;
+            }
+            return this.getValue(element, 1, _limitation);
+        }
+        getValue(_val, _default = 0, _limitation) {
+            if (typeof _val === "number") {
+                return _val;
+            }
+            if (!_val.limitation || _val.limitation == _limitation) {
+                return _val.value;
+            }
+            return _default;
+        }
+        modifyValuePlayer(_value, _effect, _localModifiers, _limitation) {
+            if (_localModifiers) {
+                _value = (_value + this.getEffectAbsolute(_effect, _localModifiers, _limitation)) * this.getEffectMultiplier(_effect, _localModifiers, _limitation);
+            }
+            return (_value + this.getEffectAbsolute(_effect, this.cumulativeEffects, _limitation)) * this.getEffectMultiplier(_effect, this.cumulativeEffects, _limitation);
+        }
+        modifyValue(_value, _effect, _modifier, _limitation) {
+            if (!_modifier)
+                return _value;
+            return (_value + this.getEffectAbsolute(_effect, _modifier, _limitation)) * this.getEffectMultiplier(_effect, _modifier, _limitation);
+        }
+        updateEffects() {
+            let cardEffects = [];
+            for (let card of this.currentlyActiveCards) {
+                let effects = card.effects;
+                if (!effects)
+                    continue;
+                cardEffects.push(effects);
+            }
+            this.cumulativeEffects = this.combineEffects(...cardEffects);
+            this.currentMaxActiveCardAmount = this.modifyValuePlayer(this.defaultMaxActiveCardAmount, Script.PassiveCardEffect.CARD_SLOTS);
+            Script.provider.get(Script.CharacterManager).character?.updateMaxHealth();
+        }
+        combineEffects(..._effects) {
+            let combined = { absolute: {}, multiplier: {} };
+            for (let effectObj of _effects) {
+                if (!effectObj)
+                    continue;
+                let effect;
+                for (effect in effectObj.absolute) {
+                    let effectValue = effectObj.absolute[effect];
+                    if (!combined.absolute[effect])
+                        combined.absolute[effect] = [];
+                    if (Array.isArray(effectValue))
+                        combined.absolute[effect].push(...effectValue);
+                    else
+                        combined.absolute[effect].push(effectValue);
+                }
+                for (effect in effectObj.multiplier) {
+                    let effectValue = effectObj.multiplier[effect];
+                    if (!combined.multiplier[effect])
+                        combined.multiplier[effect] = [];
+                    if (Array.isArray(effectValue))
+                        combined.multiplier[effect].push(...effectValue);
+                    else
+                        combined.multiplier[effect].push(effectValue);
+                }
+            }
+            return combined;
+        }
+        prevChosenCards = [];
+        setCards(_selection, _deck) {
+            this.currentlyActiveCards = [];
+            this.deckCards = [];
+            this.prevChosenCards = [];
+            for (let cardId of _selection) {
+                this.currentlyActiveCards.push(new Script.Card(Script.cards[cardId], cardId, 0));
+            }
+            for (let cardId of _deck) {
+                this.deckCards.push(new Script.Card(Script.cards[cardId], cardId, 0));
+            }
+            this.updateEffects();
+        }
+        getCardsToChooseFrom(_maxAmt, _newCards = false) {
+            let possibleCards = [...this.currentlyActiveCards];
+            if (this.currentlyActiveCards.length < this.currentMaxActiveCardAmount) {
+                possibleCards.push(...this.deckCards);
+            }
+            for (let i = 0; i < possibleCards.length; i++) {
+                let card = possibleCards[i];
+                if ((_newCards && this.prevChosenCards.includes(card)) ||
+                    (card.level >= card.levels.length - 1 && this.activeCards.includes(card))) {
+                    possibleCards.splice(i, 1);
+                    i--;
+                }
+            }
+            // shuffle options
+            possibleCards = possibleCards
+                .map(value => ({ value, sort: Math.random() }))
+                .sort((a, b) => a.sort - b.sort)
+                .map(({ value }) => value);
+            possibleCards.length = Math.min(Math.floor(_maxAmt), possibleCards.length);
+            this.prevChosenCards = possibleCards;
+            return possibleCards;
+        }
+        updateCardOrAdd(_cardId) {
+            let card = this.currentlyActiveCards.find((card) => card.id === _cardId);
+            if (card) {
+                // update
+                card.level = Math.min(card.level + 1, card.levels.length - 1);
+                return this.updateEffects();
+            }
+            ;
+            // add
+            for (let i = 0; i < this.deckCards.length; i++) {
+                let deckCard = this.deckCards[i];
+                if (deckCard.id === _cardId) {
+                    this.currentlyActiveCards.push(deckCard);
+                    this.deckCards.splice(i, 1);
+                    return this.updateEffects();
+                }
+            }
+        }
+    }
+    Script.CardManager = CardManager;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    class Config {
+        animations;
+        constructor() {
+        }
+        async loadFiles() {
+            const animationFilePath = "./Assets/Enemies/animations.json";
+            this.animations = await (await fetch(animationFilePath)).json();
+        }
+        getAnimation(_enemyID, _animationID) {
+            if (!this.animations[_enemyID])
+                return undefined;
+            if (!this.animations[_enemyID].animations[_animationID])
+                return undefined;
+            let anim = this.animations[_enemyID].animations[_animationID];
+            if (!anim.material) {
+                let materials = Script.ƒ.Project.getResourcesByType(Script.ƒ.Material);
+                anim.material = materials.find(mat => mat.idResource === anim.materialString);
+            }
+            return anim;
+        }
+    }
+    Script.Config = Config;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    class DataManager {
+        savedCollectionRaw = {};
+        savedDeckRaw = [];
+        savedSelectionRaw = [];
+        async load() {
+            this.savedCollectionRaw = this.catchObjChange(JSON.parse(localStorage.getItem("collection") ?? "{}"), () => { localStorage.setItem("collection", JSON.stringify(this.savedCollectionRaw)); });
+            this.savedDeckRaw = this.catchArrayChange(JSON.parse(localStorage.getItem("deck") ?? "[]"), () => { localStorage.setItem("deck", JSON.stringify(this.savedDeckRaw)); });
+            this.savedSelectionRaw = this.catchArrayChange(JSON.parse(localStorage.getItem("selection") ?? "[]"), () => { localStorage.setItem("selection", JSON.stringify(this.savedSelectionRaw)); });
+        }
+        catchObjChange(object, onChange) {
+            const handler = {
+                get(target, property, receiver) {
+                    try {
+                        return new Proxy(target[property], handler);
+                    }
+                    catch (err) {
+                        return Reflect.get(target, property, receiver);
+                    }
+                },
+                set(target, prop, value, receiver) {
+                    let result = Reflect.set(target, prop, value, receiver);
+                    if (result)
+                        onChange();
+                    return result;
+                }
+            };
+            const handlerForArray = {};
+            return new Proxy(object, handler);
+        }
+        catchArrayChange(object, onChange) {
+            const handler = {
+                set(target, prop, value, receiver) {
+                    let result = Reflect.set(target, prop, value, receiver);
+                    if (result)
+                        onChange();
+                    return result;
+                }
+            };
+            return new Proxy(object, handler);
+        }
+    }
+    Script.DataManager = DataManager;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
     class EnemyManager {
         provider;
         characterManager;
@@ -6354,12 +6358,12 @@ var Script;
             this.currentRoom++;
             this.currentWave = -1;
             this.currentWaveEnd = 0;
-            if (rooms[this.currentArea].length <= this.currentRoom) {
+            if (Script.rooms[this.currentArea].length <= this.currentRoom) {
                 console.log("LAST ROOM CLEARED");
                 Script.gameState = Script.GAMESTATE.IDLE;
                 return;
             }
-            let room = rooms[this.currentArea][this.currentRoom];
+            let room = Script.rooms[this.currentArea][this.currentRoom];
             this.currentRoomEnd = Script.ƒ.Time.game.get() + room.duration * 1000;
             Script.gameState = Script.GAMESTATE.PLAYING;
             if (room.reward) {
@@ -6395,21 +6399,21 @@ var Script;
             return true;
         }
         getWave(_area, _room, _wave) {
-            if (!rooms[_area])
+            if (!Script.rooms[_area])
                 return undefined;
-            if (!rooms[_area][_room])
+            if (!Script.rooms[_area][_room])
                 return undefined;
-            if (rooms[_area][_room].waveAmount !== undefined && rooms[_area][_room].waveAmount <= _wave)
+            if (Script.rooms[_area][_room].waveAmount !== undefined && Script.rooms[_area][_room].waveAmount <= _wave)
                 return undefined;
-            return rooms[_area][_room].waves?.[_wave] ?? rooms[_area][_room].defaultWave;
+            return Script.rooms[_area][_room].waves?.[_wave] ?? Script.rooms[_area][_room].defaultWave;
         }
         getWaveModifier(_area, _room, _wave) {
-            if (!rooms[_area])
+            if (!Script.rooms[_area])
                 return undefined;
-            if (!rooms[_area][_room])
+            if (!Script.rooms[_area][_room])
                 return undefined;
             let wave = this.getWave(_area, _room, _wave);
-            return Script.provider.get(Script.CardManager).combineEffects(wave.bonus, rooms[_area][_room].bonus);
+            return Script.provider.get(Script.CardManager).combineEffects(wave.bonus, Script.rooms[_area][_room].bonus);
         }
         poolSelections = [];
         getEnemyList(_wave) {
@@ -6423,7 +6427,7 @@ var Script;
                 }
                 else {
                     if (!this.poolSelections[enemy.pool]) {
-                        this.poolSelections[enemy.pool] = pools[this.currentArea][enemy.pool][Math.floor(Math.random() * pools[this.currentArea][enemy.pool].length)];
+                        this.poolSelections[enemy.pool] = Script.pools[this.currentArea][enemy.pool][Math.floor(Math.random() * Script.pools[this.currentArea][enemy.pool].length)];
                     }
                     let name = this.poolSelections[enemy.pool];
                     if (enemy.elite) {
@@ -6450,7 +6454,7 @@ var Script;
             let enemyScript = newEnemyGraphInstance.getComponent(Script.Enemy);
             let modifier = this.getWaveModifier(this.currentArea, this.currentRoom, this.currentWave);
             if (_elite)
-                modifier = Script.provider.get(Script.CardManager).combineEffects(eliteModifier, modifier);
+                modifier = Script.provider.get(Script.CardManager).combineEffects(Script.eliteModifier, modifier);
             enemyScript.setup(Script.enemies[_enemy], modifier);
             this.enemyScripts.push(enemyScript);
         }

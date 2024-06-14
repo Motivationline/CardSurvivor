@@ -188,7 +188,8 @@ declare namespace Script {
         CARD_UPGRADE_SLOTS = "cardUpgradeSlots",
         MOVEMENT_SPEED = "movementSpeed",
         XP = "xp",
-        ENEMY_SIZE = "enemySize"
+        ENEMY_SIZE = "enemySize",
+        CAMERA_FOV = "cameraFOV"
     }
     export enum CardRarity {
         COMMON = "common",
@@ -600,6 +601,11 @@ declare namespace Script {
         frame: number;
         event: string;
     }
+}
+declare namespace Script {
+    const eliteModifier: PassiveCardEffectObject;
+    const pools: Pools;
+    const rooms: Rooms;
 }
 declare namespace Script {
     class AnimationManager {
