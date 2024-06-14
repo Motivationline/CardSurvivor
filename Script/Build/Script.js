@@ -6705,7 +6705,10 @@ var Script;
             });
             document.getElementById("pause-quit").addEventListener("click", () => { this.openMenu(MenuType.END_CONFIRM); });
             document.getElementById("end-abort").addEventListener("click", () => { this.openPauseMenu(); });
-            document.getElementById("game-over-button").addEventListener("click", () => { this.openMenu(MenuType.MAIN); });
+            document.getElementById("game-over-button").addEventListener("click", () => {
+                this.openMenu(MenuType.MAIN);
+                Script.provider.get(Script.EnemyManager).reset();
+            });
             document.getElementById("end-quit").addEventListener("click", () => {
                 this.openMenu(MenuType.MAIN);
                 //TODO handle game abort.

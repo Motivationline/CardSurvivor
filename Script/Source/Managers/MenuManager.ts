@@ -38,7 +38,10 @@ namespace Script {
             });
             document.getElementById("pause-quit").addEventListener("click", () => { this.openMenu(MenuType.END_CONFIRM) });
             document.getElementById("end-abort").addEventListener("click", () => { this.openPauseMenu() });
-            document.getElementById("game-over-button").addEventListener("click", () => { this.openMenu(MenuType.MAIN) });
+            document.getElementById("game-over-button").addEventListener("click", () => {
+                this.openMenu(MenuType.MAIN);
+                provider.get(EnemyManager).reset();
+            });
             document.getElementById("end-quit").addEventListener("click", () => {
                 this.openMenu(MenuType.MAIN);
                 //TODO handle game abort.
@@ -59,7 +62,7 @@ namespace Script {
         private async startGame() {
             this.openMenu(MenuType.NONE);
             gameState = GAMESTATE.ROOM_CLEAR;
-            
+
             let dataManager = provider.get(DataManager);
             let cardManager = provider.get(CardManager);
             cardManager.setCards([], dataManager.savedDeckRaw);
@@ -90,7 +93,7 @@ namespace Script {
             element.replaceChildren(...cardsForPauseMenu);
         }
 
-        private openPauseCardPopup = (_event: MouseEvent) => { 
+        private openPauseCardPopup = (_event: MouseEvent) => {
 
         }
     }
