@@ -22,8 +22,8 @@ body {
   font-family: 'Luckiest Guy', cursive;
 
   --ui-color-background: #303645;
-  --ui-text-button: whitesmoke;
   --ui-color-foreground: #202432;
+  color: white;
 }
 
 dialog {
@@ -35,14 +35,26 @@ canvas.fullscreen {
   height: 100vh;
 }
 
+h2 {
+  font-size: 5rem;
+}
+
+h3 {
+  font-size: 3rem;
+}
+
+p {
+  font-size: 2rem;
+  color: #131721;
+}
+
 .overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  /* color: white; */
-  background-color: white;
+  background-color: var(--ui-color-background);
 }
 
 .hidden {
@@ -55,14 +67,20 @@ canvas.fullscreen {
 }
 
 button {
-  padding: 2em;
-  color: var(--ui-text-button);
-  font-size: inherit;
+  padding: 0.5em 1em 1em 1em;
+  color: #2f3749;
+  font: inherit;
+  font-size: 2em;
   cursor: pointer;
-  border-image-source: url("Assets/UI/Deck/EmptyButton.png");
-  border-image-width: 10;
+  border-image-source: url("Assets/UI/EmptyButtonBlue.png");
+  border-image-width: 0.5em;
   border-image-slice: 25 fill;
   background-color: transparent;
+}
+
+button.danger {
+  color: #472c35;
+  border-image-source: url("Assets/UI/EmptyButtonOrange.png");
 }
 
 button.inverted {
@@ -80,19 +98,51 @@ button:disabled {
 
 #main-menu-overlay {
   z-index: 10000;
-  background-color: var(--ui-color-background);
-
+  background-color: #e1a943;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 1em;
-  padding: 1em;
 }
 
-#main-menu-overlay button {
-  padding: 0.5em;
-  font-size: 2em;
+#main-menu-overlay::after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("Assets/UI/MainMenu/Light.png") no-repeat center;
+  background-size: contain;
 }
+
+#main-menu-logo {
+  margin-top: 3vh;
+  height: 30vh;
+  background: url("Assets/UI/MainMenu/LogoDesktop.png") no-repeat center;
+  background-size: contain;
+}
+
+#main-menu-buttons {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+#main-menu-robot {
+  background: url("Assets/UI/MainMenu/Robot.png") no-repeat bottom;
+  height: 30vh;
+  background-size: cover;
+}
+
+#main-menu-game {
+  font-size: 3em;
+}
+
 
 /* Game Overlay */
 #game-overlay {
@@ -132,11 +182,11 @@ progress::-webkit-progress-value {
 }
 
 #timer {
-    display: block;
-    text-align: center;
-    margin-top: 2vh;
-    font-size: 4rem;
-    text-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+  display: block;
+  text-align: center;
+  margin-top: 2vh;
+  font-size: 4rem;
+  text-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
 }
 
 #game-overlay-pause {
@@ -195,23 +245,51 @@ progress::-webkit-progress-value {
   justify-content: center;
 }
 
+
+#game-over-overlay {
+  display: grid;
+  place-items: center;
+  z-index: 1005;
+}
+
+#game-over-overlay:not(.hidden){
+  animation: fade 1s reverse forwards linear;
+}
+
 /* pause and settings */
 #pause-overlay {
   z-index: 1002;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 #pause-overlay-cards {
-  --card-size: 100px;
+  --card-size: min(calc((21 / 15) * 17vw), 50vh);
   display: flex;
+  flex-wrap: wrap;
+  gap: 1vw;
 }
 
 #pause-overlay-cards .card {
   cursor: default;
 }
 
+.pause-overlay-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 3em;
+  font-size: 0.8em;
+}
 
 #end-confirm {
   z-index: 1003;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  text-align: center;
 }
 
 #settings-overlay {
@@ -288,10 +366,6 @@ progress::-webkit-progress-value {
   /* padding: 0 1em; */
   width: 1.5em;
   height: 1.5em;
-}
-
-#deck-back-button {
-  padding: 0.25em;
 }
 
 #selection {
@@ -708,6 +782,7 @@ progress::-webkit-progress-value {
   color: red;
   font-size: larger;
 }
+
 .dmg-number.healing {
   color: lime;
   /* font-size: larger; */
@@ -829,6 +904,15 @@ progress::-webkit-progress-value {
     font-size: 3vw;
     border-top: none;
   }
+
+  #main-menu-robot {
+    background-size: contain;
+  }
+
+  .pause-overlay-buttons {
+    font-size: 1em;
+  }
+
 }
 
 @media screen and (min-width: 1000px) {
@@ -842,6 +926,7 @@ progress::-webkit-progress-value {
   progress::-webkit-progress-value {
     border-radius: 10px;
   }
+
   progress::-moz-progress-bar {
     border-radius: 10px;
   }

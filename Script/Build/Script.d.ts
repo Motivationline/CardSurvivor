@@ -452,7 +452,7 @@ declare namespace Script {
         private popupClickListener;
         private updateVisuals;
         private putCardsInDeck;
-        private fillWithPlaceholders;
+        fillWithPlaceholders(_array: HTMLElement[], _maxAmount: number): void;
         private getCardPlaceholder;
         private compareRarity;
         private getRarityNumber;
@@ -608,6 +608,11 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    const eliteModifier: PassiveCardEffectObject;
+    const pools: Pools;
+    const rooms: Rooms;
+}
+declare namespace Script {
     class AnimationManager {
         private readonly provider;
         private shared;
@@ -629,6 +634,7 @@ declare namespace Script {
         private currentMaxActiveCardAmount;
         constructor();
         get activeCards(): Card[];
+        get maxActiveCardAmount(): number;
         private update;
         getEffectAbsolute(_effect: PassiveCardEffect, _modifier?: PassiveCardEffectObject, _limitation?: string): number;
         getEffectMultiplier(_effect: PassiveCardEffect, _modifier?: PassiveCardEffectObject, _limitation?: string): number;
@@ -714,7 +720,8 @@ declare namespace Script {
         SETTINGS = 3,
         PAUSE = 4,
         CARD_UPGRADE = 5,
-        END_CONFIRM = 6
+        END_CONFIRM = 6,
+        GAME_OVER = 7
     }
     class MenuManager {
         private menus;
@@ -750,9 +757,4 @@ declare namespace Script {
         createHitZone(_position: ƒ.Vector3, _size?: number, _parent?: ƒ.Node): Promise<HitZoneGraphInstance>;
         cleanup(): void;
     }
-}
-declare namespace Script {
-    const eliteModifier: PassiveCardEffectObject;
-    const pools: Pools;
-    const rooms: Rooms;
 }

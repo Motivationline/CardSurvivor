@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-    <title>CardSurvivor</title>
+    <title>Rob & Nic</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="icon" href="Assets/Favicons/favicon.ico" />
 
     <!--Editor settings of this project-->
-    <meta type="settings" autoview="Graph|2024-05-02T11:53:45.258Z|54899" project="{'name':'CardSurvivor','graphAutoView':'Graph|2024-05-02T11:53:45.258Z|54899'}" />
+    <meta type="settings" autoview="Graph|2024-05-02T11:53:45.258Z|54899"
+        project="{'name':'CardSurvivor','graphAutoView':'Graph|2024-05-02T11:53:45.258Z|54899'}" />
 
     <script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/peterhry/CircleType@2.3.1/dist/circletype.min.js"></script>
@@ -48,7 +50,7 @@
             </div>
         </div>
         <!-- debug -->
-        <div id="mobile-debug">
+        <div id="mobile-debug" class="hidden">
             <button id="debug-next-wave">next wave</button>
             <button id="debug-end-room">end room</button>
             <button id="debug-next-room">next room</button>
@@ -64,8 +66,7 @@
         <div id="game-overlay-pause">
             <img src="Assets/UI/Gameplay/Pause.png" alt="Pause" />
         </div>
-        <span id="xp-display">
-</span>
+        <span id="xp-display"></span>
         <div id="card-upgrade-popup" class="overlay hidden">
             <div class="card-upgrade-row">
                 <div id="card-upgrade-popup-wrapper">
@@ -80,25 +81,42 @@
         <h2>Paused</h2>
         <div id="pause-overlay-cards">
         </div>
-        <button id="pause-quit">Quit Run</button>
-        <button id="pause-resume">Resume</button>
+        <div class="pause-overlay-buttons">
+            <button id="pause-quit" class="danger">Quit Run</button>
+            <button id="pause-resume">Resume</button>
+        </div>
     </div>
     <div id="end-confirm" class="overlay hidden">
-        <h2>Are you sure you want to quit?</h2>
-        <h3>All unsaved progress will be lost.</h3>
-        <button id="end-abort">No, Cancel</button>
-        <button id="end-quit">Yes, Quit</button>
+        <h2>Paused</h2>
+        <div>
+            <h3>Are you sure you want to quit?</h3>
+            <p>All unsaved progress will be lost.</p>
+        </div>
+        <div class="pause-overlay-buttons">
+            <button id="end-abort">No, Cancel</button>
+            <button id="end-quit" class="danger">Yes, Quit</button>
+        </div>
     </div>
     <div class="overlay hidden" id="settings-overlay">
         <h2>Settings</h2>
         <button id="settings-menu">Menu</button>
     </div>
     <div class="overlay" id="main-menu-overlay">
-        <h1>Card Survivor</h1>
-        <button id="main-menu-deck">Deck</button>
-        <button id="main-menu-game">Game</button>
+        <div id="main-menu-logo"></div>
+        <div id="main-menu-buttons">
+            <button id="main-menu-deck" class="danger">Deck</button>
+            <button id="main-menu-game">Play</button>
+        </div>
+        <div id="main-menu-robot"></div>
+        <div id="main-menu-language">
+
+        </div>
     </div>
-    <div class="overlay" id="collection-overlay">
+    <div class="overlay hidden" id="game-over-overlay">
+        <h2>Game Over</h2>
+        <button id="game-over-button">Main Menu</button>
+    </div>
+    <div class="overlay hidden" id="collection-overlay">
         <input type="checkbox" name="largeDeck" id="largeDeck" hidden="" />
         <div id="collection-outer-wrapper">
             <div id="collection-controls">
@@ -140,9 +158,11 @@
                     <img class="popup-button" src="Assets/UI/Deck/HandRemove.png" alt="Remove from Selection" id="card-popup-selection-from" />
                 </div> -->
                 <div id="card-popup-deck">
-                    <img class="popup-button" src="Assets/UI/Deck/DeckAdd.png" alt="Add to Deck" id="card-popup-deck-to" />
+                    <img class="popup-button" src="Assets/UI/Deck/DeckAdd.png" alt="Add to Deck"
+                        id="card-popup-deck-to" />
                     <!-- <img class="popup-button" src="Assets/UI/Deck/DeckMoveIn.png" alt="Add to Deck" id="card-popup-deck-to-from" /> -->
-                    <img class="popup-button" src="Assets/UI/Deck/DeckRemove.png" alt="Remove from Deck" id="card-popup-deck-from" />
+                    <img class="popup-button" src="Assets/UI/Deck/DeckRemove.png" alt="Remove from Deck"
+                        id="card-popup-deck-from" />
                 </div>
                 <div id="card-popup-close">
                     <img class="popup-button" src="Assets/UI/Deck/Close.png" alt="Close" />
@@ -161,27 +181,32 @@
             <div class="card-level">
                 <div class="card-level-star" id="card-level-star-1">
                     <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 70 60">
-                        <path d="M35,45l17.634,9.271l-3.368,-19.636l14.266,-13.906l-19.715,-2.864l-8.817,-17.865l-8.817,17.865l-19.715,2.864l14.266,13.906l-3.368,19.636l17.634,-9.271"/>
+                        <path
+                            d="M35,45l17.634,9.271l-3.368,-19.636l14.266,-13.906l-19.715,-2.864l-8.817,-17.865l-8.817,17.865l-19.715,2.864l14.266,13.906l-3.368,19.636l17.634,-9.271" />
                     </svg>
                 </div>
                 <div class="card-level-star" id="card-level-star-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 70 60">
-                        <path d="M35,45l17.634,9.271l-3.368,-19.636l14.266,-13.906l-19.715,-2.864l-8.817,-17.865l-8.817,17.865l-19.715,2.864l14.266,13.906l-3.368,19.636l17.634,-9.271"/>
+                        <path
+                            d="M35,45l17.634,9.271l-3.368,-19.636l14.266,-13.906l-19.715,-2.864l-8.817,-17.865l-8.817,17.865l-19.715,2.864l14.266,13.906l-3.368,19.636l17.634,-9.271" />
                     </svg>
                 </div>
                 <div class="card-level-star" id="card-level-star-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 70 60">
-                        <path d="M35,45l17.634,9.271l-3.368,-19.636l14.266,-13.906l-19.715,-2.864l-8.817,-17.865l-8.817,17.865l-19.715,2.864l14.266,13.906l-3.368,19.636l17.634,-9.271"/>
+                        <path
+                            d="M35,45l17.634,9.271l-3.368,-19.636l14.266,-13.906l-19.715,-2.864l-8.817,-17.865l-8.817,17.865l-19.715,2.864l14.266,13.906l-3.368,19.636l17.634,-9.271" />
                     </svg>
                 </div>
                 <div class="card-level-star" id="card-level-star-4">
                     <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 70 60">
-                        <path d="M35,45l17.634,9.271l-3.368,-19.636l14.266,-13.906l-19.715,-2.864l-8.817,-17.865l-8.817,17.865l-19.715,2.864l14.266,13.906l-3.368,19.636l17.634,-9.271"/>
+                        <path
+                            d="M35,45l17.634,9.271l-3.368,-19.636l14.266,-13.906l-19.715,-2.864l-8.817,-17.865l-8.817,17.865l-19.715,2.864l14.266,13.906l-3.368,19.636l17.634,-9.271" />
                     </svg>
                 </div>
                 <div class="card-level-star" id="card-level-star-5">
                     <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 70 60">
-                        <path d="M35,45l17.634,9.271l-3.368,-19.636l14.266,-13.906l-19.715,-2.864l-8.817,-17.865l-8.817,17.865l-19.715,2.864l14.266,13.906l-3.368,19.636l17.634,-9.271"/>
+                        <path
+                            d="M35,45l17.634,9.271l-3.368,-19.636l14.266,-13.906l-19.715,-2.864l-8.817,-17.865l-8.817,17.865l-19.715,2.864l14.266,13.906l-3.368,19.636l17.634,-9.271" />
                     </svg>
                 </div>
             </div>
@@ -194,4 +219,5 @@
         </div>
     </template>
 </body>
+
 </html>
