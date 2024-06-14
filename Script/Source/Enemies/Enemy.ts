@@ -14,6 +14,7 @@ namespace Script {
         public dropXP: number = 0;
         public size: number = 1;
         public events?: { [name: string]: (_event?: CustomEvent<any>) => void; };
+        public hitboxSize: number;
 
         private enemyManager: EnemyManager;
         private prevDirection: number;
@@ -22,6 +23,7 @@ namespace Script {
         private touchingPlayer: boolean;
         private meleeCooldown: number;
         private modifier: PassiveCardEffectObject = {};
+        private invulnerable: boolean = false;
 
         private stunned: number = 0;
 
@@ -88,6 +90,11 @@ namespace Script {
             this.modifier = _modifier ?? {};
             this.meleeCooldown = Math.random();
             this.rigidbody.mtxPivot.scaling = ƒ.Vector3.ONE(_options.hitboxSize);
+            this.invulnerable = false;
+            this.currentlyActiveAttack = undefined;
+
+            _options.afterSetup?.call(this);
+
         }
 
         private updateDesiredDistance(_distance: [number, number]) {
@@ -113,6 +120,8 @@ namespace Script {
             } else {
                 this.move(diff, mgtSqrd, _frameTimeInSeconds);
             }
+
+            this.meleeAttack(_frameTimeInSeconds);
 
             // if the enemy has special attacks and none are active, choose one
             this.chooseAttack();
@@ -174,11 +183,13 @@ namespace Script {
                     this.node.getComponent(ƒ.ComponentMesh).mtxPivot.rotation = new ƒ.Vector3(0, 180, 0);
                 }
             }
+        }
 
+        private meleeAttack(_frameTimeInSeconds: number) {
             // are we touching the player?
             if (this.touchingPlayer) {
                 this.meleeCooldown -= _frameTimeInSeconds;
-                if(this.meleeCooldown < 0) {
+                if (this.meleeCooldown < 0) {
                     this.meleeCooldown = 1;
                     let character = provider.get(CharacterManager).character;
                     // let mag = ƒ.Vector3.DIFFERENCE(character.node.mtxWorld.translation, this.node.mtxWorld.translation).magnitudeSquared;
@@ -217,6 +228,7 @@ namespace Script {
                 // attack hasn't started yet. should we start it?
                 if (_mgtSqrd > this.currentlyDesiredDistanceSquared[0] && _mgtSqrd < this.currentlyDesiredDistanceSquared[1]) {
                     // start the attack
+                    this.currentlyActiveAttack.attackStart?.call(this);
                     this.currentlyActiveAttack.started = true;
                     this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.attackSprite), true);
                 }
@@ -236,10 +248,10 @@ namespace Script {
                     this.currentlyActiveAttack.cooldown -= _frameTimeInSeconds;
                     if (this.currentlyActiveAttack.cooldown < 0) {
                         // cooldown is up, we're ready to do something else
-                        this.currentlyActiveAttack.attackEnd?.call(this);
-                        this.currentlyActiveAttack = undefined;
                         this.updateDesiredDistance(this.desiredDistance);
                         this.setCentralAnimator(this.moveSprite);
+                        this.currentlyActiveAttack.attackEnd?.call(this);
+                        this.currentlyActiveAttack = undefined;
                     }
                 }
 
@@ -276,6 +288,7 @@ namespace Script {
         }
 
         public hit(_hit: Hit): number {
+            if (this.invulnerable) return _hit.damage;
             this.health -= _hit.damage;
             //display damage numbers
             this.enemyManager.displayDamage(_hit.damage, this.node.mtxWorld.translation);
@@ -309,6 +322,7 @@ namespace Script {
         size?: number;
         events?: { [name: string]: (_event?: CustomEvent) => void; };
         hitboxSize?: number;
+        afterSetup?: () => void;
     }
 
     export interface EnemyAttack {
@@ -319,6 +333,7 @@ namespace Script {
         cooldownSprite?: AnimationSprite | [string, string];
         attack?: () => void;
         movement?: (_diff: ƒ.Vector3, _mgtSqrd: number, _charPosition: ƒ.Vector3, _frameTimeInSeconds: number) => void;
+        attackStart?: () => void;
         attackEnd?: () => void;
         events?: { [name: string]: (_event?: CustomEvent) => void; }
         weight?: number;

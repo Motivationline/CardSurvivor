@@ -2427,5 +2427,105 @@
         }
       }
     }
+  },
+  "Material|2024-06-14T14:57:35.797Z|25097": {
+    "ƒ.Material": {
+      "name": "MixerMove",
+      "idResource": "Material|2024-06-14T14:57:35.797Z|25097",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-06-14T14:58:02.072Z|86185"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-06-14T14:58:02.072Z|86185": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Enemies\\Mixer\\mixer_move.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-06-14T14:58:02.072Z|86185",
+        "name": "Assets\\Enemies\\Mixer\\mixer_move.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-06-14T14:59:02.021Z|41327": {
+    "ƒ.Material": {
+      "name": "MixerIdle",
+      "idResource": "Material|2024-06-14T14:59:02.021Z|41327",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-06-14T14:59:12.503Z|90116"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-06-14T14:59:12.503Z|90116": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Enemies\\Mixer\\mixer_idle.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-06-14T14:59:12.503Z|90116",
+        "name": "Assets\\Enemies\\Mixer\\mixer_idle.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-06-14T14:59:36.377Z|74992": {
+    "ƒ.Material": {
+      "name": "MixerDigDown",
+      "idResource": "Material|2024-06-14T14:59:36.377Z|74992",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-06-14T14:59:47.838Z|55162"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-06-14T14:59:47.838Z|55162": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Enemies\\Mixer\\mixer_digdown.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-06-14T14:59:47.838Z|55162",
+        "name": "Assets\\Enemies\\Mixer\\mixer_digdown.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "TextureImage|2024-06-14T14:59:55.279Z|61397": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Enemies\\Mixer\\mixer_digup.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-06-14T14:59:55.279Z|61397",
+        "name": "Assets\\Enemies\\Mixer\\mixer_digup.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
+  "Material|2024-06-14T15:00:00.818Z|97752": {
+    "ƒ.Material": {
+      "name": "MixerDigUp",
+      "idResource": "Material|2024-06-14T15:00:00.818Z|97752",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-06-14T14:59:55.279Z|61397"
+        }
+      }
+    }
   }
 }

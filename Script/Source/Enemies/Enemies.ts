@@ -108,7 +108,7 @@ namespace Script {
                         this.speed *= 4.5; // how much faster than "normal" speed should it be? ALSO CHANGE BELOW
                         this.meleeCooldown = 0;
                     },
-                    attackEnd: function() {
+                    attackEnd: function () {
                         this.directionOverride = undefined;
                         this.speed /= 4.5; // change here
                     }
@@ -125,20 +125,54 @@ namespace Script {
         },
         mixer: {
             moveSprite: ["mixer", "move"],
-            damage: 30,
-            desiredDistance: [2, 3],
+            damage: 20,
+            desiredDistance: [0, Infinity],
             health: 25,
             speed: 1.5,
             dropXP: 5,
+            hitboxSize: 0.5,
+            afterSetup: function () {
+                this.rigidbody.mtxPivot.scaling = ƒ.Vector3.ZERO;
+                this.invulnerable = true;
+                this.meleeCooldown = Infinity;
+            },
             attacks: [
                 {
-                    cooldown: 4,
-                    requiredDistance: [0, 0],
-                    attackSprite: ["mixer", "digup"],
-                    cooldownSprite: ["mixer", "idle"],
+                    cooldown: Infinity, // controlled by animations
+                    requiredDistance: [0.8, 1.2],
+                    cooldownSprite: ["mixer", "digup"],
                     windUp: 2,
-                    movement: () => { },
-                }
+                    movement: function (_diff: ƒ.Vector3, _mgtSqrd: number, _charPosition: ƒ.Vector3, _frameTimeInSeconds: number) {
+                        if (this.currentlyActiveAttack.windUp < 0) return;
+                        this.move(_diff, _mgtSqrd, _frameTimeInSeconds);
+                    },
+                    attackStart: function () {
+                        // hide
+                        this.node.getComponent(ƒ.ComponentMesh).activate(false);
+                        this.updateDesiredDistance([0, 0]);
+                        // hide shadow
+                        // this.node.getChild(0).activate(false);
+                    },
+                    attack: function () {
+                        this.node.getComponent(ƒ.ComponentMesh).activate(true);
+                        // this.node.getChild(0).activate(true);
+                        this.invulnerable = false;
+                        this.meleeCooldown = 0;
+                    },
+                    events: {
+                        "digup-complete": function (_event) {
+                            this.meleeCooldown = Infinity;
+                            this.setCentralAnimator(this.getSprite(["mixer", "idle"]), true);
+                        },
+                        "idle-complete": function (_event) {
+                            this.setCentralAnimator(this.getSprite(["mixer", "digdown"]), true);
+                        },
+                        "digdown-complete": function (_event) {
+                            this.invulnerable = true;
+                            this.currentlyActiveAttack.cooldown = -1;
+                        },
+                    }
+                },
             ]
         },
 

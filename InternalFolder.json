@@ -141,6 +141,9 @@
                     "idResource": "TextureImage|2024-05-07T11:00:27.121Z|90311"
                   },
                   {
+                    "idResource": "TextureImage|2024-06-14T14:58:02.072Z|86185"
+                  },
+                  {
                     "idResource": "TextureImage|2024-05-07T11:33:51.821Z|89717"
                   },
                   {
@@ -162,6 +165,9 @@
                     "idResource": "Material|2024-05-07T11:00:09.290Z|11123"
                   },
                   {
+                    "idResource": "Material|2024-06-14T14:57:35.797Z|25097"
+                  },
+                  {
                     "idResource": "Material|2024-05-07T11:33:30.222Z|47475"
                   },
                   {
@@ -173,7 +179,19 @@
                 "name": "attack",
                 "entries": [
                   {
+                    "idResource": "TextureImage|2024-06-14T14:59:47.838Z|55162"
+                  },
+                  {
+                    "idResource": "TextureImage|2024-06-14T14:59:55.279Z|61397"
+                  },
+                  {
                     "idResource": "TextureImage|2024-05-06T07:01:14.843Z|93785"
+                  },
+                  {
+                    "idResource": "Material|2024-06-14T14:59:36.377Z|74992"
+                  },
+                  {
+                    "idResource": "Material|2024-06-14T15:00:00.818Z|97752"
                   },
                   {
                     "idResource": "Material|2024-05-06T13:30:28.224Z|93961"
@@ -184,7 +202,13 @@
                 "name": "idle",
                 "entries": [
                   {
+                    "idResource": "TextureImage|2024-06-14T14:59:12.503Z|90116"
+                  },
+                  {
                     "idResource": "TextureImage|2024-05-07T11:00:57.395Z|51320"
+                  },
+                  {
+                    "idResource": "Material|2024-06-14T14:59:02.021Z|41327"
                   },
                   {
                     "idResource": "Material|2024-05-07T11:00:47.573Z|73175"

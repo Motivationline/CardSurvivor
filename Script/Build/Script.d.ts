@@ -421,6 +421,45 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    interface iCardCollection {
+        [id: string]: {
+            lvl: number;
+            amount: number;
+        };
+    }
+    class CardCollection {
+        private collection;
+        private deck;
+        private maxDeckSize;
+        private maxSelectedSize;
+        private deckElement;
+        private collectionElement;
+        private popupElement;
+        private popupButtons;
+        private deckSelectionSizeElement;
+        private selectedCard;
+        private cardVisuals;
+        constructor(provider: Provider);
+        setup(): void;
+        private openPopup;
+        addCardToCollection(_name: string, _amount: number): void;
+        getCardLevel(_name: string): number;
+        addCardToDeck(_name: string): void;
+        removeCardFromDeck(_name: string, _updateVisuals?: boolean): void;
+        private hidePopup;
+        private removeFromArray;
+        private addToArray;
+        private installListeners;
+        private popupClickListener;
+        private updateVisuals;
+        private putCardsInDeck;
+        fillWithPlaceholders(_array: HTMLElement[], _maxAmount: number): void;
+        private getCardPlaceholder;
+        private compareRarity;
+        private getRarityNumber;
+    }
+}
+declare namespace Script {
     class CardVisual {
         #private;
         static template: HTMLTemplateElement;
@@ -501,6 +540,7 @@ declare namespace Script {
         events?: {
             [name: string]: (_event?: CustomEvent<any>) => void;
         };
+        hitboxSize: number;
         private enemyManager;
         private prevDirection;
         private currentlyActiveAttack;
@@ -508,6 +548,7 @@ declare namespace Script {
         private touchingPlayer;
         private meleeCooldown;
         private modifier;
+        private invulnerable;
         private stunned;
         private static defaults;
         constructor();
@@ -517,6 +558,7 @@ declare namespace Script {
         update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
         stun(_time: number): void;
         private move;
+        private meleeAttack;
         private chooseAttack;
         private executeAttack;
         protected setCentralAnimator(_as: AnimationSprite, _unique?: boolean): void;
@@ -540,6 +582,7 @@ declare namespace Script {
             [name: string]: (_event?: CustomEvent) => void;
         };
         hitboxSize?: number;
+        afterSetup?: () => void;
     }
     interface EnemyAttack {
         requiredDistance: [number, number];
@@ -549,6 +592,7 @@ declare namespace Script {
         cooldownSprite?: AnimationSprite | [string, string];
         attack?: () => void;
         movement?: (_diff: ƒ.Vector3, _mgtSqrd: number, _charPosition: ƒ.Vector3, _frameTimeInSeconds: number) => void;
+        attackStart?: () => void;
         attackEnd?: () => void;
         events?: {
             [name: string]: (_event?: CustomEvent) => void;
@@ -677,6 +721,27 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    enum MenuType {
+        NONE = 0,
+        MAIN = 1,
+        COLLECTION = 2,
+        SETTINGS = 3,
+        PAUSE = 4,
+        CARD_UPGRADE = 5,
+        END_CONFIRM = 6,
+        GAME_OVER = 7
+    }
+    class MenuManager {
+        private menus;
+        private prevGameState;
+        setup(): void;
+        openMenu(_menu: MenuType): void;
+        private startGame;
+        openPauseMenu(): void;
+        private openPauseCardPopup;
+    }
+}
+declare namespace Script {
     class ProjectileManager {
         private readonly provider;
         private characterManager;
@@ -699,65 +764,5 @@ declare namespace Script {
         createAOE(_options: Partial<AreaOfEffect>, _position: ƒ.Vector3, _modifiers: PassiveCardEffectObject, _parent?: ƒ.Node): Promise<void>;
         createHitZone(_position: ƒ.Vector3, _size?: number, _parent?: ƒ.Node): Promise<HitZoneGraphInstance>;
         cleanup(): void;
-    }
-}
-declare namespace Script {
-    interface iCardCollection {
-        [id: string]: {
-            lvl: number;
-            amount: number;
-        };
-    }
-    class CardCollection {
-        private collection;
-        private deck;
-        private maxDeckSize;
-        private maxSelectedSize;
-        private deckElement;
-        private collectionElement;
-        private popupElement;
-        private popupButtons;
-        private deckSelectionSizeElement;
-        private selectedCard;
-        private cardVisuals;
-        constructor(provider: Provider);
-        setup(): void;
-        private openPopup;
-        addCardToCollection(_name: string, _amount: number): void;
-        getCardLevel(_name: string): number;
-        addCardToDeck(_name: string): void;
-        removeCardFromDeck(_name: string, _updateVisuals?: boolean): void;
-        private hidePopup;
-        private removeFromArray;
-        private addToArray;
-        private installListeners;
-        private popupClickListener;
-        private updateVisuals;
-        private putCardsInDeck;
-        fillWithPlaceholders(_array: HTMLElement[], _maxAmount: number): void;
-        private getCardPlaceholder;
-        private compareRarity;
-        private getRarityNumber;
-    }
-}
-declare namespace Script {
-    enum MenuType {
-        NONE = 0,
-        MAIN = 1,
-        COLLECTION = 2,
-        SETTINGS = 3,
-        PAUSE = 4,
-        CARD_UPGRADE = 5,
-        END_CONFIRM = 6,
-        GAME_OVER = 7
-    }
-    class MenuManager {
-        private menus;
-        private prevGameState;
-        setup(): void;
-        openMenu(_menu: MenuType): void;
-        private startGame;
-        openPauseMenu(): void;
-        private openPauseCardPopup;
     }
 }

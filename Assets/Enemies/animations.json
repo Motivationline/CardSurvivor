@@ -183,7 +183,7 @@
         "totalHeight": 1280,
         "totalWidth": 1280,
         "wrapAfter": 5,
-        "materialString": "Material|2024-05-16T13:17:56.829Z|14508"
+        "materialString": "Material|2024-06-14T14:57:35.797Z|25097"
       },
       "digup": {
         "fps": 24,
@@ -193,11 +193,27 @@
         "totalHeight": 1024,
         "totalWidth": 1024,
         "wrapAfter": 4,
-        "materialString": "Material|2024-05-06T13:30:28.224Z|93961",
+        "materialString": "Material|2024-06-14T15:00:00.818Z|97752",
         "events": [
           {
-            "frame": 6,
-            "event": "fire"
+            "frame": 11,
+            "event": "digup-complete"
+          }
+        ]
+      },
+      "digdown": {
+        "fps": 24,
+        "frames": 65,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 2304,
+        "totalWidth": 2304,
+        "wrapAfter": 9,
+        "materialString": "Material|2024-06-14T14:59:36.377Z|74992",
+        "events": [
+          {
+            "frame": 64,
+            "event": "digdown-complete"
           }
         ]
       },
@@ -209,7 +225,13 @@
         "totalHeight": 1280,
         "totalWidth": 1280,
         "wrapAfter": 5,
-        "materialString": "Material|2024-05-07T11:00:47.573Z|73175"
+        "materialString": "Material|2024-06-14T14:59:02.021Z|41327",
+        "events": [
+          {
+            "frame": 23,
+            "event": "idle-complete"
+          }
+        ]
       }
     }
   },
