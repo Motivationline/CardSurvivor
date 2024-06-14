@@ -549,6 +549,7 @@ declare namespace Script {
         cooldownSprite?: AnimationSprite | [string, string];
         attack?: () => void;
         movement?: (_diff: ƒ.Vector3, _mgtSqrd: number, _charPosition: ƒ.Vector3, _frameTimeInSeconds: number) => void;
+        attackEnd?: () => void;
         events?: {
             [name: string]: (_event?: CustomEvent) => void;
         };
