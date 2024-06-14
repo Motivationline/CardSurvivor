@@ -92,11 +92,13 @@ namespace Script {
             hitboxSize: 0.6,
             attacks: [
                 {
-                    cooldown: 0.8, // how long it dashes
+                    cooldown: 0.8, // how long it dashes, including delay
                     requiredDistance: [1.5, 2.5],
                     windUp: 2, // how long it plans its attack
                     movement: function (_diff: ƒ.Vector3, _mgtSqrd: number, _charPosition: ƒ.Vector3, _frameTimeInSeconds: number) {
+                        let dashDuration: number = 0.8 // how long it should be dashing.
                         if (this.currentlyActiveAttack.windUp > 0) return;
+                        if (this.currentlyActiveAttack.cooldown > dashDuration) return;
                         this.move(_diff, _mgtSqrd, _frameTimeInSeconds);
                     },
                     attack: function () {
