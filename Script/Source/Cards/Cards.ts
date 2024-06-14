@@ -6,6 +6,7 @@ namespace Script {
             image: "Hammer.png",
             rarity: CardRarity.COMMON,
             name: "Hammer",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -88,6 +89,7 @@ namespace Script {
             image: "Anvil.png",
             rarity: CardRarity.COMMON,
             name: "Anvil",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -165,6 +167,7 @@ namespace Script {
             image: "Pen.png",
             rarity: CardRarity.COMMON,
             name: "Pen",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -237,6 +240,7 @@ namespace Script {
             image: "Bulb.png",
             rarity: CardRarity.COMMON,
             name: "Lightbulb",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -318,6 +322,7 @@ namespace Script {
             image: "SmokeMask.png",
             rarity: CardRarity.COMMON,
             name: "Smoke Mask",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -393,6 +398,7 @@ namespace Script {
             image: "Discus.png",
             rarity: CardRarity.COMMON,
             name: "Discus",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -481,6 +487,7 @@ namespace Script {
             image: "CodeCivil.png",
             rarity: CardRarity.COMMON,
             name: "Code Civil",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -562,6 +569,7 @@ namespace Script {
             image: "Divider.png",
             rarity: CardRarity.COMMON,
             name: "Divider",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -650,6 +658,7 @@ namespace Script {
             image: "Needles.png",
             rarity: CardRarity.COMMON,
             name: "Needles",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -732,6 +741,7 @@ namespace Script {
             image: "Chisel.png",
             rarity: CardRarity.COMMON,
             name: "Chisel",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -809,6 +819,7 @@ namespace Script {
             image: "Helmet.png",
             rarity: CardRarity.COMMON,
             name: "Helmet",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -851,6 +862,7 @@ namespace Script {
             image: "SafetyBoots.png",
             rarity: CardRarity.COMMON,
             name: "Safety Boots",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -893,6 +905,7 @@ namespace Script {
             image: "Microphone.png",
             rarity: CardRarity.COMMON,
             name: "Microphone",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -935,6 +948,7 @@ namespace Script {
             image: "Gavel.png",
             rarity: CardRarity.COMMON,
             name: "Gavel",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -977,6 +991,7 @@ namespace Script {
             image: "FirstAidKit.png",
             rarity: CardRarity.COMMON,
             name: "First Aid Kit",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -1019,6 +1034,7 @@ namespace Script {
             image: "RunningShoes.png",
             rarity: CardRarity.COMMON,
             name: "Running Shoes",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -1061,6 +1077,7 @@ namespace Script {
             image: "DisposableGloves.png",
             rarity: CardRarity.COMMON,
             name: "Disposable Gloves",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -1103,6 +1120,7 @@ namespace Script {
             image: "Printer.png",
             rarity: CardRarity.COMMON,
             name: "Printer",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -1912,6 +1930,7 @@ namespace Script {
             image: "TatooInk.png",
             rarity: CardRarity.RARE,
             name: "Tattoo Ink",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -1954,6 +1973,7 @@ namespace Script {
             image: "Calculator.png",
             rarity: CardRarity.RARE,
             name: "Calculator",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -1996,6 +2016,7 @@ namespace Script {
             image: "Bandages.png",
             rarity: CardRarity.RARE,
             name: "Bandages",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -2370,6 +2391,7 @@ namespace Script {
             image: "PiercingGun.png",
             rarity: CardRarity.EPIC,
             name: "Piercing Gun",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -2842,6 +2864,7 @@ namespace Script {
             image: "Training.gif",
             rarity: CardRarity.LEGENDARY,
             name: "Training",
+            unlockByDefault: true,
             levels: [
                 { //Tier 5
                     passiveEffects: {

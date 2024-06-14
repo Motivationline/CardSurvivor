@@ -1663,6 +1663,7 @@ var Script;
             image: "Hammer.png",
             rarity: Script.CardRarity.COMMON,
             name: "Hammer",
+            unlockByDefault: true,
             levels: [
                 {
                     activeEffects: [{
@@ -1673,7 +1674,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 0, //8 Base Damage
+                                    damage: 0,
                                     projectilePiercing: 2
                                 }
                             }
@@ -1688,7 +1689,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 4, //8 Base Damage
+                                    damage: 4,
                                     projectilePiercing: 2
                                 }
                             }
@@ -1703,7 +1704,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 4, //8 Base Damage
+                                    damage: 4,
                                     projectilePiercing: 2
                                 }
                             }
@@ -1718,7 +1719,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 7, //8 Base Damage
+                                    damage: 7,
                                     projectilePiercing: 3
                                 }
                             }
@@ -1733,7 +1734,7 @@ var Script;
                             currentCooldown: 0.75,
                             modifiers: {
                                 absolute: {
-                                    damage: 7, //8 Base Damage
+                                    damage: 7,
                                     projectilePiercing: 4
                                 }
                             }
@@ -1745,6 +1746,7 @@ var Script;
             image: "Anvil.png",
             rarity: Script.CardRarity.COMMON,
             name: "Anvil",
+            unlockByDefault: true,
             levels: [
                 {
                     activeEffects: [{
@@ -1822,6 +1824,7 @@ var Script;
             image: "Pen.png",
             rarity: Script.CardRarity.COMMON,
             name: "Pen",
+            unlockByDefault: true,
             levels: [
                 {
                     activeEffects: [{
@@ -1894,6 +1897,7 @@ var Script;
             image: "Bulb.png",
             rarity: Script.CardRarity.COMMON,
             name: "Lightbulb",
+            unlockByDefault: true,
             levels: [
                 {
                     activeEffects: [{
@@ -1903,7 +1907,7 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 0, //5 Base Damage
+                                    damage: 0,
                                     effectDuration: 0 //1 Base Duration
                                 }
                             }
@@ -1917,8 +1921,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 1, //5 Base Damage
-                                    effectDuration: 0, //1 Base Duration
+                                    damage: 1,
+                                    effectDuration: 0,
                                     projectileSize: 1.1
                                 }
                             }
@@ -1932,8 +1936,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 1, //5 Base Damage
-                                    effectDuration: 0.5, //1 Base Duration
+                                    damage: 1,
+                                    effectDuration: 0.5,
                                     projectileSize: 1.3
                                 }
                             }
@@ -1947,8 +1951,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 1, //5 Base Damage
-                                    effectDuration: 0.5, //1 Base Duration
+                                    damage: 1,
+                                    effectDuration: 0.5,
                                     projectileSize: 1.5
                                 }
                             }
@@ -1962,8 +1966,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 3, //5 Base Damage
-                                    effectDuration: 1, //1 Base Duration
+                                    damage: 3,
+                                    effectDuration: 1,
                                     projectileSize: 2
                                 }
                             }
@@ -1975,6 +1979,7 @@ var Script;
             image: "SmokeMask.png",
             rarity: Script.CardRarity.COMMON,
             name: "Smoke Mask",
+            unlockByDefault: true,
             levels: [
                 {
                     activeEffects: [{
@@ -2050,6 +2055,7 @@ var Script;
             image: "Discus.png",
             rarity: Script.CardRarity.COMMON,
             name: "Discus",
+            unlockByDefault: true,
             levels: [
                 {
                     activeEffects: [{
@@ -2060,7 +2066,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 0, //5 Base Damage
+                                    damage: 0,
                                     projectilePiercing: 1
                                 }
                             }
@@ -2075,7 +2081,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 3, //5 Base Damage
+                                    damage: 3,
                                     projectilePiercing: 1
                                 }
                             }
@@ -2090,7 +2096,7 @@ var Script;
                             currentCooldown: 0.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 3, //5 Base Damage
+                                    damage: 3,
                                     projectilePiercing: 1
                                 }
                             }
@@ -2105,7 +2111,7 @@ var Script;
                             currentCooldown: 0.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 5, //5 Base Damage
+                                    damage: 5,
                                     projectilePiercing: 2
                                 },
                                 multiplier: {
@@ -2123,7 +2129,7 @@ var Script;
                             currentCooldown: 0.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 5, //5 Base Damage
+                                    damage: 5,
                                     projectilePiercing: 3,
                                 },
                                 multiplier: {
@@ -2138,6 +2144,7 @@ var Script;
             image: "CodeCivil.png",
             rarity: Script.CardRarity.COMMON,
             name: "Code Civil",
+            unlockByDefault: true,
             levels: [
                 {
                     activeEffects: [{
@@ -2162,7 +2169,7 @@ var Script;
                             currentCooldown: 1.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 1, //3 Base Damage (x10 for max distance)
+                                    damage: 1,
                                     projectileRange: 2,
                                 }
                             }
@@ -2177,7 +2184,7 @@ var Script;
                             currentCooldown: 1.25,
                             modifiers: {
                                 absolute: {
-                                    damage: 2, //3 Base Damage (x10 for max distance)
+                                    damage: 2,
                                     projectileRange: 4,
                                 }
                             }
@@ -2192,7 +2199,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 3, //3 Base Damage (x10 for max distance)
+                                    damage: 3,
                                     projectileRange: 6,
                                 }
                             }
@@ -2207,7 +2214,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 5, //3 Base Damage (x10 for max distance)
+                                    damage: 5,
                                     projectileRange: 10,
                                 }
                             }
@@ -2219,6 +2226,7 @@ var Script;
             image: "Divider.png",
             rarity: Script.CardRarity.COMMON,
             name: "Divider",
+            unlockByDefault: true,
             levels: [
                 {
                     activeEffects: [{
@@ -2229,7 +2237,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 0, //5 Base Damage
+                                    damage: 0,
                                     projectilePiercing: 3
                                 }
                             }
@@ -2244,7 +2252,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 2, //5 Base Damage
+                                    damage: 2,
                                     projectilePiercing: 3
                                 }
                             }
@@ -2259,7 +2267,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 2, //5 Base Damage
+                                    damage: 2,
                                     projectilePiercing: 3
                                 }
                             }
@@ -2274,7 +2282,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 3, //5 Base Damage
+                                    damage: 3,
                                     projectilePiercing: 4
                                 },
                                 multiplier: {
@@ -2292,7 +2300,7 @@ var Script;
                             currentCooldown: 0.75,
                             modifiers: {
                                 absolute: {
-                                    damage: 5, //5 Base Damage
+                                    damage: 5,
                                     projectilePiercing: 6
                                 },
                                 multiplier: {
@@ -2307,13 +2315,14 @@ var Script;
             image: "Needles.png",
             rarity: Script.CardRarity.COMMON,
             name: "Needles",
+            unlockByDefault: true,
             levels: [
                 {
                     activeEffects: [{
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 4, //TODO: Leave a projectile every 5 units moved
+                            cooldown: 4,
                             currentCooldown: 2,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2328,7 +2337,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 3.5, //TODO: Leave a projectile every 4 units moved
+                            cooldown: 3.5,
                             currentCooldown: 1.75,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2343,7 +2352,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 3, //TODO: Leave a projectile every 4 units moved
+                            cooldown: 3,
                             currentCooldown: 1.5,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2358,7 +2367,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 2, //TODO: Leave a projectile every 3 units moved
+                            cooldown: 2,
                             currentCooldown: 1,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2373,7 +2382,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 1, //TODO: Leave a projectile every 2 units moved
+                            cooldown: 1,
                             currentCooldown: 0.5,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2389,6 +2398,7 @@ var Script;
             image: "Chisel.png",
             rarity: Script.CardRarity.COMMON,
             name: "Chisel",
+            unlockByDefault: true,
             levels: [
                 {
                     activeEffects: [{
@@ -2466,6 +2476,7 @@ var Script;
             image: "Helmet.png",
             rarity: Script.CardRarity.COMMON,
             name: "Helmet",
+            unlockByDefault: true,
             levels: [
                 {
                     passiveEffects: {
@@ -2508,6 +2519,7 @@ var Script;
             image: "SafetyBoots.png",
             rarity: Script.CardRarity.COMMON,
             name: "Safety Boots",
+            unlockByDefault: true,
             levels: [
                 {
                     passiveEffects: {
@@ -2550,6 +2562,7 @@ var Script;
             image: "Microphone.png",
             rarity: Script.CardRarity.COMMON,
             name: "Microphone",
+            unlockByDefault: true,
             levels: [
                 {
                     passiveEffects: {
@@ -2592,6 +2605,7 @@ var Script;
             image: "Gavel.png",
             rarity: Script.CardRarity.COMMON,
             name: "Gavel",
+            unlockByDefault: true,
             levels: [
                 {
                     passiveEffects: {
@@ -2634,6 +2648,7 @@ var Script;
             image: "FirstAidKit.png",
             rarity: Script.CardRarity.COMMON,
             name: "First Aid Kit",
+            unlockByDefault: true,
             levels: [
                 {
                     passiveEffects: {
@@ -2676,6 +2691,7 @@ var Script;
             image: "RunningShoes.png",
             rarity: Script.CardRarity.COMMON,
             name: "Running Shoes",
+            unlockByDefault: true,
             levels: [
                 {
                     passiveEffects: {
@@ -2718,6 +2734,7 @@ var Script;
             image: "DisposableGloves.png",
             rarity: Script.CardRarity.COMMON,
             name: "Disposable Gloves",
+            unlockByDefault: true,
             levels: [
                 {
                     passiveEffects: {
@@ -2760,6 +2777,7 @@ var Script;
             image: "Printer.png",
             rarity: Script.CardRarity.COMMON,
             name: "Printer",
+            unlockByDefault: true,
             levels: [
                 {
                     passiveEffects: {
@@ -3569,6 +3587,7 @@ var Script;
             image: "TatooInk.png",
             rarity: Script.CardRarity.RARE,
             name: "Tattoo Ink",
+            unlockByDefault: true,
             levels: [
                 {
                     passiveEffects: {
@@ -3611,6 +3630,7 @@ var Script;
             image: "Calculator.png",
             rarity: Script.CardRarity.RARE,
             name: "Calculator",
+            unlockByDefault: true,
             levels: [
                 {
                     passiveEffects: {
@@ -3653,6 +3673,7 @@ var Script;
             image: "Bandages.png",
             rarity: Script.CardRarity.RARE,
             name: "Bandages",
+            unlockByDefault: true,
             levels: [
                 {
                     passiveEffects: {
@@ -4027,6 +4048,7 @@ var Script;
             image: "PiercingGun.png",
             rarity: Script.CardRarity.EPIC,
             name: "Piercing Gun",
+            unlockByDefault: true,
             levels: [
                 {
                     passiveEffects: {
@@ -4499,6 +4521,7 @@ var Script;
             image: "Training.gif",
             rarity: Script.CardRarity.LEGENDARY,
             name: "Training",
+            unlockByDefault: true,
             levels: [
                 {
                     passiveEffects: {
@@ -5525,12 +5548,12 @@ var Script;
     };
     const pools = {
         "electronics": [
-            ["microwave", "chair"], // --0
-            ["toaster", "closet"], // --1
-            ["motor"], // --2
-            ["ventilator"], // --3
-            ["chair"], //mixer --4
-            ["toaster"], // --5
+            ["microwave", "chair"],
+            ["toaster", "closet"],
+            ["motor"],
+            ["ventilator"],
+            ["chair"],
+            ["toaster"],
             ["closet"] // --6
         ]
     };
