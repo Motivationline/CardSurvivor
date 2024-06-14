@@ -145,19 +145,14 @@ namespace Script {
                         damage: 10,
                         speed: 5,
                         size: 1,
-
                     }
                     let pm = provider.get(ProjectileManager);
+                    this.stepAmount = isNaN(this.stepAmount) ? 0 : this.stepAmount + 1;
                     for (let i = 0; i < projectileAmount; i++) {
+                        let angle = i * radiusBetweenProjectiles + startRadius + (this.stepAmount % 2) * 0.5 * radiusBetweenProjectiles;
+                        let direction = new ƒ.Vector3(Math.cos(angle), Math.sin(angle));
                         pm.createProjectile({
-                            ...projectiles["flatToast"], ...modification, ...{
-                                methods: {
-                                    afterSetup: function () {
-                                        let angle = i * radiusBetweenProjectiles + startRadius;
-                                        this.direction = new ƒ.Vector3(Math.cos(angle), Math.sin(angle));
-                                    }
-                                }
-                            }
+                            ...projectiles["flatToast"], ...modification, ...{ direction }
                         }, this.node.mtxWorld.translation, this.modifier);
                     }
                 }
@@ -190,7 +185,7 @@ namespace Script {
                                         this.node.mtxWorld.translation,
                                         ƒ.Vector3.Y(0.3)
                                     ),
-                                    {...this.modifier, ...{multiplier: {projectileSize: 2}}},
+                                    { ...this.modifier, ...{ multiplier: { projectileSize: 2 } } },
                                 );
                             }
                         }

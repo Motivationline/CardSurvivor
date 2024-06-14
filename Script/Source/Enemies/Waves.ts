@@ -13,7 +13,7 @@ namespace Script {
 
     export const pools: Pools = {
         "electronics": [
-            ["microwave", "chair"], // --0
+            ["microwave"], // --0
             ["toaster", "closet"], // --1
             ["motor"], // --2
             ["ventilator"], // --3
@@ -26,6 +26,17 @@ namespace Script {
     export const rooms: Rooms = {
         "electronics": [
             // room 1
+            {
+                duration: 60,
+                boss: true,
+                canStopAfter: true,
+                defaultWave: {
+                    amount: 1,
+                    duration: 60,
+                    enemies: ["toasterBoss"],
+                },
+                waveAmount: 1
+            },
             {
                 duration: 20,
                 defaultWave: {
