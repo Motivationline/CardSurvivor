@@ -554,7 +554,7 @@ var Script;
     }
     function start(_event) {
         Script.viewport = _event.detail;
-        Script.viewport.physicsDebugMode = Script.ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
+        // viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
         // ƒ.Time.game.setScale(0.1);
         Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         Script.ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
@@ -4672,7 +4672,10 @@ var Script;
             this.updateHealthVisually();
             if (this.health > 0)
                 return _hit.damage;
-            // TODO: Game Over
+            // Game Over
+            Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.GAME_OVER);
+            Script.gameState = Script.GAMESTATE.PAUSED;
+            ƒ.Time.game.setScale(0);
             return 0;
         }
         updateMaxHealth() {
@@ -6040,6 +6043,9 @@ var Script;
         get activeCards() {
             return this.currentlyActiveCards;
         }
+        get maxActiveCardAmount() {
+            return this.currentMaxActiveCardAmount;
+        }
         update = () => {
             if (Script.gameState !== Script.GAMESTATE.PLAYING)
                 return;
@@ -6666,6 +6672,7 @@ var Script;
         MenuType[MenuType["PAUSE"] = 4] = "PAUSE";
         MenuType[MenuType["CARD_UPGRADE"] = 5] = "CARD_UPGRADE";
         MenuType[MenuType["END_CONFIRM"] = 6] = "END_CONFIRM";
+        MenuType[MenuType["GAME_OVER"] = 7] = "GAME_OVER";
     })(MenuType = Script.MenuType || (Script.MenuType = {}));
     class MenuManager {
         menus = new Map();
@@ -6678,6 +6685,7 @@ var Script;
             this.menus.set(MenuType.PAUSE, document.getElementById("pause-overlay"));
             this.menus.set(MenuType.CARD_UPGRADE, document.getElementById("card-upgrade-popup"));
             this.menus.set(MenuType.END_CONFIRM, document.getElementById("end-confirm"));
+            this.menus.set(MenuType.GAME_OVER, document.getElementById("game-over-overlay"));
             main.querySelector("#main-menu-deck").addEventListener("click", () => { this.openMenu(MenuType.COLLECTION); });
             main.querySelector("#main-menu-game").addEventListener("click", () => {
                 this.startGame();
@@ -6692,6 +6700,7 @@ var Script;
             });
             document.getElementById("pause-quit").addEventListener("click", () => { this.openMenu(MenuType.END_CONFIRM); });
             document.getElementById("end-abort").addEventListener("click", () => { this.openPauseMenu(); });
+            document.getElementById("game-over-button").addEventListener("click", () => { this.openMenu(MenuType.MAIN); });
             document.getElementById("end-quit").addEventListener("click", () => {
                 this.openMenu(MenuType.MAIN);
                 //TODO handle game abort.
@@ -6734,6 +6743,7 @@ var Script;
                 cardsForPauseMenu.push(cv.htmlElement);
                 cv.htmlElement.addEventListener("click", this.openPauseCardPopup);
             }
+            Script.provider.get(Script.CardCollection).fillWithPlaceholders(cardsForPauseMenu, cm.maxActiveCardAmount);
             element.replaceChildren(...cardsForPauseMenu);
         }
         openPauseCardPopup = (_event) => {

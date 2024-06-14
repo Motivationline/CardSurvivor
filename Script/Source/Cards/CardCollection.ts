@@ -265,7 +265,7 @@ namespace Script {
             _parent.replaceChildren(...cards);
         }
 
-        private fillWithPlaceholders(_array: HTMLElement[], _maxAmount: number) {
+        public fillWithPlaceholders(_array: HTMLElement[], _maxAmount: number) {
             for (let i = _array.length; i < _maxAmount; i++) {
                 _array.push(this.getCardPlaceholder());
             }

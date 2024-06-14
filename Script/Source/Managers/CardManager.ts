@@ -15,6 +15,10 @@ namespace Script {
             return this.currentlyActiveCards;
         }
 
+        get maxActiveCardAmount() {
+            return this.currentMaxActiveCardAmount;
+        }
+
         private update = () => {
             if (gameState !== GAMESTATE.PLAYING) return;
             let time: number = ƒ.Loop.timeFrameGame / 1000;

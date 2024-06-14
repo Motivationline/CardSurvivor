@@ -104,7 +104,10 @@ namespace Script {
             this.updateHealthVisually();
             if (this.health > 0) return _hit.damage;
 
-            // TODO: Game Over
+            // Game Over
+            provider.get(MenuManager).openMenu(MenuType.GAME_OVER);
+            gameState = GAMESTATE.PAUSED;
+            ƒ.Time.game.setScale(0);
             return 0;
         }
 

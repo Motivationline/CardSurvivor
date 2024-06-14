@@ -7,6 +7,7 @@ namespace Script {
         PAUSE,
         CARD_UPGRADE,
         END_CONFIRM,
+        GAME_OVER,
     }
     export class MenuManager {
         private menus: Map<MenuType, HTMLElement> = new Map();
@@ -20,6 +21,7 @@ namespace Script {
             this.menus.set(MenuType.PAUSE, document.getElementById("pause-overlay"));
             this.menus.set(MenuType.CARD_UPGRADE, document.getElementById("card-upgrade-popup"));
             this.menus.set(MenuType.END_CONFIRM, document.getElementById("end-confirm"));
+            this.menus.set(MenuType.GAME_OVER, document.getElementById("game-over-overlay"));
 
             main.querySelector("#main-menu-deck").addEventListener("click", () => { this.openMenu(MenuType.COLLECTION) });
             main.querySelector("#main-menu-game").addEventListener("click", () => {
@@ -36,6 +38,7 @@ namespace Script {
             });
             document.getElementById("pause-quit").addEventListener("click", () => { this.openMenu(MenuType.END_CONFIRM) });
             document.getElementById("end-abort").addEventListener("click", () => { this.openPauseMenu() });
+            document.getElementById("game-over-button").addEventListener("click", () => { this.openMenu(MenuType.MAIN) });
             document.getElementById("end-quit").addEventListener("click", () => {
                 this.openMenu(MenuType.MAIN);
                 //TODO handle game abort.
@@ -83,6 +86,7 @@ namespace Script {
                 cardsForPauseMenu.push(cv.htmlElement);
                 cv.htmlElement.addEventListener("click", this.openPauseCardPopup);
             }
+            provider.get(CardCollection).fillWithPlaceholders(cardsForPauseMenu, cm.maxActiveCardAmount);
             element.replaceChildren(...cardsForPauseMenu);
         }
 

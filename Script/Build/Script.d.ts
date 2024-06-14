@@ -452,7 +452,7 @@ declare namespace Script {
         private popupClickListener;
         private updateVisuals;
         private putCardsInDeck;
-        private fillWithPlaceholders;
+        fillWithPlaceholders(_array: HTMLElement[], _maxAmount: number): void;
         private getCardPlaceholder;
         private compareRarity;
         private getRarityNumber;
@@ -634,6 +634,7 @@ declare namespace Script {
         private currentMaxActiveCardAmount;
         constructor();
         get activeCards(): Card[];
+        get maxActiveCardAmount(): number;
         private update;
         getEffectAbsolute(_effect: PassiveCardEffect, _modifier?: PassiveCardEffectObject, _limitation?: string): number;
         getEffectMultiplier(_effect: PassiveCardEffect, _modifier?: PassiveCardEffectObject, _limitation?: string): number;
@@ -719,7 +720,8 @@ declare namespace Script {
         SETTINGS = 3,
         PAUSE = 4,
         CARD_UPGRADE = 5,
-        END_CONFIRM = 6
+        END_CONFIRM = 6,
+        GAME_OVER = 7
     }
     class MenuManager {
         private menus;
