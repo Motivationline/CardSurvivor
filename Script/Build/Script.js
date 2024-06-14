@@ -1094,6 +1094,7 @@ var Script;
             damage: 5,
             speed: 20,
             range: 15,
+            size: 0.5,
             sprite: ["projectile", "discus"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.NONE,
@@ -1125,6 +1126,7 @@ var Script;
             damage: 2,
             speed: 20,
             range: 4,
+            size: 0.5,
             sprite: ["projectile", "pen"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.CLOSEST,
@@ -1134,6 +1136,7 @@ var Script;
             damage: 3,
             speed: 20,
             range: 20,
+            size: 0.5,
             sprite: ["projectile", "codecivil"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.FURTHEST,
@@ -1153,6 +1156,7 @@ var Script;
             damage: 5,
             speed: 10,
             range: 12,
+            size: 0.6,
             sprite: ["projectile", "divider"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.CLOSEST,
@@ -1171,6 +1175,7 @@ var Script;
             damage: 15,
             speed: 15,
             range: 6,
+            size: 0.5,
             sprite: ["projectile", "chisel"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.CLOSEST,
@@ -1215,7 +1220,7 @@ var Script;
         "lightbulbPlayer": {
             variant: "explosion",
             damage: 5,
-            size: 2,
+            size: 3,
             duration: 16 / 24,
             sprite: ["aoe", "lightbulb"],
             stunDuration: 1,
@@ -1229,7 +1234,7 @@ var Script;
         "smokeMaskPlayer": {
             variant: "explosion",
             damage: 2,
-            size: 2,
+            size: 3,
             duration: 30 / 24,
             sprite: ["aoe", "smokemask"],
             target: Script.ProjectileTarget.ENEMY,
@@ -2041,6 +2046,9 @@ var Script;
                             modifiers: {
                                 absolute: {
                                     damage: 2 //2 Base Damage
+                                },
+                                multiplier: {
+                                    projectileSize: 1.1
                                 }
                             }
                         }]
@@ -2056,7 +2064,7 @@ var Script;
                                     damage: 3, //2 Base Damage
                                 },
                                 multiplier: {
-                                    projectileSize: 1.5
+                                    projectileSize: 1.3
                                 }
                             }
                         }]
@@ -2250,7 +2258,7 @@ var Script;
                             modifiers: {
                                 absolute: {
                                     damage: 0,
-                                    projectilePiercing: 3
+                                    projectilePiercing: 2
                                 }
                             }
                         }]
@@ -2265,7 +2273,7 @@ var Script;
                             modifiers: {
                                 absolute: {
                                     damage: 2,
-                                    projectilePiercing: 3
+                                    projectilePiercing: 2
                                 }
                             }
                         }]
@@ -2280,7 +2288,7 @@ var Script;
                             modifiers: {
                                 absolute: {
                                     damage: 2,
-                                    projectilePiercing: 3
+                                    projectilePiercing: 2
                                 }
                             }
                         }]
@@ -2295,7 +2303,7 @@ var Script;
                             modifiers: {
                                 absolute: {
                                     damage: 3,
-                                    projectilePiercing: 4
+                                    projectilePiercing: 3
                                 },
                                 multiplier: {
                                     projectileRange: 1.1
@@ -2313,7 +2321,7 @@ var Script;
                             modifiers: {
                                 absolute: {
                                     damage: 5,
-                                    projectilePiercing: 6
+                                    projectilePiercing: 5
                                 },
                                 multiplier: {
                                     projectileRange: 1.2

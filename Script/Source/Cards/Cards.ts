@@ -372,6 +372,9 @@ namespace Script {
                         modifiers: {
                             absolute: {
                                 damage: 2 //2 Base Damage
+                            },
+                            multiplier: {
+                                projectileSize: 1.1
                             }
                         }
                     }]
@@ -387,7 +390,7 @@ namespace Script {
                                 damage: 3, //2 Base Damage
                             },
                             multiplier: {
-                                projectileSize: 1.5
+                                projectileSize: 1.3
                             }
                         }
                     }]
@@ -581,7 +584,7 @@ namespace Script {
                         modifiers: {
                             absolute: {
                                 damage: 0, //5 Base Damage
-                                projectilePiercing: 3
+                                projectilePiercing: 2
                             }
                         }
                     }]
@@ -596,7 +599,7 @@ namespace Script {
                         modifiers: {
                             absolute: {
                                 damage: 2, //5 Base Damage
-                                projectilePiercing: 3
+                                projectilePiercing: 2
                             }
                         }
                     }]
@@ -611,7 +614,7 @@ namespace Script {
                         modifiers: {
                             absolute: {
                                 damage: 2, //5 Base Damage
-                                projectilePiercing: 3
+                                projectilePiercing: 2
                             }
                         }
                     }]
@@ -626,7 +629,7 @@ namespace Script {
                         modifiers: {
                             absolute: {
                                 damage: 3, //5 Base Damage
-                                projectilePiercing: 4
+                                projectilePiercing: 3
                             },
                             multiplier: {
                                 projectileRange: 1.1
@@ -644,7 +647,7 @@ namespace Script {
                         modifiers: {
                             absolute: {
                                 damage: 5, //5 Base Damage
-                                projectilePiercing: 6
+                                projectilePiercing: 5
                             },
                             multiplier: {
                                 projectileRange: 1.2
