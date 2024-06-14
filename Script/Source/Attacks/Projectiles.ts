@@ -5,7 +5,8 @@ namespace Script {
     export const projectiles: Projectiles = {
         "genericBullet": {
             damage: 1,
-            speed: 1,
+            speed: 0.8,
+            size: 0.5,
             rotateInDirection: true,
             sprite: ["projectile", "genericBullet"],
             target: ProjectileTarget.PLAYER,
