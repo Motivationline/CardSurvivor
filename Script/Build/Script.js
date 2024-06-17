@@ -5350,7 +5350,7 @@ var Script;
             this.touchingPlayer = false;
         };
         hit(_hit) {
-            if (this.invulnerable)
+            if (this.invulnerable && isFinite(_hit.damage))
                 return _hit.damage;
             this.health -= _hit.damage;
             //display damage numbers

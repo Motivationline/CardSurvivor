@@ -288,7 +288,7 @@ namespace Script {
         }
 
         public hit(_hit: Hit): number {
-            if (this.invulnerable) return _hit.damage;
+            if (this.invulnerable && isFinite(_hit.damage)) return _hit.damage;
             this.health -= _hit.damage;
             //display damage numbers
             this.enemyManager.displayDamage(_hit.damage, this.node.mtxWorld.translation);
