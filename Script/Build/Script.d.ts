@@ -691,6 +691,7 @@ declare namespace Script {
         private currentRoomEnd;
         private currentXP;
         private xpElement;
+        private damageWasDealt;
         private timeElement;
         constructor(provider: Provider);
         setup(): void;
@@ -717,6 +718,7 @@ declare namespace Script {
         private dmgDisplayElements;
         displayDamage(_amt: number, _pos: ƒ.Vector3, _onPlayer?: boolean): void;
         reset(): void;
+        enemyTookDamage(): void;
         addXP(_xp: number): void;
     }
 }

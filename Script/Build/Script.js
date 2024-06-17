@@ -5355,6 +5355,7 @@ var Script;
             this.health -= _hit.damage;
             //display damage numbers
             this.enemyManager.displayDamage(_hit.damage, this.node.mtxWorld.translation);
+            this.enemyManager.enemyTookDamage();
             //TODO apply knockback
             if (_hit.stun) {
                 this.stun(_hit.stun);
@@ -6353,6 +6354,7 @@ var Script;
         currentRoomEnd = 0;
         currentXP = 0;
         xpElement;
+        damageWasDealt = false;
         timeElement = document.getElementById("timer");
         constructor(provider) {
             this.provider = provider;
@@ -6418,20 +6420,27 @@ var Script;
                     this.currentWave++;
                 }
             }
+            // update timer
+            // this.timeElement.innerText = `room ${this.currentRoom} ends in: ${Math.floor(this.currentRoomEnd - currentTime)}ms - wave ${this.currentWave} ends in: ${Math.floor(this.currentWaveEnd - currentTime)}ms`;
+            this.timeElement.innerText = `${Math.ceil((this.currentRoomEnd - currentTime) / 1000)}`;
             // no more enenmies left, everything was killed
             // @ts-expect-error
             if (this.enemies.length === 0 && Script.gameState !== Script.GAMESTATE.ROOM_CLEAR) {
                 this.endRoom();
             }
             // is the rooms timer up?
-            // TODO special cases for boss rooms and no-damage runs
             // @ts-expect-error
             if (this.currentRoomEnd < currentTime && Script.gameState !== Script.GAMESTATE.ROOM_CLEAR) {
-                this.endRoom();
+                // don't end room if boss rooms and damage was dealt - you need to kill the boss.
+                if (this.damageWasDealt && Script.rooms[this.currentArea][this.currentRoom].boss) {
+                }
+                else {
+                    this.endRoom();
+                }
             }
-            // update timer
-            // this.timeElement.innerText = `room ${this.currentRoom} ends in: ${Math.floor(this.currentRoomEnd - currentTime)}ms - wave ${this.currentWave} ends in: ${Math.floor(this.currentWaveEnd - currentTime)}ms`;
-            this.timeElement.innerText = `${Math.ceil((this.currentRoomEnd - currentTime) / 1000)}`;
+            if (this.damageWasDealt && Script.rooms[this.currentArea][this.currentRoom].boss) {
+                this.timeElement.innerText = "Kill the boss!";
+            }
         }
         async endRoom(_cleanup = false) {
             Script.gameState = Script.GAMESTATE.PAUSED;
@@ -6462,6 +6471,7 @@ var Script;
             this.currentRoom++;
             this.currentWave = -1;
             this.currentWaveEnd = 0;
+            this.damageWasDealt = false;
             if (Script.rooms[this.currentArea].length <= this.currentRoom) {
                 console.log("LAST ROOM CLEARED");
                 Script.gameState = Script.GAMESTATE.IDLE;
@@ -6724,6 +6734,9 @@ var Script;
             this.currentRoom = -1;
             this.currentRoomEnd = 0;
             this.currentWaveEnd = 0;
+        }
+        enemyTookDamage() {
+            this.damageWasDealt = true;
         }
         addXP(_xp) {
             this.currentXP += Script.provider.get(Script.CardManager).modifyValuePlayer(_xp, Script.PassiveCardEffect.XP);

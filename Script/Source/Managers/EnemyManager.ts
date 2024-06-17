@@ -15,6 +15,7 @@ namespace Script {
 
         private currentXP: number = 0;
         private xpElement: HTMLElement;
+        private damageWasDealt: boolean = false;
 
         private timeElement: HTMLElement = document.getElementById("timer");
 
@@ -86,6 +87,10 @@ namespace Script {
                 }
             }
 
+            // update timer
+            // this.timeElement.innerText = `room ${this.currentRoom} ends in: ${Math.floor(this.currentRoomEnd - currentTime)}ms - wave ${this.currentWave} ends in: ${Math.floor(this.currentWaveEnd - currentTime)}ms`;
+            this.timeElement.innerText = `${Math.ceil((this.currentRoomEnd - currentTime) / 1000)}`;
+
             // no more enenmies left, everything was killed
             // @ts-expect-error
             if (this.enemies.length === 0 && gameState !== GAMESTATE.ROOM_CLEAR) {
@@ -93,16 +98,18 @@ namespace Script {
             }
 
             // is the rooms timer up?
-            // TODO special cases for boss rooms and no-damage runs
             // @ts-expect-error
             if (this.currentRoomEnd < currentTime && gameState !== GAMESTATE.ROOM_CLEAR) {
-                this.endRoom();
+                // don't end room if boss rooms and damage was dealt - you need to kill the boss.
+                if (this.damageWasDealt && rooms[this.currentArea][this.currentRoom].boss) {
+                } else {
+                    this.endRoom();
+                }
             }
+            if (this.damageWasDealt && rooms[this.currentArea][this.currentRoom].boss) {
+                this.timeElement.innerText = "Kill the boss!"
 
-            // update timer
-            // this.timeElement.innerText = `room ${this.currentRoom} ends in: ${Math.floor(this.currentRoomEnd - currentTime)}ms - wave ${this.currentWave} ends in: ${Math.floor(this.currentWaveEnd - currentTime)}ms`;
-            this.timeElement.innerText = `${Math.ceil((this.currentRoomEnd - currentTime) / 1000)}`;
-
+            }
         }
 
 
@@ -137,6 +144,7 @@ namespace Script {
             this.currentRoom++;
             this.currentWave = -1;
             this.currentWaveEnd = 0;
+            this.damageWasDealt = false;
 
             if (rooms[this.currentArea].length <= this.currentRoom) {
                 console.log("LAST ROOM CLEARED");
@@ -389,7 +397,7 @@ namespace Script {
             let textElement = document.createElement("span");
             textElement.classList.add("dmg-number")
             if (_onPlayer) textElement.classList.add("player");
-            if(_amt < 0) textElement.classList.add("healing");
+            if (_amt < 0) textElement.classList.add("healing");
             textElement.innerText = dmgText;
 
             document.documentElement.appendChild(textElement);
@@ -409,6 +417,10 @@ namespace Script {
             this.currentRoom = -1;
             this.currentRoomEnd = 0;
             this.currentWaveEnd = 0;
+        }
+
+        public enemyTookDamage() {
+            this.damageWasDealt = true;
         }
 
         public addXP(_xp: number) {
