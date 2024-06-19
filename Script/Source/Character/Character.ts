@@ -97,6 +97,12 @@ namespace Script {
         hit(_hit: Hit): number {
             if (_hit.type === HitType.AOE) _hit.type = HitType.PROJECTILE;
             let damage = Math.max(0, this.cardManager.modifyValuePlayer(_hit.damage, PassiveCardEffect.DAMAGE_REDUCTION, undefined, _hit.type));
+            let dodgeChance = this.cardManager.modifyValuePlayer(0, PassiveCardEffect.DODGE, undefined, _hit.type);
+            if(Math.random() < dodgeChance){
+                //dodged
+                provider.get(EnemyManager).displayText("dodged", this.node.mtxWorld.translation, "player", "healing");
+                return 0;
+            }
             this.health -= damage;
             // display damage numbers
             provider.get(EnemyManager).displayDamage(damage, this.node.mtxWorld.translation, true);

@@ -1467,36 +1467,36 @@ namespace Script {
             levels: [
                 { //Tier 1
                     passiveEffects: {
-                        multiplier: {
-                            //TODO: +5% dodge chance
+                        absolute: {
+                            dodge: 0.05 // 5% dodge chance
                         }
                     }
                 },
                 { //Tier 2
                     passiveEffects: {
-                        multiplier: {
-                            //TODO: +10% dodge chance
+                        absolute: {
+                            dodge: 0.1 // 10% dodge chance
                         }
                     }
                 },
                 { //Tier 3
                     passiveEffects: {
-                        multiplier: {
-                            //TODO: +20% dodge chance
+                        absolute: {
+                            dodge: 0.2 // 20% dodge chance
                         }
                     }
                 },
                 { //Tier 4
                     passiveEffects: {
-                        multiplier: {
-                            //TODO: +30% dodge chance
+                        absolute: {
+                            dodge: 0.3 // 30% dodge chance
                         }
                     }
                 },
                 { //Tier 5
                     passiveEffects: {
-                        multiplier: {
-                            //TODO: +50% dodge chance
+                        absolute: {
+                            dodge: 0.5 // 50% dodge chance
                         }
                     }
                 },

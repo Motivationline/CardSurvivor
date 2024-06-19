@@ -253,7 +253,7 @@ namespace Script {
             let maxDistance = 10;
             let deltaDistance = maxDistance - minDistance;
             let charPosition = this.characterManager.character.node.mtxWorld.translation;
-            while(spawnPosition.x > bounds.x || spawnPosition.x < -bounds.x || spawnPosition.y > bounds.y || spawnPosition.y < -bounds.y){
+            while (spawnPosition.x > bounds.x || spawnPosition.x < -bounds.x || spawnPosition.y > bounds.y || spawnPosition.y < -bounds.y) {
                 spawnPosition = ƒ.Vector3.NORMALIZATION(new ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), Math.random() * deltaDistance + minDistance);
                 spawnPosition.add(charPosition);
             }
@@ -409,19 +409,25 @@ namespace Script {
             if (!isFinite(_amt)) return;
             if (_amt === 0) return;
             let dmgText = Number(Math.abs(_amt).toPrecision(1)).toString();
+            let classes: string[] = [];
+            if (_onPlayer) classes.push("player");
+            if (_amt < 0) classes.push("healing");
+            this.displayText(dmgText, _pos, ...classes);
+        }
+        
+        public displayText(_text: string, _pos: ƒ.Vector3, ...cssClasses: string[]) {
             let textElement = document.createElement("span");
-            textElement.classList.add("dmg-number")
-            if (_onPlayer) textElement.classList.add("player");
-            if (_amt < 0) textElement.classList.add("healing");
-            textElement.innerText = dmgText;
-
+            textElement.innerText = _text;
+            textElement.classList.add("dmg-number", ...cssClasses);
+            
             document.documentElement.appendChild(textElement);
             this.dmgDisplayElements.push([textElement, _pos.clone]);
-
+            
             setTimeout(() => {
                 document.documentElement.removeChild(textElement);
                 this.dmgDisplayElements.shift();
             }, 1000);
+            
         }
 
         public reset() {
@@ -443,7 +449,7 @@ namespace Script {
             this.xpElement.value = Math.floor(this.currentXP) % 100;
             let levelups = Math.floor(this.currentXP / 100);
             this.lvlupMarker.innerHTML = "";
-            for(let i = 0; i < levelups; i++){
+            for (let i = 0; i < levelups; i++) {
                 this.lvlupMarker.innerHTML += `<img src="Assets/UI/Gameplay/LevelUp.png" alt="Levelup">`;
             }
         }

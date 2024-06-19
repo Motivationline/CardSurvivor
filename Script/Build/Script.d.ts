@@ -189,7 +189,8 @@ declare namespace Script {
         MOVEMENT_SPEED = "movementSpeed",
         XP = "xp",
         ENEMY_SIZE = "enemySize",
-        CAMERA_FOV = "cameraFOV"
+        CAMERA_FOV = "cameraFOV",
+        DODGE = "dodge"
     }
     export enum CardRarity {
         COMMON = "common",
@@ -728,6 +729,7 @@ declare namespace Script {
         getEnemy(_mode: ProjectileTargetMode, _pos?: ƒ.Vector3, _exclude?: EnemyGraphInstance[], _maxDistance?: number): EnemyGraphInstance | undefined;
         private dmgDisplayElements;
         displayDamage(_amt: number, _pos: ƒ.Vector3, _onPlayer?: boolean): void;
+        displayText(_text: string, _pos: ƒ.Vector3, ...cssClasses: string[]): void;
         reset(): void;
         enemyTookDamage(): void;
         addXP(_xp: number): void;

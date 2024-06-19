@@ -675,6 +675,7 @@ var Script;
         PassiveCardEffect["XP"] = "xp";
         PassiveCardEffect["ENEMY_SIZE"] = "enemySize";
         PassiveCardEffect["CAMERA_FOV"] = "cameraFOV";
+        PassiveCardEffect["DODGE"] = "dodge";
     })(PassiveCardEffect = Script.PassiveCardEffect || (Script.PassiveCardEffect = {}));
     let CardRarity;
     (function (CardRarity) {
@@ -3152,36 +3153,36 @@ var Script;
             levels: [
                 {
                     passiveEffects: {
-                        multiplier: {
-                        //TODO: +5% dodge chance
+                        absolute: {
+                            dodge: 0.05 // 5% dodge chance
                         }
                     }
                 },
                 {
                     passiveEffects: {
-                        multiplier: {
-                        //TODO: +10% dodge chance
+                        absolute: {
+                            dodge: 0.1 // 10% dodge chance
                         }
                     }
                 },
                 {
                     passiveEffects: {
-                        multiplier: {
-                        //TODO: +20% dodge chance
+                        absolute: {
+                            dodge: 0.2 // 20% dodge chance
                         }
                     }
                 },
                 {
                     passiveEffects: {
-                        multiplier: {
-                        //TODO: +30% dodge chance
+                        absolute: {
+                            dodge: 0.3 // 30% dodge chance
                         }
                     }
                 },
                 {
                     passiveEffects: {
-                        multiplier: {
-                        //TODO: +50% dodge chance
+                        absolute: {
+                            dodge: 0.5 // 50% dodge chance
                         }
                     }
                 },
@@ -4669,6 +4670,12 @@ var Script;
             if (_hit.type === Script.HitType.AOE)
                 _hit.type = Script.HitType.PROJECTILE;
             let damage = Math.max(0, this.cardManager.modifyValuePlayer(_hit.damage, Script.PassiveCardEffect.DAMAGE_REDUCTION, undefined, _hit.type));
+            let dodgeChance = this.cardManager.modifyValuePlayer(0, Script.PassiveCardEffect.DODGE, undefined, _hit.type);
+            if (Math.random() < dodgeChance) {
+                //dodged
+                Script.provider.get(Script.EnemyManager).displayText("dodged", this.node.mtxWorld.translation, "player", "healing");
+                return 0;
+            }
             this.health -= damage;
             // display damage numbers
             Script.provider.get(Script.EnemyManager).displayDamage(damage, this.node.mtxWorld.translation, true);
@@ -6798,13 +6805,17 @@ var Script;
             if (_amt === 0)
                 return;
             let dmgText = Number(Math.abs(_amt).toPrecision(1)).toString();
-            let textElement = document.createElement("span");
-            textElement.classList.add("dmg-number");
+            let classes = [];
             if (_onPlayer)
-                textElement.classList.add("player");
+                classes.push("player");
             if (_amt < 0)
-                textElement.classList.add("healing");
-            textElement.innerText = dmgText;
+                classes.push("healing");
+            this.displayText(dmgText, _pos, ...classes);
+        }
+        displayText(_text, _pos, ...cssClasses) {
+            let textElement = document.createElement("span");
+            textElement.innerText = _text;
+            textElement.classList.add("dmg-number", ...cssClasses);
             document.documentElement.appendChild(textElement);
             this.dmgDisplayElements.push([textElement, _pos.clone]);
             setTimeout(() => {
