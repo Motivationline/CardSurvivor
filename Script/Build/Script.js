@@ -1316,7 +1316,8 @@ var Script;
                     effect.currentCooldown = this.#cm.modifyValuePlayer(effect.cooldown, Script.PassiveCardEffect.COOLDOWN_REDUCTION, effect.modifiers);
                     switch (effect.type) {
                         case "projectile":
-                            for (let i = 0; i < (effect.amount ?? 1); i++) {
+                            let amount = this.#cm.modifyValuePlayer(effect.amount ?? 1, Script.PassiveCardEffect.PROJECTILE_AMOUNT, effect.modifiers);
+                            for (let i = 0; i < amount; i++) {
                                 setTimeout(() => {
                                     let pos = this.#charm.character.node.mtxWorld.translation.clone;
                                     if (effect.offset) {
