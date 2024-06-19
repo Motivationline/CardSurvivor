@@ -702,6 +702,7 @@ declare namespace Script {
         private lvlupMarker;
         private damageWasDealt;
         private timeElement;
+        private roomProgressElement;
         constructor(provider: Provider);
         setup(): void;
         private start;

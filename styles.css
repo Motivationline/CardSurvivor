@@ -37,6 +37,7 @@ canvas.fullscreen {
 
 h2 {
   font-size: 5rem;
+  text-align: center;
 }
 
 h3 {
@@ -181,11 +182,15 @@ progress::-webkit-progress-value {
   background-color: var(--f-color);
   border-radius: 5vw;
 }
-
-#timer {
+#room-progress {
   display: block;
   text-align: center;
   margin-top: 2vh;
+  font-size: 2rem;
+}
+#timer {
+  display: block;
+  text-align: center;
   font-size: 4rem;
   text-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
 }
@@ -222,6 +227,7 @@ progress::-webkit-progress-value {
   background-color: var(--bg-color);
   border: none;
   border-radius: 5vw;
+  width: 100%;
 }
 
 #card-upgrade-popup {
@@ -936,8 +942,9 @@ progress::-webkit-progress-value {
   #healthbar {
     border: 2px solid var(--bg-color);
     border-radius: 10px;
-    width: 10vw;
-    left: calc(50% - 5vw);
+    --width: max(10vw, 200px);
+    width: var(--width);
+    left: calc(50% - var(--width) / 2);
   }
 
   progress::-webkit-progress-value {

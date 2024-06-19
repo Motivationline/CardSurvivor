@@ -19,6 +19,7 @@ namespace Script {
         private damageWasDealt: boolean = false;
 
         private timeElement: HTMLElement = document.getElementById("timer");
+        private roomProgressElement: HTMLElement = document.getElementById("room-progress");
 
         constructor(private readonly provider: Provider) {
             if (ƒ.Project.mode === ƒ.MODE.EDITOR) return;
@@ -160,6 +161,7 @@ namespace Script {
             if (room.reward) {
                 //TODO spawn reward stuff
             }
+            this.roomProgressElement.innerText = `Room ${this.currentRoom + 1}/${rooms[this.currentArea].length}`
         }
 
         private async waitMs(_ms: number): Promise<void> {
