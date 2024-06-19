@@ -4112,6 +4112,13 @@ var Script;
                 {
                     passiveEffects: {
                         absolute: {
+                            projectileAmount: 1
+                        }
+                    }
+                },
+                {
+                    passiveEffects: {
+                        absolute: {
                             projectileAmount: 2
                         }
                     }
@@ -4127,13 +4134,6 @@ var Script;
                     passiveEffects: {
                         absolute: {
                             projectileAmount: 4
-                        }
-                    }
-                },
-                {
-                    passiveEffects: {
-                        absolute: {
-                            projectileAmount: 6
                         }
                     }
                 },

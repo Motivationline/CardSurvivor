@@ -2669,28 +2669,28 @@ namespace Script {
                 { //Tier 2
                     passiveEffects: {
                         absolute: {
-                            projectileAmount: 2
+                            projectileAmount: 1
                         }
                     }
                 },
                 { //Tier 3
                     passiveEffects: {
                         absolute: {
-                            projectileAmount: 3
+                            projectileAmount: 2
                         }
                     }
                 },
                 { //Tier 4
                     passiveEffects: {
                         absolute: {
-                            projectileAmount: 4
+                            projectileAmount: 3
                         }
                     }
                 },
                 { //Tier 5
                     passiveEffects: {
                         absolute: {
-                            projectileAmount: 6
+                            projectileAmount: 4
                         }
                     }
                 },
