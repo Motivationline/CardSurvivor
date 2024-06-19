@@ -365,45 +365,6 @@ declare namespace Script {
     }
 }
 declare namespace Script {
-    class ProjectileComponent extends Animateable implements Projectile {
-        tracking: ProjectileTracking;
-        direction: ƒ.Vector3;
-        targetPosition: ƒ.Vector3;
-        damage: number;
-        size: number;
-        speed: number;
-        range: number;
-        piercing: number;
-        target: ProjectileTarget;
-        diminishing: boolean;
-        artillery: boolean;
-        rotateInDirection: boolean;
-        impact: ActiveEffect[];
-        targetMode: ProjectileTargetMode;
-        lockedToEntity: boolean;
-        sprite: AnimationSprite;
-        stunDuration: number;
-        dontNormalizeMovement: boolean;
-        private hazardZone;
-        private prevDistance;
-        private modifiers;
-        private functions;
-        protected static defaults: Projectile;
-        constructor();
-        protected init: () => void;
-        setup(_options: Partial<Projectile>, _modifier: PassiveCardEffectObject): Promise<void>;
-        update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
-        removeAttachments(): void;
-        private removeHazardZone;
-        protected move(_frameTimeInSeconds: number): void;
-        protected rotate(): void;
-        protected onTriggerEnter: (_event: ƒ.EventPhysics) => void;
-        protected onTriggerExit: (_event: ƒ.EventPhysics) => void;
-        protected hit(_hitable: Hitable): void;
-        private remove;
-    }
-}
-declare namespace Script {
     const projectiles: Projectiles;
     const areasOfEffect: AreasOfEffect;
 }
@@ -688,6 +649,53 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    enum MenuType {
+        NONE = 0,
+        MAIN = 1,
+        COLLECTION = 2,
+        SETTINGS = 3,
+        PAUSE = 4,
+        CARD_UPGRADE = 5,
+        END_CONFIRM = 6,
+        GAME_OVER = 7,
+        BETWEEN_ROOMS = 8
+    }
+    class MenuManager {
+        private menus;
+        private prevGameState;
+        setup(): void;
+        openMenu(_menu: MenuType): void;
+        private startGame;
+        openPauseMenu(): void;
+        private openPauseCardPopup;
+    }
+}
+declare namespace Script {
+    class ProjectileManager {
+        private readonly provider;
+        private characterManager;
+        private config;
+        private projectileScripts;
+        private projectiles;
+        static projectileGraph: ƒ.Graph;
+        static aoeGraph: ƒ.Graph;
+        static hitZoneGraph: ƒ.Graph;
+        private projectilesNode;
+        private hitzoneNode;
+        constructor(provider: Provider);
+        setup(): void;
+        private start;
+        private loaded;
+        private update;
+        removeProjectile(_projectile: ProjectileComponent): void;
+        removeAOE(_aoe: AOE): void;
+        createProjectile(_options: Partial<Projectile>, _position: ƒ.Vector3, _modifiers: PassiveCardEffectObject, _parent?: ƒ.Node): Promise<void>;
+        createAOE(_options: Partial<AreaOfEffect>, _position: ƒ.Vector3, _modifiers: PassiveCardEffectObject, _parent?: ƒ.Node): Promise<void>;
+        createHitZone(_position: ƒ.Vector3, _size?: number, _parent?: ƒ.Node): Promise<HitZoneGraphInstance>;
+        cleanup(): void;
+    }
+}
+declare namespace Script {
     class EnemyManager {
         private readonly provider;
         private characterManager;
@@ -738,49 +746,41 @@ declare namespace Script {
     }
 }
 declare namespace Script {
-    enum MenuType {
-        NONE = 0,
-        MAIN = 1,
-        COLLECTION = 2,
-        SETTINGS = 3,
-        PAUSE = 4,
-        CARD_UPGRADE = 5,
-        END_CONFIRM = 6,
-        GAME_OVER = 7,
-        BETWEEN_ROOMS = 8
-    }
-    class MenuManager {
-        private menus;
-        private prevGameState;
-        setup(): void;
-        openMenu(_menu: MenuType): void;
-        private startGame;
-        openPauseMenu(): void;
-        private openPauseCardPopup;
-    }
-}
-declare namespace Script {
-    class ProjectileManager {
-        private readonly provider;
-        private characterManager;
-        private config;
-        private projectileScripts;
-        private projectiles;
-        static projectileGraph: ƒ.Graph;
-        static aoeGraph: ƒ.Graph;
-        static hitZoneGraph: ƒ.Graph;
-        private projectilesNode;
-        private hitzoneNode;
-        constructor(provider: Provider);
-        setup(): void;
-        private start;
-        private loaded;
-        private update;
-        removeProjectile(_projectile: ProjectileComponent): void;
-        removeAOE(_aoe: AOE): void;
-        createProjectile(_options: Partial<Projectile>, _position: ƒ.Vector3, _modifiers: PassiveCardEffectObject, _parent?: ƒ.Node): Promise<void>;
-        createAOE(_options: Partial<AreaOfEffect>, _position: ƒ.Vector3, _modifiers: PassiveCardEffectObject, _parent?: ƒ.Node): Promise<void>;
-        createHitZone(_position: ƒ.Vector3, _size?: number, _parent?: ƒ.Node): Promise<HitZoneGraphInstance>;
-        cleanup(): void;
+    class ProjectileComponent extends Animateable implements Projectile {
+        tracking: ProjectileTracking;
+        direction: ƒ.Vector3;
+        targetPosition: ƒ.Vector3;
+        damage: number;
+        size: number;
+        speed: number;
+        range: number;
+        piercing: number;
+        target: ProjectileTarget;
+        diminishing: boolean;
+        artillery: boolean;
+        rotateInDirection: boolean;
+        impact: ActiveEffect[];
+        targetMode: ProjectileTargetMode;
+        lockedToEntity: boolean;
+        sprite: AnimationSprite;
+        stunDuration: number;
+        dontNormalizeMovement: boolean;
+        private hazardZone;
+        private prevDistance;
+        private modifiers;
+        private functions;
+        protected static defaults: Projectile;
+        constructor();
+        protected init: () => void;
+        setup(_options: Partial<Projectile>, _modifier: PassiveCardEffectObject): Promise<void>;
+        update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number): void;
+        removeAttachments(): void;
+        private removeHazardZone;
+        protected move(_frameTimeInSeconds: number): void;
+        protected rotate(): void;
+        protected onTriggerEnter: (_event: ƒ.EventPhysics) => void;
+        protected onTriggerExit: (_event: ƒ.EventPhysics) => void;
+        protected hit(_hitable: Hitable): void;
+        private remove;
     }
 }

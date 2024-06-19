@@ -1464,6 +1464,7 @@ namespace Script {
             image: "JumpRope.png",
             rarity: CardRarity.UNCOMMON,
             name: "Jump Rope",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -1773,6 +1774,7 @@ namespace Script {
             image: "HardDrive.png",
             rarity: CardRarity.UNCOMMON,
             name: "Hard Drive",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -2198,6 +2200,7 @@ namespace Script {
             image: "AthleticTape.png",
             rarity: CardRarity.RARE,
             name: "Athletic Tape",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -2240,6 +2243,7 @@ namespace Script {
             image: "Newspaper.png",
             rarity: CardRarity.RARE,
             name: "Newspaper",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -2653,6 +2657,7 @@ namespace Script {
             image: "DrawingTablet.png",
             rarity: CardRarity.EPIC,
             name: "Drawing Tablet",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -2737,6 +2742,7 @@ namespace Script {
             image: "Tong.png",
             rarity: CardRarity.EPIC,
             name: "Tong",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {

@@ -782,262 +782,6 @@ var Script;
     Script.AOE = AOE;
 })(Script || (Script = {}));
 /// <reference path="../Types.ts" />
-/// <reference path="../Animateable.ts" />
-var Script;
-/// <reference path="../Types.ts" />
-/// <reference path="../Animateable.ts" />
-(function (Script) {
-    class ProjectileComponent extends Script.Animateable {
-        tracking;
-        direction;
-        targetPosition;
-        damage;
-        size;
-        speed;
-        range;
-        piercing;
-        target;
-        diminishing;
-        artillery;
-        rotateInDirection;
-        impact;
-        targetMode;
-        lockedToEntity;
-        sprite;
-        stunDuration;
-        dontNormalizeMovement;
-        hazardZone;
-        prevDistance;
-        modifiers = {};
-        functions = {};
-        static defaults = {
-            targetPosition: undefined,
-            direction: new Script.ƒ.Vector3(),
-            piercing: 0,
-            range: Infinity,
-            size: 1,
-            speed: 2,
-            damage: 1,
-            stunDuration: 0,
-            target: Script.ProjectileTarget.ENEMY,
-            tracking: undefined,
-            diminishing: false,
-            targetMode: Script.ProjectileTargetMode.NONE,
-            lockedToEntity: false,
-            impact: undefined,
-            artillery: false,
-            rotateInDirection: false,
-            dontNormalizeMovement: false,
-            sprite: ["projectile", "toast"],
-            methods: {},
-            hitboxSize: 1,
-        };
-        constructor() {
-            super();
-            if (Script.ƒ.Project.mode == Script.ƒ.MODE.EDITOR)
-                return;
-            this.addEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.init);
-        }
-        init = () => {
-            this.removeEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.init);
-            // setup physics
-            this.node.getComponent(Script.ƒ.ComponentRigidbody).addEventListener("TriggerEnteredCollision" /* ƒ.EVENT_PHYSICS.TRIGGER_ENTER */, this.onTriggerEnter);
-            this.node.getComponent(Script.ƒ.ComponentRigidbody).addEventListener("TriggerLeftCollision" /* ƒ.EVENT_PHYSICS.TRIGGER_EXIT */, this.onTriggerExit);
-        };
-        async setup(_options, _modifier) {
-            if (this.functions.beforeSetup) {
-                this.functions.beforeSetup.call(this, _options, _modifier);
-            }
-            let limitation = undefined;
-            if (_options.target === Script.ProjectileTarget.ENEMY) {
-                if (Script.provider.get(Script.CharacterManager).isMoving())
-                    limitation = "stopped";
-            }
-            let cm = Script.provider.get(Script.CardManager);
-            _options = { ...ProjectileComponent.defaults, ..._options };
-            this.direction = _options.direction;
-            this.targetPosition = _options.targetPosition;
-            this.tracking = _options.tracking;
-            this.damage = cm.modifyValue(_options.damage, Script.PassiveCardEffect.DAMAGE, _modifier, limitation);
-            this.size = cm.modifyValue(_options.size, Script.PassiveCardEffect.PROJECTILE_SIZE, _modifier, limitation);
-            this.speed = cm.modifyValue(_options.speed, Script.PassiveCardEffect.PROJECTILE_SPEED, _modifier, limitation);
-            this.range = cm.modifyValue(_options.range, Script.PassiveCardEffect.PROJECTILE_RANGE, _modifier, limitation);
-            this.piercing = cm.modifyValue(_options.piercing, Script.PassiveCardEffect.PROJECTILE_PIERCING, _modifier, limitation);
-            this.target = _options.target;
-            this.artillery = _options.artillery;
-            this.rotateInDirection = _options.rotateInDirection;
-            this.diminishing = _options.diminishing;
-            this.impact = _options.impact;
-            this.targetMode = _options.targetMode;
-            this.lockedToEntity = _options.lockedToEntity;
-            this.functions = _options.methods;
-            this.sprite = this.getSprite(_options.sprite);
-            this.setCentralAnimator(this.sprite);
-            this.node.mtxLocal.scaling = Script.ƒ.Vector3.ONE(this.size);
-            this.node.getComponent(Script.ƒ.ComponentRigidbody).mtxPivot.scaling = Script.ƒ.Vector3.ONE(_options.hitboxSize);
-            this.hazardZone = undefined;
-            this.prevDistance = Infinity;
-            this.modifiers = _modifier;
-            //TODO rotate projectile towards flight direction
-            if (this.artillery) {
-                let pos = new Script.ƒ.Vector3();
-                if (this.target === Script.ProjectileTarget.PLAYER) {
-                    pos = Script.provider.get(Script.CharacterManager).character.node.mtxWorld.translation.clone;
-                }
-                else if (this.target === Script.ProjectileTarget.ENEMY) {
-                    pos = Script.provider.get(Script.EnemyManager).getEnemy(this.targetMode)?.mtxWorld.translation.clone;
-                    if (!pos)
-                        return this.remove();
-                }
-                let hzSize = this.size;
-                for (let impact of this.impact) {
-                    hzSize = Math.max(hzSize, cm.modifyValue(1, Script.PassiveCardEffect.PROJECTILE_SIZE, impact.modifiers));
-                }
-                let hz = await Script.provider.get(Script.ProjectileManager).createHitZone(pos, hzSize);
-                this.tracking = {
-                    strength: 1,
-                    target: hz,
-                    startTrackingAfter: 1
-                };
-                this.hazardZone = hz;
-                this.direction = Script.ƒ.Vector3.Y(this.speed);
-                this.targetPosition = pos;
-            }
-            if (this.targetMode !== Script.ProjectileTargetMode.NONE) {
-                let targetPosition = Script.provider.get(Script.EnemyManager).getEnemy(this.targetMode)?.mtxWorld.translation.clone;
-                if (!targetPosition) {
-                    return this.remove();
-                }
-                ;
-                this.direction = Script.ƒ.Vector3.DIFFERENCE(targetPosition, this.node.mtxLocal.translation);
-            }
-            if (this.tracking) {
-                this.tracking = { ...{ stopTrackingAfter: Infinity, stopTrackingInRadius: 0, strength: 1, startTrackingAfter: 0 }, ...this.tracking };
-            }
-            this.node.getComponent(Script.ƒ.ComponentMesh).mtxPivot.rotation = new Script.ƒ.Vector3();
-            if (this.functions.afterSetup) {
-                this.functions.afterSetup.call(this);
-            }
-        }
-        update(_charPosition, _frameTimeInSeconds) {
-            if (this.functions.preUpdate)
-                this.functions.preUpdate.call(this, _charPosition, _frameTimeInSeconds);
-            if (this.functions.preMove)
-                this.functions.preMove.call(this, _frameTimeInSeconds);
-            this.move(_frameTimeInSeconds);
-            if (this.functions.postMove)
-                this.functions.postMove.call(this, _frameTimeInSeconds);
-            this.rotate();
-            if (this.functions.postUpdate)
-                this.functions.postUpdate.call(this, _charPosition, _frameTimeInSeconds);
-        }
-        removeAttachments() {
-            this.removeHazardZone();
-        }
-        removeHazardZone() {
-            if (!this.hazardZone)
-                return;
-            Script.ƒ.Recycler.store(this.hazardZone);
-            this.hazardZone.getParent().removeChild(this.hazardZone);
-            this.hazardZone = undefined;
-        }
-        move(_frameTimeInSeconds) {
-            if (this.tracking && this.tracking.target) {
-                this.tracking.startTrackingAfter -= _frameTimeInSeconds;
-                if (this.tracking.startTrackingAfter <= 0) {
-                    this.tracking.stopTrackingAfter -= _frameTimeInSeconds;
-                    let diff = Script.ƒ.Vector3.DIFFERENCE(this.tracking.target.mtxWorld.translation, this.node.mtxWorld.translation);
-                    // we need to track a certain node, so modify direction accordingly
-                    this.direction = Script.ƒ.Vector3.SUM(diff.scale(this.tracking.strength ?? 1), this.direction.scale(1 - (this.tracking.strength ?? 1)));
-                    // this.direction.add(ƒ.Vector3.SCALE(diff, (this.tracking.strength ?? 1) * Math.min(_frameTimeInSeconds, 1)));
-                    let mgtSqrd = diff.magnitudeSquared;
-                    if (this.tracking.stopTrackingAfter <= 0 || (mgtSqrd <= Math.pow(this.tracking.stopTrackingInRadius, 2) && mgtSqrd !== 0)) {
-                        // console.log("stop tracking", this.tracking.stopTrackingAfter)
-                        // end of tracking
-                        this.tracking = undefined;
-                    }
-                }
-            }
-            let dir = this.direction.clone;
-            if (dir.magnitudeSquared > 0 && !this.dontNormalizeMovement)
-                dir.normalize(Math.min(1, _frameTimeInSeconds) * this.speed);
-            else
-                dir.scale(Math.min(1, _frameTimeInSeconds) * this.speed);
-            this.node.mtxLocal.translate(dir);
-            this.range -= dir.magnitude;
-            if (this.range < 0) {
-                this.remove();
-            }
-            //TODO check if flew past target position (due to lag?) and still explode
-            if (this.targetPosition) {
-                let distanceToTarget = Script.ƒ.Vector3.DIFFERENCE(this.targetPosition, this.node.mtxWorld.translation).magnitudeSquared;
-                if (this.targetPosition && (this.node.mtxWorld.translation.equals(this.targetPosition, 0.5) || distanceToTarget > this.prevDistance)) {
-                    this.prevDistance = distanceToTarget;
-                    if (this.artillery && this.tracking.startTrackingAfter > 0)
-                        return;
-                    // target position reached
-                    this.removeHazardZone();
-                    if (this.impact && this.impact.length) {
-                        for (let impact of this.impact) {
-                            //TODO implement impacts
-                            switch (impact.type) {
-                                case "projectile":
-                                    Script.provider.get(Script.ProjectileManager).createProjectile(Script.projectiles[impact.projectile], this.targetPosition, Script.provider.get(Script.CardManager).combineEffects(impact.modifiers, this.modifiers));
-                                    break;
-                                case "aoe":
-                                    Script.provider.get(Script.ProjectileManager).createAOE(Script.areasOfEffect[impact.aoe], this.targetPosition, Script.provider.get(Script.CardManager).combineEffects(impact.modifiers, this.modifiers));
-                                    break;
-                            }
-                        }
-                    }
-                    this.remove();
-                }
-            }
-            // remove projectile if outside of room
-            if (this.node.cmpTransform.mtxLocal.translation.magnitudeSquared > 18500 /* 15 width, 25 height playarea => max magnSqr = 850 */) {
-                this.remove();
-            }
-        }
-        rotate() {
-            if (!this.rotateInDirection)
-                return;
-            let refVector = Script.ƒ.Vector3.X(1);
-            let angle = Math.acos(Script.ƒ.Vector3.DOT(this.direction, refVector) / (refVector.magnitude * this.direction.magnitude));
-            angle = angle * 180 / Math.PI * Math.sign(this.direction.y);
-            let pivot = this.node.getComponent(Script.ƒ.ComponentMesh).mtxPivot;
-            pivot.rotation = new Script.ƒ.Vector3(pivot.rotation.x, pivot.rotation.y, angle);
-        }
-        onTriggerEnter = (_event) => {
-            if (this.artillery || this.targetPosition)
-                return;
-            if (_event.cmpRigidbody.node.name === "enemy" && this.target === Script.ProjectileTarget.ENEMY) {
-                this.hit(_event.cmpRigidbody.node.getComponent(Script.Enemy));
-            }
-            else if (_event.cmpRigidbody.node.name === "character" && this.target === Script.ProjectileTarget.PLAYER) {
-                this.hit(_event.cmpRigidbody.node.getComponent(Script.Character));
-            }
-        };
-        onTriggerExit = (_event) => {
-            // console.log("onTriggerExit", _event);
-        };
-        hit(_hitable) {
-            if (this.functions.preHit)
-                this.functions.preHit.call(this, _hitable);
-            _hitable.hit({ damage: this.damage, stun: this.stunDuration, type: Script.HitType.PROJECTILE });
-            this.piercing--;
-            if (this.functions.postHit)
-                this.functions.postHit.call(this, _hitable);
-            if (this.piercing < 0)
-                this.remove();
-        }
-        remove() {
-            Script.provider.get(Script.ProjectileManager).removeProjectile(this);
-            this.removeHazardZone();
-        }
-    }
-    Script.ProjectileComponent = ProjectileComponent;
-})(Script || (Script = {}));
-/// <reference path="../Types.ts" />
 var Script;
 /// <reference path="../Types.ts" />
 (function (Script) {
@@ -1716,7 +1460,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 0, //8 Base Damage
+                                    damage: 0,
                                     projectilePiercing: 2
                                 }
                             }
@@ -1731,7 +1475,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 4, //8 Base Damage
+                                    damage: 4,
                                     projectilePiercing: 2
                                 }
                             }
@@ -1746,7 +1490,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 4, //8 Base Damage
+                                    damage: 4,
                                     projectilePiercing: 2
                                 }
                             }
@@ -1761,7 +1505,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 7, //8 Base Damage
+                                    damage: 7,
                                     projectilePiercing: 3
                                 }
                             }
@@ -1776,7 +1520,7 @@ var Script;
                             currentCooldown: 0.75,
                             modifiers: {
                                 absolute: {
-                                    damage: 7, //8 Base Damage
+                                    damage: 7,
                                     projectilePiercing: 4
                                 }
                             }
@@ -1949,7 +1693,7 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 0, //5 Base Damage
+                                    damage: 0,
                                     effectDuration: 0 //1 Base Duration
                                 }
                             }
@@ -1963,8 +1707,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 1, //5 Base Damage
-                                    effectDuration: 0, //1 Base Duration
+                                    damage: 1,
+                                    effectDuration: 0,
                                     projectileSize: 1.1
                                 }
                             }
@@ -1978,8 +1722,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 1, //5 Base Damage
-                                    effectDuration: 0.5, //1 Base Duration
+                                    damage: 1,
+                                    effectDuration: 0.5,
                                     projectileSize: 1.3
                                 }
                             }
@@ -1993,8 +1737,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 1, //5 Base Damage
-                                    effectDuration: 0.5, //1 Base Duration
+                                    damage: 1,
+                                    effectDuration: 0.5,
                                     projectileSize: 1.5
                                 }
                             }
@@ -2008,8 +1752,8 @@ var Script;
                             currentCooldown: 2,
                             modifiers: {
                                 absolute: {
-                                    damage: 3, //5 Base Damage
-                                    effectDuration: 1, //1 Base Duration
+                                    damage: 3,
+                                    effectDuration: 1,
                                     projectileSize: 2
                                 }
                             }
@@ -2111,7 +1855,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 0, //5 Base Damage
+                                    damage: 0,
                                     projectilePiercing: 1
                                 }
                             }
@@ -2126,7 +1870,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 3, //5 Base Damage
+                                    damage: 3,
                                     projectilePiercing: 1
                                 }
                             }
@@ -2141,7 +1885,7 @@ var Script;
                             currentCooldown: 0.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 3, //5 Base Damage
+                                    damage: 3,
                                     projectilePiercing: 1
                                 }
                             }
@@ -2156,7 +1900,7 @@ var Script;
                             currentCooldown: 0.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 5, //5 Base Damage
+                                    damage: 5,
                                     projectilePiercing: 2
                                 },
                                 multiplier: {
@@ -2174,7 +1918,7 @@ var Script;
                             currentCooldown: 0.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 5, //5 Base Damage
+                                    damage: 5,
                                     projectilePiercing: 3,
                                 },
                                 multiplier: {
@@ -2214,7 +1958,7 @@ var Script;
                             currentCooldown: 1.5,
                             modifiers: {
                                 absolute: {
-                                    damage: 1, //3 Base Damage (x10 for max distance)
+                                    damage: 1,
                                     projectileRange: 2,
                                 }
                             }
@@ -2229,7 +1973,7 @@ var Script;
                             currentCooldown: 1.25,
                             modifiers: {
                                 absolute: {
-                                    damage: 2, //3 Base Damage (x10 for max distance)
+                                    damage: 2,
                                     projectileRange: 4,
                                 }
                             }
@@ -2244,7 +1988,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 3, //3 Base Damage (x10 for max distance)
+                                    damage: 3,
                                     projectileRange: 6,
                                 }
                             }
@@ -2259,7 +2003,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 5, //3 Base Damage (x10 for max distance)
+                                    damage: 5,
                                     projectileRange: 10,
                                 }
                             }
@@ -2282,7 +2026,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 0, //5 Base Damage
+                                    damage: 0,
                                     projectilePiercing: 2
                                 }
                             }
@@ -2297,7 +2041,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 2, //5 Base Damage
+                                    damage: 2,
                                     projectilePiercing: 2
                                 }
                             }
@@ -2312,7 +2056,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 2, //5 Base Damage
+                                    damage: 2,
                                     projectilePiercing: 2
                                 }
                             }
@@ -2327,7 +2071,7 @@ var Script;
                             currentCooldown: 1,
                             modifiers: {
                                 absolute: {
-                                    damage: 3, //5 Base Damage
+                                    damage: 3,
                                     projectilePiercing: 3
                                 },
                                 multiplier: {
@@ -2345,7 +2089,7 @@ var Script;
                             currentCooldown: 0.75,
                             modifiers: {
                                 absolute: {
-                                    damage: 5, //5 Base Damage
+                                    damage: 5,
                                     projectilePiercing: 5
                                 },
                                 multiplier: {
@@ -2367,7 +2111,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 4, //TODO: Leave a projectile every 5 units moved
+                            cooldown: 4,
                             currentCooldown: 2,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2382,7 +2126,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 3.5, //TODO: Leave a projectile every 4 units moved
+                            cooldown: 3.5,
                             currentCooldown: 1.75,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2397,7 +2141,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 3, //TODO: Leave a projectile every 4 units moved
+                            cooldown: 3,
                             currentCooldown: 1.5,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2412,7 +2156,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 2, //TODO: Leave a projectile every 3 units moved
+                            cooldown: 2,
                             currentCooldown: 1,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -2427,7 +2171,7 @@ var Script;
                             type: "projectile",
                             projectile: "needlePlayer",
                             amount: 1,
-                            cooldown: 1, //TODO: Leave a projectile every 2 units moved
+                            cooldown: 1,
                             currentCooldown: 0.5,
                             cooldownBasedOnDistance: true,
                             modifiers: {
@@ -3163,6 +2907,7 @@ var Script;
             image: "JumpRope.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Jump Rope",
+            unlockByDefault: true,
             levels: [
                 {
                     passiveEffects: {
@@ -3472,6 +3217,7 @@ var Script;
             image: "HardDrive.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Hard Drive",
+            unlockByDefault: true,
             levels: [
                 {
                     passiveEffects: {
@@ -3897,6 +3643,7 @@ var Script;
             image: "AthleticTape.png",
             rarity: Script.CardRarity.RARE,
             name: "Athletic Tape",
+            unlockByDefault: true,
             levels: [
                 {
                     passiveEffects: {
@@ -3939,6 +3686,7 @@ var Script;
             image: "Newspaper.png",
             rarity: Script.CardRarity.RARE,
             name: "Newspaper",
+            unlockByDefault: true,
             levels: [
                 {
                     passiveEffects: {
@@ -4352,6 +4100,7 @@ var Script;
             image: "DrawingTablet.png",
             rarity: Script.CardRarity.EPIC,
             name: "Drawing Tablet",
+            unlockByDefault: true,
             levels: [
                 {
                     passiveEffects: {
@@ -4436,6 +4185,7 @@ var Script;
             image: "Tong.png",
             rarity: Script.CardRarity.EPIC,
             name: "Tong",
+            unlockByDefault: true,
             levels: [
                 {
                     passiveEffects: {
@@ -4929,9 +4679,9 @@ var Script;
             },
             attacks: [
                 {
-                    cooldown: 0.81, // how long it dashes, including delay
+                    cooldown: 0.81,
                     requiredDistance: [1.5, 2.5],
-                    windUp: 2, // how long it plans its attack
+                    windUp: 2,
                     movement: function (_diff, _mgtSqrd, _charPosition, _frameTimeInSeconds) {
                         let dashDuration = 0.8; // how long it should be dashing.
                         if (this.currentlyActiveAttack.windUp > 0)
@@ -4985,7 +4735,7 @@ var Script;
             },
             attacks: [
                 {
-                    cooldown: Infinity, // controlled by animations
+                    cooldown: Infinity,
                     requiredDistance: [0.8, 1.2],
                     cooldownSprite: ["mixer", "digup"],
                     windUp: 2,
@@ -5484,12 +5234,12 @@ var Script;
     };
     Script.pools = {
         "electronics": [
-            ["microwave", "chair"], // --0
-            ["toaster", "closet"], // --1
-            ["motor"], // --2
-            ["ventilator"], // --3
-            ["mixer"], // --4
-            ["toaster"], // --5
+            ["microwave", "chair"],
+            ["toaster", "closet"],
+            ["motor"],
+            ["ventilator"],
+            ["mixer"],
+            ["toaster"],
             ["closet"] // --6
         ]
     };
@@ -5806,7 +5556,7 @@ var Script;
                 },
                 waveAmount: 8,
                 waves: [{
-                        enemies: [{ pool: 1, elite: true }],
+                        enemies: [{ pool: 4, elite: true }],
                         amount: 1,
                         duration: 10,
                         minEnemiesOverride: 0,
@@ -5842,9 +5592,9 @@ var Script;
                 duration: 60,
                 defaultWave: {
                     enemies: [
-                        { pool: 2, weight: 8 },
-                        { pool: 5, weight: 1 },
-                        { pool: 6, weight: 1 },
+                        { pool: 0, weight: 6 },
+                        { pool: 2, weight: 3 },
+                        { pool: 4, weight: 2 },
                     ],
                     amount: 5,
                     duration: 8,
@@ -5859,9 +5609,9 @@ var Script;
                     },
                     {
                         enemies: [
-                            { pool: 2, weight: 8 },
-                            { pool: 5, weight: 1 },
-                            { pool: 6, weight: 1 },
+                            { pool: 0, weight: 6 },
+                            { pool: 2, weight: 3 },
+                            { pool: 4, weight: 2 },
                         ],
                         amount: 5,
                         duration: 8,
@@ -5883,7 +5633,6 @@ var Script;
                 defaultWave: {
                     enemies: [
                         { pool: 0, weight: 6 },
-                        { pool: 2, weight: 2 },
                         { pool: 5, weight: 1 },
                         { pool: 6, weight: 1 },
                     ],
@@ -5907,8 +5656,9 @@ var Script;
                 duration: 60,
                 defaultWave: {
                     enemies: [
-                        { pool: 0, weight: 50 },
+                        { pool: 0, weight: 40 },
                         { pool: 2, weight: 20 },
+                        { pool: 4, weight: 10 },
                         { pool: 5, weight: 15 },
                         { pool: 6, weight: 15 },
                     ],
@@ -5925,8 +5675,9 @@ var Script;
                     },
                     {
                         enemies: [
-                            { pool: 0, weight: 50 },
+                            { pool: 0, weight: 40 },
                             { pool: 2, weight: 20 },
+                            { pool: 4, weight: 10 },
                             { pool: 5, weight: 15 },
                             { pool: 6, weight: 15 },
                         ],
@@ -5949,8 +5700,9 @@ var Script;
                 duration: 60,
                 defaultWave: {
                     enemies: [
-                        { pool: 0, weight: 7 },
+                        { pool: 0, weight: 6 },
                         { pool: 2, weight: 3 },
+                        { pool: 4, weight: 1 },
                     ],
                     amount: 4,
                     duration: 3,
@@ -6011,7 +5763,7 @@ var Script;
                             { pool: 0, elite: true },
                             { pool: 0 }
                         ],
-                        amount: 6,
+                        amount: 8,
                         duration: 12,
                         minEnemiesOverride: 1,
                         bonus: {
@@ -6056,7 +5808,22 @@ var Script;
                             { pool: 2, elite: true },
                             { pool: 2 }
                         ],
-                        amount: 6,
+                        amount: 5,
+                        duration: 12,
+                        minEnemiesOverride: 1,
+                        bonus: {
+                            multiplier: {
+                                health: 0.9,
+                                enemySize: 0.9,
+                            }
+                        }
+                    },
+                    {
+                        enemies: [
+                            { pool: 4, elite: true },
+                            { pool: 4 }
+                        ],
+                        amount: 4,
                         duration: 12,
                         minEnemiesOverride: 1,
                         bonus: {
@@ -6083,8 +5850,9 @@ var Script;
                 defaultWave: {
                     enemies: [
                         { pool: 0, weight: 3 },
-                        { pool: 1, weight: 4 },
-                        { pool: 2, weight: 3 },
+                        { pool: 1, weight: 3 },
+                        { pool: 2, weight: 2 },
+                        { pool: 4, weight: 2 },
                     ],
                     amount: 8,
                     duration: 10,
@@ -6110,8 +5878,7 @@ var Script;
                     amount: 6,
                     duration: 0,
                     enemies: [
-                        { pool: 5, weight: 5 },
-                        { pool: 6, weight: 5 }
+                        { pool: 5, weight: 5 }
                     ],
                 },
                 waves: [
@@ -6431,6 +6198,213 @@ var Script;
         }
     }
     Script.DataManager = DataManager;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    let MenuType;
+    (function (MenuType) {
+        MenuType[MenuType["NONE"] = 0] = "NONE";
+        MenuType[MenuType["MAIN"] = 1] = "MAIN";
+        MenuType[MenuType["COLLECTION"] = 2] = "COLLECTION";
+        MenuType[MenuType["SETTINGS"] = 3] = "SETTINGS";
+        MenuType[MenuType["PAUSE"] = 4] = "PAUSE";
+        MenuType[MenuType["CARD_UPGRADE"] = 5] = "CARD_UPGRADE";
+        MenuType[MenuType["END_CONFIRM"] = 6] = "END_CONFIRM";
+        MenuType[MenuType["GAME_OVER"] = 7] = "GAME_OVER";
+        MenuType[MenuType["BETWEEN_ROOMS"] = 8] = "BETWEEN_ROOMS";
+    })(MenuType = Script.MenuType || (Script.MenuType = {}));
+    class MenuManager {
+        menus = new Map();
+        prevGameState = Script.GAMESTATE.PLAYING;
+        setup() {
+            let main = document.getElementById("main-menu-overlay");
+            this.menus.set(MenuType.MAIN, main);
+            this.menus.set(MenuType.COLLECTION, document.getElementById("collection-overlay"));
+            this.menus.set(MenuType.SETTINGS, document.getElementById("settings-overlay"));
+            this.menus.set(MenuType.PAUSE, document.getElementById("pause-overlay"));
+            this.menus.set(MenuType.CARD_UPGRADE, document.getElementById("card-upgrade-popup"));
+            this.menus.set(MenuType.END_CONFIRM, document.getElementById("end-confirm"));
+            this.menus.set(MenuType.GAME_OVER, document.getElementById("game-over-overlay"));
+            this.menus.set(MenuType.BETWEEN_ROOMS, document.getElementById("between-rooms-overlay"));
+            main.querySelector("#main-menu-deck").addEventListener("click", () => { this.openMenu(MenuType.COLLECTION); });
+            main.querySelector("#main-menu-game").addEventListener("click", () => {
+                this.startGame();
+            });
+            document.getElementById("game-overlay-pause").addEventListener("click", () => {
+                this.openPauseMenu();
+            });
+            document.getElementById("pause-resume").addEventListener("click", () => {
+                this.openMenu(MenuType.NONE);
+                Script.gameState = this.prevGameState;
+                Script.ƒ.Time.game.setScale(1);
+            });
+            document.getElementById("pause-quit").addEventListener("click", () => { this.openMenu(MenuType.END_CONFIRM); });
+            document.getElementById("end-abort").addEventListener("click", () => { this.openPauseMenu(); });
+            document.getElementById("game-over-button").addEventListener("click", () => {
+                this.openMenu(MenuType.MAIN);
+                Script.provider.get(Script.EnemyManager).reset();
+            });
+            document.getElementById("end-quit").addEventListener("click", () => {
+                this.openMenu(MenuType.MAIN);
+                //TODO handle game abort.
+                Script.provider.get(Script.EnemyManager).reset();
+            });
+        }
+        openMenu(_menu) {
+            for (let menu of this.menus.entries()) {
+                if (menu[0] === _menu) {
+                    menu[1].classList.remove("hidden");
+                }
+                else {
+                    menu[1].classList.add("hidden");
+                }
+            }
+        }
+        async startGame() {
+            this.openMenu(MenuType.NONE);
+            Script.gameState = Script.GAMESTATE.ROOM_CLEAR;
+            let dataManager = Script.provider.get(Script.DataManager);
+            let cardManager = Script.provider.get(Script.CardManager);
+            cardManager.setCards([], dataManager.savedDeckRaw);
+            let character = Script.provider.get(Script.CharacterManager).character;
+            character?.reset();
+            await Script.provider.get(Script.CharacterManager).upgradeCards(5, true, 1);
+            Script.ƒ.Time.game.setScale(1);
+            Script.provider.get(Script.EnemyManager).nextRoom();
+        }
+        openPauseMenu() {
+            if (Script.gameState !== Script.GAMESTATE.PAUSED)
+                this.prevGameState = Script.gameState;
+            Script.gameState = Script.GAMESTATE.PAUSED;
+            Script.ƒ.Time.game.setScale(0);
+            this.openMenu(MenuType.PAUSE);
+            let cardsForPauseMenu = [];
+            let cm = Script.provider.get(Script.CardManager);
+            let element = document.getElementById("pause-overlay-cards");
+            for (let card of cm.activeCards) {
+                let cv = new Script.CardVisual(card, element, card.id, card.level);
+                cardsForPauseMenu.push(cv.htmlElement);
+                cv.htmlElement.addEventListener("click", this.openPauseCardPopup);
+            }
+            Script.provider.get(Script.CardCollection).fillWithPlaceholders(cardsForPauseMenu, cm.maxActiveCardAmount);
+            element.replaceChildren(...cardsForPauseMenu);
+        }
+        openPauseCardPopup = (_event) => {
+        };
+    }
+    Script.MenuManager = MenuManager;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    class ProjectileManager {
+        provider;
+        characterManager;
+        config;
+        projectileScripts = [];
+        projectiles = [];
+        static projectileGraph;
+        static aoeGraph;
+        static hitZoneGraph;
+        projectilesNode;
+        hitzoneNode;
+        constructor(provider) {
+            this.provider = provider;
+            if (Script.ƒ.Project.mode === Script.ƒ.MODE.EDITOR)
+                return;
+            document.addEventListener("interactiveViewportStarted", this.start);
+            Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
+            Script.ƒ.Project.addEventListener("resourcesLoaded" /* ƒ.EVENT.RESOURCES_LOADED */, this.loaded);
+            this.characterManager = provider.get(Script.CharacterManager);
+            this.config = provider.get(Script.Config);
+        }
+        setup() {
+            Script.ƒ.Debug.log("EnemyManager setup");
+        }
+        start = (_event) => {
+            let viewport = _event.detail;
+            this.projectilesNode = viewport.getBranch().getChildrenByName("projectiles")[0];
+            this.hitzoneNode = viewport.getBranch().getChildrenByName("hitzones")[0];
+        };
+        loaded = async () => {
+            ProjectileManager.projectileGraph = await Script.ƒ.Project.getResourcesByName("projectile")[0];
+            ProjectileManager.hitZoneGraph = await Script.ƒ.Project.getResourcesByName("hitzone")[0];
+            ProjectileManager.aoeGraph = await Script.ƒ.Project.getResourcesByName("aoe")[0];
+        };
+        update = () => {
+            if (Script.gameState === Script.GAMESTATE.PAUSED)
+                return;
+            if (Script.gameState === Script.GAMESTATE.IDLE)
+                return;
+            let character = this.characterManager.character;
+            if (!character)
+                return;
+            // update projectiles
+            let time = Script.ƒ.Loop.timeFrameGame / 1000;
+            for (let projectile of this.projectileScripts) {
+                projectile.update(character.node.mtxWorld.translation, time);
+            }
+        };
+        removeProjectile(_projectile) {
+            let index = this.projectileScripts.findIndex((n) => n === _projectile);
+            if (index >= 0) {
+                this.projectileScripts.splice(index, 1);
+                Script.ƒ.Recycler.storeMultiple(...this.projectiles.splice(index, 1));
+            }
+            _projectile.node.getParent().removeChild(_projectile.node);
+        }
+        removeAOE(_aoe) {
+            let index = this.projectileScripts.findIndex((n) => n === _aoe);
+            if (index >= 0) {
+                this.projectileScripts.splice(index, 1);
+                Script.ƒ.Recycler.storeMultiple(...this.projectiles.splice(index, 1));
+            }
+            _aoe.node.getParent().removeChild(_aoe.node);
+        }
+        async createProjectile(_options, _position, _modifiers, _parent = this.projectilesNode) {
+            let pgi = Script.ƒ.Recycler.get(Script.ProjectileGraphInstance);
+            if (!pgi.initialized) {
+                await pgi.set(ProjectileManager.projectileGraph);
+            }
+            pgi.mtxLocal.translation = Script.ƒ.Vector3.SUM(_position);
+            let p = pgi.getComponent(Script.ProjectileComponent);
+            _parent.addChild(pgi);
+            this.projectileScripts.push(p);
+            this.projectiles.push(pgi);
+            p.setup(_options, _modifiers);
+        }
+        async createAOE(_options, _position, _modifiers, _parent = this.projectilesNode) {
+            let aoeGi = Script.ƒ.Recycler.get(Script.AOEGraphInstance);
+            if (!aoeGi.initialized) {
+                await aoeGi.set(ProjectileManager.aoeGraph);
+            }
+            let a = aoeGi.getComponent(Script.AOE);
+            a.setup(_options, _modifiers);
+            aoeGi.mtxLocal.translation = Script.ƒ.Vector3.SUM(_position);
+            _parent.addChild(aoeGi);
+            this.projectileScripts.push(a);
+            this.projectiles.push(aoeGi);
+        }
+        async createHitZone(_position, _size = 1, _parent = this.hitzoneNode) {
+            let hz = Script.ƒ.Recycler.get(Script.HitZoneGraphInstance);
+            if (!hz.initialized) {
+                await hz.set(ProjectileManager.hitZoneGraph);
+            }
+            hz.getComponent(Script.ƒ.ComponentMesh).mtxPivot.scaling = Script.ƒ.Vector3.ONE(_size);
+            hz.mtxLocal.translation = _position;
+            _parent.addChild(hz);
+            return hz;
+        }
+        cleanup() {
+            Script.ƒ.Recycler.storeMultiple(...this.projectiles);
+            for (let projectile of this.projectileScripts) {
+                projectile.node.getParent().removeChild(projectile.node);
+                projectile.removeAttachments();
+            }
+            this.projectiles.length = 0;
+            this.projectileScripts.length = 0;
+        }
+    }
+    Script.ProjectileManager = ProjectileManager;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
@@ -6870,211 +6844,260 @@ var Script;
     }
     Script.EnemyManager = EnemyManager;
 })(Script || (Script = {}));
+/// <reference path="../Types.ts" />
+/// <reference path="../Animateable.ts" />
 var Script;
+/// <reference path="../Types.ts" />
+/// <reference path="../Animateable.ts" />
 (function (Script) {
-    let MenuType;
-    (function (MenuType) {
-        MenuType[MenuType["NONE"] = 0] = "NONE";
-        MenuType[MenuType["MAIN"] = 1] = "MAIN";
-        MenuType[MenuType["COLLECTION"] = 2] = "COLLECTION";
-        MenuType[MenuType["SETTINGS"] = 3] = "SETTINGS";
-        MenuType[MenuType["PAUSE"] = 4] = "PAUSE";
-        MenuType[MenuType["CARD_UPGRADE"] = 5] = "CARD_UPGRADE";
-        MenuType[MenuType["END_CONFIRM"] = 6] = "END_CONFIRM";
-        MenuType[MenuType["GAME_OVER"] = 7] = "GAME_OVER";
-        MenuType[MenuType["BETWEEN_ROOMS"] = 8] = "BETWEEN_ROOMS";
-    })(MenuType = Script.MenuType || (Script.MenuType = {}));
-    class MenuManager {
-        menus = new Map();
-        prevGameState = Script.GAMESTATE.PLAYING;
-        setup() {
-            let main = document.getElementById("main-menu-overlay");
-            this.menus.set(MenuType.MAIN, main);
-            this.menus.set(MenuType.COLLECTION, document.getElementById("collection-overlay"));
-            this.menus.set(MenuType.SETTINGS, document.getElementById("settings-overlay"));
-            this.menus.set(MenuType.PAUSE, document.getElementById("pause-overlay"));
-            this.menus.set(MenuType.CARD_UPGRADE, document.getElementById("card-upgrade-popup"));
-            this.menus.set(MenuType.END_CONFIRM, document.getElementById("end-confirm"));
-            this.menus.set(MenuType.GAME_OVER, document.getElementById("game-over-overlay"));
-            this.menus.set(MenuType.BETWEEN_ROOMS, document.getElementById("between-rooms-overlay"));
-            main.querySelector("#main-menu-deck").addEventListener("click", () => { this.openMenu(MenuType.COLLECTION); });
-            main.querySelector("#main-menu-game").addEventListener("click", () => {
-                this.startGame();
-            });
-            document.getElementById("game-overlay-pause").addEventListener("click", () => {
-                this.openPauseMenu();
-            });
-            document.getElementById("pause-resume").addEventListener("click", () => {
-                this.openMenu(MenuType.NONE);
-                Script.gameState = this.prevGameState;
-                Script.ƒ.Time.game.setScale(1);
-            });
-            document.getElementById("pause-quit").addEventListener("click", () => { this.openMenu(MenuType.END_CONFIRM); });
-            document.getElementById("end-abort").addEventListener("click", () => { this.openPauseMenu(); });
-            document.getElementById("game-over-button").addEventListener("click", () => {
-                this.openMenu(MenuType.MAIN);
-                Script.provider.get(Script.EnemyManager).reset();
-            });
-            document.getElementById("end-quit").addEventListener("click", () => {
-                this.openMenu(MenuType.MAIN);
-                //TODO handle game abort.
-                Script.provider.get(Script.EnemyManager).reset();
-            });
+    class ProjectileComponent extends Script.Animateable {
+        tracking;
+        direction;
+        targetPosition;
+        damage;
+        size;
+        speed;
+        range;
+        piercing;
+        target;
+        diminishing;
+        artillery;
+        rotateInDirection;
+        impact;
+        targetMode;
+        lockedToEntity;
+        sprite;
+        stunDuration;
+        dontNormalizeMovement;
+        hazardZone;
+        prevDistance;
+        modifiers = {};
+        functions = {};
+        static defaults = {
+            targetPosition: undefined,
+            direction: new Script.ƒ.Vector3(),
+            piercing: 0,
+            range: Infinity,
+            size: 1,
+            speed: 2,
+            damage: 1,
+            stunDuration: 0,
+            target: Script.ProjectileTarget.ENEMY,
+            tracking: undefined,
+            diminishing: false,
+            targetMode: Script.ProjectileTargetMode.NONE,
+            lockedToEntity: false,
+            impact: undefined,
+            artillery: false,
+            rotateInDirection: false,
+            dontNormalizeMovement: false,
+            sprite: ["projectile", "toast"],
+            methods: {},
+            hitboxSize: 1,
+        };
+        constructor() {
+            super();
+            if (Script.ƒ.Project.mode == Script.ƒ.MODE.EDITOR)
+                return;
+            this.addEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.init);
         }
-        openMenu(_menu) {
-            for (let menu of this.menus.entries()) {
-                if (menu[0] === _menu) {
-                    menu[1].classList.remove("hidden");
-                }
-                else {
-                    menu[1].classList.add("hidden");
-                }
+        init = () => {
+            this.removeEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.init);
+            // setup physics
+            this.node.getComponent(Script.ƒ.ComponentRigidbody).addEventListener("TriggerEnteredCollision" /* ƒ.EVENT_PHYSICS.TRIGGER_ENTER */, this.onTriggerEnter);
+            this.node.getComponent(Script.ƒ.ComponentRigidbody).addEventListener("TriggerLeftCollision" /* ƒ.EVENT_PHYSICS.TRIGGER_EXIT */, this.onTriggerExit);
+        };
+        async setup(_options, _modifier) {
+            if (this.functions.beforeSetup) {
+                this.functions.beforeSetup.call(this, _options, _modifier);
             }
-        }
-        async startGame() {
-            this.openMenu(MenuType.NONE);
-            Script.gameState = Script.GAMESTATE.ROOM_CLEAR;
-            let dataManager = Script.provider.get(Script.DataManager);
-            let cardManager = Script.provider.get(Script.CardManager);
-            cardManager.setCards([], dataManager.savedDeckRaw);
-            let character = Script.provider.get(Script.CharacterManager).character;
-            character?.reset();
-            await Script.provider.get(Script.CharacterManager).upgradeCards(5, true, 1);
-            Script.ƒ.Time.game.setScale(1);
-            Script.provider.get(Script.EnemyManager).nextRoom();
-        }
-        openPauseMenu() {
-            if (Script.gameState !== Script.GAMESTATE.PAUSED)
-                this.prevGameState = Script.gameState;
-            Script.gameState = Script.GAMESTATE.PAUSED;
-            Script.ƒ.Time.game.setScale(0);
-            this.openMenu(MenuType.PAUSE);
-            let cardsForPauseMenu = [];
+            let limitation = undefined;
+            if (_options.target === Script.ProjectileTarget.ENEMY) {
+                if (Script.provider.get(Script.CharacterManager).isMoving())
+                    limitation = "stopped";
+            }
             let cm = Script.provider.get(Script.CardManager);
-            let element = document.getElementById("pause-overlay-cards");
-            for (let card of cm.activeCards) {
-                let cv = new Script.CardVisual(card, element, card.id, card.level);
-                cardsForPauseMenu.push(cv.htmlElement);
-                cv.htmlElement.addEventListener("click", this.openPauseCardPopup);
+            _options = { ...ProjectileComponent.defaults, ..._options };
+            this.direction = _options.direction;
+            this.targetPosition = _options.targetPosition;
+            this.tracking = _options.tracking;
+            this.damage = cm.modifyValue(_options.damage, Script.PassiveCardEffect.DAMAGE, _modifier, limitation);
+            this.size = cm.modifyValue(_options.size, Script.PassiveCardEffect.PROJECTILE_SIZE, _modifier, limitation);
+            this.speed = cm.modifyValue(_options.speed, Script.PassiveCardEffect.PROJECTILE_SPEED, _modifier, limitation);
+            this.range = cm.modifyValue(_options.range, Script.PassiveCardEffect.PROJECTILE_RANGE, _modifier, limitation);
+            this.piercing = cm.modifyValue(_options.piercing, Script.PassiveCardEffect.PROJECTILE_PIERCING, _modifier, limitation);
+            this.target = _options.target;
+            this.artillery = _options.artillery;
+            this.rotateInDirection = _options.rotateInDirection;
+            this.diminishing = _options.diminishing;
+            this.impact = _options.impact;
+            this.targetMode = _options.targetMode;
+            this.lockedToEntity = _options.lockedToEntity;
+            this.functions = _options.methods;
+            this.sprite = this.getSprite(_options.sprite);
+            this.setCentralAnimator(this.sprite);
+            this.node.mtxLocal.scaling = Script.ƒ.Vector3.ONE(this.size);
+            this.node.getComponent(Script.ƒ.ComponentRigidbody).mtxPivot.scaling = Script.ƒ.Vector3.ONE(_options.hitboxSize);
+            this.hazardZone = undefined;
+            this.prevDistance = Infinity;
+            this.modifiers = _modifier;
+            //TODO rotate projectile towards flight direction
+            if (this.artillery) {
+                let pos = new Script.ƒ.Vector3();
+                if (this.target === Script.ProjectileTarget.PLAYER) {
+                    pos = Script.provider.get(Script.CharacterManager).character.node.mtxWorld.translation.clone;
+                }
+                else if (this.target === Script.ProjectileTarget.ENEMY) {
+                    pos = Script.provider.get(Script.EnemyManager).getEnemy(this.targetMode)?.mtxWorld.translation.clone;
+                    if (!pos)
+                        return this.remove();
+                }
+                let hzSize = this.size;
+                for (let impact of this.impact) {
+                    hzSize = Math.max(hzSize, cm.modifyValue(1, Script.PassiveCardEffect.PROJECTILE_SIZE, impact.modifiers));
+                }
+                let hz = await Script.provider.get(Script.ProjectileManager).createHitZone(pos, hzSize);
+                this.tracking = {
+                    strength: 1,
+                    target: hz,
+                    startTrackingAfter: 1
+                };
+                this.hazardZone = hz;
+                this.direction = Script.ƒ.Vector3.Y(this.speed);
+                this.targetPosition = pos;
             }
-            Script.provider.get(Script.CardCollection).fillWithPlaceholders(cardsForPauseMenu, cm.maxActiveCardAmount);
-            element.replaceChildren(...cardsForPauseMenu);
+            if (this.targetMode !== Script.ProjectileTargetMode.NONE) {
+                let targetPosition = Script.provider.get(Script.EnemyManager).getEnemy(this.targetMode)?.mtxWorld.translation.clone;
+                if (!targetPosition) {
+                    return this.remove();
+                }
+                ;
+                this.direction = Script.ƒ.Vector3.DIFFERENCE(targetPosition, this.node.mtxLocal.translation);
+            }
+            if (this.tracking) {
+                this.tracking = { ...{ stopTrackingAfter: Infinity, stopTrackingInRadius: 0, strength: 1, startTrackingAfter: 0 }, ...this.tracking };
+            }
+            this.node.getComponent(Script.ƒ.ComponentMesh).mtxPivot.rotation = new Script.ƒ.Vector3();
+            if (this.functions.afterSetup) {
+                this.functions.afterSetup.call(this);
+            }
         }
-        openPauseCardPopup = (_event) => {
+        update(_charPosition, _frameTimeInSeconds) {
+            if (this.functions.preUpdate)
+                this.functions.preUpdate.call(this, _charPosition, _frameTimeInSeconds);
+            if (this.functions.preMove)
+                this.functions.preMove.call(this, _frameTimeInSeconds);
+            this.move(_frameTimeInSeconds);
+            if (this.functions.postMove)
+                this.functions.postMove.call(this, _frameTimeInSeconds);
+            this.rotate();
+            if (this.functions.postUpdate)
+                this.functions.postUpdate.call(this, _charPosition, _frameTimeInSeconds);
+        }
+        removeAttachments() {
+            this.removeHazardZone();
+        }
+        removeHazardZone() {
+            if (!this.hazardZone)
+                return;
+            Script.ƒ.Recycler.store(this.hazardZone);
+            this.hazardZone.getParent().removeChild(this.hazardZone);
+            this.hazardZone = undefined;
+        }
+        move(_frameTimeInSeconds) {
+            if (this.tracking && this.tracking.target) {
+                this.tracking.startTrackingAfter -= _frameTimeInSeconds;
+                if (this.tracking.startTrackingAfter <= 0) {
+                    this.tracking.stopTrackingAfter -= _frameTimeInSeconds;
+                    let diff = Script.ƒ.Vector3.DIFFERENCE(this.tracking.target.mtxWorld.translation, this.node.mtxWorld.translation);
+                    // we need to track a certain node, so modify direction accordingly
+                    this.direction = Script.ƒ.Vector3.SUM(diff.scale(this.tracking.strength ?? 1), this.direction.scale(1 - (this.tracking.strength ?? 1)));
+                    // this.direction.add(ƒ.Vector3.SCALE(diff, (this.tracking.strength ?? 1) * Math.min(_frameTimeInSeconds, 1)));
+                    let mgtSqrd = diff.magnitudeSquared;
+                    if (this.tracking.stopTrackingAfter <= 0 || (mgtSqrd <= Math.pow(this.tracking.stopTrackingInRadius, 2) && mgtSqrd !== 0)) {
+                        // console.log("stop tracking", this.tracking.stopTrackingAfter)
+                        // end of tracking
+                        this.tracking = undefined;
+                    }
+                }
+            }
+            let dir = this.direction.clone;
+            if (dir.magnitudeSquared > 0 && !this.dontNormalizeMovement)
+                dir.normalize(Math.min(1, _frameTimeInSeconds) * this.speed);
+            else
+                dir.scale(Math.min(1, _frameTimeInSeconds) * this.speed);
+            this.node.mtxLocal.translate(dir);
+            this.range -= dir.magnitude;
+            if (this.range < 0) {
+                this.remove();
+            }
+            //TODO check if flew past target position (due to lag?) and still explode
+            if (this.targetPosition) {
+                let distanceToTarget = Script.ƒ.Vector3.DIFFERENCE(this.targetPosition, this.node.mtxWorld.translation).magnitudeSquared;
+                if (this.targetPosition && (this.node.mtxWorld.translation.equals(this.targetPosition, 0.5) || distanceToTarget > this.prevDistance)) {
+                    this.prevDistance = distanceToTarget;
+                    if (this.artillery && this.tracking.startTrackingAfter > 0)
+                        return;
+                    // target position reached
+                    this.removeHazardZone();
+                    if (this.impact && this.impact.length) {
+                        for (let impact of this.impact) {
+                            //TODO implement impacts
+                            switch (impact.type) {
+                                case "projectile":
+                                    Script.provider.get(Script.ProjectileManager).createProjectile(Script.projectiles[impact.projectile], this.targetPosition, Script.provider.get(Script.CardManager).combineEffects(impact.modifiers, this.modifiers));
+                                    break;
+                                case "aoe":
+                                    Script.provider.get(Script.ProjectileManager).createAOE(Script.areasOfEffect[impact.aoe], this.targetPosition, Script.provider.get(Script.CardManager).combineEffects(impact.modifiers, this.modifiers));
+                                    break;
+                            }
+                        }
+                    }
+                    this.remove();
+                }
+            }
+            // remove projectile if outside of room
+            if (this.node.cmpTransform.mtxLocal.translation.magnitudeSquared > 18500 /* 15 width, 25 height playarea => max magnSqr = 850 */) {
+                this.remove();
+            }
+        }
+        rotate() {
+            if (!this.rotateInDirection)
+                return;
+            let refVector = Script.ƒ.Vector3.X(1);
+            let angle = Math.acos(Script.ƒ.Vector3.DOT(this.direction, refVector) / (refVector.magnitude * this.direction.magnitude));
+            angle = angle * 180 / Math.PI * Math.sign(this.direction.y);
+            let pivot = this.node.getComponent(Script.ƒ.ComponentMesh).mtxPivot;
+            pivot.rotation = new Script.ƒ.Vector3(pivot.rotation.x, pivot.rotation.y, angle);
+        }
+        onTriggerEnter = (_event) => {
+            if (this.artillery || this.targetPosition)
+                return;
+            if (_event.cmpRigidbody.node.name === "enemy" && this.target === Script.ProjectileTarget.ENEMY) {
+                this.hit(_event.cmpRigidbody.node.getComponent(Script.Enemy));
+            }
+            else if (_event.cmpRigidbody.node.name === "character" && this.target === Script.ProjectileTarget.PLAYER) {
+                this.hit(_event.cmpRigidbody.node.getComponent(Script.Character));
+            }
         };
+        onTriggerExit = (_event) => {
+            // console.log("onTriggerExit", _event);
+        };
+        hit(_hitable) {
+            if (this.functions.preHit)
+                this.functions.preHit.call(this, _hitable);
+            _hitable.hit({ damage: this.damage, stun: this.stunDuration, type: Script.HitType.PROJECTILE });
+            this.piercing--;
+            if (this.functions.postHit)
+                this.functions.postHit.call(this, _hitable);
+            if (this.piercing < 0)
+                this.remove();
+        }
+        remove() {
+            Script.provider.get(Script.ProjectileManager).removeProjectile(this);
+            this.removeHazardZone();
+        }
     }
-    Script.MenuManager = MenuManager;
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
-    class ProjectileManager {
-        provider;
-        characterManager;
-        config;
-        projectileScripts = [];
-        projectiles = [];
-        static projectileGraph;
-        static aoeGraph;
-        static hitZoneGraph;
-        projectilesNode;
-        hitzoneNode;
-        constructor(provider) {
-            this.provider = provider;
-            if (Script.ƒ.Project.mode === Script.ƒ.MODE.EDITOR)
-                return;
-            document.addEventListener("interactiveViewportStarted", this.start);
-            Script.ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
-            Script.ƒ.Project.addEventListener("resourcesLoaded" /* ƒ.EVENT.RESOURCES_LOADED */, this.loaded);
-            this.characterManager = provider.get(Script.CharacterManager);
-            this.config = provider.get(Script.Config);
-        }
-        setup() {
-            Script.ƒ.Debug.log("EnemyManager setup");
-        }
-        start = (_event) => {
-            let viewport = _event.detail;
-            this.projectilesNode = viewport.getBranch().getChildrenByName("projectiles")[0];
-            this.hitzoneNode = viewport.getBranch().getChildrenByName("hitzones")[0];
-        };
-        loaded = async () => {
-            ProjectileManager.projectileGraph = await Script.ƒ.Project.getResourcesByName("projectile")[0];
-            ProjectileManager.hitZoneGraph = await Script.ƒ.Project.getResourcesByName("hitzone")[0];
-            ProjectileManager.aoeGraph = await Script.ƒ.Project.getResourcesByName("aoe")[0];
-        };
-        update = () => {
-            if (Script.gameState === Script.GAMESTATE.PAUSED)
-                return;
-            if (Script.gameState === Script.GAMESTATE.IDLE)
-                return;
-            let character = this.characterManager.character;
-            if (!character)
-                return;
-            // update projectiles
-            let time = Script.ƒ.Loop.timeFrameGame / 1000;
-            for (let projectile of this.projectileScripts) {
-                projectile.update(character.node.mtxWorld.translation, time);
-            }
-        };
-        removeProjectile(_projectile) {
-            let index = this.projectileScripts.findIndex((n) => n === _projectile);
-            if (index >= 0) {
-                this.projectileScripts.splice(index, 1);
-                Script.ƒ.Recycler.storeMultiple(...this.projectiles.splice(index, 1));
-            }
-            _projectile.node.getParent().removeChild(_projectile.node);
-        }
-        removeAOE(_aoe) {
-            let index = this.projectileScripts.findIndex((n) => n === _aoe);
-            if (index >= 0) {
-                this.projectileScripts.splice(index, 1);
-                Script.ƒ.Recycler.storeMultiple(...this.projectiles.splice(index, 1));
-            }
-            _aoe.node.getParent().removeChild(_aoe.node);
-        }
-        async createProjectile(_options, _position, _modifiers, _parent = this.projectilesNode) {
-            let pgi = Script.ƒ.Recycler.get(Script.ProjectileGraphInstance);
-            if (!pgi.initialized) {
-                await pgi.set(ProjectileManager.projectileGraph);
-            }
-            pgi.mtxLocal.translation = Script.ƒ.Vector3.SUM(_position);
-            let p = pgi.getComponent(Script.ProjectileComponent);
-            _parent.addChild(pgi);
-            this.projectileScripts.push(p);
-            this.projectiles.push(pgi);
-            p.setup(_options, _modifiers);
-        }
-        async createAOE(_options, _position, _modifiers, _parent = this.projectilesNode) {
-            let aoeGi = Script.ƒ.Recycler.get(Script.AOEGraphInstance);
-            if (!aoeGi.initialized) {
-                await aoeGi.set(ProjectileManager.aoeGraph);
-            }
-            let a = aoeGi.getComponent(Script.AOE);
-            a.setup(_options, _modifiers);
-            aoeGi.mtxLocal.translation = Script.ƒ.Vector3.SUM(_position);
-            _parent.addChild(aoeGi);
-            this.projectileScripts.push(a);
-            this.projectiles.push(aoeGi);
-        }
-        async createHitZone(_position, _size = 1, _parent = this.hitzoneNode) {
-            let hz = Script.ƒ.Recycler.get(Script.HitZoneGraphInstance);
-            if (!hz.initialized) {
-                await hz.set(ProjectileManager.hitZoneGraph);
-            }
-            hz.getComponent(Script.ƒ.ComponentMesh).mtxPivot.scaling = Script.ƒ.Vector3.ONE(_size);
-            hz.mtxLocal.translation = _position;
-            _parent.addChild(hz);
-            return hz;
-        }
-        cleanup() {
-            Script.ƒ.Recycler.storeMultiple(...this.projectiles);
-            for (let projectile of this.projectileScripts) {
-                projectile.node.getParent().removeChild(projectile.node);
-                projectile.removeAttachments();
-            }
-            this.projectiles.length = 0;
-            this.projectileScripts.length = 0;
-        }
-    }
-    Script.ProjectileManager = ProjectileManager;
+    Script.ProjectileComponent = ProjectileComponent;
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map
