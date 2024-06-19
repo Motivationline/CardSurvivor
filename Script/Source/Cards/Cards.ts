@@ -1552,35 +1552,40 @@ namespace Script {
                 { //Tier 1
                     passiveEffects: {
                         multiplier: {
-                            //TODO: -5% enemies, +5% enemy stats
+                            enemyAmount: 0.95, //-5% enemies
+                            // TODO: +5% enemy stats
                         }
                     }
                 },
                 { //Tier 2
                     passiveEffects: {
                         multiplier: {
-                            //TODO: -10% enemies, +10% enemy stats
+                            enemyAmount: 0.9, //-10% enemies
+                            // TODO: +10% enemy stats
                         }
                     }
                 },
                 { //Tier 3
                     passiveEffects: {
                         multiplier: {
-                            //TODO: -20% enemies, +20% enemy stats
+                            enemyAmount: 0.8, //-20% enemies
+                            // TODO: +20% enemy stats
                         }
                     }
                 },
                 { //Tier 4
                     passiveEffects: {
                         multiplier: {
-                            //TODO: -30% enemies, +30% enemy stats
+                            enemyAmount: 0.7, //-30% enemies
+                            // TODO: +30% enemy stats
                         }
                     }
                 },
                 { //Tier 5
                     passiveEffects: {
                         multiplier: {
-                            //TODO: -50% enemies, +50% enemy stats
+                            enemyAmount: 0.5, //-50% enemies
+                            // TODO: +50% enemy stats
                         }
                     }
                 },

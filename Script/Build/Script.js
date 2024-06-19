@@ -3239,35 +3239,40 @@ var Script;
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: -5% enemies, +5% enemy stats
+                            enemyAmount: 0.95, //-5% enemies
+                            // TODO: +5% enemy stats
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: -10% enemies, +10% enemy stats
+                            enemyAmount: 0.9, //-10% enemies
+                            // TODO: +10% enemy stats
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: -20% enemies, +20% enemy stats
+                            enemyAmount: 0.8, //-20% enemies
+                            // TODO: +20% enemy stats
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: -30% enemies, +30% enemy stats
+                            enemyAmount: 0.7, //-30% enemies
+                            // TODO: +30% enemy stats
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: -50% enemies, +50% enemy stats
+                            enemyAmount: 0.5, //-50% enemies
+                            // TODO: +50% enemy stats
                         }
                     }
                 },
@@ -6586,7 +6591,7 @@ var Script;
                 this.spawnEnemy(elite, true);
             }
             let amount = Script.provider.get(Script.CardManager).modifyValuePlayer(wave.amount, Script.PassiveCardEffect.ENEMY_AMOUNT);
-            let afterComma = amount - Math.floor(amount);
+            let afterComma = Math.max(1, amount - Math.floor(amount));
             if (Math.random() < afterComma) {
                 amount++;
             }

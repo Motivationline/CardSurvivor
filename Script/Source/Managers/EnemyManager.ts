@@ -188,7 +188,7 @@ namespace Script {
             }
 
             let amount = provider.get(CardManager).modifyValuePlayer(wave.amount, PassiveCardEffect.ENEMY_AMOUNT);
-            let afterComma = amount - Math.floor(amount);
+            let afterComma = Math.max(1, amount - Math.floor(amount));
             if (Math.random() < afterComma) {
                 amount++;
             }
