@@ -10,6 +10,10 @@ namespace Script {
             knockbackMultiplier: 1,
             dropXP: 2,
             hitboxSize: 0.5,
+            shadow: {
+                size: 1.1,
+                position: new ƒ.Vector2(0, -0.05)
+            },
         },
         chair: {
             moveSprite: ["chair", "move"],
@@ -20,6 +24,10 @@ namespace Script {
             knockbackMultiplier: 1.2,
             dropXP: 2,
             hitboxSize: 0.5,
+            shadow: {
+                size: 0.75,
+                position: new ƒ.Vector2(0, -0.35)
+            },
         },
         toaster: {
             moveSprite: ["toaster", "move"],
@@ -28,6 +36,10 @@ namespace Script {
             speed: 0.5,
             knockbackMultiplier: 1.2,
             dropXP: 3,
+            shadow: {
+                size: 0.8,
+                position: new ƒ.Vector2(0, -0.3)
+            },
             attacks: [
                 {
                     cooldown: 2,
@@ -60,6 +72,10 @@ namespace Script {
             knockbackMultiplier: 0.2,
             dropXP: 3,
             hitboxSize: 0.6,
+            shadow: {
+                size: 0.7,
+                position: new ƒ.Vector2(0, -0.3)
+            },
             events: {
                 // running away causes attacks
                 step: function () {
@@ -90,6 +106,10 @@ namespace Script {
             speed: 2,
             dropXP: 4,
             hitboxSize: 0.6,
+            shadow: {
+                size: 0.82,
+                position: new ƒ.Vector2(0, -0.33)
+            },
             attacks: [
                 {
                     cooldown: 0.81, // how long it dashes, including delay
@@ -121,7 +141,11 @@ namespace Script {
             damage: 5,
             speed: 2,
             health: 4,
-            dropXP: 0.5
+            dropXP: 0.5,
+            shadow: {
+                size: 0.55,
+                position: new ƒ.Vector2(0, -0.68)
+            },
         },
         mixer: {
             moveSprite: ["mixer", "move"],
@@ -192,6 +216,10 @@ namespace Script {
             knockbackMultiplier: 0.1,
             size: 3,
             speed: 1,
+            shadow: {
+                size: 0.8,
+                position: new ƒ.Vector2(0, -0.3)
+            },
             events: {
                 // running away causes attacks
                 step: function () {

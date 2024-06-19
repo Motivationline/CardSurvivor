@@ -13,11 +13,11 @@ namespace Script {
 
     export const pools: Pools = {
         "electronics": [
-            ["mixer"], // --0
+            ["microwave", "chair"], // --0
             ["toaster", "closet"], // --1
             ["motor"], // --2
             ["ventilator"], // --3
-            ["chair"], //mixer --4
+            ["mixer"], // --4
             ["toaster"], // --5
             ["closet"] // --6
         ]
@@ -27,7 +27,7 @@ namespace Script {
         "electronics": [
             // room 1
             {
-                duration: 200,
+                duration: 20,
                 defaultWave: {
                     enemies: [{ pool: 0 }],
                     amount: 3,
