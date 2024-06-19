@@ -699,6 +699,7 @@ declare namespace Script {
         private currentRoomEnd;
         private currentXP;
         private xpElement;
+        private lvlupMarker;
         private damageWasDealt;
         private timeElement;
         constructor(provider: Provider);

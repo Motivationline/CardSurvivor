@@ -25,8 +25,8 @@ namespace Script {
         #healthElement: HTMLProgressElement;
         private prevDirection: number = 0;
         private defaultMaxHealth = 100;
-        health: number = 10000000;
-        maxHealth: number = 10000000;
+        health: number = 100;
+        maxHealth: number = 100;
         private rigidbody: ƒ.ComponentRigidbody;
         private cardManager: CardManager;
         speed: number = 3.5;
