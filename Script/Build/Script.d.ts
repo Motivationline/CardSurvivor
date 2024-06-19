@@ -541,6 +541,10 @@ declare namespace Script {
             [name: string]: (_event?: CustomEvent<any>) => void;
         };
         hitboxSize: number;
+        shadow?: {
+            size?: number;
+            position?: ƒ.Vector2;
+        };
         private enemyManager;
         private prevDirection;
         private currentlyActiveAttack;
@@ -583,6 +587,10 @@ declare namespace Script {
         };
         hitboxSize?: number;
         afterSetup?: () => void;
+        shadow?: {
+            size?: number;
+            position?: ƒ.Vector2;
+        };
     }
     interface EnemyAttack {
         requiredDistance: [number, number];

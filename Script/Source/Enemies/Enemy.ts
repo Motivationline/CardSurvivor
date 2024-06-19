@@ -15,6 +15,7 @@ namespace Script {
         public size: number = 1;
         public events?: { [name: string]: (_event?: CustomEvent<any>) => void; };
         public hitboxSize: number;
+        public shadow?: { size?: number; position?: ƒ.Vector2; };
 
         private enemyManager: EnemyManager;
         private prevDirection: number;
@@ -92,6 +93,15 @@ namespace Script {
             this.rigidbody.mtxPivot.scaling = ƒ.Vector3.ONE(_options.hitboxSize);
             this.invulnerable = false;
             this.currentlyActiveAttack = undefined;
+
+            this.shadow = {...{
+                    size: 1,
+                    position: new ƒ.Vector2(0, -0.25),
+                }, ..._options.shadow};
+
+            let shadow = this.node.getChild(0);
+            if(this.shadow.size) shadow.mtxLocal.scaling = ƒ.Vector3.ONE(this.shadow.size);
+            if(this.shadow.position) shadow.mtxLocal.translation = new ƒ.Vector3(this.shadow.position.x, this.shadow.position.y, this.node.mtxLocal.translation.z);
 
             _options.afterSetup?.call(this);
 
@@ -324,6 +334,10 @@ namespace Script {
         events?: { [name: string]: (_event?: CustomEvent) => void; };
         hitboxSize?: number;
         afterSetup?: () => void;
+        shadow?: {
+            size?: number;
+            position?: ƒ.Vector2;
+        };
     }
 
     export interface EnemyAttack {

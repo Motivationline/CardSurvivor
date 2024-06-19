@@ -4599,8 +4599,8 @@ var Script;
         #healthElement;
         prevDirection = 0;
         defaultMaxHealth = 100;
-        health = 100;
-        maxHealth = 100;
+        health = 10000000;
+        maxHealth = 10000000;
         rigidbody;
         cardManager;
         speed = 3.5;
@@ -4925,6 +4925,10 @@ var Script;
             speed: 1.5,
             dropXP: 5,
             hitboxSize: 0.5,
+            shadow: {
+                size: 0.6,
+                position: new Script.ƒ.Vector2(0, -0.3)
+            },
             afterSetup: function () {
                 this.rigidbody.mtxPivot.scaling = Script.ƒ.Vector3.ZERO;
                 this.invulnerable = true;
@@ -4947,12 +4951,15 @@ var Script;
                         this.updateDesiredDistance([0, 0]);
                         // hide shadow
                         // this.node.getChild(0).activate(false);
+                        this.node.getChild(0).mtxLocal.scaling = Script.ƒ.Vector3.ONE(0.5 * this.shadow.size);
                     },
                     attack: function () {
                         this.node.getComponent(Script.ƒ.ComponentMesh).activate(true);
                         // this.node.getChild(0).activate(true);
+                        this.node.getChild(0).mtxLocal.scaling = Script.ƒ.Vector3.ONE(this.shadow.size);
                         this.invulnerable = false;
                         this.meleeCooldown = 0;
+                        this.rigidbody.setVelocity(Script.ƒ.Vector3.ZERO);
                     },
                     events: {
                         "digup-complete": function (_event) {
@@ -5004,7 +5011,7 @@ var Script;
             attacks: [
                 // 3 waves of toasts
                 {
-                    weight: 1,
+                    weight: 2,
                     requiredDistance: [0, Infinity],
                     cooldown: 2,
                     windUp: 181 / 24,
@@ -5031,7 +5038,7 @@ var Script;
                 },
                 // run
                 {
-                    weight: 2,
+                    weight: 3,
                     requiredDistance: [3, 6],
                     cooldown: 1,
                     windUp: 0,
@@ -5097,6 +5104,7 @@ var Script;
         size = 1;
         events;
         hitboxSize;
+        shadow;
         enemyManager;
         prevDirection;
         currentlyActiveAttack;
@@ -5166,6 +5174,15 @@ var Script;
             this.rigidbody.mtxPivot.scaling = Script.ƒ.Vector3.ONE(_options.hitboxSize);
             this.invulnerable = false;
             this.currentlyActiveAttack = undefined;
+            this.shadow = { ...{
+                    size: 1,
+                    position: new Script.ƒ.Vector2(0, -0.25),
+                }, ..._options.shadow };
+            let shadow = this.node.getChild(0);
+            if (this.shadow.size)
+                shadow.mtxLocal.scaling = Script.ƒ.Vector3.ONE(this.shadow.size);
+            if (this.shadow.position)
+                shadow.mtxLocal.translation = new Script.ƒ.Vector3(this.shadow.position.x, this.shadow.position.y, this.node.mtxLocal.translation.z);
             _options.afterSetup?.call(this);
         }
         updateDesiredDistance(_distance) {
@@ -5389,7 +5406,7 @@ var Script;
     };
     Script.pools = {
         "electronics": [
-            ["microwave"], // --0
+            ["mixer"], // --0
             ["toaster", "closet"], // --1
             ["motor"], // --2
             ["ventilator"], // --3
@@ -5402,7 +5419,7 @@ var Script;
         "electronics": [
             // room 1
             {
-                duration: 20,
+                duration: 200,
                 defaultWave: {
                     enemies: [{ pool: 0 }],
                     amount: 3,
@@ -6498,7 +6515,7 @@ var Script;
             this.currentWaveEnd = Script.ƒ.Time.game.get() + wave.duration * 1000;
             let { totalWeight, enemies, elites } = this.getEnemyList(wave);
             for (let elite of elites) {
-                this.spawnEnemy(elite, undefined, true);
+                this.spawnEnemy(elite, true);
             }
             for (let i = 0; i < wave.amount; i++) {
                 let x = Math.random() * totalWeight;
@@ -6556,13 +6573,22 @@ var Script;
             }
             return { totalWeight, enemies, elites };
         }
-        async spawnEnemy(_enemy, _relativePosition = Script.ƒ.Vector3.NORMALIZATION(new Script.ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), 5), _elite = false) {
+        async spawnEnemy(_enemy, _elite = false) {
             let newEnemyGraphInstance = Script.ƒ.Recycler.get(Script.EnemyGraphInstance);
             if (!newEnemyGraphInstance.initialized) {
                 await newEnemyGraphInstance.set(this.enemyGraph);
             }
-            newEnemyGraphInstance.mtxLocal.translation = this.characterManager.character.node.mtxWorld.translation;
-            newEnemyGraphInstance.mtxLocal.translate(_relativePosition);
+            let spawnPosition = new Script.ƒ.Vector3(Infinity);
+            let bounds = new Script.ƒ.Vector2(11.5, 6.5);
+            let minDistance = 4;
+            let maxDistance = 10;
+            let deltaDistance = maxDistance - minDistance;
+            let charPosition = this.characterManager.character.node.mtxWorld.translation;
+            while (spawnPosition.x > bounds.x || spawnPosition.x < -bounds.x || spawnPosition.y > bounds.y || spawnPosition.y < -bounds.y) {
+                spawnPosition = Script.ƒ.Vector3.NORMALIZATION(new Script.ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), Math.random() * deltaDistance + minDistance);
+                spawnPosition.add(charPosition);
+            }
+            newEnemyGraphInstance.mtxLocal.translation = spawnPosition;
             this.enemyNode.addChild(newEnemyGraphInstance);
             this.enemies.push(newEnemyGraphInstance);
             let enemyScript = newEnemyGraphInstance.getComponent(Script.Enemy);

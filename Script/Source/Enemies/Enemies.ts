@@ -131,6 +131,10 @@ namespace Script {
             speed: 1.5,
             dropXP: 5,
             hitboxSize: 0.5,
+            shadow: {
+                size: 0.6,
+                position: new ƒ.Vector2(0, -0.3)
+            },
             afterSetup: function () {
                 this.rigidbody.mtxPivot.scaling = ƒ.Vector3.ZERO;
                 this.invulnerable = true;
@@ -152,12 +156,15 @@ namespace Script {
                         this.updateDesiredDistance([0, 0]);
                         // hide shadow
                         // this.node.getChild(0).activate(false);
+                        this.node.getChild(0).mtxLocal.scaling = ƒ.Vector3.ONE(0.5 * this.shadow.size);
                     },
                     attack: function () {
                         this.node.getComponent(ƒ.ComponentMesh).activate(true);
                         // this.node.getChild(0).activate(true);
+                        this.node.getChild(0).mtxLocal.scaling = ƒ.Vector3.ONE(this.shadow.size);
                         this.invulnerable = false;
                         this.meleeCooldown = 0;
+                        this.rigidbody.setVelocity(ƒ.Vector3.ZERO);
                     },
                     events: {
                         "digup-complete": function (_event) {
@@ -210,7 +217,7 @@ namespace Script {
             attacks: [
                 // 3 waves of toasts
                 {
-                    weight: 1,
+                    weight: 2,
                     requiredDistance: [0, Infinity],
                     cooldown: 2,
                     windUp: 181 / 24,
@@ -244,7 +251,7 @@ namespace Script {
 
                 // run
                 {
-                    weight: 2,
+                    weight: 3,
                     requiredDistance: [3, 6],
                     cooldown: 1,
                     windUp: 0,

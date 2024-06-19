@@ -178,7 +178,7 @@ namespace Script {
 
             let { totalWeight, enemies, elites } = this.getEnemyList(wave);
             for (let elite of elites) {
-                this.spawnEnemy(elite, undefined, true);
+                this.spawnEnemy(elite, true);
             }
             for (let i = 0; i < wave.amount; i++) {
                 let x = Math.random() * totalWeight;
@@ -236,13 +236,22 @@ namespace Script {
             return { totalWeight, enemies, elites };
         }
 
-        private async spawnEnemy(_enemy: string, _relativePosition: ƒ.Vector3 = ƒ.Vector3.NORMALIZATION(new ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), 5), _elite: boolean = false) {
+        private async spawnEnemy(_enemy: string, _elite: boolean = false) {
             let newEnemyGraphInstance = ƒ.Recycler.get(EnemyGraphInstance);
             if (!newEnemyGraphInstance.initialized) {
                 await newEnemyGraphInstance.set(this.enemyGraph);
             }
-            newEnemyGraphInstance.mtxLocal.translation = this.characterManager.character.node.mtxWorld.translation;
-            newEnemyGraphInstance.mtxLocal.translate(_relativePosition);
+            let spawnPosition: ƒ.Vector3 = new ƒ.Vector3(Infinity);
+            let bounds = new ƒ.Vector2(11.5, 6.5);
+            let minDistance = 4;
+            let maxDistance = 10;
+            let deltaDistance = maxDistance - minDistance;
+            let charPosition = this.characterManager.character.node.mtxWorld.translation;
+            while(spawnPosition.x > bounds.x || spawnPosition.x < -bounds.x || spawnPosition.y > bounds.y || spawnPosition.y < -bounds.y){
+                spawnPosition = ƒ.Vector3.NORMALIZATION(new ƒ.Vector3(Math.cos(Math.random() * 2 * Math.PI), Math.sin(Math.random() * 2 * Math.PI)), Math.random() * deltaDistance + minDistance);
+                spawnPosition.add(charPosition);
+            }
+            newEnemyGraphInstance.mtxLocal.translation = spawnPosition;
             this.enemyNode.addChild(newEnemyGraphInstance);
             this.enemies.push(newEnemyGraphInstance);
             let enemyScript = newEnemyGraphInstance.getComponent(Enemy);
