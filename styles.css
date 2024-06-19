@@ -229,6 +229,10 @@ progress::-webkit-progress-value {
   border-radius: 5vw;
   width: 100%;
 }
+#lvlup-marker > img {
+  width: 2em;
+  margin: 0.2em;
+}
 
 #card-upgrade-popup {
   pointer-events: all;
