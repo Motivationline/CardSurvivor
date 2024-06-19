@@ -70,16 +70,21 @@ namespace Script {
             if (this.functions.beforeSetup) {
                 this.functions.beforeSetup.call(this, _options, _modifier);
             }
+            let limitation: string = undefined;
+            if (_options.target === ProjectileTarget.ENEMY) {
+                if (provider.get(CharacterManager).getMovement().magnitudeSquared === 0)
+                    limitation = "stopped";
+            }
             let cm = provider.get(CardManager);
             _options = { ...ProjectileComponent.defaults, ..._options };
             this.direction = _options.direction;
             this.targetPosition = _options.targetPosition;
             this.tracking = _options.tracking;
-            this.damage = cm.modifyValue(_options.damage, PassiveCardEffect.DAMAGE, _modifier);
-            this.size = cm.modifyValue(_options.size, PassiveCardEffect.PROJECTILE_SIZE, _modifier);
-            this.speed = cm.modifyValue(_options.speed, PassiveCardEffect.PROJECTILE_SPEED, _modifier);
-            this.range = cm.modifyValue(_options.range, PassiveCardEffect.PROJECTILE_RANGE, _modifier);
-            this.piercing = cm.modifyValue(_options.piercing, PassiveCardEffect.PROJECTILE_PIERCING, _modifier);
+            this.damage = cm.modifyValue(_options.damage, PassiveCardEffect.DAMAGE, _modifier, limitation);
+            this.size = cm.modifyValue(_options.size, PassiveCardEffect.PROJECTILE_SIZE, _modifier, limitation);
+            this.speed = cm.modifyValue(_options.speed, PassiveCardEffect.PROJECTILE_SPEED, _modifier, limitation);
+            this.range = cm.modifyValue(_options.range, PassiveCardEffect.PROJECTILE_RANGE, _modifier, limitation);
+            this.piercing = cm.modifyValue(_options.piercing, PassiveCardEffect.PROJECTILE_PIERCING, _modifier, limitation);
             this.target = _options.target;
             this.artillery = _options.artillery;
             this.rotateInDirection = _options.rotateInDirection;
@@ -186,7 +191,7 @@ namespace Script {
             let dir = this.direction.clone;
             if (dir.magnitudeSquared > 0 && !this.dontNormalizeMovement)
                 dir.normalize(Math.min(1, _frameTimeInSeconds) * this.speed);
-            else 
+            else
                 dir.scale(Math.min(1, _frameTimeInSeconds) * this.speed);
             this.node.mtxLocal.translate(dir);
             this.range -= dir.magnitude;

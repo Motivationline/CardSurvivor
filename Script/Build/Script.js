@@ -845,16 +845,21 @@ var Script;
             if (this.functions.beforeSetup) {
                 this.functions.beforeSetup.call(this, _options, _modifier);
             }
+            let limitation = undefined;
+            if (_options.target === Script.ProjectileTarget.ENEMY) {
+                if (Script.provider.get(Script.CharacterManager).getMovement().magnitudeSquared === 0)
+                    limitation = "stopped";
+            }
             let cm = Script.provider.get(Script.CardManager);
             _options = { ...ProjectileComponent.defaults, ..._options };
             this.direction = _options.direction;
             this.targetPosition = _options.targetPosition;
             this.tracking = _options.tracking;
-            this.damage = cm.modifyValue(_options.damage, Script.PassiveCardEffect.DAMAGE, _modifier);
-            this.size = cm.modifyValue(_options.size, Script.PassiveCardEffect.PROJECTILE_SIZE, _modifier);
-            this.speed = cm.modifyValue(_options.speed, Script.PassiveCardEffect.PROJECTILE_SPEED, _modifier);
-            this.range = cm.modifyValue(_options.range, Script.PassiveCardEffect.PROJECTILE_RANGE, _modifier);
-            this.piercing = cm.modifyValue(_options.piercing, Script.PassiveCardEffect.PROJECTILE_PIERCING, _modifier);
+            this.damage = cm.modifyValue(_options.damage, Script.PassiveCardEffect.DAMAGE, _modifier, limitation);
+            this.size = cm.modifyValue(_options.size, Script.PassiveCardEffect.PROJECTILE_SIZE, _modifier, limitation);
+            this.speed = cm.modifyValue(_options.speed, Script.PassiveCardEffect.PROJECTILE_SPEED, _modifier, limitation);
+            this.range = cm.modifyValue(_options.range, Script.PassiveCardEffect.PROJECTILE_RANGE, _modifier, limitation);
+            this.piercing = cm.modifyValue(_options.piercing, Script.PassiveCardEffect.PROJECTILE_PIERCING, _modifier, limitation);
             this.target = _options.target;
             this.artillery = _options.artillery;
             this.rotateInDirection = _options.rotateInDirection;
@@ -3889,35 +3894,35 @@ var Script;
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +5% healing effects.
+                            regeneration: 1.05 // +5% healing effects.
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +10% healing effects.
+                            regeneration: 1.1 // +10% healing effects.
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +15% healing effects.
+                            regeneration: 1.15 // +15% healing effects.
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +30% healing effects.
+                            regeneration: 1.3 // +30% healing effects.
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +50% healing effects.
+                            regeneration: 1.5 // +50% healing effects.
                         }
                     }
                 },
@@ -3931,40 +3936,40 @@ var Script;
                 {
                     passiveEffects: {
                         multiplier: {
-                            movementSpeed: 1.05
-                            //TODO: -5% damage while standing still.
+                            movementSpeed: 1.0,
+                            damage: { value: 0.95, limitation: "stopped" }, // -5% damage while standing still.
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                            movementSpeed: 1.1
-                            //TODO: -10% damage while standing still.
+                            movementSpeed: 1.1,
+                            damage: { value: 0.9, limitation: "stopped" }, // -10% damage while standing still.
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                            movementSpeed: 1.15
-                            //TODO: -15% damage while standing still.
+                            movementSpeed: 1.15,
+                            damage: { value: 0.85, limitation: "stopped" }, // -15% damage while standing still.
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                            movementSpeed: 1.25
-                            //TODO: -25% damage while standing still.
+                            movementSpeed: 1.25,
+                            damage: { value: 0.75, limitation: "stopped" }, // -25% damage while standing still.
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                            movementSpeed: 1.5
-                            //TODO: -25% damage while standing still.
+                            movementSpeed: 1.5,
+                            damage: { value: 0.75, limitation: "stopped" }, // -25% damage while standing still.
                         }
                     }
                 },

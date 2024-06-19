@@ -2202,35 +2202,35 @@ namespace Script {
                 { //Tier 1
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +5% healing effects.
+                            regeneration: 1.05 // +5% healing effects.
                         }
                     }
                 },
                 { //Tier 2
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +10% healing effects.
+                            regeneration: 1.1 // +10% healing effects.
                         }
                     }
                 },
                 { //Tier 3
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +15% healing effects.
+                            regeneration: 1.15 // +15% healing effects.
                         }
                     }
                 },
                 { //Tier 4
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +30% healing effects.
+                            regeneration: 1.3 // +30% healing effects.
                         }
                     }
                 },
                 { //Tier 5
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +50% healing effects.
+                            regeneration: 1.5 // +50% healing effects.
                         }
                     }
                 },
@@ -2244,40 +2244,40 @@ namespace Script {
                 { //Tier 1
                     passiveEffects: {
                         multiplier: {
-                            movementSpeed: 1.05
-                            //TODO: -5% damage while standing still.
+                            movementSpeed: 1.0,
+                            damage: {value: 0.95, limitation: "stopped"}, // -5% damage while standing still.
                         }
                     }
                 },
                 { //Tier 2
                     passiveEffects: {
                         multiplier: {
-                            movementSpeed: 1.1
-                            //TODO: -10% damage while standing still.
+                            movementSpeed: 1.1,
+                            damage: {value: 0.9, limitation: "stopped"}, // -10% damage while standing still.
                         }
                     }
                 },
                 { //Tier 3
                     passiveEffects: {
                         multiplier: {
-                            movementSpeed: 1.15
-                            //TODO: -15% damage while standing still.
+                            movementSpeed: 1.15,
+                            damage: {value: 0.85, limitation: "stopped"}, // -15% damage while standing still.
                         }
                     }
                 },
                 { //Tier 4
                     passiveEffects: {
                         multiplier: {
-                            movementSpeed: 1.25
-                            //TODO: -25% damage while standing still.
+                            movementSpeed: 1.25,
+                            damage: {value: 0.75, limitation: "stopped"}, // -25% damage while standing still.
                         }
                     }
                 },
                 { //Tier 5
                     passiveEffects: {
                         multiplier: {
-                            movementSpeed: 1.5
-                            //TODO: -25% damage while standing still.
+                            movementSpeed: 1.5,
+                            damage: {value: 0.75, limitation: "stopped"}, // -25% damage while standing still.
                         }
                     }
                 },
