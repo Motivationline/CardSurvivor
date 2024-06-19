@@ -5342,6 +5342,7 @@ var Script;
             this.currentlyActiveAttack.started = false;
             this.currentlyActiveAttack.done = false;
             this.updateDesiredDistance(this.currentlyActiveAttack.requiredDistance);
+            this.currentlyActiveAttack.abortTimer = 5;
         }
         executeAttack(_mgtSqrd, _frameTimeInSeconds) {
             if (!this.currentlyActiveAttack)
@@ -5353,6 +5354,12 @@ var Script;
                     this.currentlyActiveAttack.attackStart?.call(this);
                     this.currentlyActiveAttack.started = true;
                     this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.attackSprite), true);
+                }
+                // have we been attempting to start for too long?
+                this.currentlyActiveAttack.abortTimer -= _frameTimeInSeconds;
+                if (this.currentlyActiveAttack.abortTimer < 0) {
+                    this.currentlyActiveAttack = undefined;
+                    return;
                 }
             }
             if (this.currentlyActiveAttack.started) {

@@ -248,6 +248,7 @@ namespace Script {
             this.currentlyActiveAttack.started = false;
             this.currentlyActiveAttack.done = false;
             this.updateDesiredDistance(this.currentlyActiveAttack.requiredDistance);
+            this.currentlyActiveAttack.abortTimer = 5;
         }
 
         private executeAttack(_mgtSqrd: number, _frameTimeInSeconds: number) {
@@ -260,6 +261,12 @@ namespace Script {
                     this.currentlyActiveAttack.attackStart?.call(this);
                     this.currentlyActiveAttack.started = true;
                     this.setCentralAnimator(this.getSprite(this.currentlyActiveAttack.attackSprite), true);
+                }
+                // have we been attempting to start for too long?
+                this.currentlyActiveAttack.abortTimer -= _frameTimeInSeconds;
+                if(this.currentlyActiveAttack.abortTimer < 0) {
+                    this.currentlyActiveAttack = undefined;
+                    return;
                 }
             }
             if (this.currentlyActiveAttack.started) {
@@ -375,6 +382,7 @@ namespace Script {
     interface EnemyAttackActive extends EnemyAttack {
         started?: boolean;
         done?: boolean;
+        abortTimer?: number;
     }
     export interface AnimationSprite {
         width: number;
