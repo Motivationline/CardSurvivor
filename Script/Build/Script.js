@@ -4599,8 +4599,8 @@ var Script;
         #healthElement;
         prevDirection = 0;
         defaultMaxHealth = 100;
-        health = 10000000;
-        maxHealth = 10000000;
+        health = 100;
+        maxHealth = 100;
         rigidbody;
         cardManager;
         speed = 3.5;
@@ -5406,7 +5406,7 @@ var Script;
     };
     Script.pools = {
         "electronics": [
-            ["mixer"], // --0
+            ["microwave"], // --0
             ["toaster", "closet"], // --1
             ["motor"], // --2
             ["ventilator"], // --3
@@ -5419,7 +5419,7 @@ var Script;
         "electronics": [
             // room 1
             {
-                duration: 200,
+                duration: 20,
                 defaultWave: {
                     enemies: [{ pool: 0 }],
                     amount: 3,
@@ -6371,6 +6371,7 @@ var Script;
         currentRoomEnd = 0;
         currentXP = 0;
         xpElement;
+        lvlupMarker;
         damageWasDealt = false;
         timeElement = document.getElementById("timer");
         constructor(provider) {
@@ -6387,7 +6388,8 @@ var Script;
             document.getElementById("debug-end-room").addEventListener("touchstart", this.debugButtons);
             document.getElementById("debug-next-room").addEventListener("touchstart", this.debugButtons);
             document.getElementById("debug-kill-enemies").addEventListener("touchstart", this.debugButtons);
-            this.xpElement = document.getElementById("xp-display");
+            this.xpElement = document.getElementById("xpbar");
+            this.lvlupMarker = document.getElementById("lvlup-marker");
         }
         setup() {
             Script.ƒ.Debug.log("EnemyManager setup");
@@ -6470,7 +6472,7 @@ var Script;
             if (!_cleanup) {
                 // collect XP
                 while (this.currentXP >= 100) {
-                    this.currentXP -= 100;
+                    this.addXP(-100);
                     await this.characterManager.upgradeCards();
                 }
                 this.addXP(0);
@@ -6766,7 +6768,12 @@ var Script;
         }
         addXP(_xp) {
             this.currentXP += Script.provider.get(Script.CardManager).modifyValuePlayer(_xp, Script.PassiveCardEffect.XP);
-            this.xpElement.innerText = Math.floor(this.currentXP).toString();
+            this.xpElement.value = Math.floor(this.currentXP) % 100;
+            let levelups = Math.floor(this.currentXP / 100);
+            this.lvlupMarker.innerHTML = "";
+            for (let i = 0; i < levelups; i++) {
+                this.lvlupMarker.innerHTML += `<img src="Assets/UI/Gameplay/LevelUp.png" alt="Levelup">`;
+            }
         }
     }
     Script.EnemyManager = EnemyManager;

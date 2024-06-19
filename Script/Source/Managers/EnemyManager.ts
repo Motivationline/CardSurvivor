@@ -14,7 +14,8 @@ namespace Script {
         private currentRoomEnd: number = 0;
 
         private currentXP: number = 0;
-        private xpElement: HTMLElement;
+        private xpElement: HTMLProgressElement;
+        private lvlupMarker: HTMLElement;
         private damageWasDealt: boolean = false;
 
         private timeElement: HTMLElement = document.getElementById("timer");
@@ -32,7 +33,8 @@ namespace Script {
             document.getElementById("debug-end-room").addEventListener("touchstart", this.debugButtons);
             document.getElementById("debug-next-room").addEventListener("touchstart", this.debugButtons);
             document.getElementById("debug-kill-enemies").addEventListener("touchstart", this.debugButtons);
-            this.xpElement = document.getElementById("xp-display");
+            this.xpElement = <HTMLProgressElement>document.getElementById("xpbar");
+            this.lvlupMarker = <HTMLProgressElement>document.getElementById("lvlup-marker");
         }
 
         public setup() {
@@ -125,7 +127,7 @@ namespace Script {
             if (!_cleanup) {
                 // collect XP
                 while (this.currentXP >= 100) {
-                    this.currentXP -= 100;
+                    this.addXP(-100);
                     await this.characterManager.upgradeCards();
                 }
                 this.addXP(0);
@@ -434,7 +436,12 @@ namespace Script {
 
         public addXP(_xp: number) {
             this.currentXP += provider.get(CardManager).modifyValuePlayer(_xp, PassiveCardEffect.XP);
-            this.xpElement.innerText = Math.floor(this.currentXP).toString();
+            this.xpElement.value = Math.floor(this.currentXP) % 100;
+            let levelups = Math.floor(this.currentXP / 100);
+            this.lvlupMarker.innerHTML = "";
+            for(let i = 0; i < levelups; i++){
+                this.lvlupMarker.innerHTML += `<img src="Assets/UI/Gameplay/LevelUp.png" alt="Levelup">`;
+            }
         }
     }
 }

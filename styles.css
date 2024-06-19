@@ -161,6 +161,7 @@ button:disabled {
   appearance: none;
   -webkit-appearance: none;
   --bg-color: #202533;
+  --f-color: #c12417;
   background-color: var(--bg-color);
   border: none;
   border-radius: 5vw;
@@ -172,12 +173,12 @@ progress::-webkit-progress-bar {
 }
 
 progress::-moz-progress-bar {
-  background-color: #c12417;
+  background-color: var(--f-color);
   border-radius: 5vw;
 }
 
 progress::-webkit-progress-value {
-  background-color: #c12417;
+  background-color: var(--f-color);
   border-radius: 5vw;
 }
 
@@ -207,8 +208,20 @@ progress::-webkit-progress-value {
 
 #xp-display {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: 1px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#xpbar {
+  appearance: none;
+  -webkit-appearance: none;
+  --bg-color: #202533;
+  --f-color: #6971af;
+  background-color: var(--bg-color);
+  border: none;
+  border-radius: 5vw;
 }
 
 #card-upgrade-popup {
@@ -919,6 +932,7 @@ progress::-webkit-progress-value {
 }
 
 @media screen and (min-width: 1000px) {
+  #xpbar,
   #healthbar {
     border: 2px solid var(--bg-color);
     border-radius: 10px;
