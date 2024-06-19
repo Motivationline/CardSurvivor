@@ -110,8 +110,7 @@ namespace Script {
                 }
             }
             if (this.damageWasDealt && rooms[this.currentArea][this.currentRoom].boss) {
-                this.timeElement.innerText = "Kill the boss!"
-
+                this.timeElement.innerText = "Kill the boss!";
             }
         }
 

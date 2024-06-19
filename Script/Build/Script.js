@@ -5141,6 +5141,7 @@ var Script;
         meleeCooldown;
         modifier = {};
         invulnerable = false;
+        isSpawning = false;
         stunned = 0;
         static defaults = {
             attacks: [],
@@ -5202,15 +5203,30 @@ var Script;
             this.rigidbody.mtxPivot.scaling = Script.ƒ.Vector3.ONE(_options.hitboxSize);
             this.invulnerable = false;
             this.currentlyActiveAttack = undefined;
-            this.shadow = { ...{
+            this.shadow = {
+                ...{
                     size: 1,
                     position: new Script.ƒ.Vector2(0, -0.25),
-                }, ..._options.shadow };
+                }, ..._options.shadow
+            };
             let shadow = this.node.getChild(0);
             if (this.shadow.size)
                 shadow.mtxLocal.scaling = Script.ƒ.Vector3.ONE(this.shadow.size);
             if (this.shadow.position)
                 shadow.mtxLocal.translation = new Script.ƒ.Vector3(this.shadow.position.x, this.shadow.position.y, this.node.mtxLocal.translation.z);
+            //hide for spawning
+            /*
+            this.isSpawning = true;
+            this.node.getComponent(ƒ.ComponentMesh).activate(false);
+            this.node.getChild(1).activate(true);
+            this.rigidbody.activate(false);
+            setTimeout(()=>{
+                this.rigidbody.activate(true);
+                this.node.getChild(1).activate(false);
+                this.node.getComponent(ƒ.ComponentMesh).activate(true);
+                this.isSpawning = false;
+            }, 1000);
+            */
             _options.afterSetup?.call(this);
         }
         updateDesiredDistance(_distance) {
@@ -5218,6 +5234,8 @@ var Script;
             this.currentlyDesiredDistanceSquared = [this.currentlyDesiredDistance[0] * this.currentlyDesiredDistance[0], this.currentlyDesiredDistance[1] * this.currentlyDesiredDistance[1]];
         }
         update(_charPosition, _frameTimeInSeconds) {
+            if (this.isSpawning)
+                return;
             if (this.stunned > 0) {
                 this.stunned = Math.max(0, this.stunned - _frameTimeInSeconds);
                 if (this.stunned <= 0) {

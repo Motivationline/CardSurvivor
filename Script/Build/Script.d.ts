@@ -553,6 +553,7 @@ declare namespace Script {
         private meleeCooldown;
         private modifier;
         private invulnerable;
+        private isSpawning;
         private stunned;
         private static defaults;
         constructor();

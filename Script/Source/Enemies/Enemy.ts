@@ -25,6 +25,7 @@ namespace Script {
         private meleeCooldown: number;
         private modifier: PassiveCardEffectObject = {};
         private invulnerable: boolean = false;
+        private isSpawning: boolean = false;
 
         private stunned: number = 0;
 
@@ -94,16 +95,33 @@ namespace Script {
             this.invulnerable = false;
             this.currentlyActiveAttack = undefined;
 
-            this.shadow = {...{
+            this.shadow = {
+                ...{
                     size: 1,
                     position: new ƒ.Vector2(0, -0.25),
-                }, ..._options.shadow};
+                }, ..._options.shadow
+            };
 
             let shadow = this.node.getChild(0);
-            if(this.shadow.size) shadow.mtxLocal.scaling = ƒ.Vector3.ONE(this.shadow.size);
-            if(this.shadow.position) shadow.mtxLocal.translation = new ƒ.Vector3(this.shadow.position.x, this.shadow.position.y, this.node.mtxLocal.translation.z);
+            if (this.shadow.size) shadow.mtxLocal.scaling = ƒ.Vector3.ONE(this.shadow.size);
+            if (this.shadow.position) shadow.mtxLocal.translation = new ƒ.Vector3(this.shadow.position.x, this.shadow.position.y, this.node.mtxLocal.translation.z);
 
+            //hide for spawning
+            /*
+            this.isSpawning = true;
+            this.node.getComponent(ƒ.ComponentMesh).activate(false);
+            this.node.getChild(1).activate(true);
+            this.rigidbody.activate(false);
+            setTimeout(()=>{
+                this.rigidbody.activate(true);
+                this.node.getChild(1).activate(false);
+                this.node.getComponent(ƒ.ComponentMesh).activate(true);
+                this.isSpawning = false;
+            }, 1000);
+            */
+            
             _options.afterSetup?.call(this);
+
 
         }
 
@@ -113,6 +131,7 @@ namespace Script {
         }
 
         public update(_charPosition: ƒ.Vector3, _frameTimeInSeconds: number) {
+            if (this.isSpawning) return;
             if (this.stunned > 0) {
                 this.stunned = Math.max(0, this.stunned - _frameTimeInSeconds);
                 if (this.stunned <= 0) {

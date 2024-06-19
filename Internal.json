@@ -844,7 +844,7 @@
   },
   "Material|2024-06-12T08:48:32.005Z|49605": {
     "ƒ.Material": {
-      "name": "ShaderLitTextured",
+      "name": "Shadow",
       "idResource": "Material|2024-06-12T08:48:32.005Z|49605",
       "shader": "ShaderLitTextured",
       "coat": {
@@ -1468,7 +1468,7 @@
       "children": [
         {
           "ƒ.Node": {
-            "name": "New Node",
+            "name": "shadow",
             "active": true,
             "components": {
               "ComponentMaterial": [
@@ -1509,6 +1509,48 @@
                   "ƒ.ComponentTransform": {
                     "local": {
                       "translation": "[0, -0.25, 0.009999998845160007]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "spawnWarning",
+            "active": false,
+            "components": {
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2024-06-19T12:01:51.191Z|91787"
+                  }
+                }
+              ],
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshSprite|2024-05-02T11:54:51.781Z|22267",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
                       "rotation": "[0, 0, 0]",
                       "scaling": "[1, 1, 1]"
                     },
@@ -2525,6 +2567,31 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-14T14:59:55.279Z|61397"
         }
+      }
+    }
+  },
+  "Material|2024-06-19T12:01:51.191Z|91787": {
+    "ƒ.Material": {
+      "name": "SpawnWarning",
+      "idResource": "Material|2024-06-19T12:01:51.191Z|91787",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-06-19T12:02:15.934Z|89962"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-06-19T12:02:15.934Z|89962": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Enemies\\SpawnWarning.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-06-19T12:02:15.934Z|89962",
+        "name": "Assets\\Enemies\\SpawnWarning.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
       }
     }
   }
