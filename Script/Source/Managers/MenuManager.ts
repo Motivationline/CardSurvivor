@@ -8,6 +8,7 @@ namespace Script {
         CARD_UPGRADE,
         END_CONFIRM,
         GAME_OVER,
+        BETWEEN_ROOMS,
     }
     export class MenuManager {
         private menus: Map<MenuType, HTMLElement> = new Map();
@@ -22,6 +23,7 @@ namespace Script {
             this.menus.set(MenuType.CARD_UPGRADE, document.getElementById("card-upgrade-popup"));
             this.menus.set(MenuType.END_CONFIRM, document.getElementById("end-confirm"));
             this.menus.set(MenuType.GAME_OVER, document.getElementById("game-over-overlay"));
+            this.menus.set(MenuType.BETWEEN_ROOMS, document.getElementById("between-rooms-overlay"));
 
             main.querySelector("#main-menu-deck").addEventListener("click", () => { this.openMenu(MenuType.COLLECTION) });
             main.querySelector("#main-menu-game").addEventListener("click", () => {

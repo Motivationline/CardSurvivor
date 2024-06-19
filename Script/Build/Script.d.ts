@@ -741,7 +741,8 @@ declare namespace Script {
         PAUSE = 4,
         CARD_UPGRADE = 5,
         END_CONFIRM = 6,
-        GAME_OVER = 7
+        GAME_OVER = 7,
+        BETWEEN_ROOMS = 8
     }
     class MenuManager {
         private menus;

@@ -132,12 +132,15 @@ namespace Script {
                     await this.characterManager.upgradeCards();
                 }
                 this.addXP(0);
-                this.timeElement.innerText = `3`;
+                provider.get(MenuManager).openMenu(MenuType.BETWEEN_ROOMS);
+                let timeElement: HTMLElement = document.getElementById("between-rooms-timer");
+                timeElement.innerText = `3`;
                 await this.waitMs(1000);
-                this.timeElement.innerText = `2`;
+                timeElement.innerText = `2`;
                 await this.waitMs(1000);
-                this.timeElement.innerText = `1`;
+                timeElement.innerText = `1`;
                 await this.waitMs(1000);
+                provider.get(MenuManager).openMenu(MenuType.NONE);
                 this.nextRoom();
             }
         }

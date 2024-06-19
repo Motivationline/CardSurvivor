@@ -6505,12 +6505,15 @@ var Script;
                     await this.characterManager.upgradeCards();
                 }
                 this.addXP(0);
-                this.timeElement.innerText = `3`;
+                Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.BETWEEN_ROOMS);
+                let timeElement = document.getElementById("between-rooms-timer");
+                timeElement.innerText = `3`;
                 await this.waitMs(1000);
-                this.timeElement.innerText = `2`;
+                timeElement.innerText = `2`;
                 await this.waitMs(1000);
-                this.timeElement.innerText = `1`;
+                timeElement.innerText = `1`;
                 await this.waitMs(1000);
+                Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.NONE);
                 this.nextRoom();
             }
         }
@@ -6820,6 +6823,7 @@ var Script;
         MenuType[MenuType["CARD_UPGRADE"] = 5] = "CARD_UPGRADE";
         MenuType[MenuType["END_CONFIRM"] = 6] = "END_CONFIRM";
         MenuType[MenuType["GAME_OVER"] = 7] = "GAME_OVER";
+        MenuType[MenuType["BETWEEN_ROOMS"] = 8] = "BETWEEN_ROOMS";
     })(MenuType = Script.MenuType || (Script.MenuType = {}));
     class MenuManager {
         menus = new Map();
@@ -6833,6 +6837,7 @@ var Script;
             this.menus.set(MenuType.CARD_UPGRADE, document.getElementById("card-upgrade-popup"));
             this.menus.set(MenuType.END_CONFIRM, document.getElementById("end-confirm"));
             this.menus.set(MenuType.GAME_OVER, document.getElementById("game-over-overlay"));
+            this.menus.set(MenuType.BETWEEN_ROOMS, document.getElementById("between-rooms-overlay"));
             main.querySelector("#main-menu-deck").addEventListener("click", () => { this.openMenu(MenuType.COLLECTION); });
             main.querySelector("#main-menu-game").addEventListener("click", () => {
                 this.startGame();
