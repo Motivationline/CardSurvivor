@@ -336,7 +336,7 @@ namespace Script {
                 },
                 waveAmount: 8,
                 waves: [{
-                    enemies: [{ pool: 1, elite: true }],
+                    enemies: [{ pool: 4, elite: true }],
                     amount: 1,
                     duration: 10,
                     minEnemiesOverride: 0,
@@ -372,9 +372,9 @@ namespace Script {
                 duration: 60,
                 defaultWave: {
                     enemies: [
-                        { pool: 2, weight: 8 },
-                        { pool: 5, weight: 1 },
-                        { pool: 6, weight: 1 },
+                        { pool: 0, weight: 6 },
+                        { pool: 2, weight: 3 },
+                        { pool: 4, weight: 2 },
                     ],
                     amount: 5,
                     duration: 8,
@@ -389,9 +389,9 @@ namespace Script {
                 },
                 {
                     enemies: [
-                        { pool: 2, weight: 8 },
-                        { pool: 5, weight: 1 },
-                        { pool: 6, weight: 1 },
+                        { pool: 0, weight: 6 },
+                        { pool: 2, weight: 3 },
+                        { pool: 4, weight: 2 },
                     ],
                     amount: 5,
                     duration: 8,
@@ -413,7 +413,6 @@ namespace Script {
                 defaultWave: {
                     enemies: [
                         { pool: 0, weight: 6 },
-                        { pool: 2, weight: 2 },
                         { pool: 5, weight: 1 },
                         { pool: 6, weight: 1 },
                     ],
@@ -437,8 +436,9 @@ namespace Script {
                 duration: 60,
                 defaultWave: {
                     enemies: [
-                        { pool: 0, weight: 50 },
+                        { pool: 0, weight: 40 },
                         { pool: 2, weight: 20 },
+                        { pool: 4, weight: 10 },
                         { pool: 5, weight: 15 },
                         { pool: 6, weight: 15 },
                     ],
@@ -455,8 +455,9 @@ namespace Script {
                 },
                 {
                     enemies: [
-                        { pool: 0, weight: 50 },
+                        { pool: 0, weight: 40 },
                         { pool: 2, weight: 20 },
+                        { pool: 4, weight: 10 },
                         { pool: 5, weight: 15 },
                         { pool: 6, weight: 15 },
                     ],
@@ -479,8 +480,9 @@ namespace Script {
                 duration: 60,
                 defaultWave: {
                     enemies: [
-                        { pool: 0, weight: 7 },
+                        { pool: 0, weight: 6 },
                         { pool: 2, weight: 3 },
+                        { pool: 4, weight: 1 },
                     ],
                     amount: 4,
                     duration: 3,
@@ -541,7 +543,7 @@ namespace Script {
                         { pool: 0, elite: true },
                         { pool: 0 }
                     ],
-                    amount: 6,
+                    amount: 8,
                     duration: 12,
                     minEnemiesOverride: 1,
                     bonus: {
@@ -586,7 +588,22 @@ namespace Script {
                         { pool: 2, elite: true },
                         { pool: 2 }
                     ],
-                    amount: 6,
+                    amount: 5,
+                    duration: 12,
+                    minEnemiesOverride: 1,
+                    bonus: {
+                        multiplier: {
+                            health: 0.9,
+                            enemySize: 0.9,
+                        }
+                }
+                },
+                {
+                    enemies: [
+                        { pool: 4, elite: true },
+                        { pool: 4 }
+                    ],
+                    amount: 4,
                     duration: 12,
                     minEnemiesOverride: 1,
                     bonus: {
@@ -613,8 +630,9 @@ namespace Script {
                 defaultWave: {
                     enemies: [
                         { pool: 0, weight: 3 },
-                        { pool: 1, weight: 4 },
-                        { pool: 2, weight: 3 },
+                        { pool: 1, weight: 3 },
+                        { pool: 2, weight: 2 },
+                        { pool: 4, weight: 2 },
                     ],
                     amount: 8,
                     duration: 10,
@@ -640,8 +658,7 @@ namespace Script {
                     amount: 6,
                     duration: 0,
                     enemies: [
-                        { pool: 5, weight: 5 },
-                        { pool: 6, weight: 5 }
+                        { pool: 5, weight: 5 }
                     ],
                 },
                 waves: [
