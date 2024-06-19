@@ -186,7 +186,13 @@ namespace Script {
             for (let elite of elites) {
                 this.spawnEnemy(elite, true);
             }
-            for (let i = 0; i < wave.amount; i++) {
+
+            let amount = provider.get(CardManager).modifyValuePlayer(wave.amount, PassiveCardEffect.ENEMY_AMOUNT);
+            let afterComma = amount - Math.floor(amount);
+            if (Math.random() < afterComma) {
+                amount++;
+            }
+            for (let i = 0; i < amount; i++) {
                 let x = Math.random() * totalWeight;
                 for (let enemy of enemies) {
                     x -= enemy.weight;
@@ -414,20 +420,20 @@ namespace Script {
             if (_amt < 0) classes.push("healing");
             this.displayText(dmgText, _pos, ...classes);
         }
-        
+
         public displayText(_text: string, _pos: ƒ.Vector3, ...cssClasses: string[]) {
             let textElement = document.createElement("span");
             textElement.innerText = _text;
             textElement.classList.add("dmg-number", ...cssClasses);
-            
+
             document.documentElement.appendChild(textElement);
             this.dmgDisplayElements.push([textElement, _pos.clone]);
-            
+
             setTimeout(() => {
                 document.documentElement.removeChild(textElement);
                 this.dmgDisplayElements.shift();
             }, 1000);
-            
+
         }
 
         public reset() {

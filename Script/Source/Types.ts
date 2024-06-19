@@ -61,6 +61,7 @@ namespace Script {
         MOVEMENT_SPEED = "movementSpeed",
         XP = "xp",
         ENEMY_SIZE = "enemySize",
+        ENEMY_AMOUNT = "enemyAmount",
         CAMERA_FOV = "cameraFOV",
         DODGE = "dodge",
     }

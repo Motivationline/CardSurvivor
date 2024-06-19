@@ -674,6 +674,7 @@ var Script;
         PassiveCardEffect["MOVEMENT_SPEED"] = "movementSpeed";
         PassiveCardEffect["XP"] = "xp";
         PassiveCardEffect["ENEMY_SIZE"] = "enemySize";
+        PassiveCardEffect["ENEMY_AMOUNT"] = "enemyAmount";
         PassiveCardEffect["CAMERA_FOV"] = "cameraFOV";
         PassiveCardEffect["DODGE"] = "dodge";
     })(PassiveCardEffect = Script.PassiveCardEffect || (Script.PassiveCardEffect = {}));
@@ -3458,35 +3459,35 @@ var Script;
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: 2% more enemies
+                            enemyAmount: 1.02 // 2% more enemies
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: 5% more enemies
+                            enemyAmount: 1.05 // 5% more enemies
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: 10% more enemies
+                            enemyAmount: 1.1 // 10% more enemies
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: 15% more enemies
+                            enemyAmount: 1.15 // 15% more enemies
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: 25% more enemies
+                            enemyAmount: 1.25 // 25% more enemies
                         }
                     }
                 },
@@ -6584,7 +6585,12 @@ var Script;
             for (let elite of elites) {
                 this.spawnEnemy(elite, true);
             }
-            for (let i = 0; i < wave.amount; i++) {
+            let amount = Script.provider.get(Script.CardManager).modifyValuePlayer(wave.amount, Script.PassiveCardEffect.ENEMY_AMOUNT);
+            let afterComma = amount - Math.floor(amount);
+            if (Math.random() < afterComma) {
+                amount++;
+            }
+            for (let i = 0; i < amount; i++) {
                 let x = Math.random() * totalWeight;
                 for (let enemy of enemies) {
                     x -= enemy.weight;
