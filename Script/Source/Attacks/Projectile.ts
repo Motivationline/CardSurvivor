@@ -72,7 +72,7 @@ namespace Script {
             }
             let limitation: string = undefined;
             if (_options.target === ProjectileTarget.ENEMY) {
-                if (provider.get(CharacterManager).getMovement().magnitudeSquared === 0)
+                if (provider.get(CharacterManager).isMoving())
                     limitation = "stopped";
             }
             let cm = provider.get(CardManager);

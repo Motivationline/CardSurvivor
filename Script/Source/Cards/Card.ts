@@ -40,19 +40,22 @@ namespace Script {
         }
 
         public update(_time: number, _cumulatedEffects: PassiveCardEffectObject) {
+            let limitation = "";
             if (!this.levels[this.level].activeEffects || !this.levels[this.level].activeEffects.length) return;
             for (let effect of this.levels[this.level].activeEffects) {
                 if (isNaN(effect.currentCooldown)) effect.currentCooldown = effect.cooldown;
-                if (effect.cooldownBasedOnDistance){
+                if (effect.cooldownBasedOnDistance) {
                     effect.currentCooldown -= this.#charm.getMovement().magnitude * this.#cm.modifyValuePlayer(this.#charm.character.speed, PassiveCardEffect.MOVEMENT_SPEED) * _time;
                 } else {
                     effect.currentCooldown -= _time;
                 }
                 if (effect.currentCooldown <= 0) {
-                    effect.currentCooldown = this.#cm.modifyValuePlayer(effect.cooldown, PassiveCardEffect.COOLDOWN_REDUCTION, effect.modifiers);
+                    if (provider.get(CharacterManager).isMoving())
+                        limitation = "stopped";
+                    effect.currentCooldown = this.#cm.modifyValuePlayer(effect.cooldown, PassiveCardEffect.COOLDOWN_REDUCTION, effect.modifiers, limitation);
                     switch (effect.type) {
                         case "projectile":
-                            let amount = this.#cm.modifyValuePlayer(effect.amount ?? 1, PassiveCardEffect.PROJECTILE_AMOUNT, effect.modifiers);
+                            let amount = this.#cm.modifyValuePlayer(effect.amount ?? 1, PassiveCardEffect.PROJECTILE_AMOUNT, effect.modifiers, limitation);
                             for (let i: number = 0; i < amount; i++) {
                                 setTimeout(() => {
                                     let pos = this.#charm.character.node.mtxWorld.translation.clone;

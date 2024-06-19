@@ -74,6 +74,7 @@ declare namespace Script {
         set character(_char: Character);
         setMovement(_direction: ƒ.Vector2): void;
         getMovement(): ƒ.Vector2;
+        isMoving(): boolean;
         private update;
         upgradeCards(_amountOverride?: number, _newCards?: boolean, _rerolls?: number): Promise<void>;
     }

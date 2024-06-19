@@ -25,6 +25,10 @@ namespace Script {
             return this.movementVector;
         }
 
+        public isMoving(): boolean {
+            return this.movementVector.magnitudeSquared === 0;
+        }
+
         private update = () => {
             if (!this.#character) return;
             if (gameState === GAMESTATE.PAUSED) return;
