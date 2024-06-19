@@ -302,6 +302,9 @@ var Script;
         getMovement() {
             return this.movementVector;
         }
+        isMoving() {
+            return this.movementVector.magnitudeSquared === 0;
+        }
         update = () => {
             if (!this.#character)
                 return;
@@ -847,7 +850,7 @@ var Script;
             }
             let limitation = undefined;
             if (_options.target === Script.ProjectileTarget.ENEMY) {
-                if (Script.provider.get(Script.CharacterManager).getMovement().magnitudeSquared === 0)
+                if (Script.provider.get(Script.CharacterManager).isMoving())
                     limitation = "stopped";
             }
             let cm = Script.provider.get(Script.CardManager);
@@ -1301,6 +1304,7 @@ var Script;
             return structuredClone(this.levels[this.level].passiveEffects);
         }
         update(_time, _cumulatedEffects) {
+            let limitation = "";
             if (!this.levels[this.level].activeEffects || !this.levels[this.level].activeEffects.length)
                 return;
             for (let effect of this.levels[this.level].activeEffects) {
@@ -1313,10 +1317,12 @@ var Script;
                     effect.currentCooldown -= _time;
                 }
                 if (effect.currentCooldown <= 0) {
-                    effect.currentCooldown = this.#cm.modifyValuePlayer(effect.cooldown, Script.PassiveCardEffect.COOLDOWN_REDUCTION, effect.modifiers);
+                    if (Script.provider.get(Script.CharacterManager).isMoving())
+                        limitation = "stopped";
+                    effect.currentCooldown = this.#cm.modifyValuePlayer(effect.cooldown, Script.PassiveCardEffect.COOLDOWN_REDUCTION, effect.modifiers, limitation);
                     switch (effect.type) {
                         case "projectile":
-                            let amount = this.#cm.modifyValuePlayer(effect.amount ?? 1, Script.PassiveCardEffect.PROJECTILE_AMOUNT, effect.modifiers);
+                            let amount = this.#cm.modifyValuePlayer(effect.amount ?? 1, Script.PassiveCardEffect.PROJECTILE_AMOUNT, effect.modifiers, limitation);
                             for (let i = 0; i < amount; i++) {
                                 setTimeout(() => {
                                     let pos = this.#charm.character.node.mtxWorld.translation.clone;
@@ -4434,35 +4440,35 @@ var Script;
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +20% attack speed while standing still.
+                            cooldownReduction: { value: 1 / 1.2, limitation: "stopped" } // +20% attack speed while standing still.
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +30% attack speed while standing still.
+                            cooldownReduction: { value: 1 / 1.3, limitation: "stopped" } // +30% attack speed while standing still.
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +40% attack speed while standing still.
+                            cooldownReduction: { value: 1 / 1.4, limitation: "stopped" } // +40% attack speed while standing still.
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +60% attack speed while standing still.
+                            cooldownReduction: { value: 1 / 1.6, limitation: "stopped" } // +60% attack speed while standing still.
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +100% attack speed while standing still.
+                            cooldownReduction: { value: 1 / 2, limitation: "stopped" } // +100% attack speed while standing still.
                         }
                     }
                 },

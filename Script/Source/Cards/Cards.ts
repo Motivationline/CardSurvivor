@@ -2741,35 +2741,35 @@ namespace Script {
                 { //Tier 1
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +20% attack speed while standing still.
+                            cooldownReduction: {value: 1 / 1.2, limitation: "stopped"} // +20% attack speed while standing still.
                         }
                     }
                 },
                 { //Tier 2
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +30% attack speed while standing still.
+                            cooldownReduction: {value: 1 / 1.3, limitation: "stopped"} // +30% attack speed while standing still.
                         }
                     }
                 },
                 { //Tier 3
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +40% attack speed while standing still.
+                            cooldownReduction: {value: 1 / 1.4, limitation: "stopped"} // +40% attack speed while standing still.
                         }
                     }
                 },
                 { //Tier 4
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +60% attack speed while standing still.
+                            cooldownReduction: {value: 1 / 1.6, limitation: "stopped"} // +60% attack speed while standing still.
                         }
                     }
                 },
                 { //Tier 5
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +100% attack speed while standing still.
+                            cooldownReduction: {value: 1 / 2, limitation: "stopped"} // +100% attack speed while standing still.
                         }
                     }
                 },
