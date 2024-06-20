@@ -6856,7 +6856,7 @@ var Script;
                 return;
             if (_amt === 0)
                 return;
-            let dmgText = Number(Math.abs(_amt).toPrecision(1)).toString();
+            let dmgText = Number(Math.abs(_amt).toPrecision(3)).toString();
             let classes = [];
             if (_onPlayer)
                 classes.push("player");

@@ -416,7 +416,7 @@ namespace Script {
         public displayDamage(_amt: number, _pos: ƒ.Vector3, _onPlayer: boolean = false) {
             if (!isFinite(_amt)) return;
             if (_amt === 0) return;
-            let dmgText = Number(Math.abs(_amt).toPrecision(1)).toString();
+            let dmgText = Number(Math.abs(_amt).toPrecision(3)).toString();
             let classes: string[] = [];
             if (_onPlayer) classes.push("player");
             if (_amt < 0) classes.push("healing");
