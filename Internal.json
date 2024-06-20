@@ -1380,6 +1380,31 @@
       }
     }
   },
+  "Material|2024-06-19T12:01:51.191Z|91787": {
+    "ƒ.Material": {
+      "name": "SpawnWarning",
+      "idResource": "Material|2024-06-19T12:01:51.191Z|91787",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-06-19T12:02:15.934Z|89962"
+        }
+      }
+    }
+  },
+  "TextureImage|2024-06-19T12:02:15.934Z|89962": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Enemies\\SpawnWarning.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-06-19T12:02:15.934Z|89962",
+        "name": "Assets\\Enemies\\SpawnWarning.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
+      }
+    }
+  },
   "Graph|2024-05-03T09:17:54.314Z|34670": {
     "ƒ.Graph": {
       "name": "enemy",
@@ -1552,7 +1577,7 @@
                     "pivot": {
                       "translation": "[0, 0, 0]",
                       "rotation": "[0, 0, 0]",
-                      "scaling": "[1, 1, 1]"
+                      "scaling": "[0.7999999523162842, 0.7999999523162842, 0.7999999523162842]"
                     },
                     "Component": {
                       "active": true
@@ -2567,31 +2592,6 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-14T14:59:55.279Z|61397"
         }
-      }
-    }
-  },
-  "Material|2024-06-19T12:01:51.191Z|91787": {
-    "ƒ.Material": {
-      "name": "SpawnWarning",
-      "idResource": "Material|2024-06-19T12:01:51.191Z|91787",
-      "shader": "ShaderLitTextured",
-      "coat": {
-        "ƒ.CoatTextured": {
-          "color": "[1, 1, 1, 1]",
-          "idTexture": "TextureImage|2024-06-19T12:02:15.934Z|89962"
-        }
-      }
-    }
-  },
-  "TextureImage|2024-06-19T12:02:15.934Z|89962": {
-    "ƒ.TextureImage": {
-      "url": "Assets\\Enemies\\SpawnWarning.png",
-      "type": "TextureImage",
-      "Texture": {
-        "idResource": "TextureImage|2024-06-19T12:02:15.934Z|89962",
-        "name": "Assets\\Enemies\\SpawnWarning.png",
-        "mipmap": "CRISP",
-        "wrap": "REPEAT"
       }
     }
   }

@@ -25,7 +25,7 @@ namespace Script {
         private meleeCooldown: number;
         private modifier: PassiveCardEffectObject = {};
         private invulnerable: boolean = false;
-        private isSpawning: boolean = false;
+        public isSpawning: boolean = false;
 
         private stunned: number = 0;
 
@@ -107,18 +107,18 @@ namespace Script {
             if (this.shadow.position) shadow.mtxLocal.translation = new ƒ.Vector3(this.shadow.position.x, this.shadow.position.y, this.node.mtxLocal.translation.z);
 
             //hide for spawning
-            /*
-            this.isSpawning = true;
+            (<EnemyGraphInstance>this.node).isSpawning = true;
             this.node.getComponent(ƒ.ComponentMesh).activate(false);
+            this.node.getChild(0).activate(false);
             this.node.getChild(1).activate(true);
             this.rigidbody.activate(false);
             setTimeout(()=>{
                 this.rigidbody.activate(true);
+                this.node.getChild(0).activate(true);
                 this.node.getChild(1).activate(false);
                 this.node.getComponent(ƒ.ComponentMesh).activate(true);
-                this.isSpawning = false;
+                (<EnemyGraphInstance>this.node).isSpawning = false;
             }, 1000);
-            */
             
             _options.afterSetup?.call(this);
 
