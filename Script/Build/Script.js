@@ -662,6 +662,7 @@ var Script;
         PassiveCardEffect["PROJECTILE_SPEED"] = "projectileSpeed";
         PassiveCardEffect["PROJECTILE_AMOUNT"] = "projectileAmount";
         PassiveCardEffect["PROJECTILE_RANGE"] = "projectileRange";
+        PassiveCardEffect["EFFECT_SIZE"] = "effectSize";
         PassiveCardEffect["PROJECTILE_PIERCING"] = "projectilePiercing";
         PassiveCardEffect["DAMAGE"] = "damage";
         PassiveCardEffect["EFFECT_DURATION"] = "effectDuration";
@@ -738,7 +739,7 @@ var Script;
         setup(_options, _modifier) {
             let cm = Script.provider.get(Script.CardManager);
             _options = { ...this.defaults, ..._options };
-            this.size = cm.modifyValue(_options.size, Script.PassiveCardEffect.PROJECTILE_SIZE, _modifier);
+            this.size = cm.modifyValue(_options.size, Script.PassiveCardEffect.EFFECT_SIZE, _modifier);
             this.damage = cm.modifyValue(_options.damage, Script.PassiveCardEffect.DAMAGE, _modifier);
             this.variant = _options.variant;
             this.stunDuration = cm.modifyValue(_options.stunDuration, Script.PassiveCardEffect.EFFECT_DURATION, _modifier);
@@ -3085,35 +3086,35 @@ var Script;
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +5% increased effect radius
+                            effectSize: 1.05 //+5% increased effect radius
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +10% increased effect radius
+                            effectSize: 1.1 //+10% increased effect radius
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +20% increased effect radius
+                            effectSize: 1.2 //+20% increased effect radius
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +30% increased effect radius
+                            effectSize: 1.3 //+30% increased effect radius
                         }
                     }
                 },
                 {
                     passiveEffects: {
                         multiplier: {
-                        //TODO: +50% increased effect radius
+                            effectSize: 1.5 //+50% increased effect radius
                         }
                     }
                 },

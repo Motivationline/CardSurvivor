@@ -1384,35 +1384,35 @@ namespace Script {
                 { //Tier 1
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +5% increased effect radius
+                            effectSize: 1.05 //+5% increased effect radius
                         }
                     }
                 },
                 { //Tier 2
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +10% increased effect radius
+                            effectSize: 1.1 //+10% increased effect radius
                         }
                     }
                 },
                 { //Tier 3
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +20% increased effect radius
+                            effectSize: 1.2 //+20% increased effect radius
                         }
                     }
                 },
                 { //Tier 4
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +30% increased effect radius
+                            effectSize: 1.3 //+30% increased effect radius
                         }
                     }
                 },
                 { //Tier 5
                     passiveEffects: {
                         multiplier: {
-                            //TODO: +50% increased effect radius
+                            effectSize: 1.5 //+50% increased effect radius
                         }
                     }
                 },

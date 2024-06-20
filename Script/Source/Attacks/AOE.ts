@@ -25,7 +25,7 @@ namespace Script {
         setup(_options: Partial<AreaOfEffect>, _modifier: PassiveCardEffectObject) {
             let cm = provider.get(CardManager);
             _options = { ...this.defaults, ..._options };
-            this.size = cm.modifyValue(_options.size, PassiveCardEffect.PROJECTILE_SIZE, _modifier);
+            this.size = cm.modifyValue(_options.size, PassiveCardEffect.EFFECT_SIZE, _modifier);
             this.damage = cm.modifyValue(_options.damage, PassiveCardEffect.DAMAGE, _modifier);
             this.variant = _options.variant;
             this.stunDuration = cm.modifyValue(_options.stunDuration, PassiveCardEffect.EFFECT_DURATION, _modifier);

@@ -45,6 +45,7 @@ namespace Script {
         PROJECTILE_SPEED = "projectileSpeed",
         PROJECTILE_AMOUNT = "projectileAmount",
         PROJECTILE_RANGE = "projectileRange",
+        EFFECT_SIZE = "effectSize",
         PROJECTILE_PIERCING = "projectilePiercing",
         DAMAGE = "damage",
         EFFECT_DURATION = "effectDuration",
