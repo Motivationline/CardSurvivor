@@ -717,7 +717,7 @@ declare namespace Script {
         private roomManagement;
         private endRoom;
         nextRoom(): void;
-        private waitMs;
+        waitMs(_ms: number): Promise<void>;
         private spawnWave;
         private getWave;
         private getWaveModifier;
@@ -753,11 +753,15 @@ declare namespace Script {
     class MenuManager {
         private menus;
         private prevGameState;
+        private gameIsReady;
+        constructor();
         setup(): void;
         openMenu(_menu: MenuType): void;
         private startGame;
         openPauseMenu(): void;
         private openPauseCardPopup;
+        private ready;
+        private waitForReady;
     }
 }
 declare namespace Script {

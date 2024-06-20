@@ -13,6 +13,12 @@ namespace Script {
     export class MenuManager {
         private menus: Map<MenuType, HTMLElement> = new Map();
         private prevGameState: GAMESTATE = GAMESTATE.PLAYING;
+        private gameIsReady = false;
+
+
+        constructor() {
+            document.addEventListener("interactiveViewportStarted", <EventListener>this.ready);
+        }
 
         public setup() {
             let main: HTMLElement = document.getElementById("main-menu-overlay");
@@ -71,7 +77,7 @@ namespace Script {
             let character = provider.get(CharacterManager).character;
             character?.reset();
             await provider.get(CharacterManager).upgradeCards(5, true, 1);
-            ƒ.Time.game.setScale(1);
+            await this.waitForReady();
             provider.get(EnemyManager).nextRoom();
         }
 
@@ -97,6 +103,18 @@ namespace Script {
 
         private openPauseCardPopup = (_event: MouseEvent) => {
 
+        }
+
+        private ready = () => {
+            this.gameIsReady = true;
+        }
+
+        private async waitForReady(): Promise<void> {
+            if (this.gameIsReady) return;
+            let em = provider.get(EnemyManager);
+            while(!this.gameIsReady) {
+                await em.waitMs(100);
+            }
         }
     }
 }

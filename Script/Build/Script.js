@@ -6916,6 +6916,10 @@ var Script;
     class MenuManager {
         menus = new Map();
         prevGameState = Script.GAMESTATE.PLAYING;
+        gameIsReady = false;
+        constructor() {
+            document.addEventListener("interactiveViewportStarted", this.ready);
+        }
         setup() {
             let main = document.getElementById("main-menu-overlay");
             this.menus.set(MenuType.MAIN, main);
@@ -6969,7 +6973,7 @@ var Script;
             let character = Script.provider.get(Script.CharacterManager).character;
             character?.reset();
             await Script.provider.get(Script.CharacterManager).upgradeCards(5, true, 1);
-            Script.ƒ.Time.game.setScale(1);
+            await this.waitForReady();
             Script.provider.get(Script.EnemyManager).nextRoom();
         }
         openPauseMenu() {
@@ -6991,6 +6995,17 @@ var Script;
         }
         openPauseCardPopup = (_event) => {
         };
+        ready = () => {
+            this.gameIsReady = true;
+        };
+        async waitForReady() {
+            if (this.gameIsReady)
+                return;
+            let em = Script.provider.get(Script.EnemyManager);
+            while (!this.gameIsReady) {
+                await em.waitMs(100);
+            }
+        }
     }
     Script.MenuManager = MenuManager;
 })(Script || (Script = {}));

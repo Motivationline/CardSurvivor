@@ -166,7 +166,7 @@ namespace Script {
             this.roomProgressElement.innerText = `Room ${this.currentRoom + 1}/${rooms[this.currentArea].length}`
         }
 
-        private async waitMs(_ms: number): Promise<void> {
+        public async waitMs(_ms: number): Promise<void> {
             return new Promise((resolve) => {
                 setTimeout(resolve, _ms);
             });
