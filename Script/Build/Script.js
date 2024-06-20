@@ -4732,6 +4732,7 @@ var Script;
         heal(_amt, _percentage = false) {
             if (_percentage)
                 _amt *= this.maxHealth;
+            _amt = this.cardManager.modifyValuePlayer(_amt, Script.PassiveCardEffect.REGENERATION);
             _amt = Math.min(_amt, this.maxHealth - this.health);
             this.health += _amt;
             Script.provider.get(Script.EnemyManager).displayDamage(-_amt, this.node.mtxWorld.translation, true);
