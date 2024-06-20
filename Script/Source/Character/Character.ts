@@ -98,7 +98,7 @@ namespace Script {
             if (_hit.type === HitType.AOE) _hit.type = HitType.PROJECTILE;
             let damage = Math.max(0, this.cardManager.modifyValuePlayer(_hit.damage, PassiveCardEffect.DAMAGE_REDUCTION, undefined, _hit.type));
             let dodgeChance = this.cardManager.modifyValuePlayer(0, PassiveCardEffect.DODGE, undefined, _hit.type);
-            if(Math.random() < dodgeChance){
+            if (Math.random() < dodgeChance) {
                 //dodged
                 provider.get(EnemyManager).displayText("dodged", this.node.mtxWorld.translation, "player", "healing");
                 return 0;
@@ -130,9 +130,17 @@ namespace Script {
             this.node.getChildrenByName("camera")[0].getComponent(ƒ.ComponentCamera).mtxPivot.translation = ƒ.Vector3.Z(newDistance);
         }
 
-        public updatePassiveEffects(){
+        public updatePassiveEffects() {
             this.updateMaxHealth();
             this.updateCameraFOV();
+        }
+
+        public heal(_amt: number, _percentage: boolean = false) {
+            if (_percentage) _amt *= this.maxHealth;
+            _amt = Math.min(_amt, this.maxHealth - this.health);
+            this.health += _amt;
+            provider.get(EnemyManager).displayDamage(-_amt, this.node.mtxWorld.translation, true);
+            this.updateHealthVisually();
         }
 
         public reset() {
@@ -148,15 +156,12 @@ namespace Script {
             // regenerate health while playing
             if (gameState !== GAMESTATE.PLAYING) return;
             this.regenTimer -= _time;
-            if(this.regenTimer > 0) return;
+            if (this.regenTimer > 0) return;
             this.regenTimer = 1;
 
             let regeneration: number = this.cardManager.modifyValuePlayer(0, PassiveCardEffect.REGENERATION);
             if (regeneration > 0) {
-                regeneration = Math.min(regeneration, this.maxHealth - this.health);
-                this.health += regeneration;
-                provider.get(EnemyManager).displayDamage(-regeneration, this.node.mtxWorld.translation, true);
-                this.updateHealthVisually();
+                this.heal(regeneration);
             }
         }
 

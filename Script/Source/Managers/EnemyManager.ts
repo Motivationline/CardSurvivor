@@ -164,6 +164,7 @@ namespace Script {
                 //TODO spawn reward stuff
             }
             this.roomProgressElement.innerText = `Room ${this.currentRoom + 1}/${rooms[this.currentArea].length}`
+            this.characterManager.character.heal(0.1, true);
         }
 
         public async waitMs(_ms: number): Promise<void> {
@@ -416,7 +417,7 @@ namespace Script {
         public displayDamage(_amt: number, _pos: ƒ.Vector3, _onPlayer: boolean = false) {
             if (!isFinite(_amt)) return;
             if (_amt === 0) return;
-            let dmgText = Number(Math.abs(_amt).toPrecision(3)).toString();
+            let dmgText =(Math.round(Math.abs(_amt) * 100) / 100).toString();
             let classes: string[] = [];
             if (_onPlayer) classes.push("player");
             if (_amt < 0) classes.push("healing");

@@ -4729,6 +4729,14 @@ var Script;
             this.updateMaxHealth();
             this.updateCameraFOV();
         }
+        heal(_amt, _percentage = false) {
+            if (_percentage)
+                _amt *= this.maxHealth;
+            _amt = Math.min(_amt, this.maxHealth - this.health);
+            this.health += _amt;
+            Script.provider.get(Script.EnemyManager).displayDamage(-_amt, this.node.mtxWorld.translation, true);
+            this.updateHealthVisually();
+        }
         reset() {
             this.maxHealth = this.defaultMaxHealth;
             this.health = this.maxHealth;
@@ -4747,10 +4755,7 @@ var Script;
             this.regenTimer = 1;
             let regeneration = this.cardManager.modifyValuePlayer(0, Script.PassiveCardEffect.REGENERATION);
             if (regeneration > 0) {
-                regeneration = Math.min(regeneration, this.maxHealth - this.health);
-                this.health += regeneration;
-                Script.provider.get(Script.EnemyManager).displayDamage(-regeneration, this.node.mtxWorld.translation, true);
-                this.updateHealthVisually();
+                this.heal(regeneration);
             }
         }
         changeVisualDirection(_rot = 0) {
@@ -6609,6 +6614,7 @@ var Script;
                 //TODO spawn reward stuff
             }
             this.roomProgressElement.innerText = `Room ${this.currentRoom + 1}/${Script.rooms[this.currentArea].length}`;
+            this.characterManager.character.heal(0.1, true);
         }
         async waitMs(_ms) {
             return new Promise((resolve) => {
@@ -6856,7 +6862,7 @@ var Script;
                 return;
             if (_amt === 0)
                 return;
-            let dmgText = Number(Math.abs(_amt).toPrecision(3)).toString();
+            let dmgText = (Math.round(Math.abs(_amt) * 100) / 100).toString();
             let classes = [];
             if (_onPlayer)
                 classes.push("player");

@@ -502,6 +502,7 @@ declare namespace Script {
         private updateMaxHealth;
         private updateCameraFOV;
         updatePassiveEffects(): void;
+        heal(_amt: number, _percentage?: boolean): void;
         reset(): void;
         private regenerate;
         private changeVisualDirection;
