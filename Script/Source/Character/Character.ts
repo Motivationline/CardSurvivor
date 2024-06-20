@@ -164,6 +164,10 @@ namespace Script {
             if (regeneration > 0) {
                 this.heal(regeneration);
             }
+            let regenerationRelative: number = this.cardManager.modifyValuePlayer(0, PassiveCardEffect.REGENERATION_RELATIVE);
+            if(regenerationRelative > 0) {
+                this.heal(regenerationRelative, true);
+            }
         }
 
         private changeVisualDirection(_rot: number = 0) {

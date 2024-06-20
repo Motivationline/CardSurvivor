@@ -54,6 +54,7 @@ namespace Script {
         CRIT_DAMAGE = "critialHitDamage",
         HEALTH = "health",
         REGENERATION = "regeneration",
+        REGENERATION_RELATIVE = "regenerationRelativeToMaxHealth",
         COLLECTION_RADIUS = "collectionRadius",
         DAMAGE_REDUCTION = "damageReduction",
         CARD_SLOTS = "cardSlots",

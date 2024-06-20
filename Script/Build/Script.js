@@ -671,6 +671,7 @@ var Script;
         PassiveCardEffect["CRIT_DAMAGE"] = "critialHitDamage";
         PassiveCardEffect["HEALTH"] = "health";
         PassiveCardEffect["REGENERATION"] = "regeneration";
+        PassiveCardEffect["REGENERATION_RELATIVE"] = "regenerationRelativeToMaxHealth";
         PassiveCardEffect["COLLECTION_RADIUS"] = "collectionRadius";
         PassiveCardEffect["DAMAGE_REDUCTION"] = "damageReduction";
         PassiveCardEffect["CARD_SLOTS"] = "cardSlots";
@@ -3041,36 +3042,36 @@ var Script;
             levels: [
                 {
                     passiveEffects: {
-                        multiplier: {
-                            regeneration: 1.01 //TODO: Double check if this actually works correctly xD
+                        absolute: {
+                            regenerationRelativeToMaxHealth: 0.005
                         }
                     }
                 },
                 {
                     passiveEffects: {
-                        multiplier: {
-                            regeneration: 1.02 //TODO: Double check if this actually works correctly xD
+                        absolute: {
+                            regenerationRelativeToMaxHealth: 0.01
                         }
                     }
                 },
                 {
                     passiveEffects: {
-                        multiplier: {
-                            regeneration: 1.03 //TODO: Double check if this actually works correctly xD
+                        absolute: {
+                            regenerationRelativeToMaxHealth: 0.015
                         }
                     }
                 },
                 {
                     passiveEffects: {
-                        multiplier: {
-                            regeneration: 1.05 //TODO: Double check if this actually works correctly xD
+                        absolute: {
+                            regenerationRelativeToMaxHealth: 0.025
                         }
                     }
                 },
                 {
                     passiveEffects: {
-                        multiplier: {
-                            regeneration: 1.1 //TODO: Double check if this actually works correctly xD
+                        absolute: {
+                            regenerationRelativeToMaxHealth: 0.05
                         }
                     }
                 },
@@ -4757,6 +4758,10 @@ var Script;
             let regeneration = this.cardManager.modifyValuePlayer(0, Script.PassiveCardEffect.REGENERATION);
             if (regeneration > 0) {
                 this.heal(regeneration);
+            }
+            let regenerationRelative = this.cardManager.modifyValuePlayer(0, Script.PassiveCardEffect.REGENERATION_RELATIVE);
+            if (regenerationRelative > 0) {
+                this.heal(regenerationRelative, true);
             }
         }
         changeVisualDirection(_rot = 0) {

@@ -1341,36 +1341,36 @@ namespace Script {
             levels: [
                 { //Tier 1
                     passiveEffects: {
-                        multiplier: {
-                            regeneration: 1.01 //TODO: Double check if this actually works correctly xD
+                        absolute: {
+                            regenerationRelativeToMaxHealth: 0.005
                         }
                     }
                 },
                 { //Tier 2
                     passiveEffects: {
-                        multiplier: {
-                            regeneration: 1.02 //TODO: Double check if this actually works correctly xD
+                        absolute: {
+                            regenerationRelativeToMaxHealth: 0.01
                         }
                     }
                 },
                 { //Tier 3
                     passiveEffects: {
-                        multiplier: {
-                            regeneration: 1.03 //TODO: Double check if this actually works correctly xD
+                        absolute: {
+                            regenerationRelativeToMaxHealth: 0.015
                         }
                     }
                 },
                 { //Tier 4
                     passiveEffects: {
-                        multiplier: {
-                            regeneration: 1.05 //TODO: Double check if this actually works correctly xD
+                        absolute: {
+                            regenerationRelativeToMaxHealth: 0.025
                         }
                     }
                 },
                 { //Tier 5
                     passiveEffects: {
-                        multiplier: {
-                            regeneration: 1.1 //TODO: Double check if this actually works correctly xD
+                        absolute: {
+                            regenerationRelativeToMaxHealth: 0.05
                         }
                     }
                 },
