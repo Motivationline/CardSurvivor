@@ -1338,39 +1338,40 @@ namespace Script {
             image: "Syrringe.png",
             rarity: CardRarity.UNCOMMON,
             name: "Syringe",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
-                    passiveEffects: {
-                        absolute: {
-                            regenerationRelativeToMaxHealth: 0.005
-                        }
-                    }
-                },
-                { //Tier 2
                     passiveEffects: {
                         absolute: {
                             regenerationRelativeToMaxHealth: 0.01
                         }
                     }
                 },
+                { //Tier 2
+                    passiveEffects: {
+                        absolute: {
+                            regenerationRelativeToMaxHealth: 0.02
+                        }
+                    }
+                },
                 { //Tier 3
                     passiveEffects: {
                         absolute: {
-                            regenerationRelativeToMaxHealth: 0.015
+                            regenerationRelativeToMaxHealth: 0.03
                         }
                     }
                 },
                 { //Tier 4
                     passiveEffects: {
                         absolute: {
-                            regenerationRelativeToMaxHealth: 0.025
+                            regenerationRelativeToMaxHealth: 0.05
                         }
                     }
                 },
                 { //Tier 5
                     passiveEffects: {
                         absolute: {
-                            regenerationRelativeToMaxHealth: 0.05
+                            regenerationRelativeToMaxHealth: 0.1
                         }
                     }
                 },
@@ -1380,6 +1381,7 @@ namespace Script {
             image: "Sketchbook.png",
             rarity: CardRarity.UNCOMMON,
             name: "Sketchbook",
+            unlockByDefault: true,
             levels: [
                 { //Tier 1
                     passiveEffects: {
