@@ -188,11 +188,12 @@ namespace Script {
                 this.spawnEnemy(elite, true);
             }
 
-            let amount = provider.get(CardManager).modifyValuePlayer(wave.amount, PassiveCardEffect.ENEMY_AMOUNT);
-            let afterComma = Math.max(1, amount - Math.floor(amount));
+            let amount = Math.max(1, provider.get(CardManager).modifyValuePlayer(wave.amount, PassiveCardEffect.ENEMY_AMOUNT));
+            let afterComma = amount - Math.floor(amount);
             if (Math.random() < afterComma) {
                 amount++;
             }
+            amount = Math.floor(amount);
             for (let i = 0; i < amount; i++) {
                 let x = Math.random() * totalWeight;
                 for (let enemy of enemies) {
