@@ -16,6 +16,7 @@ namespace Script {
         public events?: { [name: string]: (_event?: CustomEvent<any>) => void; };
         public hitboxSize: number;
         public shadow?: { size?: number; position?: ƒ.Vector2; };
+        public boss?: boolean;
 
         private enemyManager: EnemyManager;
         private prevDirection: number;
@@ -50,6 +51,7 @@ namespace Script {
             directionOverride: undefined,
             events: undefined,
             hitboxSize: 0.4,
+            boss: false,
         }
 
         constructor() {
@@ -84,6 +86,7 @@ namespace Script {
             this.moveSprite = this.getSprite(_options.moveSprite);
             this.setCentralAnimator(this.moveSprite);
             this.stunned = 0;
+            this.boss = _options.boss;
             this.size = cm.modifyValue(_options.size, PassiveCardEffect.ENEMY_SIZE, _modifier);
             this.events = _options.events;
 
@@ -356,6 +359,7 @@ namespace Script {
         desiredDistance: [number, number];
         dropXP: number;
         directionOverride?: ƒ.Vector3;
+        boss?: boolean,
         size?: number;
         events?: { [name: string]: (_event?: CustomEvent) => void; };
         hitboxSize?: number;

@@ -8,8 +8,13 @@ namespace Script {
         description?: string,
         image: string,
         rarity: CardRarity,
-        unlockByDefault?: boolean,
         levels: CardLevel[],
+        unlock?: {
+            firstRun?: boolean,
+            afterFirstRun?: boolean,
+            possible?: boolean,
+        }
+        isWeapon?: boolean,
     }
     export interface CardLevel {
         passiveEffects?: PassiveCardEffectObject,

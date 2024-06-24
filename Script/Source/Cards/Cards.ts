@@ -6,7 +6,8 @@ namespace Script {
             image: "Hammer.png",
             rarity: CardRarity.COMMON,
             name: "Hammer",
-            unlockByDefault: true,
+            unlock: { possible: true, afterFirstRun: true },
+            isWeapon: true,
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -89,7 +90,8 @@ namespace Script {
             image: "Anvil.png",
             rarity: CardRarity.COMMON,
             name: "Anvil",
-            unlockByDefault: true,
+            unlock: { possible: true },
+            isWeapon: true,
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -167,7 +169,8 @@ namespace Script {
             image: "Pen.png",
             rarity: CardRarity.COMMON,
             name: "Pen",
-            unlockByDefault: true,
+            unlock: { possible: true },
+            isWeapon: true,
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -240,7 +243,8 @@ namespace Script {
             image: "Bulb.png",
             rarity: CardRarity.COMMON,
             name: "Lightbulb",
-            unlockByDefault: true,
+            unlock: { possible: true },
+            isWeapon: true,
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -322,7 +326,8 @@ namespace Script {
             image: "SmokeMask.png",
             rarity: CardRarity.COMMON,
             name: "Smoke Mask",
-            unlockByDefault: true,
+            unlock: { possible: true },
+            isWeapon: true,
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -401,7 +406,8 @@ namespace Script {
             image: "Discus.png",
             rarity: CardRarity.COMMON,
             name: "Discus",
-            unlockByDefault: true,
+            unlock: { possible: true, firstRun: true },
+            isWeapon: true,
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -490,7 +496,8 @@ namespace Script {
             image: "CodeCivil.png",
             rarity: CardRarity.COMMON,
             name: "Code Civil",
-            unlockByDefault: true,
+            unlock: { possible: true },
+            isWeapon: true,
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -572,7 +579,8 @@ namespace Script {
             image: "Divider.png",
             rarity: CardRarity.COMMON,
             name: "Divider",
-            unlockByDefault: true,
+            unlock: { possible: true, firstRun: true },
+            isWeapon: true,
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -661,7 +669,8 @@ namespace Script {
             image: "Needles.png",
             rarity: CardRarity.COMMON,
             name: "Needles",
-            unlockByDefault: true,
+            unlock: { possible: true, afterFirstRun: true },
+            isWeapon: true,
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -744,7 +753,8 @@ namespace Script {
             image: "Chisel.png",
             rarity: CardRarity.COMMON,
             name: "Chisel",
-            unlockByDefault: true,
+            unlock: { possible: true },
+            isWeapon: true,
             levels: [
                 { //Tier 1
                     activeEffects: [{
@@ -822,7 +832,7 @@ namespace Script {
             image: "Helmet.png",
             rarity: CardRarity.COMMON,
             name: "Helmet",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -865,7 +875,7 @@ namespace Script {
             image: "SafetyBoots.png",
             rarity: CardRarity.COMMON,
             name: "Safety Boots",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -908,7 +918,7 @@ namespace Script {
             image: "Microphone.png",
             rarity: CardRarity.COMMON,
             name: "Microphone",
-            unlockByDefault: true,
+            unlock: { possible: true, firstRun: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -951,7 +961,7 @@ namespace Script {
             image: "Gavel.png",
             rarity: CardRarity.COMMON,
             name: "Gavel",
-            unlockByDefault: true,
+            unlock: { possible: true, afterFirstRun: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -994,7 +1004,7 @@ namespace Script {
             image: "FirstAidKit.png",
             rarity: CardRarity.COMMON,
             name: "First Aid Kit",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -1037,7 +1047,7 @@ namespace Script {
             image: "RunningShoes.png",
             rarity: CardRarity.COMMON,
             name: "Running Shoes",
-            unlockByDefault: true,
+            unlock: { possible: true, firstRun: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -1080,7 +1090,7 @@ namespace Script {
             image: "DisposableGloves.png",
             rarity: CardRarity.COMMON,
             name: "Disposable Gloves",
-            unlockByDefault: true,
+            unlock: { possible: true, afterFirstRun: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -1123,7 +1133,7 @@ namespace Script {
             image: "Printer.png",
             rarity: CardRarity.COMMON,
             name: "Printer",
-            unlockByDefault: true,
+            unlock: { possible: true, afterFirstRun: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -1166,7 +1176,7 @@ namespace Script {
             image: "SolarPanel.png",
             rarity: CardRarity.COMMON,
             name: "Solar Panel",
-            unlockByDefault: true,
+            unlock: { possible: true, firstRun: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -1209,40 +1219,40 @@ namespace Script {
             image: "Drone.png",
             rarity: CardRarity.COMMON,
             name: "Drone",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
                         multiplier: {
-                            cameraFOV:  1.05, // +5% increased field of view (camera zoom) // currently camera distance, not FOV
+                            cameraFOV: 1.05, // +5% increased field of view (camera zoom) // currently camera distance, not FOV
                         }
                     }
                 },
                 { //Tier 2
                     passiveEffects: {
                         multiplier: {
-                            cameraFOV:  1.1, // +10% increased field of view (camera zoom) // currently camera distance, not FOV
+                            cameraFOV: 1.1, // +10% increased field of view (camera zoom) // currently camera distance, not FOV
                         }
                     }
                 },
                 { //Tier 3
                     passiveEffects: {
                         multiplier: {
-                            cameraFOV:  1.2, // +20% increased field of view (camera zoom) // currently camera distance, not FOV
+                            cameraFOV: 1.2, // +20% increased field of view (camera zoom) // currently camera distance, not FOV
                         }
                     }
                 },
                 { //Tier 4
                     passiveEffects: {
                         multiplier: {
-                            cameraFOV:  1.35, // +35% increased field of view (camera zoom) // currently camera distance, not FOV
+                            cameraFOV: 1.35, // +35% increased field of view (camera zoom) // currently camera distance, not FOV
                         }
                     }
                 },
                 { //Tier 5
                     passiveEffects: {
                         multiplier: {
-                            cameraFOV:  1.5, // +50% increased field of view (camera zoom) // currently camera distance, not FOV
+                            cameraFOV: 1.5, // +50% increased field of view (camera zoom) // currently camera distance, not FOV
                         }
                     }
                 },
@@ -1253,7 +1263,7 @@ namespace Script {
             image: "Pills.png",
             rarity: CardRarity.UNCOMMON,
             name: "Pills",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -1338,7 +1348,7 @@ namespace Script {
             image: "Syrringe.png",
             rarity: CardRarity.UNCOMMON,
             name: "Syringe",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -1381,7 +1391,7 @@ namespace Script {
             image: "Sketchbook.png",
             rarity: CardRarity.UNCOMMON,
             name: "Sketchbook",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -1466,7 +1476,7 @@ namespace Script {
             image: "JumpRope.png",
             rarity: CardRarity.UNCOMMON,
             name: "Jump Rope",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -1776,7 +1786,7 @@ namespace Script {
             image: "HardDrive.png",
             rarity: CardRarity.UNCOMMON,
             name: "Hard Drive",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -1946,7 +1956,7 @@ namespace Script {
             image: "TatooInk.png",
             rarity: CardRarity.RARE,
             name: "Tattoo Ink",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -1989,7 +1999,7 @@ namespace Script {
             image: "Calculator.png",
             rarity: CardRarity.RARE,
             name: "Calculator",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -2032,7 +2042,7 @@ namespace Script {
             image: "Bandages.png",
             rarity: CardRarity.RARE,
             name: "Bandages",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -2075,7 +2085,7 @@ namespace Script {
             image: "FaceShield.png",
             rarity: CardRarity.RARE,
             name: "Face Shield",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -2202,7 +2212,7 @@ namespace Script {
             image: "AthleticTape.png",
             rarity: CardRarity.RARE,
             name: "Athletic Tape",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -2245,13 +2255,13 @@ namespace Script {
             image: "Newspaper.png",
             rarity: CardRarity.RARE,
             name: "Newspaper",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
                         multiplier: {
                             movementSpeed: 1.0,
-                            damage: {value: 0.95, limitation: "stopped"}, // -5% damage while standing still.
+                            damage: { value: 0.95, limitation: "stopped" }, // -5% damage while standing still.
                         }
                     }
                 },
@@ -2259,7 +2269,7 @@ namespace Script {
                     passiveEffects: {
                         multiplier: {
                             movementSpeed: 1.1,
-                            damage: {value: 0.9, limitation: "stopped"}, // -10% damage while standing still.
+                            damage: { value: 0.9, limitation: "stopped" }, // -10% damage while standing still.
                         }
                     }
                 },
@@ -2267,7 +2277,7 @@ namespace Script {
                     passiveEffects: {
                         multiplier: {
                             movementSpeed: 1.15,
-                            damage: {value: 0.85, limitation: "stopped"}, // -15% damage while standing still.
+                            damage: { value: 0.85, limitation: "stopped" }, // -15% damage while standing still.
                         }
                     }
                 },
@@ -2275,7 +2285,7 @@ namespace Script {
                     passiveEffects: {
                         multiplier: {
                             movementSpeed: 1.25,
-                            damage: {value: 0.75, limitation: "stopped"}, // -25% damage while standing still.
+                            damage: { value: 0.75, limitation: "stopped" }, // -25% damage while standing still.
                         }
                     }
                 },
@@ -2283,7 +2293,7 @@ namespace Script {
                     passiveEffects: {
                         multiplier: {
                             movementSpeed: 1.5,
-                            damage: {value: 0.75, limitation: "stopped"}, // -25% damage while standing still.
+                            damage: { value: 0.75, limitation: "stopped" }, // -25% damage while standing still.
                         }
                     }
                 },
@@ -2410,7 +2420,7 @@ namespace Script {
             image: "PiercingGun.png",
             rarity: CardRarity.EPIC,
             name: "Piercing Gun",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -2569,7 +2579,7 @@ namespace Script {
             image: "Shredder.png",
             rarity: CardRarity.EPIC,
             name: "Shredder",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -2659,7 +2669,7 @@ namespace Script {
             image: "DrawingTablet.png",
             rarity: CardRarity.EPIC,
             name: "Drawing Tablet",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
@@ -2744,40 +2754,40 @@ namespace Script {
             image: "Tong.png",
             rarity: CardRarity.EPIC,
             name: "Tong",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 { //Tier 1
                     passiveEffects: {
                         multiplier: {
-                            cooldownReduction: {value: 1 / 1.2, limitation: "stopped"} // +20% attack speed while standing still.
+                            cooldownReduction: { value: 1 / 1.2, limitation: "stopped" } // +20% attack speed while standing still.
                         }
                     }
                 },
                 { //Tier 2
                     passiveEffects: {
                         multiplier: {
-                            cooldownReduction: {value: 1 / 1.3, limitation: "stopped"} // +30% attack speed while standing still.
+                            cooldownReduction: { value: 1 / 1.3, limitation: "stopped" } // +30% attack speed while standing still.
                         }
                     }
                 },
                 { //Tier 3
                     passiveEffects: {
                         multiplier: {
-                            cooldownReduction: {value: 1 / 1.4, limitation: "stopped"} // +40% attack speed while standing still.
+                            cooldownReduction: { value: 1 / 1.4, limitation: "stopped" } // +40% attack speed while standing still.
                         }
                     }
                 },
                 { //Tier 4
                     passiveEffects: {
                         multiplier: {
-                            cooldownReduction: {value: 1 / 1.6, limitation: "stopped"} // +60% attack speed while standing still.
+                            cooldownReduction: { value: 1 / 1.6, limitation: "stopped" } // +60% attack speed while standing still.
                         }
                     }
                 },
                 { //Tier 5
                     passiveEffects: {
                         multiplier: {
-                            cooldownReduction: {value: 1 / 2, limitation: "stopped"} // +100% attack speed while standing still.
+                            cooldownReduction: { value: 1 / 2, limitation: "stopped" } // +100% attack speed while standing still.
                         }
                     }
                 },
@@ -2886,7 +2896,7 @@ namespace Script {
             image: "Training.gif",
             rarity: CardRarity.LEGENDARY,
             name: "Training",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 { //Tier 5
                     passiveEffects: {

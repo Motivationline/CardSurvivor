@@ -111,7 +111,7 @@ namespace Script {
             if (this.health > 0) return _hit.damage;
 
             // Game Over
-            provider.get(MenuManager).openMenu(MenuType.GAME_OVER);
+            provider.get(MenuManager).endGameMenu(false);
             gameState = GAMESTATE.PAUSED;
             ƒ.Time.game.setScale(0);
             return 0;

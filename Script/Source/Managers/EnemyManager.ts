@@ -21,6 +21,8 @@ namespace Script {
         private timeElement: HTMLElement = document.getElementById("timer");
         private roomProgressElement: HTMLElement = document.getElementById("room-progress");
 
+        public unlockedCards: number = 0;
+
         constructor(private readonly provider: Provider) {
             if (ƒ.Project.mode === ƒ.MODE.EDITOR) return;
             document.addEventListener("interactiveViewportStarted", <EventListener>this.start);
@@ -154,6 +156,7 @@ namespace Script {
             if (rooms[this.currentArea].length <= this.currentRoom) {
                 console.log("LAST ROOM CLEARED");
                 gameState = GAMESTATE.IDLE;
+                provider.get(MenuManager).endGameMenu(true, this.unlockedCards);
                 return;
             }
             let room = rooms[this.currentArea][this.currentRoom];
@@ -382,6 +385,7 @@ namespace Script {
                 ƒ.Recycler.storeMultiple(...this.enemies.splice(index, 1));
             }
             _enemy.node.getParent()?.removeChild(_enemy.node);
+            if(_enemy.boss) this.unlockedCards += 2;
         }
 
         public getEnemy(_mode: ProjectileTargetMode, _pos: ƒ.Vector3 = provider.get(CharacterManager).character.node.mtxWorld.translation, _exclude: EnemyGraphInstance[] = [], _maxDistance: number = 20,): EnemyGraphInstance | undefined {
@@ -418,7 +422,7 @@ namespace Script {
         public displayDamage(_amt: number, _pos: ƒ.Vector3, _onPlayer: boolean = false) {
             if (!isFinite(_amt)) return;
             if (_amt === 0) return;
-            let dmgText =(Math.round(Math.abs(_amt) * 100) / 100).toString();
+            let dmgText = (Math.round(Math.abs(_amt) * 100) / 100).toString();
             let classes: string[] = [];
             if (_onPlayer) classes.push("player");
             if (_amt < 0) classes.push("healing");
@@ -448,6 +452,7 @@ namespace Script {
             this.currentRoom = -1;
             this.currentRoomEnd = 0;
             this.currentWaveEnd = 0;
+            this.unlockedCards = 0;
         }
 
         public enemyTookDamage() {

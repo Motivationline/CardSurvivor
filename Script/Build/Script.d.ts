@@ -77,7 +77,7 @@ declare namespace Script {
         getMovement(): ƒ.Vector2;
         isMoving(): boolean;
         private update;
-        upgradeCards(_amountOverride?: number, _newCards?: boolean, _rerolls?: number): Promise<void>;
+        upgradeCards(_amountOverride?: number, _newCards?: boolean, _rerolls?: number, _weaponsOnly?: boolean): Promise<void>;
     }
 }
 declare namespace Script {
@@ -143,8 +143,13 @@ declare namespace Script {
         description?: string;
         image: string;
         rarity: CardRarity;
-        unlockByDefault?: boolean;
         levels: CardLevel[];
+        unlock?: {
+            firstRun?: boolean;
+            afterFirstRun?: boolean;
+            possible?: boolean;
+        };
+        isWeapon?: boolean;
     }
     export interface CardLevel {
         passiveEffects?: PassiveCardEffectObject;
@@ -419,6 +424,7 @@ declare namespace Script {
         rarity: CardRarity;
         levels: CardLevel[];
         id: string;
+        isWeapon?: boolean;
         constructor(_init: iCard, _id: string, _level?: number);
         get level(): number;
         set level(_level: number);
@@ -450,8 +456,9 @@ declare namespace Script {
         private openPopup;
         addCardToCollection(_name: string, _amount: number): void;
         getCardLevel(_name: string): number;
-        addCardToDeck(_name: string): void;
+        addCardToDeck(_name: string, _updateVisuals?: boolean): void;
         removeCardFromDeck(_name: string, _updateVisuals?: boolean): void;
+        unlockCards(_amount: number): string[];
         private hidePopup;
         private removeFromArray;
         private addToArray;
@@ -470,7 +477,7 @@ declare namespace Script {
         #private;
         static template: HTMLTemplateElement;
         private static canvas;
-        constructor(_card: iCard, _parent: HTMLElement, _nameFallback?: string, _level?: number);
+        constructor(_card: iCard, _parent: HTMLElement, _nameFallback?: string, _level?: number, _disableCircleType?: boolean);
         get htmlElement(): HTMLElement;
         private getTextWidth;
         private getCanvasFont;
@@ -552,6 +559,7 @@ declare namespace Script {
             size?: number;
             position?: ƒ.Vector2;
         };
+        boss?: boolean;
         private enemyManager;
         private prevDirection;
         private currentlyActiveAttack;
@@ -589,6 +597,7 @@ declare namespace Script {
         desiredDistance: [number, number];
         dropXP: number;
         directionOverride?: ƒ.Vector3;
+        boss?: boolean;
         size?: number;
         events?: {
             [name: string]: (_event?: CustomEvent) => void;
@@ -669,7 +678,7 @@ declare namespace Script {
         combineEffects(..._effects: PassiveCardEffectObject[]): PassiveCardEffectObject;
         private prevChosenCards;
         setCards(_selection: string[], _deck: string[]): void;
-        getCardsToChooseFrom(_maxAmt: number, _newCards?: boolean): Card[];
+        getCardsToChooseFrom(_maxAmt: number, _newCards?: boolean, _weaponsOnly?: boolean): Card[];
         updateCardOrAdd(_cardId: string): void;
     }
 }
@@ -686,7 +695,10 @@ declare namespace Script {
         savedCollectionRaw: iCardCollection;
         savedDeckRaw: string[];
         savedSelectionRaw: string[];
+        private _firstPlaythroughDone;
         load(): Promise<void>;
+        get firstPlaythroughDone(): boolean;
+        set firstPlaythroughDone(_value: boolean);
         private catchObjChange;
         private catchArrayChange;
     }
@@ -711,6 +723,7 @@ declare namespace Script {
         private damageWasDealt;
         private timeElement;
         private roomProgressElement;
+        unlockedCards: number;
         constructor(provider: Provider);
         setup(): void;
         private start;
@@ -751,7 +764,8 @@ declare namespace Script {
         CARD_UPGRADE = 5,
         END_CONFIRM = 6,
         GAME_OVER = 7,
-        BETWEEN_ROOMS = 8
+        WINNER = 8,
+        BETWEEN_ROOMS = 9
     }
     class MenuManager {
         private menus;
@@ -759,7 +773,8 @@ declare namespace Script {
         private gameIsReady;
         constructor();
         setup(): void;
-        openMenu(_menu: MenuType): void;
+        openMenu(_menu: MenuType): HTMLElement;
+        endGameMenu(_won: boolean, _cardAmt?: number): void;
         private startGame;
         openPauseMenu(): void;
         private openPauseCardPopup;

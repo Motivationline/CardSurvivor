@@ -4,6 +4,7 @@ namespace Script {
         savedCollectionRaw: iCardCollection = {};
         savedDeckRaw: string[] = [];
         savedSelectionRaw: string[] = [];
+        private _firstPlaythroughDone: boolean = false;
 
         async load() {
             this.savedCollectionRaw = this.catchObjChange(
@@ -18,6 +19,15 @@ namespace Script {
                 <string[]>JSON.parse(localStorage.getItem("selection") ?? "[]"),
                 () => { localStorage.setItem("selection", JSON.stringify(this.savedSelectionRaw)) }
             );
+
+            this._firstPlaythroughDone = !!localStorage.getItem("firstPlaythroughDone");
+        }
+
+        get firstPlaythroughDone() { return this._firstPlaythroughDone};
+        set firstPlaythroughDone(_value: boolean) {
+            if(_value) localStorage.setItem("firstPlaythroughDone", "true");
+            if(!_value) localStorage.removeItem("firstPlaythroughDone");
+            this._firstPlaythroughDone = _value;
         }
 
         private catchObjChange<T extends Object>(object: T, onChange: Function): T {

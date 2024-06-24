@@ -8,6 +8,7 @@ namespace Script {
         rarity: CardRarity;
         levels: CardLevel[];
         id: string;
+        isWeapon?: boolean;
         #level: number;
         #cm: CardManager;
         #pm: ProjectileManager;
@@ -21,6 +22,7 @@ namespace Script {
             this.levels = _init.levels;
             this.level = _level;
             this.id = _id;
+            this.isWeapon = _init.isWeapon;
 
             this.#cm = provider.get(CardManager);
             this.#pm = provider.get(ProjectileManager);

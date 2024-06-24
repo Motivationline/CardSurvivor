@@ -140,6 +140,7 @@ namespace Script {
             speed: 10,
             range: 12,
             size: 0.6,
+            rotateInDirection: true,
             sprite: ["projectile", "divider"],
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.CLOSEST,

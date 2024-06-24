@@ -315,13 +315,17 @@ var Script;
                 return;
             this.#character.update(this.movementVector);
         };
-        async upgradeCards(_amountOverride, _newCards = false, _rerolls = 0) {
+        async upgradeCards(_amountOverride, _newCards = false, _rerolls = 0, _weaponsOnly = false) {
+            let firstPlaythroughDone = Script.provider.get(Script.DataManager).firstPlaythroughDone;
+            if (!firstPlaythroughDone) {
+                _rerolls = 0;
+            }
             return new Promise((resolve) => {
                 let rerollButton = document.getElementById("card-upgrade-popup-reroll");
                 const reroll = async () => {
                     rerollButton.removeEventListener("click", reroll);
                     if (_rerolls > 0) {
-                        await this.upgradeCards(_amountOverride, _newCards, _rerolls - 1);
+                        await this.upgradeCards(_amountOverride, _newCards, _rerolls - 1, _weaponsOnly);
                     }
                     resolve();
                 };
@@ -338,7 +342,7 @@ var Script;
                 let cardAmount = cm.modifyValuePlayer(defaultCardsToChooseFromAmount, Script.PassiveCardEffect.CARD_UPGRADE_SLOTS);
                 if (_amountOverride)
                     cardAmount = _amountOverride;
-                let cards = cm.getCardsToChooseFrom(cardAmount, _newCards);
+                let cards = cm.getCardsToChooseFrom(cardAmount, _newCards, _weaponsOnly);
                 let elementsToShow = [];
                 let parent = document.getElementById("card-upgrade-popup-wrapper");
                 if (!cards || cards.length === 0) {
@@ -1181,6 +1185,7 @@ var Script;
             speed: 10,
             range: 12,
             size: 0.6,
+            rotateInDirection: true,
             sprite: ["projectile", "divider"],
             target: Script.ProjectileTarget.ENEMY,
             targetMode: Script.ProjectileTargetMode.CLOSEST,
@@ -1281,6 +1286,7 @@ var Script;
         rarity;
         levels;
         id;
+        isWeapon;
         #level;
         #cm;
         #pm;
@@ -1293,6 +1299,7 @@ var Script;
             this.levels = _init.levels;
             this.level = _level;
             this.id = _id;
+            this.isWeapon = _init.isWeapon;
             this.#cm = Script.provider.get(Script.CardManager);
             this.#pm = Script.provider.get(Script.ProjectileManager);
             this.#charm = Script.provider.get(Script.CharacterManager);
@@ -1375,11 +1382,21 @@ var Script;
             this.collection = dm.savedCollectionRaw;
             this.deck = dm.savedDeckRaw;
             // this.selection = dm.savedSelectionRaw;
-            // unlock default cards
-            for (let cardId in Script.cards) {
-                let card = Script.cards[cardId];
-                if (card.unlockByDefault && !this.collection[cardId]) {
-                    this.collection[cardId] = { amount: 1, lvl: 0 };
+            // unlock cards
+            let fpd = provider.get(Script.DataManager).firstPlaythroughDone;
+            if (!fpd) {
+                for (let cardId in Script.cards) {
+                    let card = Script.cards[cardId];
+                    if (card.unlock && !this.collection[cardId]) {
+                        if (card.unlock.firstRun) {
+                            // unlock and setup cards for first playthrough
+                            this.collection[cardId] = { amount: 1, lvl: 0 };
+                            this.addCardToDeck(cardId, false);
+                        }
+                        if (card.unlock.afterFirstRun) {
+                            this.collection[cardId] = { amount: 1, lvl: 0 };
+                        }
+                    }
                 }
             }
         }
@@ -1474,15 +1491,31 @@ var Script;
         getCardLevel(_name) {
             return this.collection[_name]?.lvl ?? 0;
         }
-        addCardToDeck(_name) {
+        addCardToDeck(_name, _updateVisuals = true) {
             this.addToArray(_name, this.deck);
             // this.removeCardFromSelection(_name, false);
-            this.updateVisuals();
+            if (_updateVisuals)
+                this.updateVisuals();
         }
         removeCardFromDeck(_name, _updateVisuals = true) {
             this.removeFromArray(_name, this.deck);
             if (_updateVisuals)
                 this.updateVisuals();
+        }
+        unlockCards(_amount) {
+            let unlockableCards = [];
+            for (let cardId in Script.cards) {
+                let card = Script.cards[cardId];
+                if (card.unlock?.possible && !this.collection[cardId]) {
+                    unlockableCards.push(cardId);
+                }
+            }
+            unlockableCards.sort(() => Math.random() - 0.5);
+            unlockableCards.length = Math.min(Math.floor(_amount), unlockableCards.length);
+            for (let card of unlockableCards) {
+                this.addCardToCollection(card, 1);
+            }
+            return unlockableCards;
         }
         // addCardToSelection(_name: string) {
         //     this.addToArray(_name, this.selection);
@@ -1628,7 +1661,7 @@ var Script;
         #image;
         #text;
         #htmlElement;
-        constructor(_card, _parent, _nameFallback = "unknown", _level = 0) {
+        constructor(_card, _parent, _nameFallback = "unknown", _level = 0, _disableCircleType = false) {
             this.#name = _card.name ?? _nameFallback;
             this.#text = this.getFirstTranslatableText(_card.description ?? "unknown", _card.description, `card.${this.#name}.description`);
             this.#image = _card.image;
@@ -1653,7 +1686,8 @@ var Script;
             nameElement.innerHTML = this.#name;
             requestAnimationFrame(() => {
                 // turn into circle
-                new CircleType(nameElement).radius(cardWidth * 2);
+                if (!_disableCircleType)
+                    new CircleType(nameElement).radius(cardWidth * 2);
             });
             this.#htmlElement.querySelector(".card-text").innerText = this.#text;
             this.#htmlElement.querySelector(".card-image img").src = "Assets/Cards/Items/" + this.#image;
@@ -1708,7 +1742,8 @@ var Script;
             image: "Hammer.png",
             rarity: Script.CardRarity.COMMON,
             name: "Hammer",
-            unlockByDefault: true,
+            unlock: { possible: true, afterFirstRun: true },
+            isWeapon: true,
             levels: [
                 {
                     activeEffects: [{
@@ -1791,7 +1826,8 @@ var Script;
             image: "Anvil.png",
             rarity: Script.CardRarity.COMMON,
             name: "Anvil",
-            unlockByDefault: true,
+            unlock: { possible: true },
+            isWeapon: true,
             levels: [
                 {
                     activeEffects: [{
@@ -1869,7 +1905,8 @@ var Script;
             image: "Pen.png",
             rarity: Script.CardRarity.COMMON,
             name: "Pen",
-            unlockByDefault: true,
+            unlock: { possible: true },
+            isWeapon: true,
             levels: [
                 {
                     activeEffects: [{
@@ -1942,7 +1979,8 @@ var Script;
             image: "Bulb.png",
             rarity: Script.CardRarity.COMMON,
             name: "Lightbulb",
-            unlockByDefault: true,
+            unlock: { possible: true },
+            isWeapon: true,
             levels: [
                 {
                     activeEffects: [{
@@ -2024,7 +2062,8 @@ var Script;
             image: "SmokeMask.png",
             rarity: Script.CardRarity.COMMON,
             name: "Smoke Mask",
-            unlockByDefault: true,
+            unlock: { possible: true },
+            isWeapon: true,
             levels: [
                 {
                     activeEffects: [{
@@ -2103,7 +2142,8 @@ var Script;
             image: "Discus.png",
             rarity: Script.CardRarity.COMMON,
             name: "Discus",
-            unlockByDefault: true,
+            unlock: { possible: true, firstRun: true },
+            isWeapon: true,
             levels: [
                 {
                     activeEffects: [{
@@ -2192,7 +2232,8 @@ var Script;
             image: "CodeCivil.png",
             rarity: Script.CardRarity.COMMON,
             name: "Code Civil",
-            unlockByDefault: true,
+            unlock: { possible: true },
+            isWeapon: true,
             levels: [
                 {
                     activeEffects: [{
@@ -2274,7 +2315,8 @@ var Script;
             image: "Divider.png",
             rarity: Script.CardRarity.COMMON,
             name: "Divider",
-            unlockByDefault: true,
+            unlock: { possible: true, firstRun: true },
+            isWeapon: true,
             levels: [
                 {
                     activeEffects: [{
@@ -2363,7 +2405,8 @@ var Script;
             image: "Needles.png",
             rarity: Script.CardRarity.COMMON,
             name: "Needles",
-            unlockByDefault: true,
+            unlock: { possible: true, afterFirstRun: true },
+            isWeapon: true,
             levels: [
                 {
                     activeEffects: [{
@@ -2446,7 +2489,8 @@ var Script;
             image: "Chisel.png",
             rarity: Script.CardRarity.COMMON,
             name: "Chisel",
-            unlockByDefault: true,
+            unlock: { possible: true },
+            isWeapon: true,
             levels: [
                 {
                     activeEffects: [{
@@ -2524,7 +2568,7 @@ var Script;
             image: "Helmet.png",
             rarity: Script.CardRarity.COMMON,
             name: "Helmet",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 {
                     passiveEffects: {
@@ -2567,7 +2611,7 @@ var Script;
             image: "SafetyBoots.png",
             rarity: Script.CardRarity.COMMON,
             name: "Safety Boots",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 {
                     passiveEffects: {
@@ -2610,7 +2654,7 @@ var Script;
             image: "Microphone.png",
             rarity: Script.CardRarity.COMMON,
             name: "Microphone",
-            unlockByDefault: true,
+            unlock: { possible: true, firstRun: true },
             levels: [
                 {
                     passiveEffects: {
@@ -2653,7 +2697,7 @@ var Script;
             image: "Gavel.png",
             rarity: Script.CardRarity.COMMON,
             name: "Gavel",
-            unlockByDefault: true,
+            unlock: { possible: true, afterFirstRun: true },
             levels: [
                 {
                     passiveEffects: {
@@ -2696,7 +2740,7 @@ var Script;
             image: "FirstAidKit.png",
             rarity: Script.CardRarity.COMMON,
             name: "First Aid Kit",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 {
                     passiveEffects: {
@@ -2739,7 +2783,7 @@ var Script;
             image: "RunningShoes.png",
             rarity: Script.CardRarity.COMMON,
             name: "Running Shoes",
-            unlockByDefault: true,
+            unlock: { possible: true, firstRun: true },
             levels: [
                 {
                     passiveEffects: {
@@ -2782,7 +2826,7 @@ var Script;
             image: "DisposableGloves.png",
             rarity: Script.CardRarity.COMMON,
             name: "Disposable Gloves",
-            unlockByDefault: true,
+            unlock: { possible: true, afterFirstRun: true },
             levels: [
                 {
                     passiveEffects: {
@@ -2825,7 +2869,7 @@ var Script;
             image: "Printer.png",
             rarity: Script.CardRarity.COMMON,
             name: "Printer",
-            unlockByDefault: true,
+            unlock: { possible: true, afterFirstRun: true },
             levels: [
                 {
                     passiveEffects: {
@@ -2868,7 +2912,7 @@ var Script;
             image: "SolarPanel.png",
             rarity: Script.CardRarity.COMMON,
             name: "Solar Panel",
-            unlockByDefault: true,
+            unlock: { possible: true, firstRun: true },
             levels: [
                 {
                     passiveEffects: {
@@ -2911,7 +2955,7 @@ var Script;
             image: "Drone.png",
             rarity: Script.CardRarity.COMMON,
             name: "Drone",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 {
                     passiveEffects: {
@@ -2955,7 +2999,7 @@ var Script;
             image: "Pills.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Pills",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 {
                     passiveEffects: {
@@ -3040,7 +3084,7 @@ var Script;
             image: "Syrringe.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Syringe",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 {
                     passiveEffects: {
@@ -3083,7 +3127,7 @@ var Script;
             image: "Sketchbook.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Sketchbook",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 {
                     passiveEffects: {
@@ -3168,7 +3212,7 @@ var Script;
             image: "JumpRope.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Jump Rope",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 {
                     passiveEffects: {
@@ -3478,7 +3522,7 @@ var Script;
             image: "HardDrive.png",
             rarity: Script.CardRarity.UNCOMMON,
             name: "Hard Drive",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 {
                     passiveEffects: {
@@ -3648,7 +3692,7 @@ var Script;
             image: "TatooInk.png",
             rarity: Script.CardRarity.RARE,
             name: "Tattoo Ink",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 {
                     passiveEffects: {
@@ -3691,7 +3735,7 @@ var Script;
             image: "Calculator.png",
             rarity: Script.CardRarity.RARE,
             name: "Calculator",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 {
                     passiveEffects: {
@@ -3734,7 +3778,7 @@ var Script;
             image: "Bandages.png",
             rarity: Script.CardRarity.RARE,
             name: "Bandages",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 {
                     passiveEffects: {
@@ -3777,7 +3821,7 @@ var Script;
             image: "FaceShield.png",
             rarity: Script.CardRarity.RARE,
             name: "Face Shield",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 {
                     passiveEffects: {
@@ -3904,7 +3948,7 @@ var Script;
             image: "AthleticTape.png",
             rarity: Script.CardRarity.RARE,
             name: "Athletic Tape",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 {
                     passiveEffects: {
@@ -3947,7 +3991,7 @@ var Script;
             image: "Newspaper.png",
             rarity: Script.CardRarity.RARE,
             name: "Newspaper",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 {
                     passiveEffects: {
@@ -4112,7 +4156,7 @@ var Script;
             image: "PiercingGun.png",
             rarity: Script.CardRarity.EPIC,
             name: "Piercing Gun",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 {
                     passiveEffects: {
@@ -4271,7 +4315,7 @@ var Script;
             image: "Shredder.png",
             rarity: Script.CardRarity.EPIC,
             name: "Shredder",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 {
                     passiveEffects: {
@@ -4361,7 +4405,7 @@ var Script;
             image: "DrawingTablet.png",
             rarity: Script.CardRarity.EPIC,
             name: "Drawing Tablet",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 {
                     passiveEffects: {
@@ -4446,7 +4490,7 @@ var Script;
             image: "Tong.png",
             rarity: Script.CardRarity.EPIC,
             name: "Tong",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 {
                     passiveEffects: {
@@ -4588,7 +4632,7 @@ var Script;
             image: "Training.gif",
             rarity: Script.CardRarity.LEGENDARY,
             name: "Training",
-            unlockByDefault: true,
+            unlock: { possible: true },
             levels: [
                 {
                     passiveEffects: {
@@ -4713,7 +4757,7 @@ var Script;
             if (this.health > 0)
                 return _hit.damage;
             // Game Over
-            Script.provider.get(Script.MenuManager).openMenu(Script.MenuType.GAME_OVER);
+            Script.provider.get(Script.MenuManager).endGameMenu(false);
             Script.gameState = Script.GAMESTATE.PAUSED;
             ƒ.Time.game.setScale(0);
             return 0;
@@ -5056,6 +5100,7 @@ var Script;
             knockbackMultiplier: 0.1,
             size: 3,
             speed: 1,
+            boss: true,
             shadow: {
                 size: 0.8,
                 position: new Script.ƒ.Vector2(0, -0.3)
@@ -5179,6 +5224,7 @@ var Script;
         events;
         hitboxSize;
         shadow;
+        boss;
         enemyManager;
         prevDirection;
         currentlyActiveAttack;
@@ -5210,6 +5256,7 @@ var Script;
             directionOverride: undefined,
             events: undefined,
             hitboxSize: 0.4,
+            boss: false,
         };
         constructor() {
             super();
@@ -5241,6 +5288,7 @@ var Script;
             this.moveSprite = this.getSprite(_options.moveSprite);
             this.setCentralAnimator(this.moveSprite);
             this.stunned = 0;
+            this.boss = _options.boss;
             this.size = cm.modifyValue(_options.size, Script.PassiveCardEffect.ENEMY_SIZE, _modifier);
             this.events = _options.events;
             this.node.mtxLocal.scaling = Script.ƒ.Vector3.ONE(this.size);
@@ -6357,7 +6405,7 @@ var Script;
             }
             this.updateEffects();
         }
-        getCardsToChooseFrom(_maxAmt, _newCards = false) {
+        getCardsToChooseFrom(_maxAmt, _newCards = false, _weaponsOnly = false) {
             let possibleCards = [...this.currentlyActiveCards];
             if (this.currentlyActiveCards.length < this.currentMaxActiveCardAmount) {
                 possibleCards.push(...this.deckCards);
@@ -6365,7 +6413,8 @@ var Script;
             for (let i = 0; i < possibleCards.length; i++) {
                 let card = possibleCards[i];
                 if ((_newCards && this.prevChosenCards.includes(card)) ||
-                    (card.level >= card.levels.length - 1 && this.activeCards.includes(card))) {
+                    (card.level >= card.levels.length - 1 && this.activeCards.includes(card)) ||
+                    (_weaponsOnly && !card.isWeapon)) {
                     possibleCards.splice(i, 1);
                     i--;
                 }
@@ -6376,6 +6425,9 @@ var Script;
                 .sort((a, b) => a.sort - b.sort)
                 .map(({ value }) => value);
             possibleCards.length = Math.min(Math.floor(_maxAmt), possibleCards.length);
+            if (possibleCards.length === 0 && _weaponsOnly) {
+                return this.getCardsToChooseFrom(_maxAmt, _newCards);
+            }
             this.prevChosenCards = possibleCards;
             return possibleCards;
         }
@@ -6431,10 +6483,21 @@ var Script;
         savedCollectionRaw = {};
         savedDeckRaw = [];
         savedSelectionRaw = [];
+        _firstPlaythroughDone = false;
         async load() {
             this.savedCollectionRaw = this.catchObjChange(JSON.parse(localStorage.getItem("collection") ?? "{}"), () => { localStorage.setItem("collection", JSON.stringify(this.savedCollectionRaw)); });
             this.savedDeckRaw = this.catchArrayChange(JSON.parse(localStorage.getItem("deck") ?? "[]"), () => { localStorage.setItem("deck", JSON.stringify(this.savedDeckRaw)); });
             this.savedSelectionRaw = this.catchArrayChange(JSON.parse(localStorage.getItem("selection") ?? "[]"), () => { localStorage.setItem("selection", JSON.stringify(this.savedSelectionRaw)); });
+            this._firstPlaythroughDone = !!localStorage.getItem("firstPlaythroughDone");
+        }
+        get firstPlaythroughDone() { return this._firstPlaythroughDone; }
+        ;
+        set firstPlaythroughDone(_value) {
+            if (_value)
+                localStorage.setItem("firstPlaythroughDone", "true");
+            if (!_value)
+                localStorage.removeItem("firstPlaythroughDone");
+            this._firstPlaythroughDone = _value;
         }
         catchObjChange(object, onChange) {
             const handler = {
@@ -6491,6 +6554,7 @@ var Script;
         damageWasDealt = false;
         timeElement = document.getElementById("timer");
         roomProgressElement = document.getElementById("room-progress");
+        unlockedCards = 0;
         constructor(provider) {
             this.provider = provider;
             if (Script.ƒ.Project.mode === Script.ƒ.MODE.EDITOR)
@@ -6614,6 +6678,7 @@ var Script;
             if (Script.rooms[this.currentArea].length <= this.currentRoom) {
                 console.log("LAST ROOM CLEARED");
                 Script.gameState = Script.GAMESTATE.IDLE;
+                Script.provider.get(Script.MenuManager).endGameMenu(true, this.unlockedCards);
                 return;
             }
             let room = Script.rooms[this.currentArea][this.currentRoom];
@@ -6829,6 +6894,8 @@ var Script;
                 Script.ƒ.Recycler.storeMultiple(...this.enemies.splice(index, 1));
             }
             _enemy.node.getParent()?.removeChild(_enemy.node);
+            if (_enemy.boss)
+                this.unlockedCards += 2;
         }
         getEnemy(_mode, _pos = Script.provider.get(Script.CharacterManager).character.node.mtxWorld.translation, _exclude = [], _maxDistance = 20) {
             if (!this.enemies || this.enemies.length === 0)
@@ -6899,6 +6966,7 @@ var Script;
             this.currentRoom = -1;
             this.currentRoomEnd = 0;
             this.currentWaveEnd = 0;
+            this.unlockedCards = 0;
         }
         enemyTookDamage() {
             this.damageWasDealt = true;
@@ -6927,7 +6995,8 @@ var Script;
         MenuType[MenuType["CARD_UPGRADE"] = 5] = "CARD_UPGRADE";
         MenuType[MenuType["END_CONFIRM"] = 6] = "END_CONFIRM";
         MenuType[MenuType["GAME_OVER"] = 7] = "GAME_OVER";
-        MenuType[MenuType["BETWEEN_ROOMS"] = 8] = "BETWEEN_ROOMS";
+        MenuType[MenuType["WINNER"] = 8] = "WINNER";
+        MenuType[MenuType["BETWEEN_ROOMS"] = 9] = "BETWEEN_ROOMS";
     })(MenuType = Script.MenuType || (Script.MenuType = {}));
     class MenuManager {
         menus = new Map();
@@ -6945,6 +7014,7 @@ var Script;
             this.menus.set(MenuType.CARD_UPGRADE, document.getElementById("card-upgrade-popup"));
             this.menus.set(MenuType.END_CONFIRM, document.getElementById("end-confirm"));
             this.menus.set(MenuType.GAME_OVER, document.getElementById("game-over-overlay"));
+            this.menus.set(MenuType.WINNER, document.getElementById("winner-overlay"));
             this.menus.set(MenuType.BETWEEN_ROOMS, document.getElementById("between-rooms-overlay"));
             main.querySelector("#main-menu-deck").addEventListener("click", () => { this.openMenu(MenuType.COLLECTION); });
             main.querySelector("#main-menu-game").addEventListener("click", () => {
@@ -6969,15 +7039,40 @@ var Script;
                 //TODO handle game abort.
                 Script.provider.get(Script.EnemyManager).reset();
             });
+            if (!Script.provider.get(Script.DataManager).firstPlaythroughDone) {
+                main.querySelector("#main-menu-deck").classList.add("hidden");
+            }
         }
         openMenu(_menu) {
+            let openedMenu = undefined;
             for (let menu of this.menus.entries()) {
                 if (menu[0] === _menu) {
                     menu[1].classList.remove("hidden");
+                    openedMenu = menu[1];
                 }
                 else {
                     menu[1].classList.add("hidden");
                 }
+            }
+            return openedMenu;
+        }
+        endGameMenu(_won, _cardAmt = Script.provider.get(Script.EnemyManager).unlockedCards) {
+            this.menus.get(MenuType.MAIN).querySelector("#main-menu-deck").classList.remove("hidden");
+            Script.provider.get(Script.DataManager).firstPlaythroughDone = true;
+            let menu = this.openMenu(_won ? MenuType.WINNER : MenuType.GAME_OVER);
+            let cardsToDisplay = Script.provider.get(Script.CardCollection).unlockCards(_cardAmt);
+            let cardWrapper = menu.querySelector(".game-over-cards");
+            let cardElements = [];
+            for (let card of cardsToDisplay) {
+                cardElements.push(new Script.CardVisual(Script.cards[card], cardWrapper, "undefined", 0, true).htmlElement);
+            }
+            cardWrapper.replaceChildren(...cardElements);
+            let textElement = menu.querySelector("span");
+            if (cardsToDisplay.length > 0) {
+                textElement.innerText = i18next.t("game.cards_unlocked");
+            }
+            else {
+                textElement.innerText = i18next.t("game.no_cards_unlocked");
             }
         }
         async startGame() {
@@ -6988,7 +7083,7 @@ var Script;
             cardManager.setCards([], dataManager.savedDeckRaw);
             let character = Script.provider.get(Script.CharacterManager).character;
             character?.reset();
-            await Script.provider.get(Script.CharacterManager).upgradeCards(5, true, 1);
+            await Script.provider.get(Script.CharacterManager).upgradeCards(5, true, 1, !dataManager.firstPlaythroughDone);
             await this.waitForReady();
             Script.provider.get(Script.EnemyManager).nextRoom();
         }

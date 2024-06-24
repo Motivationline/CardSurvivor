@@ -216,6 +216,7 @@ namespace Script {
             knockbackMultiplier: 0.1,
             size: 3,
             speed: 1,
+            boss: true,
             shadow: {
                 size: 0.8,
                 position: new ƒ.Vector2(0, -0.3)

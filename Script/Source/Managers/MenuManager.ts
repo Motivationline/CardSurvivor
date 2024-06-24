@@ -8,6 +8,7 @@ namespace Script {
         CARD_UPGRADE,
         END_CONFIRM,
         GAME_OVER,
+        WINNER,
         BETWEEN_ROOMS,
     }
     export class MenuManager {
@@ -29,6 +30,7 @@ namespace Script {
             this.menus.set(MenuType.CARD_UPGRADE, document.getElementById("card-upgrade-popup"));
             this.menus.set(MenuType.END_CONFIRM, document.getElementById("end-confirm"));
             this.menus.set(MenuType.GAME_OVER, document.getElementById("game-over-overlay"));
+            this.menus.set(MenuType.WINNER, document.getElementById("winner-overlay"));
             this.menus.set(MenuType.BETWEEN_ROOMS, document.getElementById("between-rooms-overlay"));
 
             main.querySelector("#main-menu-deck").addEventListener("click", () => { this.openMenu(MenuType.COLLECTION) });
@@ -55,15 +57,44 @@ namespace Script {
                 //TODO handle game abort.
                 provider.get(EnemyManager).reset();
             });
+
+            if (!provider.get(DataManager).firstPlaythroughDone) {
+                main.querySelector("#main-menu-deck").classList.add("hidden");
+            }
         }
 
-        public openMenu(_menu: MenuType) {
+        public openMenu(_menu: MenuType): HTMLElement {
+            let openedMenu: HTMLElement = undefined;
             for (let menu of this.menus.entries()) {
                 if (menu[0] === _menu) {
                     menu[1].classList.remove("hidden");
+                    openedMenu = menu[1];
                 } else {
                     menu[1].classList.add("hidden");
                 }
+            }
+            return openedMenu;
+        }
+
+        endGameMenu(_won: boolean, _cardAmt: number = provider.get(EnemyManager).unlockedCards) {
+            this.menus.get(MenuType.MAIN).querySelector("#main-menu-deck").classList.remove("hidden");
+            provider.get(DataManager).firstPlaythroughDone = true;
+
+            let menu = this.openMenu(_won ? MenuType.WINNER : MenuType.GAME_OVER);
+            let cardsToDisplay = provider.get(CardCollection).unlockCards(_cardAmt);
+            let cardWrapper = <HTMLElement>menu.querySelector(".game-over-cards");
+
+            let cardElements: HTMLElement[] = [];
+            for (let card of cardsToDisplay) {
+                cardElements.push(new CardVisual(cards[card], cardWrapper, "undefined", 0, true).htmlElement);
+            }
+            cardWrapper.replaceChildren(...cardElements);
+
+            let textElement = menu.querySelector("span");
+            if (cardsToDisplay.length > 0) {
+                textElement.innerText = i18next.t("game.cards_unlocked");
+            } else {
+                textElement.innerText = i18next.t("game.no_cards_unlocked");
             }
         }
 
@@ -76,7 +107,7 @@ namespace Script {
             cardManager.setCards([], dataManager.savedDeckRaw);
             let character = provider.get(CharacterManager).character;
             character?.reset();
-            await provider.get(CharacterManager).upgradeCards(5, true, 1);
+            await provider.get(CharacterManager).upgradeCards(5, true, 1, !dataManager.firstPlaythroughDone);
             await this.waitForReady();
             provider.get(EnemyManager).nextRoom();
         }
@@ -112,7 +143,7 @@ namespace Script {
         private async waitForReady(): Promise<void> {
             if (this.gameIsReady) return;
             let em = provider.get(EnemyManager);
-            while(!this.gameIsReady) {
+            while (!this.gameIsReady) {
                 await em.waitMs(100);
             }
         }

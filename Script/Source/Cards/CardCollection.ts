@@ -37,11 +37,21 @@ namespace Script {
             this.deck = dm.savedDeckRaw;
             // this.selection = dm.savedSelectionRaw;
 
-            // unlock default cards
-            for (let cardId in cards) {
-                let card = cards[cardId];
-                if (card.unlockByDefault && !this.collection[cardId]) {
-                    this.collection[cardId] = { amount: 1, lvl: 0 };
+            // unlock cards
+            let fpd = provider.get(DataManager).firstPlaythroughDone;
+            if (!fpd) {
+                for (let cardId in cards) {
+                    let card = cards[cardId];
+                    if (card.unlock && !this.collection[cardId]) {
+                        if (card.unlock.firstRun) {
+                            // unlock and setup cards for first playthrough
+                            this.collection[cardId] = { amount: 1, lvl: 0 };
+                            this.addCardToDeck(cardId, false);
+                        }
+                        if (card.unlock.afterFirstRun) {
+                            this.collection[cardId] = { amount: 1, lvl: 0 };
+                        }
+                    }
                 }
             }
         }
@@ -145,15 +155,33 @@ namespace Script {
             return this.collection[_name]?.lvl ?? 0;
         }
 
-        addCardToDeck(_name: string) {
+        addCardToDeck(_name: string, _updateVisuals: boolean = true) {
             this.addToArray(_name, this.deck);
             // this.removeCardFromSelection(_name, false);
-            this.updateVisuals();
+            if(_updateVisuals) this.updateVisuals();
         }
 
         removeCardFromDeck(_name: string, _updateVisuals: boolean = true) {
             this.removeFromArray(_name, this.deck);
             if (_updateVisuals) this.updateVisuals();
+        }
+
+        unlockCards(_amount: number): string[] {
+            let unlockableCards: string[] = [];
+            for (let cardId in cards) {
+                let card = cards[cardId];
+                if (card.unlock?.possible && !this.collection[cardId]) {
+                    unlockableCards.push(cardId);
+                }
+            }
+            unlockableCards.sort(()=>Math.random() - 0.5);
+            unlockableCards.length = Math.min(Math.floor(_amount), unlockableCards.length);
+
+            for(let card of unlockableCards){
+                this.addCardToCollection(card, 1);
+            }
+
+            return unlockableCards;
         }
 
         // addCardToSelection(_name: string) {

@@ -7,7 +7,7 @@ namespace Script {
         #text: string;
         #htmlElement: HTMLElement;
 
-        constructor(_card: iCard, _parent: HTMLElement, _nameFallback: string = "unknown", _level: number = 0) {
+        constructor(_card: iCard, _parent: HTMLElement, _nameFallback: string = "unknown", _level: number = 0, _disableCircleType: boolean = false) {
             this.#name = _card.name ?? _nameFallback;
             this.#text = this.getFirstTranslatableText(_card.description ?? "unknown", _card.description, `card.${this.#name}.description`);
             this.#image = _card.image;
@@ -38,7 +38,8 @@ namespace Script {
             nameElement.innerHTML = this.#name;
             requestAnimationFrame(() => {
                 // turn into circle
-                new CircleType(nameElement).radius(cardWidth * 2);
+                if(!_disableCircleType)
+                    new CircleType(nameElement).radius(cardWidth * 2);
             });
             (<HTMLElement>this.#htmlElement.querySelector(".card-text")).innerText = this.#text;
             (<HTMLImageElement>this.#htmlElement.querySelector(".card-image img")).src = "Assets/Cards/Items/" + this.#image;

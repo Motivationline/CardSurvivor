@@ -279,6 +279,20 @@ progress::-webkit-progress-value {
   animation: fade 1s reverse forwards linear;
 }
 
+.game-over-cards-wrapper span {
+  font-size: 1.5em;
+  margin: 1em 0;
+  text-align: center;
+  display: block;
+}
+
+.game-over-cards {
+  --card-size: min(calc((21 / 15) * 17vw), 50vh);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
 #between-rooms-overlay {
   z-index: 1002;
   display: flex;

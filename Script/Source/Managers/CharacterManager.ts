@@ -37,13 +37,17 @@ namespace Script {
             this.#character.update(this.movementVector);
         }
 
-        public async upgradeCards(_amountOverride?: number, _newCards: boolean = false, _rerolls: number = 0): Promise<void> {
+        public async upgradeCards(_amountOverride?: number, _newCards: boolean = false, _rerolls: number = 0, _weaponsOnly: boolean = false): Promise<void> {
+            let firstPlaythroughDone = provider.get(DataManager).firstPlaythroughDone;
+            if(!firstPlaythroughDone){
+                _rerolls = 0;
+            }
             return new Promise((resolve) => {
                 let rerollButton = <HTMLButtonElement>document.getElementById("card-upgrade-popup-reroll");
                 const reroll = async () => {
                     rerollButton.removeEventListener("click", reroll);
                     if (_rerolls > 0) {
-                        await this.upgradeCards(_amountOverride, _newCards, _rerolls - 1);
+                        await this.upgradeCards(_amountOverride, _newCards, _rerolls - 1, _weaponsOnly);
                     }
                     resolve();
                 }
@@ -60,7 +64,7 @@ namespace Script {
 
                 let cardAmount = cm.modifyValuePlayer(defaultCardsToChooseFromAmount, PassiveCardEffect.CARD_UPGRADE_SLOTS);
                 if (_amountOverride) cardAmount = _amountOverride;
-                let cards = cm.getCardsToChooseFrom(cardAmount, _newCards);
+                let cards = cm.getCardsToChooseFrom(cardAmount, _newCards, _weaponsOnly);
                 let elementsToShow: HTMLElement[] = [];
                 let parent: HTMLElement = document.getElementById("card-upgrade-popup-wrapper");
                 if (!cards || cards.length === 0) {

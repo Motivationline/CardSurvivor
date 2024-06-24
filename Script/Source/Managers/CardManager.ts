@@ -129,7 +129,7 @@ namespace Script {
             this.updateEffects();
         }
 
-        public getCardsToChooseFrom(_maxAmt: number, _newCards: boolean = false): Card[] {
+        public getCardsToChooseFrom(_maxAmt: number, _newCards: boolean = false, _weaponsOnly: boolean = false): Card[] {
             let possibleCards = [...this.currentlyActiveCards];
 
             if (this.currentlyActiveCards.length < this.currentMaxActiveCardAmount) {
@@ -139,7 +139,8 @@ namespace Script {
             for (let i: number = 0; i < possibleCards.length; i++) {
                 let card = possibleCards[i];
                 if ((_newCards && this.prevChosenCards.includes(card)) ||
-                    (card.level >= card.levels.length - 1 && this.activeCards.includes(card))) {
+                    (card.level >= card.levels.length - 1 && this.activeCards.includes(card)) || 
+                    (_weaponsOnly && !card.isWeapon)) {
                     possibleCards.splice(i, 1);
                     i--;
                 }
@@ -152,6 +153,10 @@ namespace Script {
                 .map(({ value }) => value);
 
             possibleCards.length = Math.min(Math.floor(_maxAmt), possibleCards.length);
+
+            if(possibleCards.length === 0 && _weaponsOnly){
+                return this.getCardsToChooseFrom(_maxAmt, _newCards);
+            }
 
             this.prevChosenCards = possibleCards;
             return possibleCards;
