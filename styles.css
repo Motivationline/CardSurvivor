@@ -90,8 +90,7 @@ button.inverted {
 }
 
 button:disabled {
-  background-color: var(--ui-color-background);
-  color: var(--ui-color-foreground);
+  filter: brightness(1.5) contrast(0.5);
   cursor: default;
 }
 
@@ -132,6 +131,18 @@ button:disabled {
   align-items: center;
   justify-content: center;
   gap: 1em;
+  color: #131721;
+  text-align: center;
+  padding: 0.1em;
+}
+
+#main-menu-deck-amount {
+  font-size: 4vh;
+  margin-bottom: -0.5em;
+}
+
+#main-menu-game:not(:disabled) + #main-menu-deck-error {
+  display: none;
 }
 
 #main-menu-robot {

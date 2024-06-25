@@ -31,7 +31,8 @@
           "info": "Are you sure you want to quit?",
           "info2": "All unsaved progress will be lost."
         },
-        "room_progress": "Room"
+        "room_progress": "Room",
+        "not_enough_cards": "You need 10 cards in your deck to play. Add some more cards to your deck."
       }
     }
   },

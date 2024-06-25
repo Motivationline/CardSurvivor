@@ -81,9 +81,10 @@ namespace Script {
 
             if (!provider.get(DataManager).firstPlaythroughDone) {
                 main.querySelector("#main-menu-deck").classList.add("hidden");
+                main.querySelector("#main-menu-deck-amount").classList.add("hidden");
             }
         }
-
+        
         public openMenu(_menu: MenuType): HTMLElement {
             let openedMenu: HTMLElement = undefined;
             for (let menu of this.menus.entries()) {
@@ -96,9 +97,15 @@ namespace Script {
             }
             return openedMenu;
         }
-
+        
         endGameMenu(_won: boolean, _cardAmt: number = provider.get(EnemyManager).unlockedCards) {
-            this.menus.get(MenuType.MAIN).querySelector("#main-menu-deck").classList.remove("hidden");
+            let main = this.menus.get(MenuType.MAIN);
+            main.querySelector("#main-menu-deck").classList.remove("hidden");
+            main.querySelector("#main-menu-deck-amount").classList.remove("hidden");
+            
+            if (!provider.get(DataManager).firstPlaythroughDone) {
+                (<HTMLButtonElement>main.querySelector("#main-menu-game")).disabled = true;
+            }
             provider.get(DataManager).firstPlaythroughDone = true;
 
             let menu = this.openMenu(_won ? MenuType.WINNER : MenuType.GAME_OVER);

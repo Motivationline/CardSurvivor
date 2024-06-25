@@ -26,6 +26,8 @@ namespace Script {
             // deckToFrom: HTMLButtonElement;
         }
         private deckSelectionSizeElement: HTMLElement;
+        private mainMenuDeckAmountElement: HTMLElement;
+        private mainMenuPlayButton: HTMLButtonElement;
 
         private selectedCard: string;
 
@@ -62,6 +64,8 @@ namespace Script {
             this.collectionElement = document.getElementById("collection-wrapper");
             this.popupElement = document.getElementById("card-popup");
             this.deckSelectionSizeElement = document.getElementById("deck-selection-size");
+            this.mainMenuDeckAmountElement = document.getElementById("main-menu-deck-amount");
+            this.mainMenuPlayButton = <HTMLButtonElement>document.getElementById("main-menu-game");
             this.popupButtons = {
                 deckFrom: <HTMLButtonElement>document.getElementById("card-popup-deck-from"),
                 // deckToFrom: <HTMLButtonElement>document.getElementById("card-popup-deck-to-from"),
@@ -158,7 +162,7 @@ namespace Script {
         addCardToDeck(_name: string, _updateVisuals: boolean = true) {
             this.addToArray(_name, this.deck);
             // this.removeCardFromSelection(_name, false);
-            if(_updateVisuals) this.updateVisuals();
+            if (_updateVisuals) this.updateVisuals();
         }
 
         removeCardFromDeck(_name: string, _updateVisuals: boolean = true) {
@@ -174,10 +178,10 @@ namespace Script {
                     unlockableCards.push(cardId);
                 }
             }
-            unlockableCards.sort(()=>Math.random() - 0.5);
+            unlockableCards.sort(() => Math.random() - 0.5);
             unlockableCards.length = Math.min(Math.floor(_amount), unlockableCards.length);
 
-            for(let card of unlockableCards){
+            for (let card of unlockableCards) {
                 this.addCardToCollection(card, 1);
             }
 
@@ -243,7 +247,7 @@ namespace Script {
             for (let cardID of collectionEntires) {
                 let visual = this.cardVisuals.get(cardID);
                 if (!visual) continue;
-                if(_fullReset) visual.updateTexts();
+                if (_fullReset) visual.updateTexts();
                 allCardsForCollection.push(visual.htmlElement);
                 visual.htmlElement.classList.remove("locked", "selected");
             }
@@ -251,7 +255,7 @@ namespace Script {
                 if (this.collection[cardID]) continue;
                 let visual = this.cardVisuals.get(cardID);
                 if (!visual) continue;
-                if(_fullReset) visual.updateTexts();
+                if (_fullReset) visual.updateTexts();
                 allCardsForCollection.push(visual.htmlElement);
                 if (!_fullReset) {
                     visual.htmlElement.classList.add("locked");
@@ -278,6 +282,12 @@ namespace Script {
 
             // number
             this.deckSelectionSizeElement.innerText = `${this.deck.length /* + this.selection.length */}/${this.maxDeckSize + this.maxSelectedSize}`;
+            this.mainMenuDeckAmountElement.innerText = `${this.deck.length /* + this.selection.length */}/${this.maxDeckSize + this.maxSelectedSize}`;
+            if ((this.deck.length < this.maxDeckSize + this.maxSelectedSize) && provider.get(DataManager).firstPlaythroughDone) {
+                this.mainMenuPlayButton.disabled = true;
+            } else {
+                this.mainMenuPlayButton.disabled = false;
+            }
         }
 
         private putCardsInDeck(_selection: string[], _parent: HTMLElement, _maxSize: number) {

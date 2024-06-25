@@ -1426,6 +1426,8 @@ var Script;
         popupElement;
         popupButtons;
         deckSelectionSizeElement;
+        mainMenuDeckAmountElement;
+        mainMenuPlayButton;
         selectedCard;
         cardVisuals = new Map();
         constructor(provider) {
@@ -1457,6 +1459,8 @@ var Script;
             this.collectionElement = document.getElementById("collection-wrapper");
             this.popupElement = document.getElementById("card-popup");
             this.deckSelectionSizeElement = document.getElementById("deck-selection-size");
+            this.mainMenuDeckAmountElement = document.getElementById("main-menu-deck-amount");
+            this.mainMenuPlayButton = document.getElementById("main-menu-game");
             this.popupButtons = {
                 deckFrom: document.getElementById("card-popup-deck-from"),
                 // deckToFrom: <HTMLButtonElement>document.getElementById("card-popup-deck-to-from"),
@@ -1658,6 +1662,13 @@ var Script;
             }
             // number
             this.deckSelectionSizeElement.innerText = `${this.deck.length /* + this.selection.length */}/${this.maxDeckSize + this.maxSelectedSize}`;
+            this.mainMenuDeckAmountElement.innerText = `${this.deck.length /* + this.selection.length */}/${this.maxDeckSize + this.maxSelectedSize}`;
+            if ((this.deck.length < this.maxDeckSize + this.maxSelectedSize) && Script.provider.get(Script.DataManager).firstPlaythroughDone) {
+                this.mainMenuPlayButton.disabled = true;
+            }
+            else {
+                this.mainMenuPlayButton.disabled = false;
+            }
         }
         putCardsInDeck(_selection, _parent, _maxSize) {
             let cards = [];
@@ -7157,6 +7168,7 @@ var Script;
             });
             if (!Script.provider.get(Script.DataManager).firstPlaythroughDone) {
                 main.querySelector("#main-menu-deck").classList.add("hidden");
+                main.querySelector("#main-menu-deck-amount").classList.add("hidden");
             }
         }
         openMenu(_menu) {
@@ -7173,7 +7185,12 @@ var Script;
             return openedMenu;
         }
         endGameMenu(_won, _cardAmt = Script.provider.get(Script.EnemyManager).unlockedCards) {
-            this.menus.get(MenuType.MAIN).querySelector("#main-menu-deck").classList.remove("hidden");
+            let main = this.menus.get(MenuType.MAIN);
+            main.querySelector("#main-menu-deck").classList.remove("hidden");
+            main.querySelector("#main-menu-deck-amount").classList.remove("hidden");
+            if (!Script.provider.get(Script.DataManager).firstPlaythroughDone) {
+                main.querySelector("#main-menu-game").disabled = true;
+            }
             Script.provider.get(Script.DataManager).firstPlaythroughDone = true;
             let menu = this.openMenu(_won ? MenuType.WINNER : MenuType.GAME_OVER);
             let cardsToDisplay = Script.provider.get(Script.CardCollection).unlockCards(_cardAmt);

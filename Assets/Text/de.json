@@ -31,7 +31,8 @@
           "info": "Willst du wirklich das Spiel beenden?",
           "info2": "Sämtlicher ungespeicherter Fortschritt wird verlorgen gehen"
         },
-        "room_progress": "Raum"
+        "room_progress": "Raum",
+        "not_enough_cards": "Du brauchst 10 ausgerüstete Karten um zu spielen. Rüste weitere Karten aus."
       }
     }
   },

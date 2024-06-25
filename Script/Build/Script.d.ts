@@ -451,6 +451,8 @@ declare namespace Script {
         private popupElement;
         private popupButtons;
         private deckSelectionSizeElement;
+        private mainMenuDeckAmountElement;
+        private mainMenuPlayButton;
         private selectedCard;
         private cardVisuals;
         constructor(provider: Provider);
