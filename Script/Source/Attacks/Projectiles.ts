@@ -74,7 +74,7 @@ namespace Script {
         },
         "discusPlayer": {
             damage: 5,
-            speed: 20,
+            speed: 10,
             range: 15,
             size: 0.5,
             sprite: ["projectile", "discus"],

@@ -104,7 +104,7 @@ namespace Script {
             desiredDistance: [0, 1],
             health: 25,
             speed: 2,
-            dropXP: 4,
+            dropXP: 5,
             hitboxSize: 0.6,
             shadow: {
                 size: 0.82,
@@ -112,11 +112,11 @@ namespace Script {
             },
             attacks: [
                 {
-                    cooldown: 0.81, // how long it dashes, including delay
+                    cooldown: 0.61, // how long it dashes, including delay
                     requiredDistance: [1.5, 2.5],
                     windUp: 2, // how long it plans its attack
                     movement: function (_diff: ƒ.Vector3, _mgtSqrd: number, _charPosition: ƒ.Vector3, _frameTimeInSeconds: number) {
-                        let dashDuration: number = 0.8 // how long it should be dashing.
+                        let dashDuration: number = 0.6 // how long it should be dashing.
                         if (this.currentlyActiveAttack.windUp > 0) return;
                         if (this.currentlyActiveAttack.cooldown > dashDuration) return;
                         this.move(_diff, _mgtSqrd, _frameTimeInSeconds);
@@ -125,12 +125,12 @@ namespace Script {
                         let charPosition = provider.get(CharacterManager).character.node.mtxWorld.translation;
                         let direction = ƒ.Vector3.DIFFERENCE(charPosition, this.node.mtxWorld.translation);
                         this.directionOverride = direction;
-                        this.speed *= 4.5; // how much faster than "normal" speed should it be? ALSO CHANGE BELOW
+                        this.speed *= 4; // how much faster than "normal" speed should it be? ALSO CHANGE BELOW
                         this.meleeCooldown = 0;
                     },
                     attackEnd: function () {
                         this.directionOverride = undefined;
-                        this.speed /= 4.5; // change here
+                        this.speed /= 4; // change here
                     }
                 }
             ]
@@ -149,11 +149,11 @@ namespace Script {
         },
         mixer: {
             moveSprite: ["mixer", "move"],
-            damage: 20,
+            damage: 15,
             desiredDistance: [0, Infinity],
-            health: 25,
+            health: 10,
             speed: 1.5,
-            dropXP: 5,
+            dropXP: 4,
             hitboxSize: 0.5,
             shadow: {
                 size: 0.6,

@@ -15,9 +15,9 @@ namespace Script {
         "electronics": [
             ["microwave", "chair"], // --0
             ["toaster", "closet"], // --1
-            ["motor"], // --2
+            ["mixer"], // --2
             ["ventilator"], // --3
-            ["mixer"], // --4
+            ["motor"], // --4
             ["toaster"], // --5
             ["closet"] // --6
         ]
@@ -381,6 +381,7 @@ namespace Script {
                     minEnemiesOverride: 2,
                 },
                 waveAmount: 8,
+                /*
                 waves: [{
                     enemies: [{ pool: 3 }],
                     amount: 1,
@@ -397,6 +398,7 @@ namespace Script {
                     duration: 8,
                     minEnemiesOverride: 0,
                 }],
+                */
                 bonus: {
                     multiplier: {
                         health: 5,
