@@ -21,6 +21,19 @@ namespace Script {
             document.addEventListener("interactiveViewportStarted", <EventListener>this.ready);
         }
 
+        public updateLangIcons(){
+            let dm = provider.get(DataManager);
+            document.querySelectorAll("#main-menu-language img").forEach((element) => {
+                let img = <HTMLImageElement> element;
+                let lang = img.dataset.lang;
+                if(dm.lang === lang){
+                    img.src = `Assets/UI/MainMenu/${lang}_active.png`;
+                } else {
+                    img.src = `Assets/UI/MainMenu/${lang}.png`;
+                }
+            })
+        }
+
         public setup() {
             let main: HTMLElement = document.getElementById("main-menu-overlay");
             this.menus.set(MenuType.MAIN, main);
@@ -37,6 +50,14 @@ namespace Script {
             main.querySelector("#main-menu-game").addEventListener("click", () => {
                 this.startGame();
             });
+            let dm = provider.get(DataManager);
+            main.querySelectorAll("#main-menu-language img").forEach((element) => {
+                let lang = (<HTMLElement>element).dataset?.lang;
+                element.addEventListener("click", ()=>{
+                    dm.lang = lang;
+                });
+            });
+            this.updateLangIcons();
 
             document.getElementById("game-overlay-pause").addEventListener("click", () => {
                 this.openPauseMenu();
@@ -92,9 +113,9 @@ namespace Script {
 
             let textElement = menu.querySelector("span");
             if (cardsToDisplay.length > 0) {
-                textElement.innerText = i18next.t("game.cards_unlocked");
+                textElement.innerText = i18next.t("game.text.cards_unlocked");
             } else {
-                textElement.innerText = i18next.t("game.no_cards_unlocked");
+                textElement.innerText = i18next.t("game.text.no_cards_unlocked");
             }
         }
 

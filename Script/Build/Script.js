@@ -117,13 +117,38 @@ var Script;
             }
         }
         i18next.init({
-            lng: "en",
+            lng: "de",
             fallbackLng: "en",
             resources,
             debug: true,
         });
     }
     Script.initI18n = initI18n;
+    const elementsWithLangData = [];
+    function updateI18nInDOM() {
+        if (elementsWithLangData.length > 0) {
+            for (let element of elementsWithLangData) {
+                element.innerText = i18next.t(element.dataset.langText);
+            }
+            updateCardsInDeck();
+            return;
+        }
+        let elementsToCheck = [document.documentElement];
+        while (elementsToCheck.length > 0) {
+            let element = elementsToCheck.pop();
+            elementsToCheck.push(...Array.from(element.children));
+            if (element.dataset?.langText) {
+                elementsWithLangData.push(element);
+                element.innerText = i18next.t(element.dataset.langText);
+            }
+        }
+    }
+    Script.updateI18nInDOM = updateI18nInDOM;
+    function updateCardsInDeck() {
+        let overlay = document.getElementById("collection-overlay");
+        overlay.classList.remove("hidden");
+        Script.provider.get(Script.CardCollection).updateVisuals(true);
+    }
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
@@ -329,7 +354,7 @@ var Script;
                     }
                     resolve();
                 };
-                rerollButton.innerText = `Reroll (${_rerolls})`;
+                rerollButton.querySelector("span:nth-child(2n)").innerText = ` (${_rerolls})`;
                 if (_rerolls > 0) {
                     rerollButton.addEventListener("click", reroll);
                     rerollButton.classList.remove("hidden");
@@ -531,7 +556,7 @@ var Script;
         if (Script.ƒ.Project.mode === Script.ƒ.MODE.EDITOR)
             return;
         document.documentElement.addEventListener("click", startViewport);
-        await Script.initI18n("en");
+        await Script.initI18n("en", "de");
         Script.provider
             .add(Script.Config)
             .add(Script.InputManager)
@@ -1571,6 +1596,8 @@ var Script;
                 let visual = this.cardVisuals.get(cardID);
                 if (!visual)
                     continue;
+                if (_fullReset)
+                    visual.updateTexts();
                 allCardsForCollection.push(visual.htmlElement);
                 visual.htmlElement.classList.remove("locked", "selected");
             }
@@ -1580,6 +1607,8 @@ var Script;
                 let visual = this.cardVisuals.get(cardID);
                 if (!visual)
                     continue;
+                if (_fullReset)
+                    visual.updateTexts();
                 allCardsForCollection.push(visual.htmlElement);
                 if (!_fullReset) {
                     visual.htmlElement.classList.add("locked");
@@ -1587,7 +1616,7 @@ var Script;
             }
             // for debugging we're adding a bunch of empty stuff to fill up to 100.
             // this.fillWithPlaceholders(allCardsForCollection, 100);
-            if (_fullReset) {
+            if (_fullReset && this.collectionElement) {
                 this.collectionElement.replaceChildren(...allCardsForCollection);
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => {
@@ -1661,39 +1690,56 @@ var Script;
         #image;
         #text;
         #htmlElement;
+        #parent;
+        #disableCircleType;
+        #level;
+        #rarity;
+        #circleTyper;
         constructor(_card, _parent, _nameFallback = "unknown", _level = 0, _disableCircleType = false) {
             this.#name = _card.name ?? _nameFallback;
-            this.#text = this.getFirstTranslatableText(_card.description ?? "unknown", _card.description, `card.${this.#name}.description`);
+            this.#text = _card.description;
             this.#image = _card.image;
-            this.#name = i18next.t(`card.${this.#name}.name`).toLocaleUpperCase();
+            this.#rarity = _card.rarity;
             this.#htmlElement = CardVisual.template.content.cloneNode(true).childNodes[1];
+            this.#parent = _parent;
+            this.#disableCircleType = _disableCircleType;
+            this.#level = _level;
+            this.updateTexts();
+        }
+        updateTexts() {
+            let translatedName = i18next.t(`card.${this.#name}.name`).toLocaleUpperCase();
+            let translatedText = this.getFirstTranslatableText(this.#text ?? "unknown", this.#text, `card.${this.#name}.description`);
             // figure out how large the title text should be
             let fontSize = 10;
-            let heightRaw = getComputedStyle(_parent).getPropertyValue("--card-size");
+            let heightRaw = getComputedStyle(this.#parent).getPropertyValue("--card-size");
             let tmpDiv = document.createElement("div");
             tmpDiv.style.width = heightRaw;
             document.documentElement.appendChild(tmpDiv);
             let height = tmpDiv.offsetWidth;
             document.documentElement.removeChild(tmpDiv);
             let cardWidth = height * (15 / 21) - 0.15 * height;
-            let currentTextWidth = this.getTextWidth(this.#name, `normal  ${height / 100 * fontSize}px 'Luckiest Guy'`);
+            let currentTextWidth = this.getTextWidth(translatedName, `normal  ${height / 100 * fontSize}px 'Luckiest Guy'`);
             let factor = cardWidth / currentTextWidth;
             fontSize *= factor;
             fontSize = Math.min(15, fontSize);
             let nameElement = this.#htmlElement.querySelector(".card-name");
             nameElement.style.fontSize = `calc(var(--card-size) / 100 * ${fontSize})`;
             // fill card with data
-            nameElement.innerHTML = this.#name;
-            requestAnimationFrame(() => {
-                // turn into circle
-                if (!_disableCircleType)
-                    new CircleType(nameElement).radius(cardWidth * 2);
-            });
-            this.#htmlElement.querySelector(".card-text").innerText = this.#text;
+            if (this.#circleTyper)
+                this.#circleTyper.destroy();
+            nameElement.innerText = translatedName;
+            nameElement.dataset.langText = `card.${this.#name}.name`;
+            if (!this.#disableCircleType) {
+                requestAnimationFrame(() => {
+                    // turn into circle
+                    this.#circleTyper = new CircleType(nameElement).radius(cardWidth * 2);
+                });
+            }
+            this.#htmlElement.querySelector(".card-text").innerText = translatedText;
             this.#htmlElement.querySelector(".card-image img").src = "Assets/Cards/Items/" + this.#image;
             this.#htmlElement.style.setProperty("--delay", `${Math.random() * -10}s`);
-            this.#htmlElement.classList.add(_card.rarity);
-            this.#htmlElement.classList.add(`level-${_level}`);
+            this.#htmlElement.classList.add(this.#rarity);
+            this.#htmlElement.classList.add(`level-${this.#level}`);
         }
         get htmlElement() {
             return this.#htmlElement;
@@ -6486,11 +6532,25 @@ var Script;
         savedDeckRaw = [];
         savedSelectionRaw = [];
         _firstPlaythroughDone = false;
+        selectedLanguage = "en";
         async load() {
             this.savedCollectionRaw = this.catchObjChange(JSON.parse(localStorage.getItem("collection") ?? "{}"), () => { localStorage.setItem("collection", JSON.stringify(this.savedCollectionRaw)); });
             this.savedDeckRaw = this.catchArrayChange(JSON.parse(localStorage.getItem("deck") ?? "[]"), () => { localStorage.setItem("deck", JSON.stringify(this.savedDeckRaw)); });
             this.savedSelectionRaw = this.catchArrayChange(JSON.parse(localStorage.getItem("selection") ?? "[]"), () => { localStorage.setItem("selection", JSON.stringify(this.savedSelectionRaw)); });
             this._firstPlaythroughDone = !!localStorage.getItem("firstPlaythroughDone");
+            this.lang = localStorage.getItem("lang") ?? "en";
+        }
+        get lang() {
+            return this.selectedLanguage;
+        }
+        set lang(_language) {
+            if (_language !== "en" && _language !== "de")
+                return;
+            this.selectedLanguage = _language;
+            localStorage.setItem("lang", _language);
+            i18next.changeLanguage(this.selectedLanguage);
+            Script.updateI18nInDOM();
+            Script.provider.get(Script.MenuManager).updateLangIcons();
         }
         get firstPlaythroughDone() { return this._firstPlaythroughDone; }
         ;
@@ -6555,7 +6615,7 @@ var Script;
         lvlupMarker;
         damageWasDealt = false;
         timeElement = document.getElementById("timer");
-        roomProgressElement = document.getElementById("room-progress");
+        roomProgressElement = document.getElementById("room-progress").querySelector("span:nth-child(2)");
         unlockedCards = 0;
         constructor(provider) {
             this.provider = provider;
@@ -6689,7 +6749,7 @@ var Script;
             if (room.reward) {
                 //TODO spawn reward stuff
             }
-            this.roomProgressElement.innerText = `Room ${this.currentRoom + 1}/${Script.rooms[this.currentArea].length}`;
+            this.roomProgressElement.innerText = `${this.currentRoom + 1}/${Script.rooms[this.currentArea].length}`;
             this.characterManager.character.heal(0.1, true);
         }
         async waitMs(_ms) {
@@ -7007,6 +7067,19 @@ var Script;
         constructor() {
             document.addEventListener("interactiveViewportStarted", this.ready);
         }
+        updateLangIcons() {
+            let dm = Script.provider.get(Script.DataManager);
+            document.querySelectorAll("#main-menu-language img").forEach((element) => {
+                let img = element;
+                let lang = img.dataset.lang;
+                if (dm.lang === lang) {
+                    img.src = `Assets/UI/MainMenu/${lang}_active.png`;
+                }
+                else {
+                    img.src = `Assets/UI/MainMenu/${lang}.png`;
+                }
+            });
+        }
         setup() {
             let main = document.getElementById("main-menu-overlay");
             this.menus.set(MenuType.MAIN, main);
@@ -7022,6 +7095,14 @@ var Script;
             main.querySelector("#main-menu-game").addEventListener("click", () => {
                 this.startGame();
             });
+            let dm = Script.provider.get(Script.DataManager);
+            main.querySelectorAll("#main-menu-language img").forEach((element) => {
+                let lang = element.dataset?.lang;
+                element.addEventListener("click", () => {
+                    dm.lang = lang;
+                });
+            });
+            this.updateLangIcons();
             document.getElementById("game-overlay-pause").addEventListener("click", () => {
                 this.openPauseMenu();
             });
@@ -7071,10 +7152,10 @@ var Script;
             cardWrapper.replaceChildren(...cardElements);
             let textElement = menu.querySelector("span");
             if (cardsToDisplay.length > 0) {
-                textElement.innerText = i18next.t("game.cards_unlocked");
+                textElement.innerText = i18next.t("game.text.cards_unlocked");
             }
             else {
-                textElement.innerText = i18next.t("game.no_cards_unlocked");
+                textElement.innerText = i18next.t("game.text.no_cards_unlocked");
             }
         }
         async startGame() {

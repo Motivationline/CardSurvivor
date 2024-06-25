@@ -25,6 +25,7 @@ declare namespace Script {
 }
 declare namespace Script {
     function initI18n(..._languages: string[]): Promise<void>;
+    function updateI18nInDOM(): void;
 }
 declare namespace Script {
     import ƒ = FudgeCore;
@@ -464,7 +465,7 @@ declare namespace Script {
         private addToArray;
         private installListeners;
         private popupClickListener;
-        private updateVisuals;
+        updateVisuals(_fullReset?: boolean): void;
         private putCardsInDeck;
         fillWithPlaceholders(_array: HTMLElement[], _maxAmount: number): void;
         private getCardPlaceholder;
@@ -478,6 +479,7 @@ declare namespace Script {
         static template: HTMLTemplateElement;
         private static canvas;
         constructor(_card: iCard, _parent: HTMLElement, _nameFallback?: string, _level?: number, _disableCircleType?: boolean);
+        updateTexts(): void;
         get htmlElement(): HTMLElement;
         private getTextWidth;
         private getCanvasFont;
@@ -696,7 +698,10 @@ declare namespace Script {
         savedDeckRaw: string[];
         savedSelectionRaw: string[];
         private _firstPlaythroughDone;
+        private selectedLanguage;
         load(): Promise<void>;
+        get lang(): string;
+        set lang(_language: string);
         get firstPlaythroughDone(): boolean;
         set firstPlaythroughDone(_value: boolean);
         private catchObjChange;
@@ -772,6 +777,7 @@ declare namespace Script {
         private prevGameState;
         private gameIsReady;
         constructor();
+        updateLangIcons(): void;
         setup(): void;
         openMenu(_menu: MenuType): HTMLElement;
         endGameMenu(_won: boolean, _cardAmt?: number): void;

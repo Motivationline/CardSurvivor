@@ -144,6 +144,19 @@ button:disabled {
   font-size: 3em;
 }
 
+#main-menu-language {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  gap: 1em;
+}
+#main-menu-language img {
+  width: 7.5vh;
+  cursor: pointer;
+}
 
 /* Game Overlay */
 #game-overlay {
@@ -182,12 +195,14 @@ progress::-webkit-progress-value {
   background-color: var(--f-color);
   border-radius: 5vw;
 }
+
 #room-progress {
   display: block;
   text-align: center;
   margin-top: 2vh;
   font-size: 2rem;
 }
+
 #timer {
   display: block;
   text-align: center;
@@ -219,6 +234,7 @@ progress::-webkit-progress-value {
   flex-direction: column;
   align-items: center;
 }
+
 #xpbar {
   appearance: none;
   -webkit-appearance: none;
@@ -229,7 +245,8 @@ progress::-webkit-progress-value {
   border-radius: 5vw;
   width: 100%;
 }
-#lvlup-marker > img {
+
+#lvlup-marker>img {
   width: 2em;
   margin: 0.2em;
 }
@@ -965,6 +982,7 @@ progress::-webkit-progress-value {
 }
 
 @media screen and (min-width: 1000px) {
+
   #xpbar,
   #healthbar {
     border: 2px solid var(--bg-color);

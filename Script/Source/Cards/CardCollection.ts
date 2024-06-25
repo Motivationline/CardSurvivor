@@ -236,13 +236,14 @@ namespace Script {
             this.hidePopup();
         }
 
-        private updateVisuals(_fullReset: boolean = false) {
+        public updateVisuals(_fullReset: boolean = false) {
             // collection
             let allCardsForCollection: HTMLElement[] = [];
             let collectionEntires: string[] = Object.keys(this.collection).sort(this.compareRarity);
             for (let cardID of collectionEntires) {
                 let visual = this.cardVisuals.get(cardID);
                 if (!visual) continue;
+                if(_fullReset) visual.updateTexts();
                 allCardsForCollection.push(visual.htmlElement);
                 visual.htmlElement.classList.remove("locked", "selected");
             }
@@ -250,6 +251,7 @@ namespace Script {
                 if (this.collection[cardID]) continue;
                 let visual = this.cardVisuals.get(cardID);
                 if (!visual) continue;
+                if(_fullReset) visual.updateTexts();
                 allCardsForCollection.push(visual.htmlElement);
                 if (!_fullReset) {
                     visual.htmlElement.classList.add("locked");
@@ -258,7 +260,7 @@ namespace Script {
             // for debugging we're adding a bunch of empty stuff to fill up to 100.
             // this.fillWithPlaceholders(allCardsForCollection, 100);
 
-            if (_fullReset) {
+            if (_fullReset && this.collectionElement) {
                 this.collectionElement.replaceChildren(...allCardsForCollection);
 
                 requestAnimationFrame(() => {

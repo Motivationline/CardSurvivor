@@ -51,7 +51,7 @@ namespace Script {
                     }
                     resolve();
                 }
-                rerollButton.innerText = `Reroll (${_rerolls})`;
+                (<HTMLElement>rerollButton.querySelector("span:nth-child(2n)")).innerText = ` (${_rerolls})`;
                 if (_rerolls > 0) {
                     rerollButton.addEventListener("click", reroll);
                     rerollButton.classList.remove("hidden");

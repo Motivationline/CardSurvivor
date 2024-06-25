@@ -59,10 +59,8 @@
         <progress id="healthbar" max="100" value="100">
         </progress>
         <!-- debug -->
-        <span id="room-progress">
-</span>
-        <span id="timer">
-</span>
+        <span id="room-progress"><span data-lang-text="game.menu.text.room_progress"></span>&nbsp;<span></span></span>
+        <span id="timer"></span>
         <!-- <span style="margin-left: 1rem;">V - next wave, B - end room, N - next room, K - kill 5 enemies</span> -->
         <div id="game-overlay-pause">
             <img src="Assets/UI/Gameplay/Pause.png" alt="Pause" />
@@ -79,75 +77,73 @@
                 </div>
             </div>
             <div id="card-upgrade-button-container">
-                <button id="card-upgrade-popup-reroll">Reroll</button>
+                <button id="card-upgrade-popup-reroll"><span data-lang-text="game.button.reroll">Reroll</span><span>(1)</span></button>
             </div>
         </div>
     </div>
     <div class="overlay hidden" id="between-rooms-overlay">
-        <h2>Room cleared!</h2>
+        <h2 data-lang-text="game.menu.title.room_clear">Room cleared!</h2>
         <h2 id="between-rooms-timer">
 </h2>
     </div>
     <div class="overlay hidden" id="pause-overlay">
-        <h2>Paused</h2>
+        <h2 data-lang-text="game.menu.title.paused">Paused</h2>
         <div id="pause-overlay-cards">
         </div>
         <div class="pause-overlay-buttons">
-            <button id="pause-quit" class="danger">Quit Run</button>
-            <button id="pause-resume">Resume</button>
+            <button id="pause-quit" class="danger" data-lang-text="game.button.quit_run">Quit Run</button>
+            <button id="pause-resume" data-lang-text="game.button.resume">Resume</button>
         </div>
     </div>
     <div id="end-confirm" class="overlay hidden">
-        <h2>Paused</h2>
+        <h2 data-lang-text="game.menu.title.paused">Paused</h2>
         <div>
-            <h3>Are you sure you want to quit?</h3>
-            <p>All unsaved progress will be lost.</p>
+            <h3 data-lang-text="game.menu.text.quit.info">Are you sure you want to quit?</h3>
+            <p data-lang-text="game.menu.text.quit.info2">All unsaved progress will be lost.</p>
         </div>
         <div class="pause-overlay-buttons">
-            <button id="end-abort">No, Cancel</button>
-            <button id="end-quit" class="danger">Yes, Quit</button>
+            <button id="end-abort" data-lang-text="game.button.quit_abort">No, Cancel</button>
+            <button id="end-quit" class="danger" data-lang-text="game.button.quit_confirm">Yes, Quit</button>
         </div>
     </div>
     <div class="overlay hidden" id="settings-overlay">
-        <h2>Settings</h2>
-        <button id="settings-menu">Menu</button>
+        <h2 data-lang-text="game.menu.title.settings">Settings</h2>
+        <button id="settings-menu" data-lang-text="game.button.menu">Menu</button>
     </div>
     <div class="overlay" id="main-menu-overlay">
-        <div id="main-menu-logo">
-</div>
+        <div id="main-menu-logo"></div>
         <div id="main-menu-buttons">
-            <button id="main-menu-deck" class="danger">Deck</button>
-            <button id="main-menu-game">Play</button>
+            <button id="main-menu-deck" class="danger" data-lang-text="game.button.deck">Deck</button>
+            <button id="main-menu-game" data-lang-text="game.button.play">Play</button>
         </div>
-        <div id="main-menu-robot">
-</div>
+        <div id="main-menu-robot"></div>
         <div id="main-menu-language">
-
+            <img src="Assets/UI/MainMenu/en.png" alt="English" data-lang="en"><img src="Assets/UI/MainMenu/de.png" alt="Deutsch" data-lang="de">
         </div>
     </div>
     <div class="overlay hidden" id="game-over-overlay">
-        <h2>Game Over</h2>
+        <h2 data-lang-text="game.menu.title.game_over">Game Over</h2>
         <div class="game-over-cards-wrapper">
             <span></span>
             <div class="game-over-cards">
             </div>
         </div>
-        <button id="game-over-button">Main Menu</button>
+        <button id="game-over-button" data-lang-text="game.button.main_menu">Main Menu</button>
     </div>
     <div class="overlay hidden" id="winner-overlay">
-        <h2>You won!</h2>
+        <h2 data-lang-text="game.menu.title.winner">You won!</h2>
         <div class="game-over-cards-wrapper">
             <span></span>
             <div class="game-over-cards">
             </div>
         </div>
-        <button id="winner-button">Main Menu</button>
+        <button id="winner-button" data-lang-text="game.button.main_menu">Main Menu</button>
     </div>
     <div class="overlay" id="collection-overlay">
         <input type="checkbox" name="largeDeck" id="largeDeck" hidden="" />
         <div id="collection-outer-wrapper">
             <div id="collection-controls">
-                <button class="hidden" id="unlock-all">Unlock all</button>
+                <button class="hidden" id="unlock-all" data-lang-text="game.button.unlock_all">Unlock all</button>
             </div>
             <div id="collection-wrapper" class="contains-cards">
             </div>
@@ -166,13 +162,13 @@
                 <!-- <div class="deck-title"">Hand</div>
                 <div id="selection" class="contains-cards">
                 </div> -->
-                <div class="deck-title">Deck</div>
+                <div class="deck-title" data-lang-text="game.menu.title.deck">Deck</div>
 
                 <div id="deck" class="contains-cards">
                 </div>
             </div>
             <div id="deck-back-button" class="center-center">
-                <button>Save &amp; Exit</button>
+                <button data-lang-text="game.button.save_and_exit">Save &amp; Exit</button>
             </div>
         </div>
         <div id="card-popup" class="overlay hidden">

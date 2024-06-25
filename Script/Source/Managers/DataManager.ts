@@ -5,6 +5,7 @@ namespace Script {
         savedDeckRaw: string[] = [];
         savedSelectionRaw: string[] = [];
         private _firstPlaythroughDone: boolean = false;
+        private selectedLanguage: string = "en";
 
         async load() {
             this.savedCollectionRaw = this.catchObjChange(
@@ -21,6 +22,19 @@ namespace Script {
             );
 
             this._firstPlaythroughDone = !!localStorage.getItem("firstPlaythroughDone");
+            this.lang = localStorage.getItem("lang") ?? "en";
+        }
+        
+        get lang(){
+            return this.selectedLanguage;
+        }
+        set lang(_language: string){
+            if(_language !== "en" &&  _language !== "de") return;
+            this.selectedLanguage = _language;
+            localStorage.setItem("lang", _language);
+            i18next.changeLanguage(this.selectedLanguage);
+            updateI18nInDOM();
+            provider.get(MenuManager).updateLangIcons();
         }
 
         get firstPlaythroughDone() { return this._firstPlaythroughDone};

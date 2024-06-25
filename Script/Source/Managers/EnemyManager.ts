@@ -19,7 +19,7 @@ namespace Script {
         private damageWasDealt: boolean = false;
 
         private timeElement: HTMLElement = document.getElementById("timer");
-        private roomProgressElement: HTMLElement = document.getElementById("room-progress");
+        private roomProgressElement: HTMLElement = document.getElementById("room-progress").querySelector("span:nth-child(2)");
 
         public unlockedCards: number = 0;
 
@@ -166,7 +166,7 @@ namespace Script {
             if (room.reward) {
                 //TODO spawn reward stuff
             }
-            this.roomProgressElement.innerText = `Room ${this.currentRoom + 1}/${rooms[this.currentArea].length}`
+            this.roomProgressElement.innerText = `${this.currentRoom + 1}/${rooms[this.currentArea].length}`
             this.characterManager.character.heal(0.1, true);
         }
 
