@@ -391,14 +391,17 @@ namespace Script {
         public getEnemy(_mode: ProjectileTargetMode, _pos: ƒ.Vector3 = provider.get(CharacterManager).character.node.mtxWorld.translation, _exclude: EnemyGraphInstance[] = [], _maxDistance: number = 20,): EnemyGraphInstance | undefined {
             if (!this.enemies || this.enemies.length === 0) return undefined;
             _maxDistance *= _maxDistance;
-            let enemies = [...this.enemies];
+            let enemies = [...this.enemies].filter((enemy) => {
+                if(enemy.isSpawning) return false;
+                if(_exclude.includes(enemy)) return false;
+                if(enemy.untargetable) return false;
+                return true;
+            });
             if (_mode === ProjectileTargetMode.RANDOM) {
                 //TODO: make sure chosen enemy is visible on screen
                 while (enemies.length > 0) {
                     let index = Math.floor(Math.random() * this.enemies.length)
                     let enemy = this.enemies.splice(index, 1)[0];
-                    if (_exclude.includes(enemy)) continue;
-                    if (enemy.isSpawning) continue;
                     if (ƒ.Vector3.DIFFERENCE(enemy.mtxWorld.translation, _pos).magnitudeSquared <= _maxDistance) {
                         return enemy;
                     }
@@ -410,8 +413,6 @@ namespace Script {
                 enemies.sort((a, b) => a.distanceToCharacter - b.distanceToCharacter);
                 if (_mode === ProjectileTargetMode.FURTHEST) enemies.reverse();
                 for (let i = 0; i < enemies.length; i++) {
-                    if (enemies[i].isSpawning) continue;
-                    if (_exclude.includes(enemies[i])) continue;
                     return (enemies[i]);
                 }
             }

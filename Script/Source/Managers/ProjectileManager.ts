@@ -70,13 +70,13 @@ namespace Script {
                 await pgi.set(ProjectileManager.projectileGraph);
             }
             pgi.mtxLocal.translation = ƒ.Vector3.SUM(_position);
-            
+
             let p = pgi.getComponent(ProjectileComponent);
             _parent.addChild(pgi);
 
             this.projectileScripts.push(p);
             this.projectiles.push(pgi);
-            
+
             p.setup(_options, _modifiers);
         }
         public async createAOE(_options: Partial<AreaOfEffect>, _position: ƒ.Vector3, _modifiers: PassiveCardEffectObject, _parent: ƒ.Node = this.projectilesNode) {
@@ -96,7 +96,7 @@ namespace Script {
 
         public async createHitZone(_position: ƒ.Vector3, _size: number = 1, _parent: ƒ.Node = this.hitzoneNode): Promise<HitZoneGraphInstance> {
             let hz = ƒ.Recycler.get(HitZoneGraphInstance);
-            if(!hz.initialized) {
+            if (!hz.initialized) {
                 await hz.set(ProjectileManager.hitZoneGraph);
             }
             hz.getComponent(ƒ.ComponentMesh).mtxPivot.scaling = ƒ.Vector3.ONE(_size);
@@ -105,15 +105,15 @@ namespace Script {
             return hz;
         }
 
-        public cleanup(){
+        public cleanup() {
             ƒ.Recycler.storeMultiple(...this.projectiles);
-            for(let projectile of this.projectileScripts){
+            for (let projectile of this.projectileScripts) {
                 projectile.node.getParent().removeChild(projectile.node);
                 projectile.removeAttachments();
             }
             this.projectiles.length = 0;
             this.projectileScripts.length = 0;
-            
+
         }
     }
 }

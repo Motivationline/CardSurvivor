@@ -179,6 +179,7 @@ var Script;
     class EnemyGraphInstance extends InitializableGraphInstance {
         distanceToCharacter;
         isSpawning;
+        untargetable;
     }
     Script.EnemyGraphInstance = EnemyGraphInstance;
     class AOEGraphInstance extends InitializableGraphInstance {
@@ -877,6 +878,8 @@ var Script;
             this.node.getComponent(Script.ƒ.ComponentRigidbody).addEventListener("TriggerLeftCollision" /* ƒ.EVENT_PHYSICS.TRIGGER_EXIT */, this.onTriggerExit);
         };
         async setup(_options, _modifier) {
+            _options = { ...ProjectileComponent.defaults, ..._options };
+            this.functions = _options.methods;
             if (this.functions.beforeSetup) {
                 this.functions.beforeSetup.call(this, _options, _modifier);
             }
@@ -886,7 +889,6 @@ var Script;
                     limitation = "stopped";
             }
             let cm = Script.provider.get(Script.CardManager);
-            _options = { ...ProjectileComponent.defaults, ..._options };
             this.direction = _options.direction;
             this.targetPosition = _options.targetPosition;
             this.tracking = _options.tracking;
@@ -902,7 +904,6 @@ var Script;
             this.impact = _options.impact;
             this.targetMode = _options.targetMode;
             this.lockedToEntity = _options.lockedToEntity;
-            this.functions = _options.methods;
             this.sprite = this.getSprite(_options.sprite);
             this.setCentralAnimator(this.sprite);
             this.node.mtxLocal.scaling = Script.ƒ.Vector3.ONE(this.size);
@@ -1053,6 +1054,8 @@ var Script;
             // console.log("onTriggerExit", _event);
         };
         hit(_hitable) {
+            if (_hitable?.node?.untargetable)
+                return;
             if (this.functions.preHit)
                 this.functions.preHit.call(this, _hitable);
             _hitable.hit({ damage: this.damage, stun: this.stunDuration, type: Script.HitType.PROJECTILE });
@@ -1161,17 +1164,40 @@ var Script;
                         strength: 1,
                         target: enemy,
                     };
+                    this.direction = new Script.ƒ.Vector3(Math.random() - 0.5, Math.random() - 0.5);
                 },
-                preUpdate: function () {
-                    let target = this.tracking.target;
+                preUpdate: function (_charPosition, _frameTimeInSeconds) {
+                    if (!this.tracking) {
+                        this.discusTimer = (this.discusTimer ?? 0) - _frameTimeInSeconds;
+                        if (this.discusTimer < 0) {
+                            this.functions.getNewTarget.call(this);
+                        }
+                        return;
+                    }
+                    let target = this.tracking?.target;
                     if (!target?.getParent()) {
-                        let newEnemy = Script.provider.get(Script.EnemyManager).getEnemy(Script.ProjectileTargetMode.CLOSEST, this.node.mtxWorld.translation);
-                        this.tracking.target = newEnemy;
+                        this.functions.getNewTarget.call(this);
                     }
                 },
                 postHit: function (_hitable) {
-                    let newEnemy = Script.provider.get(Script.EnemyManager).getEnemy(Script.ProjectileTargetMode.CLOSEST, _hitable.node.mtxWorld.translation, [_hitable.node]);
-                    this.tracking.target = newEnemy;
+                    this.functions.getNewTarget.call(this, _hitable);
+                },
+                //@ts-expect-error
+                getNewTarget: function (_hitable) {
+                    let newEnemy = Script.provider.get(Script.EnemyManager).getEnemy(Script.ProjectileTargetMode.CLOSEST, _hitable?.node.mtxWorld.translation, [_hitable?.node]);
+                    if (newEnemy) {
+                        this.tracking = {
+                            stopTrackingAfter: Infinity,
+                            startTrackingAfter: 0,
+                            stopTrackingInRadius: 0,
+                            strength: 1,
+                            target: newEnemy,
+                        };
+                    }
+                    else {
+                        this.tracking = undefined;
+                        this.discusTimer = 0.5;
+                    }
                 },
             }
         },
@@ -5093,6 +5119,7 @@ var Script;
                 this.rigidbody.mtxPivot.scaling = Script.ƒ.Vector3.ZERO;
                 this.invulnerable = true;
                 this.meleeCooldown = Infinity;
+                this.node.untargetable = true;
             },
             attacks: [
                 {
@@ -5117,6 +5144,7 @@ var Script;
                         this.node.getComponent(Script.ƒ.ComponentMesh).activate(true);
                         // this.node.getChild(0).activate(true);
                         this.node.getChild(0).mtxLocal.scaling = Script.ƒ.Vector3.ONE(this.shadow.size);
+                        this.node.untargetable = false;
                         this.invulnerable = false;
                         this.meleeCooldown = 0;
                         this.rigidbody.setVelocity(Script.ƒ.Vector3.ZERO);
@@ -5131,6 +5159,7 @@ var Script;
                         },
                         "digdown-complete": function (_event) {
                             this.invulnerable = true;
+                            this.node.untargetable = true;
                             this.currentlyActiveAttack.cooldown = -1;
                         },
                     }
@@ -6967,16 +6996,20 @@ var Script;
             if (!this.enemies || this.enemies.length === 0)
                 return undefined;
             _maxDistance *= _maxDistance;
-            let enemies = [...this.enemies];
+            let enemies = [...this.enemies].filter((enemy) => {
+                if (enemy.isSpawning)
+                    return false;
+                if (_exclude.includes(enemy))
+                    return false;
+                if (enemy.untargetable)
+                    return false;
+                return true;
+            });
             if (_mode === Script.ProjectileTargetMode.RANDOM) {
                 //TODO: make sure chosen enemy is visible on screen
                 while (enemies.length > 0) {
                     let index = Math.floor(Math.random() * this.enemies.length);
                     let enemy = this.enemies.splice(index, 1)[0];
-                    if (_exclude.includes(enemy))
-                        continue;
-                    if (enemy.isSpawning)
-                        continue;
                     if (Script.ƒ.Vector3.DIFFERENCE(enemy.mtxWorld.translation, _pos).magnitudeSquared <= _maxDistance) {
                         return enemy;
                     }
@@ -6990,10 +7023,6 @@ var Script;
                 if (_mode === Script.ProjectileTargetMode.FURTHEST)
                     enemies.reverse();
                 for (let i = 0; i < enemies.length; i++) {
-                    if (enemies[i].isSpawning)
-                        continue;
-                    if (_exclude.includes(enemies[i]))
-                        continue;
                     return (enemies[i]);
                 }
             }

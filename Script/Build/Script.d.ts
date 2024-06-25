@@ -42,6 +42,7 @@ declare namespace Script {
     class EnemyGraphInstance extends InitializableGraphInstance {
         distanceToCharacter: number;
         isSpawning: boolean;
+        untargetable: boolean;
     }
     class AOEGraphInstance extends InitializableGraphInstance {
     }

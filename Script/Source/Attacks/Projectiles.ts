@@ -91,17 +91,41 @@ namespace Script {
                         strength: 1,
                         target: enemy,
                     } satisfies ProjectileTracking;
+
+                    this.direction = new ƒ.Vector3(Math.random() - 0.5, Math.random() - 0.5);
+
                 },
-                preUpdate: function () {
-                    let target: EnemyGraphInstance = this.tracking.target;
+                preUpdate: function (_charPosition: ƒ.Vector3, _frameTimeInSeconds: number) {
+                    if (!this.tracking) {
+                        this.discusTimer = (this.discusTimer ?? 0) - _frameTimeInSeconds;
+                        if(this.discusTimer < 0) {
+                            this.functions.getNewTarget.call(this);
+                        }
+                        return;
+                    }
+                    let target: EnemyGraphInstance = this.tracking?.target;
                     if (!target?.getParent()) {
-                        let newEnemy = provider.get(EnemyManager).getEnemy(ProjectileTargetMode.CLOSEST, this.node.mtxWorld.translation);
-                        this.tracking.target = newEnemy;
+                        this.functions.getNewTarget.call(this);
                     }
                 },
-                postHit: function (_hitable: Hitable) { 
-                    let newEnemy = provider.get(EnemyManager).getEnemy(ProjectileTargetMode.CLOSEST, (<Enemy>_hitable).node.mtxWorld.translation, [(<EnemyGraphInstance>(<Enemy>_hitable).node)]);
-                    this.tracking.target = newEnemy;
+                postHit: function (_hitable: Hitable) {
+                    this.functions.getNewTarget.call(this, _hitable);
+                },
+                //@ts-expect-error
+                getNewTarget: function (_hitable?: Hitable) {
+                    let newEnemy = provider.get(EnemyManager).getEnemy(ProjectileTargetMode.CLOSEST, (<Enemy>_hitable)?.node.mtxWorld.translation, [(<EnemyGraphInstance>(<Enemy>_hitable)?.node)]);
+                    if (newEnemy) {
+                        this.tracking = {
+                            stopTrackingAfter: Infinity,
+                            startTrackingAfter: 0,
+                            stopTrackingInRadius: 0,
+                            strength: 1,
+                            target: newEnemy,
+                        } satisfies ProjectileTracking
+                    } else {
+                        this.tracking = undefined;
+                        this.discusTimer = 0.5;
+                    }
                 },
             }
         },
@@ -124,12 +148,12 @@ namespace Script {
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.FURTHEST,
             methods: {
-                afterSetup: function() {
+                afterSetup: function () {
                     this.minDamage = this.damage;
                     this.maxDamage = this.damage * 10;
                     this.totalDistance = 0;
                 },
-                postMove: function(_frameTimeInSeconds: number) {
+                postMove: function (_frameTimeInSeconds: number) {
                     this.totalDistance += this.speed * _frameTimeInSeconds;
                     this.damage = Math.min(this.maxDamage, this.minDamage * (Math.max(1, this.totalDistance)));
                 }
@@ -145,7 +169,7 @@ namespace Script {
             target: ProjectileTarget.ENEMY,
             targetMode: ProjectileTargetMode.CLOSEST,
             methods: {
-                afterSetup: function() {
+                afterSetup: function () {
                     this.tracking = {
                         target: provider.get(CharacterManager).character.node,
                         startTrackingAfter: 0.5,

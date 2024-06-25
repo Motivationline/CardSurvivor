@@ -12,14 +12,14 @@ namespace Script {
             // this.getComponent(ProjectileComponent).recycle();
         }
 
-        async set(_graph: ƒ.Graph){
+        async set(_graph: ƒ.Graph) {
             await super.set(_graph);
             this.initialized = true;
         }
     }
 
-    export class ProjectileGraphInstance extends InitializableGraphInstance {}
-    export class HitZoneGraphInstance extends InitializableGraphInstance {}
-    export class EnemyGraphInstance extends InitializableGraphInstance {distanceToCharacter: number; isSpawning: boolean;}
-    export class AOEGraphInstance extends InitializableGraphInstance {}
+    export class ProjectileGraphInstance extends InitializableGraphInstance { }
+    export class HitZoneGraphInstance extends InitializableGraphInstance { }
+    export class EnemyGraphInstance extends InitializableGraphInstance { distanceToCharacter: number; isSpawning: boolean; untargetable: boolean; }
+    export class AOEGraphInstance extends InitializableGraphInstance { }
 }

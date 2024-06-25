@@ -67,6 +67,8 @@ namespace Script {
         }
 
         async setup(_options: Partial<Projectile>, _modifier: PassiveCardEffectObject): Promise<void> {
+            _options = { ...ProjectileComponent.defaults, ..._options };
+            this.functions = _options.methods;
             if (this.functions.beforeSetup) {
                 this.functions.beforeSetup.call(this, _options, _modifier);
             }
@@ -76,7 +78,6 @@ namespace Script {
                     limitation = "stopped";
             }
             let cm = provider.get(CardManager);
-            _options = { ...ProjectileComponent.defaults, ..._options };
             this.direction = _options.direction;
             this.targetPosition = _options.targetPosition;
             this.tracking = _options.tracking;
@@ -92,7 +93,6 @@ namespace Script {
             this.impact = _options.impact;
             this.targetMode = _options.targetMode;
             this.lockedToEntity = _options.lockedToEntity;
-            this.functions = _options.methods;
             this.sprite = this.getSprite(_options.sprite);
             this.setCentralAnimator(this.sprite);
 
@@ -252,6 +252,7 @@ namespace Script {
         }
 
         protected hit(_hitable: Hitable) {
+            if ((<EnemyGraphInstance>(<Enemy>_hitable)?.node)?.untargetable) return;
             if (this.functions.preHit) this.functions.preHit.call(this, _hitable);
             _hitable.hit({ damage: this.damage, stun: this.stunDuration, type: HitType.PROJECTILE });
             this.piercing--;

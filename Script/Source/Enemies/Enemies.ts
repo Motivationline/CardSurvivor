@@ -163,6 +163,7 @@ namespace Script {
                 this.rigidbody.mtxPivot.scaling = ƒ.Vector3.ZERO;
                 this.invulnerable = true;
                 this.meleeCooldown = Infinity;
+                (<EnemyGraphInstance>this.node).untargetable = true;
             },
             attacks: [
                 {
@@ -186,6 +187,7 @@ namespace Script {
                         this.node.getComponent(ƒ.ComponentMesh).activate(true);
                         // this.node.getChild(0).activate(true);
                         this.node.getChild(0).mtxLocal.scaling = ƒ.Vector3.ONE(this.shadow.size);
+                        (<EnemyGraphInstance>this.node).untargetable = false;
                         this.invulnerable = false;
                         this.meleeCooldown = 0;
                         this.rigidbody.setVelocity(ƒ.Vector3.ZERO);
@@ -200,6 +202,7 @@ namespace Script {
                         },
                         "digdown-complete": function (_event) {
                             this.invulnerable = true;
+                            (<EnemyGraphInstance>this.node).untargetable = true;
                             this.currentlyActiveAttack.cooldown = -1;
                         },
                     }
