@@ -111,18 +111,20 @@ namespace Script {
 
             //hide for spawning
             (<EnemyGraphInstance>this.node).isSpawning = true;
+            this.isSpawning = true;
             this.node.getComponent(ƒ.ComponentMesh).activate(false);
             this.node.getChild(0).activate(false);
             this.node.getChild(1).activate(true);
             this.rigidbody.activate(false);
-            setTimeout(()=>{
+            setTimeout(() => {
                 this.rigidbody.activate(true);
                 this.node.getChild(0).activate(true);
                 this.node.getChild(1).activate(false);
                 this.node.getComponent(ƒ.ComponentMesh).activate(true);
+                this.isSpawning = false;
                 (<EnemyGraphInstance>this.node).isSpawning = false;
             }, 1000);
-            
+
             _options.afterSetup?.call(this);
 
 
@@ -267,7 +269,7 @@ namespace Script {
                 }
                 // have we been attempting to start for too long?
                 this.currentlyActiveAttack.abortTimer -= _frameTimeInSeconds;
-                if(this.currentlyActiveAttack.abortTimer < 0) {
+                if (this.currentlyActiveAttack.abortTimer < 0) {
                     this.currentlyActiveAttack = undefined;
                     return;
                 }
@@ -302,6 +304,7 @@ namespace Script {
         }
 
         private eventListener = (_event: CustomEvent) => {
+            if (this.isSpawning) return;
             // walk event
             if (!(this.currentlyActiveAttack && this.currentlyActiveAttack.events && this.currentlyActiveAttack.events[_event.type])) {
                 if (!this.events) return;
