@@ -24,7 +24,7 @@ namespace Script {
     if (ƒ.Project.mode === ƒ.MODE.EDITOR) return;
     document.documentElement.addEventListener("click", startViewport);
 
-    await initI18n("en");
+    await initI18n("en", "de");
 
     provider
       .add(Config)

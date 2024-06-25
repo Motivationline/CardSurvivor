@@ -1,4 +1,40 @@
 {
+  "game": {
+    "button": {
+      "play": "Spielen",
+      "deck": "Karten",
+      "save_and_exit": "Speichern & Schließen",
+      "reroll": "Nochmal",
+      "quit_run": "Lauf beenden",
+      "resume": "Weiter",
+      "quit_abort":"Nein, abbrechen",
+      "quit_confirm": "Ja, beenden",
+      "menu": "Menü",
+      "main_menu": "Hauptmenü",
+      "unlock_all": "Alles Freischalten"
+    },
+    "text": {
+      "no_cards_unlocked": "Du hast keine Karten freigeschalten. Besiege Bosse um Karten freizuschalten.",
+      "cards_unlocked": "Freigeschaltete Karten"
+    },
+    "menu": {
+      "title": {
+        "deck": "Ausgewählte Karten",
+        "room_clear": "Raum beendet!",
+        "paused": "Pause",
+        "settings": "Einstellungen",
+        "game_over": "Spiel Vorbei",
+        "winner": "Du hast gewonnen!"
+      },
+      "text": {
+        "quit": {
+          "info": "Willst du wirklich das Spiel beenden?",
+          "info2": "Sämtlicher ungespeicherter Fortschritt wird verlorgen gehen"
+        },
+        "room_progress": "Raum"
+      }
+    }
+  },
   "card": {
     "Hammer": {
       "name": "Hammer",

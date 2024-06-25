@@ -1,4 +1,40 @@
 {
+  "game": {
+    "button": {
+      "play": "Play",
+      "deck": "Deck",
+      "save_and_exit": "Save & Exit",
+      "reroll": "Reroll",
+      "quit_run": "Quit Run",
+      "resume": "Resume",
+      "quit_abort":"No, Cancel",
+      "quit_confirm": "Yes, Quit",
+      "menu": "Menu",
+      "main_menu": "Main Menu",
+      "unlock_all": "Unlock All"
+    },
+    "text": {
+      "no_cards_unlocked": "You didn't unlock any cards. Defeat bosses to unlock cards.",
+      "cards_unlocked": "Unlocked cards"
+    },
+    "menu": {
+      "title": {
+        "deck": "Deck",
+        "room_clear": "Room cleared!",
+        "paused": "Paused",
+        "settings": "Settings",
+        "game_over": "Game Over",
+        "winner": "You won!"
+      },
+      "text": {
+        "quit": {
+          "info": "Are you sure you want to quit?",
+          "info2": "All unsaved progress will be lost."
+        },
+        "room_progress": "Room"
+      }
+    }
+  },
   "card": {
     "Hammer": {
       "name": "Hammer",

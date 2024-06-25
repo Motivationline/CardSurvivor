@@ -6,19 +6,32 @@ namespace Script {
         #image: string;
         #text: string;
         #htmlElement: HTMLElement;
+        #parent: HTMLElement;
+        #disableCircleType: boolean;
+        #level: number;
+        #rarity: CardRarity;
+        #circleTyper: CircleType;
 
         constructor(_card: iCard, _parent: HTMLElement, _nameFallback: string = "unknown", _level: number = 0, _disableCircleType: boolean = false) {
             this.#name = _card.name ?? _nameFallback;
-            this.#text = this.getFirstTranslatableText(_card.description ?? "unknown", _card.description, `card.${this.#name}.description`);
+            this.#text = _card.description;
             this.#image = _card.image;
-
-            this.#name = i18next.t(`card.${this.#name}.name`).toLocaleUpperCase();
+            this.#rarity = _card.rarity;
 
             this.#htmlElement = <HTMLElement>CardVisual.template.content.cloneNode(true).childNodes[1];
+            this.#parent = _parent;
+            this.#disableCircleType = _disableCircleType;
+            this.#level = _level;
+            this.updateTexts();
+        }
+
+        public updateTexts() {
+            let translatedName = i18next.t(`card.${this.#name}.name`).toLocaleUpperCase();
+            let translatedText = this.getFirstTranslatableText(this.#text ?? "unknown", this.#text, `card.${this.#name}.description`);
 
             // figure out how large the title text should be
             let fontSize = 10;
-            let heightRaw = getComputedStyle(_parent).getPropertyValue("--card-size");
+            let heightRaw = getComputedStyle(this.#parent).getPropertyValue("--card-size");
             let tmpDiv = document.createElement("div");
             tmpDiv.style.width = heightRaw;
             document.documentElement.appendChild(tmpDiv);
@@ -26,7 +39,7 @@ namespace Script {
             document.documentElement.removeChild(tmpDiv);
 
             let cardWidth = height * (15 / 21) - 0.15 * height;
-            let currentTextWidth = this.getTextWidth(this.#name, `normal  ${height / 100 * fontSize}px 'Luckiest Guy'`);
+            let currentTextWidth = this.getTextWidth(translatedName, `normal  ${height / 100 * fontSize}px 'Luckiest Guy'`);
             let factor = cardWidth / currentTextWidth;
             fontSize *= factor;
 
@@ -35,17 +48,21 @@ namespace Script {
             nameElement.style.fontSize = `calc(var(--card-size) / 100 * ${fontSize})`;
 
             // fill card with data
-            nameElement.innerHTML = this.#name;
-            requestAnimationFrame(() => {
-                // turn into circle
-                if(!_disableCircleType)
-                    new CircleType(nameElement).radius(cardWidth * 2);
-            });
-            (<HTMLElement>this.#htmlElement.querySelector(".card-text")).innerText = this.#text;
+            if(this.#circleTyper) this.#circleTyper.destroy();
+            nameElement.innerText = translatedName;
+            nameElement.dataset.langText = `card.${this.#name}.name`;
+            if (!this.#disableCircleType) {
+
+                requestAnimationFrame(() => {
+                    // turn into circle
+                    this.#circleTyper = new CircleType(nameElement).radius(cardWidth * 2);
+                });
+            }
+            (<HTMLElement>this.#htmlElement.querySelector(".card-text")).innerText = translatedText;
             (<HTMLImageElement>this.#htmlElement.querySelector(".card-image img")).src = "Assets/Cards/Items/" + this.#image;
             this.#htmlElement.style.setProperty("--delay", `${Math.random() * -10}s`);
-            this.#htmlElement.classList.add(_card.rarity);
-            this.#htmlElement.classList.add(`level-${_level}`);
+            this.#htmlElement.classList.add(this.#rarity);
+            this.#htmlElement.classList.add(`level-${this.#level}`);
         }
 
         get htmlElement(): HTMLElement {
