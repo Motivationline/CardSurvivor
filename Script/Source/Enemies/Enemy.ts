@@ -110,6 +110,7 @@ namespace Script {
             if (this.shadow.position) shadow.mtxLocal.translation = new ƒ.Vector3(this.shadow.position.x, this.shadow.position.y, this.node.mtxLocal.translation.z);
 
             //hide for spawning
+            (<EnemyGraphInstance>this.node).untargetable = false;
             (<EnemyGraphInstance>this.node).isSpawning = true;
             this.isSpawning = true;
             this.node.getComponent(ƒ.ComponentMesh).activate(false);
@@ -123,6 +124,8 @@ namespace Script {
                 this.node.getComponent(ƒ.ComponentMesh).activate(true);
                 this.isSpawning = false;
                 (<EnemyGraphInstance>this.node).isSpawning = false;
+                (<EnemyGraphInstance>this.node).untargetable = false;
+                this.invulnerable = false;
             }, 1000);
 
             _options.afterSetup?.call(this);

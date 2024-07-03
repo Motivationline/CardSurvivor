@@ -5395,6 +5395,7 @@ var Script;
             if (this.shadow.position)
                 shadow.mtxLocal.translation = new Script.ƒ.Vector3(this.shadow.position.x, this.shadow.position.y, this.node.mtxLocal.translation.z);
             //hide for spawning
+            this.node.untargetable = false;
             this.node.isSpawning = true;
             this.isSpawning = true;
             this.node.getComponent(Script.ƒ.ComponentMesh).activate(false);
@@ -5408,6 +5409,8 @@ var Script;
                 this.node.getComponent(Script.ƒ.ComponentMesh).activate(true);
                 this.isSpawning = false;
                 this.node.isSpawning = false;
+                this.node.untargetable = false;
+                this.invulnerable = false;
             }, 1000);
             _options.afterSetup?.call(this);
         }
