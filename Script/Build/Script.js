@@ -5409,7 +5409,6 @@ var Script;
                 this.node.getComponent(Script.ƒ.ComponentMesh).activate(true);
                 this.isSpawning = false;
                 this.node.isSpawning = false;
-                this.node.untargetable = false;
                 this.invulnerable = false;
             }, 1000);
             _options.afterSetup?.call(this);

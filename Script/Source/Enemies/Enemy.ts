@@ -124,7 +124,6 @@ namespace Script {
                 this.node.getComponent(ƒ.ComponentMesh).activate(true);
                 this.isSpawning = false;
                 (<EnemyGraphInstance>this.node).isSpawning = false;
-                (<EnemyGraphInstance>this.node).untargetable = false;
                 this.invulnerable = false;
             }, 1000);
 
