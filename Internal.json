@@ -19,7 +19,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-29T07:17:09.568Z|94561"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-05-29T07:17:09.568Z|94561": {
@@ -51,7 +52,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-29T07:17:17.509Z|83409"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-05-29T07:17:17.509Z|83409": {
@@ -76,7 +78,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-29T07:17:13.791Z|40358"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-05-29T07:17:13.791Z|40358": {
@@ -101,7 +104,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-29T07:17:15.758Z|22642"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-05-29T07:17:15.758Z|22642": {
@@ -593,7 +597,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-03T11:58:41.522Z|76435"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-05-03T11:58:41.522Z|76435": {
@@ -630,7 +635,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-03T11:58:41.522Z|58044"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-05-03T11:58:41.522Z|58044": {
@@ -667,7 +673,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-03T11:58:41.522Z|31908"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-05-03T11:58:41.522Z|31908": {
@@ -704,7 +711,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-03T11:58:41.522Z|93492"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-05-03T11:58:41.522Z|93492": {
@@ -741,7 +749,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-03T11:58:41.522Z|08873"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-05-03T11:58:41.522Z|08873": {
@@ -778,7 +787,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-03T11:58:41.522Z|82599"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-05-03T11:58:41.522Z|82599": {
@@ -815,7 +825,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-03T11:58:41.522Z|77653"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-05-03T11:58:41.522Z|77653": {
@@ -852,7 +863,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-12T08:33:46.651Z|28444"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-06-12T08:33:46.651Z|28444": {
@@ -1365,7 +1377,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-06T07:00:55.322Z|77134"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-05-06T07:00:55.322Z|77134": {
@@ -1390,7 +1403,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-19T12:02:15.934Z|89962"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-06-19T12:02:15.934Z|89962": {
@@ -1652,7 +1666,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-06T07:00:48.720Z|21574"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "Material|2024-05-06T13:29:44.206Z|67199": {
@@ -1665,7 +1680,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-06T07:00:52.070Z|64898"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "Material|2024-05-06T13:29:52.414Z|09807": {
@@ -1678,7 +1694,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-06T07:00:55.322Z|77134"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "Material|2024-05-06T13:30:03.916Z|15502": {
@@ -1691,7 +1708,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-06T07:00:59.320Z|06387"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "Material|2024-05-06T13:30:28.224Z|93961": {
@@ -1704,7 +1722,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-06T07:01:14.843Z|93785"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "Material|2024-05-07T11:00:09.290Z|11123": {
@@ -1717,7 +1736,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-07T11:00:27.121Z|90311"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-05-07T11:00:27.121Z|90311": {
@@ -1742,7 +1762,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-07T11:00:57.395Z|51320"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-05-07T11:00:57.395Z|51320": {
@@ -1767,7 +1788,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-07T11:33:51.821Z|89717"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-05-07T11:33:51.821Z|89717": {
@@ -1792,7 +1814,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-07T12:40:08.563Z|41614"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-05-07T12:40:08.563Z|41614": {
@@ -1907,7 +1930,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-14T10:45:35.593Z|70410"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-05-14T10:45:35.593Z|70410": {
@@ -2002,7 +2026,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-14T12:52:23.956Z|42262"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "Graph|2024-05-14T12:57:42.823Z|22114": {
@@ -2105,7 +2130,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-05-16T13:18:15.776Z|88341"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-05-16T13:18:15.776Z|88341": {
@@ -2142,7 +2168,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-05T09:24:42.109Z|73976"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-06-05T09:25:03.153Z|86199": {
@@ -2167,7 +2194,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-05T09:25:03.153Z|86199"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-06-05T09:25:44.355Z|74244": {
@@ -2192,7 +2220,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-05T09:25:44.355Z|74244"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-06-05T09:26:20.635Z|76617": {
@@ -2217,7 +2246,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-05T09:26:20.635Z|76617"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-06-05T09:26:42.202Z|47041": {
@@ -2242,7 +2272,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-05T09:26:42.202Z|47041"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-06-05T09:27:08.321Z|50853": {
@@ -2267,7 +2298,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-05T09:27:08.321Z|50853"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "Material|2024-06-10T08:03:18.103Z|98876": {
@@ -2280,7 +2312,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-11T08:31:48.806Z|20136"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-06-11T08:31:48.806Z|20136": {
@@ -2317,7 +2350,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-11T13:29:09.158Z|44957"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "Material|2024-06-11T14:26:14.943Z|41599": {
@@ -2330,7 +2364,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-11T14:26:18.954Z|87356"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-06-11T14:26:18.954Z|87356": {
@@ -2355,7 +2390,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-11T15:07:50.040Z|25960"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-06-11T15:07:50.040Z|25960": {
@@ -2404,7 +2440,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-12T13:20:15.155Z|24951"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "Material|2024-06-12T13:20:24.988Z|72227": {
@@ -2417,7 +2454,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-12T13:20:13.790Z|62939"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "Material|2024-06-12T14:01:45.293Z|92583": {
@@ -2430,7 +2468,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-12T14:01:54.456Z|50006"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-06-12T14:01:54.456Z|50006": {
@@ -2467,7 +2506,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-13T12:37:26.841Z|13707"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-06-14T08:51:01.786Z|84415": {
@@ -2492,7 +2532,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-14T08:51:01.786Z|84415"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "Material|2024-06-14T14:57:35.797Z|25097": {
@@ -2505,7 +2546,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-14T14:58:02.072Z|86185"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-06-14T14:58:02.072Z|86185": {
@@ -2530,7 +2572,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-14T14:59:12.503Z|90116"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-06-14T14:59:12.503Z|90116": {
@@ -2555,7 +2598,8 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-14T14:59:47.838Z|55162"
         }
-      }
+      },
+      "alphaClip": 0.01
     }
   },
   "TextureImage|2024-06-14T14:59:47.838Z|55162": {
@@ -2592,7 +2636,34 @@
           "color": "[1, 1, 1, 1]",
           "idTexture": "TextureImage|2024-06-14T14:59:55.279Z|61397"
         }
+      },
+      "alphaClip": 0.01
+    }
+  },
+  "TextureImage|2024-10-16T08:36:10.850Z|05233": {
+    "ƒ.TextureImage": {
+      "url": "Assets\\Enemies\\Motor\\Motor_charge_01.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2024-10-16T08:36:10.850Z|05233",
+        "name": "Assets\\Enemies\\Motor\\Motor_charge_01.png",
+        "mipmap": "CRISP",
+        "wrap": "REPEAT"
       }
+    }
+  },
+  "Material|2024-10-16T08:36:47.000Z|25687": {
+    "ƒ.Material": {
+      "name": "MotorAttack",
+      "idResource": "Material|2024-10-16T08:36:47.000Z|25687",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2024-10-16T08:36:10.850Z|05233"
+        }
+      },
+      "alphaClip": 0.01
     }
   }
 }

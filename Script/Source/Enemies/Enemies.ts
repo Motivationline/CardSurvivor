@@ -114,6 +114,7 @@ namespace Script {
                 {
                     cooldown: 0.61, // how long it dashes, including delay
                     requiredDistance: [1.5, 2.5],
+                    attackSprite: ["motor", "attack"],
                     windUp: 2, // how long it plans its attack
                     movement: function (_diff: ƒ.Vector3, _mgtSqrd: number, _charPosition: ƒ.Vector3, _frameTimeInSeconds: number) {
                         let dashDuration: number = 0.6 // how long it should be dashing.

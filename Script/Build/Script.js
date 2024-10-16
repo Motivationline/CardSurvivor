@@ -5079,6 +5079,7 @@ var Script;
                 {
                     cooldown: 0.61, // how long it dashes, including delay
                     requiredDistance: [1.5, 2.5],
+                    attackSprite: ["motor", "attack"],
                     windUp: 2, // how long it plans its attack
                     movement: function (_diff, _mgtSqrd, _charPosition, _frameTimeInSeconds) {
                         let dashDuration = 0.6; // how long it should be dashing.
@@ -5645,7 +5646,7 @@ var Script;
     };
     Script.pools = {
         "electronics": [
-            ["microwave", "chair"], // --0
+            ["motor", "motor"], // --0
             ["toaster", "closet"], // --1
             ["mixer"], // --2
             ["ventilator"], // --3

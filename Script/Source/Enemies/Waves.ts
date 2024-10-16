@@ -13,7 +13,7 @@ namespace Script {
 
     export const pools: Pools = {
         "electronics": [
-            ["microwave", "chair"], // --0
+            ["motor", "motor"], // --0
             ["toaster", "closet"], // --1
             ["mixer"], // --2
             ["ventilator"], // --3

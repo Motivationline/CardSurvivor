@@ -118,6 +118,16 @@
         "totalWidth": 1280,
         "wrapAfter": 5,
         "materialString": "Material|2024-05-07T11:33:30.222Z|47475"
+      },
+      "attack": {
+        "fps": 24,
+        "frames": 24,
+        "height": 256,
+        "width": 256,
+        "totalHeight": 1280,
+        "totalWidth": 1280,
+        "wrapAfter": 5,
+        "materialString": "Material|2024-10-16T08:36:47.000Z|25687"
       }
     }
   },
